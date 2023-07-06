@@ -1,0 +1,268 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Role;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
+
+class RoleController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        // Display all roles in manage-roles page with options to edit/deactivate
+        $roles = Role::all();
+        return view('roles-permissions.manage-roles', compact('roles'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+        $menuTitles = DB::select('select distinct MENU_TITLE from permissions');
+        $menupermissions = DB::select('select * from permissions');
+        return view('roles-permissions.create-role', compact('menuTitles', 'menupermissions'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+        // echo $request->role_name;
+        // echo "<br>";
+
+        //Store newly created Role in 'roles' table
+        $role = Role::create([
+            'ROLE_NAME' => $request->role_name,
+            'DESCRIPTION' => $request->role_description,
+            'CREATED_BY' => 'Admin'
+        ]);
+
+        $roleId = $role->ROLE_ID;
+
+        // Store permissions attached to newly created role in 'role_permissions' table
+
+        // echo '<pre>';
+        // print_r($request['role_permission']);
+        // echo '</pre>';
+        $i = 0;
+        foreach ($request['role_permission'] as $rp) {
+            $canCreate = $rp['create'] ? 'Y' : 'N';
+            $canRead = $rp['read'] ? 'Y' : 'N';
+            $canEdit = $rp['edit'] ? 'Y' : 'N';
+            $canDelete = $rp['delete'] ? 'Y' : 'N';
+
+            // echo $canCreate . "<br>" . $canRead . "<br>" . $canEdit . "<br>" . $canDelete . "<br>";
+            DB::table('role_permissions')->insert([
+                'ROLE_ID' => $roleId,
+                'PERMISSION_ID' => $rp['permission_id'],
+                'MENU_TITLE' => $rp['title'],
+                'MENU_SUBTITLE' => $rp['subtitle'],
+                'CAN_CREATE' => $canCreate,
+                'CAN_READ' => $canRead,
+                'CAN_EDIT' => $canEdit,
+                'CAN_DELETE' => $canDelete,
+                'CREATED_BY' => 'Admin',
+                'CREATED_ON' => date('Y-m-d h:i:s')
+            ]);
+        }
+
+        return "New role added successfully";
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+        $menuTitles = DB::select('select distinct MENU_TITLE from permissions');
+        $menupermissions = DB::select('select * from permissions');
+
+        $role = Role::find($id);
+        $userPermissions = DB::select('select * from role_permissions where ROLE_ID = ?', [$id]);
+        return view('roles-permissions.edit-role', compact('menuTitles', 'menupermissions', 'role', 'userPermissions'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        // Update role if name or description were changed
+        $role = Role::find($id);
+        $role->ROLE_NAME = $request->role_name;
+        $role->DESCRIPTION = $request->role_description;
+        $role->MODIFIED_BY = 'Admin';
+        $updated = $role->save();
+
+        // Update individual permissions if any changes made
+        foreach ($request['role_permission'] as $rp) {
+            $canCreate = $rp['create'] ? 'Y' : 'N';
+            $canRead = $rp['read'] ? 'Y' : 'N';
+            $canEdit = $rp['edit'] ? 'Y' : 'N';
+            $canDelete = $rp['delete'] ? 'Y' : 'N';
+
+            // echo $canCreate . "<br>" . $canRead . "<br>" . $canEdit . "<br>" . $canDelete . "<br>";
+            DB::table('role_permissions')->where('ROLE_ID', $id)->where('PERMISSION_ID', $rp['permission_id'])->update([
+                'CAN_CREATE' => $canCreate,
+                'CAN_READ' => $canRead,
+                'CAN_EDIT' => $canEdit,
+                'CAN_DELETE' => $canDelete,
+                'MODIFIED_BY' => 'Admin',
+                'MODIFIED_ON' => date('Y-m-d h:i:s')
+            ]);
+        }
+        if ($updated) {
+            return "Role has been successfully updated";
+        } else {
+            return "Could not update role";
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+
+    /**
+     * Deactivate the specified role
+     */
+    public function deactivateRole(Request $request)
+    {
+        $id = $request->role_id;
+        $role = Role::find($id);
+        $role->IS_ACTIVE = 'N';
+        $deactivated = $role->save();
+        if ($deactivated) {
+            return "Successfully deactivated role";
+        } else {
+            return "Failed to deactivate role";
+        }
+    }
+
+    /**
+     * Activate / re-eactivate the specified role
+     */
+    public function activateRole(Request $request)
+    {
+        $id = $request->role_id;
+        $role = Role::find($id);
+        $role->IS_ACTIVE = 'Y';
+        $deactivated = $role->save();
+        if ($deactivated) {
+            return "Successfully activated role";
+        } else {
+            return "Failed to activate role";
+        }
+    }
+
+    /**
+     * Assign Role to User
+     */
+    public function assignRoleToUser(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            // Insert newly assigned role to user to DB
+            $user_id = $request->user_id;
+            $assigned_role = $request->assigned_role;
+
+            DB::table('user_roles')->insert([
+                'USER_ID' => $user_id,
+                'ROLE_ID' => $assigned_role
+            ]);
+
+            return "Successfully assigned selected role to user";
+        } else {
+            // Show screen to assign role to user
+            $users = User::all();
+            $roles = Role::all();
+            return view('roles-permissions.assign-role-to-user', compact('users', 'roles'));
+        }
+    }
+
+    /**
+     * Get and list the roles assigned to existing users
+     */
+    public function getUserAccessRoles(Request $request)
+    {
+        $userRoles = DB::table('user_roles')
+            ->join('roles', 'user_roles.ROLE_ID', '=', 'roles.ROLE_ID')
+            ->join('users', 'user_roles.USER_ID', '=', 'users.USER_ID')
+            ->select('user_roles.USER_ID', 'user_ROLES.ROLE_ID', 'users.FIRST_NAME', 'users.LAST_NAME', 'roles.ROLE_NAME')
+            ->get();
+
+        return view('roles-permissions.user-access', compact('userRoles'));
+    }
+
+    /**
+     * Show Screen to Edit Role assigned to a User
+     */
+    public function getUserAccessRole($user_id)
+    {
+        $user = User::find($user_id);
+        $currentRole = DB::table('user_roles')->where('USER_ID', $user_id)->get();
+        $roles = Role::all();
+
+        return view('roles-permissions.edit-user-access-role', compact('user', 'currentRole', 'roles'));
+    }
+
+    /**
+     * Update role assigned to a user
+     */
+    public function updateUserAccessRole(Request $request)
+    {
+        $user_id = $request->user_id;
+        $new_role_id = $request->assigned_role;
+
+        $affected = DB::table('user_roles')->where('USER_ID', $user_id)->update([
+            'ROLE_ID' => $new_role_id
+        ]);
+        if ($affected) {
+            // Number of rows updated is not zero, i.e. is 1
+            return "Successfully assigned new role to user";
+        } else {
+            return "Failed to assign new role to user";
+        }
+    }
+}
