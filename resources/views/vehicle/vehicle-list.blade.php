@@ -9,10 +9,6 @@
         color: #f66;
     }
 
-    /* .select2-hidden-accessible.error,
-    .select2-hidden-accessible.error+.select2-container {
-        border: 1px solid #f99 !important;
-    } */
 
     select.error~.select2 .select2-selection {
         border: 1px solid #f99;
@@ -337,7 +333,7 @@
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label for="vehicle_typesr" class="col-sm-5 col-form-label justify-content-start text-left">Vehicle Type <i class="text-danger">*</i></label>
+                            <label for="vehicle_typesr" class="col-sm-5 col-form-label justify-content-start text-left">Vehicle Type </label>
                             <div class="col-sm-7">
                                 <select class="form-control" name="vehicle_typesr" id="vehicle_typesr">
                                     <option value="" selected="selected">Please Select One</option>
@@ -348,7 +344,7 @@
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label for="ownershipsr" class="col-sm-5 col-form-label justify-content-start text-left">Ownership <i class="text-danger">*</i></label>
+                            <label for="ownershipsr" class="col-sm-5 col-form-label justify-content-start text-left">Ownership </label>
                             <div class="col-sm-7">
                                 <select class="form-control" name="ownershipsr" id="ownershipsr">
                                     <option value="" selected="selected">Please Select One</option>
@@ -373,7 +369,7 @@
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label for="vendorsr" class="col-sm-5 col-form-label justify-content-start text-left">Vendor <i class="text-danger">*</i></label>
+                            <label for="vendorsr" class="col-sm-5 col-form-label justify-content-start text-left">Vendor </label>
                             <div class="col-sm-7">
                                 <select class="form-control" name="vendorsr" id="vendorsr">
                                     <option value="" selected="selected">Please Select One</option>
@@ -413,7 +409,7 @@
                                 <th>Registration Date</th>
                                 <th>Ownership</th>
                                 <th>Vendor</th>
-                                <th>Action</th>
+                                <th>Action(s)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -621,6 +617,9 @@
         })
 
     });
+
+    // To prevent select2 boxes still displaying previously selected value on resetting form
+    $('#filterVehiclesForm .basic-single').val('').trigger('change');
 </script>
 
 <script>
@@ -630,18 +629,23 @@
             type: 'post',
             data: {
                 _token: '{{csrf_token()}}',
-                search_department: $("#search_department").val()
+                search_department: $("#search_department").val(),
+                vehicle_typesr: $("#vehicle_typesr").val(),
+                ownershipsr: $("#ownershipsr").val(),
+                registration_date_fr: $("#registration_date_fr").val(),
+                registration_date_to: $("#registration_date_to").val(),
+                vendorsr: $("#vendorsr").val()
             },
             dataType: 'json',
             success: function(res) {
                 table.clear();
                 $.each(res, function(i, data) {
                     console.log(data);
-                    let buttons = '<button class="btn btn-sm btn-primary mr-1" data-id="' + data.VEHICLE_ID + '" onclick="editInfo(this)"><i class="fa fa-edit"></i></button>';
+                    let buttons = '<button class="btn btn-sm btn-primary mr-1" data-id="' + data.VEHICLE_ID + '" onclick="editInfo(this)" title="Edit"><i class="fa fa-edit"></i></button>';
                     if (data.IS_ACTIVE == 'Y')
-                        buttons += '<button class="btn btn-sm btn-danger mr-1" data-id="' + data.VEHICLE_ID + '" onclick="updateStatus(this)"><i class="ti-close"></i></button>';
+                        buttons += '<button class="btn btn-sm btn-danger mr-1" data-id="' + data.VEHICLE_ID + '" onclick="updateStatus(this)" title="Deactivate"><i class="ti-close"></i></button>';
                     else
-                        buttons += '<button class="btn btn-sm btn-success mr-1" data-id="' + data.VEHICLE_ID + '" onclick="updateStatus(this)"><i class="ti-reload"></i></button>';
+                        buttons += '<button class="btn btn-sm btn-success mr-1" data-id="' + data.VEHICLE_ID + '" onclick="updateStatus(this)" title="Activate"><i class="ti-reload"></i></button>';
                     table.row.add(
                         [i + 1,
                             data.VEHICLE_NAME,
@@ -662,7 +666,7 @@
         });
     }
 
-    // Load data to Edit Vehcile From
+    // Load data to Edit Vehicle From
     function loadVehicleDetails(vehicleId) {
         $.ajax({
             url: "{{route('vehicle.get-details')}}",
@@ -675,7 +679,7 @@
             success: function(res) {
                 if (res.successCode == 1) {
                     console.log(res.data);
-                    $("#new_vehicle_name").val(res.data.VEHICLE_NAME).trigger('change');
+                    $("#new_vehicle_name").val(res.data.VEHICLE_NAME);
                     $("#new_vehicle_type").val(res.data.VEHICLE_TYPE_ID);
                     $("#newVehicleDept").val(res.data.DEPARTMENT_ID);
                     $("#newVehicleDept").select2().trigger('change');
@@ -692,7 +696,7 @@
                 } else {
                     console.log("Could not fetch details");
                     $("#edit").modal('hide');
-                    toastr.errro("Error fetching details. Please try again", "", {
+                    toastr.error("Error fetching details. Please try again", "", {
                         closeButton: true
                     });
                 }

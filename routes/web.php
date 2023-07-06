@@ -7,8 +7,11 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\Masters\DepartmentController;
+use App\Http\Controllers\Masters\FuelController;
 use App\Http\Controllers\Masters\OwnershipController;
 use App\Http\Controllers\Masters\RTACircleOfficeController;
+use App\Http\Controllers\Masters\ServiceController;
+use App\Http\Controllers\Masters\TripTypeController;
 use App\Http\Controllers\Masters\VehicleDivisionController;
 use App\Http\Controllers\Masters\VehicleTypeController;
 use App\Http\Controllers\Masters\VendorController;
@@ -94,6 +97,7 @@ Route::middleware('auth')->group(function () {
     Route::get('vehicles', [VehicleController::class, 'index'])->name('vehicle.index');
     Route::post('vehicles/add', [VehicleController::class, 'store'])->name('vehicle.add');
     Route::post('vehicles/details', [VehicleController::class, 'getDetails'])->name('vehicle.get-details');
+    // Get all vehicles / filtered list of vehicles
     Route::post('vehicle-details', [VehicleController::class, 'getAllVehicleDetails']);
     // Update vehicle details
     Route::post('vehicles/update/{vehicle}', [VehicleController::class, 'update'])->name('vehicle.update');
@@ -305,17 +309,20 @@ Route::middleware('auth')->group(function () {
         return view('system-settings.priority');
     })->name('priority');
 
-    Route::get('settings/service-types', function () {
-        return view('system-settings.service-types');
-    })->name('service-types');
+    Route::get('settings/service-types', [ServiceController::class, 'index'])->name('service-types');
+    Route::post('settings/service-types/add', [ServiceController::class, 'store'])->name('service-types.add');
+    Route::post('settings/service-types/update', [ServiceController::class, 'update'])->name('service-types.update');
+    Route::post('settings/service-types/update-status', [ServiceController::class, 'statusUpdate'])->name('service-types.update-status');
 
-    Route::get('settings/fuel-types', function () {
-        return view('system-settings.fuel-types');
-    })->name('fuel-types');
+    Route::get('settings/fuel-types', [FuelController::class, 'index'])->name('fuel-types');
+    Route::post('settings/fuel-types/add', [FuelController::class, 'store'])->name('fuel-types.add');
+    Route::post('settings/fuel-types/update', [FuelController::class, 'update'])->name('fuel-types.update');
+    Route::post('settings/fuel-types/update-status', [FuelController::class, 'statusUpdate'])->name('fuel-types.update-status');
 
-    Route::get('settings/trip-types', function () {
-        return view('system-settings.trip-types');
-    })->name('trip-types');
+    Route::get('settings/trip-types', [TripTypeController::class, 'index'])->name('trip-types');
+    Route::post('settings/trip-types/add', [TripTypeController::class, 'store'])->name('trip-types.add');
+    Route::post('settings/trip-types/update', [TripTypeController::class, 'update'])->name('trip-types.update');
+    Route::post('settings/trip-types/update-status', [TripTypeController::class, 'statusUpdate'])->name('trip-types.update-status');
 
     Route::get('settings/divisions', [VehicleDivisionController::class, 'index'])->name('divisions');
     Route::post('settings/divisions/add', [VehicleDivisionController::class, 'store'])->name('divisions.add');

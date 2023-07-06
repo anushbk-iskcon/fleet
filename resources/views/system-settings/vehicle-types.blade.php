@@ -207,7 +207,7 @@
                             console.log(res);
                             $("#edit").modal('hide');
                             let targetBtn = $("#example_vehicletype").find('button[data-id=' + vehicleTypeId + ']');
-                            console.log(targetBtn);
+
                             targetBtn.closest('td').prev().html(res.vehicleType.VEHICLE_TYPE_NAME);
                             targetBtn.data('name', res.vehicleType.VEHICLE_TYPE_NAME);
                         } else {

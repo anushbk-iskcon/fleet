@@ -31,6 +31,12 @@ class VehicleController extends Controller
     public function getAllVehicleDetails(Request $request)
     {
         $dept = $request->search_department;
+        $vehicle_type = $request->vehicle_typesr;
+        $ownership = $request->ownershipsr;
+        $registration_date_from = $request->registration_date_fr;
+        $registration_date_to = $request->registration_date_to;
+        $vendor = $request->vendorsr;
+
         $vehicles = DB::table('vehicles')
             ->join('mstr_vehicle_type', 'vehicles.VEHICLE_TYPE_ID', '=', 'mstr_vehicle_type.VEHICLE_TYPE_ID')
             ->join('mstr_department', 'vehicles.DEPARTMENT_ID', '=', 'mstr_department.DEPARTMENT_ID')
@@ -55,6 +61,21 @@ class VehicleController extends Controller
             // ->where('vehicles.IS_ACTIVE', '=', 'Y')
             ->when($dept, function ($query, $dept) {
                 return $query->where('vehicles.DEPARTMENT_ID', '=', $dept);
+            })
+            ->when($vehicle_type, function ($query, $vehicle_type) {
+                return $query->where('vehicles.VEHICLE_TYPE_ID', '=', $vehicle_type);
+            })
+            ->when($ownership, function ($query, $ownership) {
+                return $query->where('vehicles.OWNERSHIP_ID', '=', $ownership);
+            })
+            ->when($registration_date_from, function ($query, $registration_date_from) {
+                return $query->where('vehicles.REGISTRATION_DATE', '>', $registration_date_from);
+            })
+            ->when($registration_date_to, function ($query, $registration_date_to) {
+                return $query->where('vehicles.REGISTRATION_DATE', '<', $registration_date_to);
+            })
+            ->when($vendor, function ($query, $vendor) {
+                return $query->where('vehicles.VENDOR_ID', '=', $vendor);
             })
             ->get();
 
