@@ -9,6 +9,10 @@ use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\Masters\DepartmentController;
 use App\Http\Controllers\Masters\FuelController;
 use App\Http\Controllers\Masters\OwnershipController;
+use App\Http\Controllers\Masters\PhaseController;
+use App\Http\Controllers\Masters\PriorityController;
+use App\Http\Controllers\Masters\RequisitionPurposeController;
+use App\Http\Controllers\Masters\RequisitionTypeController;
 use App\Http\Controllers\Masters\RTACircleOfficeController;
 use App\Http\Controllers\Masters\ServiceController;
 use App\Http\Controllers\Masters\TripTypeController;
@@ -289,25 +293,29 @@ Route::middleware('auth')->group(function () {
     Route::post('settings/vehicle-types/update', [VehicleTypeController::class, 'update'])->name('vehicle-type.update');
     Route::post('settings/vehicle-types/update-status', [VehicleTypeController::class, 'statusUpdate'])->name('vehicle-type.status-update');
 
-    Route::get('settings/requisition-purpose', function () {
-        return view('system-settings.requisition-purposes');
-    })->name('requisition-purposes');
+    Route::get('settings/requisition-purpose', [RequisitionPurposeController::class, 'index'])->name('requisition-purposes');
+    Route::post('settings/requisition-purpose/add', [RequisitionPurposeController::class, 'store'])->name('requisition-purposes.add');
+    Route::post('settings/requisition-purpose/update', [RequisitionPurposeController::class, 'update'])->name('requisition-purposes.update');
+    Route::post('settings/requisition-purpose/update-status', [RequisitionPurposeController::class, 'statusUpdate'])->name('requisition-purposes.update-status');
 
-    Route::get('settings/requisition-type', function () {
-        return view('system-settings.requisition-types');
-    })->name('requisition-types');
+    Route::get('settings/requisition-type', [RequisitionTypeController::class, 'index'])->name('requisition-types');
+    Route::post('settings/requisition-type/add', [RequisitionTypeController::class, 'store'])->name('requisition-types.add');
+    Route::post('settings/requisition-type/update', [RequisitionTypeController::class, 'update'])->name('requisition-types.update');
+    Route::post('settings/requisition-type/update-status', [RequisitionTypeController::class, 'statusUpdate'])->name('requisition-types.update-status');
 
-    Route::get('settings/requisition-phase', function () {
-        return view('system-settings.requisition-phases');
-    })->name('requisition-phases');
+    Route::get('settings/requisition-phase', [PhaseController::class, 'index'])->name('requisition-phases');
+    Route::post('settings/requisition-phase/add', [PhaseController::class, 'store'])->name('requisition-phases.add');
+    Route::post('settings/requisition-phase/update', [PhaseController::class, 'update'])->name('requisition-phases.update');
+    Route::post('settings/requisition-phase/update-status', [PhaseController::class, 'statusUpdate'])->name('requisition-phases.update-status');
 
     Route::get('settings/maintenance-types', function () {
         return view('system-settings.maintenance-types');
     })->name('maintenance-types');
 
-    Route::get('settings/priority', function () {
-        return view('system-settings.priority');
-    })->name('priority');
+    Route::get('settings/priority', [PriorityController::class, 'index'])->name('priority');
+    Route::post('settings/priority/add', [PriorityController::class, 'store'])->name('priority.add');
+    Route::post('settings/priority/update', [PriorityController::class, 'update'])->name('priority.update');
+    Route::post('settings/priority/update-status', [PriorityController::class, 'statusUpdate'])->name('priority.update-status');
 
     Route::get('settings/service-types', [ServiceController::class, 'index'])->name('service-types');
     Route::post('settings/service-types/add', [ServiceController::class, 'store'])->name('service-types.add');

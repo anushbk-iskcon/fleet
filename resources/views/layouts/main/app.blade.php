@@ -131,7 +131,7 @@
                                 @foreach($menuLinks as $subTitle => $url)
                                 @if($userMenuPermissions[$url]['CAN_READ'] == 'Y')
                                 <li class="{{Route::is($url) ? 'mm-active' : ''}}">
-                                    <a href="{{route($url)}}">{{$subTitle}}</a>
+                                    <a href="{{route($url)}}">{!!$subTitle!!}</a>
                                 </li>
                                 @endif
                                 @endforeach
