@@ -7,7 +7,10 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\Masters\DepartmentController;
+use App\Http\Controllers\Masters\DocumentTypeController;
 use App\Http\Controllers\Masters\FuelController;
+use App\Http\Controllers\Masters\MaintenanceTypeController;
+use App\Http\Controllers\Masters\NotificationTypeController;
 use App\Http\Controllers\Masters\OwnershipController;
 use App\Http\Controllers\Masters\PhaseController;
 use App\Http\Controllers\Masters\PriorityController;
@@ -19,7 +22,7 @@ use App\Http\Controllers\Masters\TripTypeController;
 use App\Http\Controllers\Masters\VehicleDivisionController;
 use App\Http\Controllers\Masters\VehicleTypeController;
 use App\Http\Controllers\Masters\VendorController;
-use App\Models\User;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -275,68 +278,86 @@ Route::middleware('auth')->group(function () {
         return view('system-settings.recurring-periods');
     })->name('recurring-periods');
 
-    Route::get('settings/notifications', function () {
-        return view('system-settings.notifications');
-    })->name('notification-settings');
+    // Notification types/ periods master data routes
+    Route::get('settings/notifications', [NotificationTypeController::class, 'index'])->name('notification-settings');
+    Route::post('settings/notifications/add', [NotificationTypeController::class, 'store'])->name('notification-settings.add');
+    Route::post('settings/notifications/update', [NotificationTypeController::class, 'update'])->name('notification-settings.update');
+    Route::post('settings/notifications/update-status', [NotificationTypeController::class, 'statusUpdate'])->name('notification-settings.update-status');
 
-    Route::get('settings/document-types', function () {
-        return view('system-settings.document-types');
-    })->name('document-type-settings');
+    // Document types master data routes
+    Route::get('settings/document-types', [DocumentTypeController::class, 'index'])->name('document-type-settings');
+    Route::post('settings/document-types/add', [DocumentTypeController::class, 'store'])->name('document-type-settings.add');
+    Route::post('settings/document-types/update', [DocumentTypeController::class, 'update'])->name('document-type-settings.update');
+    Route::post('settings/document-types/update-status', [DocumentTypeController::class, 'statusUpdate'])->name('document-type-settings.update-status');
 
+
+    // Vendors Master Data
     Route::get('settings/vendors', [VendorController::class, 'index'])->name('vendor-settings');
     Route::post('settings/vendors/add', [VendorController::class, 'store'])->name('vendor-settings.add');
     Route::post('settings/vendors/update', [VendorController::class, 'update'])->name('vendor-settings.update');
     Route::post('settings/vendors/update-status', [VendorController::class, 'statusUpdate'])->name('vendor-settings.status-update');
 
+    // Vehicle Types Master data
     Route::get('settings/vehicle-types', [VehicleTypeController::class, 'index'])->name('vehicle-types');
     Route::post('settings/vehicle-types/add', [VehicleTypeController::class, 'store'])->name('vehicle-type.add');
     Route::post('settings/vehicle-types/update', [VehicleTypeController::class, 'update'])->name('vehicle-type.update');
     Route::post('settings/vehicle-types/update-status', [VehicleTypeController::class, 'statusUpdate'])->name('vehicle-type.status-update');
 
+    // Requisition purposes master data
     Route::get('settings/requisition-purpose', [RequisitionPurposeController::class, 'index'])->name('requisition-purposes');
     Route::post('settings/requisition-purpose/add', [RequisitionPurposeController::class, 'store'])->name('requisition-purposes.add');
     Route::post('settings/requisition-purpose/update', [RequisitionPurposeController::class, 'update'])->name('requisition-purposes.update');
     Route::post('settings/requisition-purpose/update-status', [RequisitionPurposeController::class, 'statusUpdate'])->name('requisition-purposes.update-status');
 
+    // Requistion types master data
     Route::get('settings/requisition-type', [RequisitionTypeController::class, 'index'])->name('requisition-types');
     Route::post('settings/requisition-type/add', [RequisitionTypeController::class, 'store'])->name('requisition-types.add');
     Route::post('settings/requisition-type/update', [RequisitionTypeController::class, 'update'])->name('requisition-types.update');
     Route::post('settings/requisition-type/update-status', [RequisitionTypeController::class, 'statusUpdate'])->name('requisition-types.update-status');
 
+    // Requisition Phases Master Data
     Route::get('settings/requisition-phase', [PhaseController::class, 'index'])->name('requisition-phases');
     Route::post('settings/requisition-phase/add', [PhaseController::class, 'store'])->name('requisition-phases.add');
     Route::post('settings/requisition-phase/update', [PhaseController::class, 'update'])->name('requisition-phases.update');
     Route::post('settings/requisition-phase/update-status', [PhaseController::class, 'statusUpdate'])->name('requisition-phases.update-status');
 
-    Route::get('settings/maintenance-types', function () {
-        return view('system-settings.maintenance-types');
-    })->name('maintenance-types');
+    // Maintenance Types master data
+    Route::get('settings/maintenance-types', [MaintenanceTypeController::class, 'index'])->name('maintenance-types');
+    Route::post('settings/maintenance-types/add', [MaintenanceTypeController::class, 'store'])->name('maintenance-types.add');
+    Route::post('settings/maintenance-types/update', [MaintenanceTypeController::class, 'update'])->name('maintenance-types.update');
+    Route::post('settings/maintenance-types/update-status', [MaintenanceTypeController::class, 'statusUpdate'])->name('maintenance-types.update-status');
 
+    // Priorities master data
     Route::get('settings/priority', [PriorityController::class, 'index'])->name('priority');
     Route::post('settings/priority/add', [PriorityController::class, 'store'])->name('priority.add');
     Route::post('settings/priority/update', [PriorityController::class, 'update'])->name('priority.update');
     Route::post('settings/priority/update-status', [PriorityController::class, 'statusUpdate'])->name('priority.update-status');
 
+    // Vehicle Service Types Master Data
     Route::get('settings/service-types', [ServiceController::class, 'index'])->name('service-types');
     Route::post('settings/service-types/add', [ServiceController::class, 'store'])->name('service-types.add');
     Route::post('settings/service-types/update', [ServiceController::class, 'update'])->name('service-types.update');
     Route::post('settings/service-types/update-status', [ServiceController::class, 'statusUpdate'])->name('service-types.update-status');
 
+    // Fuel Types master data
     Route::get('settings/fuel-types', [FuelController::class, 'index'])->name('fuel-types');
     Route::post('settings/fuel-types/add', [FuelController::class, 'store'])->name('fuel-types.add');
     Route::post('settings/fuel-types/update', [FuelController::class, 'update'])->name('fuel-types.update');
     Route::post('settings/fuel-types/update-status', [FuelController::class, 'statusUpdate'])->name('fuel-types.update-status');
 
+    // Trip types master data
     Route::get('settings/trip-types', [TripTypeController::class, 'index'])->name('trip-types');
     Route::post('settings/trip-types/add', [TripTypeController::class, 'store'])->name('trip-types.add');
     Route::post('settings/trip-types/update', [TripTypeController::class, 'update'])->name('trip-types.update');
     Route::post('settings/trip-types/update-status', [TripTypeController::class, 'statusUpdate'])->name('trip-types.update-status');
 
+    // Vehicle divisions master data
     Route::get('settings/divisions', [VehicleDivisionController::class, 'index'])->name('divisions');
     Route::post('settings/divisions/add', [VehicleDivisionController::class, 'store'])->name('divisions.add');
     Route::post('settings/divisions/update', [VehicleDivisionController::class, 'update'])->name('divisions.update');
     Route::post('settings/divisions/update-status', [VehicleDivisionController::class, 'statusUpdate'])->name('divisions.status-update');
 
+    // RTO Details master data
     Route::get('settings/rta-details', [RTACircleOfficeController::class, 'index'])->name('rta-details');
     Route::post('settings/rta-details/add', [RTACircleOfficeController::class, 'store'])->name('rta-details.add');
     Route::post('settings/rta-details/update', [RTACircleOfficeController::class, 'update'])->name('rta-details.update');

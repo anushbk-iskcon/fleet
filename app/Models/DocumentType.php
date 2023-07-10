@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Ownership extends Model
+class DocumentType extends Model
 {
     use HasFactory;
-    protected $table = 'mstr_ownership';
-    protected $primaryKey = 'OWNERSHIP_ID';
+
+    protected $table = 'mstr_document_type';
+    protected $primaryKey = 'DOCUMENT_TYPE_ID';
 
     // Timestamps
     const CREATED_AT = 'CREATED_ON';
@@ -17,7 +18,7 @@ class Ownership extends Model
 
     // Allowing assignment
     protected $fillable = [
-        'OWNERSHIP_NAME',
+        'DOCUMENT_TYPE_NAME',
         'IS_ACTIVE',
         'CREATED_BY',
         'CREATED_ON',

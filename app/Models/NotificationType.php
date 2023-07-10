@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Ownership extends Model
+class NotificationType extends Model
 {
     use HasFactory;
-    protected $table = 'mstr_ownership';
-    protected $primaryKey = 'OWNERSHIP_ID';
+
+    protected $table = 'mstr_notification_type';
+    protected $primaryKey = 'NOTIFICATION_TYPE_ID';
 
     // Timestamps
     const CREATED_AT = 'CREATED_ON';
@@ -17,7 +18,7 @@ class Ownership extends Model
 
     // Allowing assignment
     protected $fillable = [
-        'OWNERSHIP_NAME',
+        'NOTIFICATION_TYPE_NAME',
         'IS_ACTIVE',
         'CREATED_BY',
         'CREATED_ON',

@@ -79,7 +79,7 @@
         <div class="card mb-3">
             <div class="card-header p-2">
                 <h4 class="pl-3">
-                    Manage Phase
+                    Manage Requisition Phases
                     <small class="float-right">
                         <button type="button" class="btn btn-primary btn-md" data-target="#add0" data-toggle="modal">
                             <i class="ti-plus" aria-hidden="true"></i>
