@@ -22,7 +22,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="" id="emp_form" class="row" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+                <form action="" id="emp_form" class="row" method="post" accept-charset="utf-8">
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
                             <label for="vehicle_name" class="col-sm-5 col-form-label">Vehicle Name <i class="text-danger">*</i></label>
@@ -572,7 +572,7 @@
 <!-- <script src="{{asset('dist/js/refuel_requisition.js')}}"></script> -->
 <script>
     $(document).ready(function() {
-        $("#refuel_requests").DataTable();
+        let refuelRequestsTable = $("#refuel_requests").DataTable();
     });
 </script>
 @endsection

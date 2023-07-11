@@ -93,13 +93,13 @@
         <nav class="sidebar sidebar-bunker">
             <div class="sidebar-header">
                 <a href="{{url('dashboard')}}" class="logo">
-                    <img src="" alt="Home - Fleet">
+                    <img src="{{asset('img/logo1.jpg')}}" alt="Home - Fleet">
                 </a>
             </div>
 
             <div class="profile-element d-flex align-items-center flex-shrink-0">
                 <div class="avatar online">
-                    <img src="https://vmsdemo.bdtask-demo.com/./assets/img/user/Kill_my_enemies.jpg" class="img-fluid rounded-circle" alt="">
+                    <img src="{{asset('upload/profile/users/' .auth()->user()->PROFILE_IMAGE .'')}}" class="img-fluid rounded-circle" alt="">
                 </div>
                 <div class="profile-text">
                     <h6 class="m-0">Super Admin</h6>
@@ -157,8 +157,10 @@
                         @endif
                         @endforeach
 
-                        <!-- Existing Sidebar Menu -->
-                        <!-- <li class="mm-active">
+                    </ul>
+
+                    <!-- Existing Sidebar Menu -->
+                    <!-- <li class="mm-active">
                             <a href="{{url('dashboard')}}" aria-expanded="true"><i class="typcn typcn-home-outline mr-2"></i> Dashboard</a>
                         </li>
                         <li class="">
@@ -464,14 +466,14 @@
                             <i class="typcn icon-default typcn-edit mr-2"></i> User </a>
                         <ul class="nav-second-level mm-collapse">
                             <a href="https://vmsdemo.bdtask-demo.com/dashboard/user/form"> -->
-                        <!-- <li class=""><a href="{{route('add-user')}}">Add User</a>
+                    <!-- <li class=""><a href="{{route('add-user')}}">Add User</a>
                             </li> -->
-                        <!-- <a href="https://vmsdemo.bdtask-demo.com/dashboard/user/index"> -->
-                        <!-- <li class=""><a href="{{route('manage-users')}}">Manage Users</a>
+                    <!-- <a href="https://vmsdemo.bdtask-demo.com/dashboard/user/index"> -->
+                    <!-- <li class=""><a href="{{route('manage-users')}}">Manage Users</a>
                             </li>
                         </ul>
                     </li> -->
-                        <!-- <li class="">
+                    <!-- <li class="">
                             <a class="has-arrow material-ripple" href="#">
                                 <i class="typcn icon-default typcn-edit mr-2"></i>
                                 Roles & Permissions
@@ -504,7 +506,7 @@
                         </li>
                     </ul>
                 </nav> -->
-                        <!-- <div class="ps__rail-x" style="left: 0px; top: 0px;">
+                    <!-- <div class="ps__rail-x" style="left: 0px; top: 0px;">
                     <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
                 </div>
                 <div class="ps__rail-y" style="top: 0px; height: 159px; right: 0px;">
@@ -551,13 +553,13 @@
                                     </div>
                                     <div class="user-header">
                                         <div class="img-user">
-                                            <img src="https://vmsdemo.bdtask-demo.com/./assets/img/user/Kill_my_enemies.jpg" alt="">
+                                            <img src="{{asset('upload/profile/users/' .auth()->user()->PROFILE_IMAGE .'')}}" alt="Profile Picture">
                                         </div>
                                         Super Admin
                                     </div>
                                     <a href="{{url('profile')}}" class="dropdown-item"><i class="typcn typcn-user-outline"></i> My Profile</a>
                                     <a href="{{route('edit-profile')}}" class="dropdown-item"><i class="typcn typcn-edit"></i> Edit Profile</a>
-                                    <a href="{{route('application-settings')}}" class="dropdown-item"><i class="typcn typcn-cog-outline"></i> Application Settings</a>
+
                                     <!-- For Logout -->
                                     <form action="{{url('logout')}}" method="post">
                                         @csrf

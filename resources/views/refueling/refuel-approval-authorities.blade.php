@@ -85,8 +85,6 @@
                             <label for="demo" class="col-sm-3 col-form-label">&nbsp;</label>
                             <div class="col-sm-9" id="mtable">
 
-
-
                             </div>
                         </div>
                         <div class="form-group text-right">
@@ -95,8 +93,6 @@
                         </div>
 
                     </div>
-
-
                 </form>
             </div>
         </div>
@@ -109,7 +105,8 @@
                 <h4 class="pl-3">Search Here<small class="float-right">
                         <button type="button" class="btn btn-primary btn-md" data-target="#add0" data-toggle="modal"><i class="ti-plus" aria-hidden="true"></i>
                             Add Approval Authority </button>
-                    </small></h4>
+                    </small>
+                </h4>
             </div>
             <div class="card-body row">
                 <div class="col-sm-12 col-xl-4">
