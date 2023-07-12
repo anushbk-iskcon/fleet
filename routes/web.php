@@ -9,6 +9,7 @@ use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\Masters\DepartmentController;
 use App\Http\Controllers\Masters\DocumentTypeController;
 use App\Http\Controllers\Masters\FuelController;
+use App\Http\Controllers\Masters\FuelStationController;
 use App\Http\Controllers\Masters\MaintenanceTypeController;
 use App\Http\Controllers\Masters\NotificationTypeController;
 use App\Http\Controllers\Masters\OwnershipController;
@@ -213,9 +214,11 @@ Route::middleware('auth')->group(function () {
     Route::get('refuel-setting', function () {
         return view('refueling.refuel-setting');
     })->name('refuel-setting');
-    Route::get('refueling/fuel-stations', function () {
-        return view('refueling.fuel-stations');
-    })->name('fuel-stations');
+
+    //Fuel Station sub-module Routes
+    Route::get('refueling/fuel-stations', [FuelStationController::class, 'index'])->name('fuel-stations');
+    Route::post('refueling/fuel-stations/add', [FuelStationController::class, 'store'])->name('fuel-stations.add');
+    Route::post('refueling/fuel-stations/get-details', [FuelStationController::class, 'getDetails'])->name('fuel-stations.get-details');
 
     Route::get('refueling/requisitions', function () {
         return view('refueling.refuel-requisitions');

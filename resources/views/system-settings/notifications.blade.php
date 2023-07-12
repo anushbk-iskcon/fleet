@@ -339,7 +339,6 @@
                                 $(el).removeClass('btn-success').addClass('btn-danger');
                                 $(el).html('<i class="ti-close"></i>');
                                 $(el).attr('title', 'Deactivate');
-
                             } else {
                                 $(el).removeClass('btn-danger').addClass('btn-success');
                                 $(el).html('<i class="ti-reload"></i>');
