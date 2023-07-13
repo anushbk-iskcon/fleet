@@ -15,8 +15,27 @@ class FuelStationController extends Controller
      */
     public function index()
     {
-        $fuelStations = FuelStation::all();
-        return view('refueling.fuel-stations', compact('fuelStations'));
+        // $fuelStations = FuelStation::all();
+        return view('refueling.fuel-stations');
+    }
+
+    /**
+     * Return JSON response listing all / filtered fuel stations
+     */
+    public function list(Request $request)
+    {
+        $vendor = $request->vendorsr;
+        $station = $request->station_namesr;
+
+        // Filtred data if request does not have empty values above
+        $fuelStations = FuelStation::all()
+            ->when($vendor, function ($query) use ($vendor) {
+                $query->where('VENDOR_NAME', $vendor);
+            })
+            ->when($station, function ($query) use ($station) {
+                $query->where('FUEL_STATION_NAME', $station);
+            });
+        return json_encode($fuelStations);
     }
 
     /**
@@ -95,7 +114,7 @@ class FuelStationController extends Controller
         if ($fuelStation->IS_ACTIVE == 'Y')
             $fuelStation->IS_ACTIVE = 'N';
         else
-            $fuelStation->IS_ACTIVE + 'Y';
+            $fuelStation->IS_ACTIVE = 'Y';
 
         $fuelStation->MODIFIED_BY = Auth::id();
         $fuelStation->save();

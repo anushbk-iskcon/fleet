@@ -102,9 +102,9 @@
                         <div class="col-sm-8">
                             <select class="form-control basic-single" name="station_namesr" id="station_namesr">
                                 <option value="" selected="selected">Please Select One</option>
-                                <option value="GM Filling Station">GM Filling Station </option>
+                                <!-- <option value="GM Filling Station">GM Filling Station </option>
                                 <option value="Khalek filling Station">Khalek filling Station </option>
-                                <option value="cvbc"> cvbc </option>
+                                <option value="cvbc"> cvbc </option> -->
                             </select>
                         </div>
                     </div>
@@ -116,9 +116,9 @@
                         <div class="col-sm-8">
                             <select class="form-control basic-single" name="vendorsr" id="vendorsr">
                                 <option value="" selected="selected">Please Select One</option>
-                                <option value="Auto Parts">Auto Parts </option>
+                                <!-- <option value="Auto Parts">Auto Parts </option>
                                 <option value="honda">honda </option>
-                                <option value="asdfas">asdfas </option>
+                                <option value="asdfas">asdfas </option> -->
                             </select>
                         </div>
                     </div>
@@ -144,7 +144,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body editinfo">
-                    <form action="" id="editFuelStationForm" class="row" method="post" accept-charset="utf-8">
+                    <form action="{{route('fuel-stations.update')}}" id="editFuelStationForm" class="row" method="post" accept-charset="utf-8">
                         @csrf
                         <input type="hidden" name="fuel_station_id" id="editFuelStationId">
                         <div class="col-md-12 col-lg-6">
@@ -209,7 +209,7 @@
     <div class="col-sm-12">
         <div class="card mb-3">
             <div class="card-header p-2">
-                <h4 class="pl-3">Manage Fuel Station </h4>
+                <h4 class="pl-3">Manage Fuel Stations </h4>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -227,24 +227,26 @@
                         </thead>
                         <tbody>
 
-                            @foreach($fuelStations as $fuelStation)
+                            {{--
+                            <!-- @foreach($fuelStations as $fuelStation)
                             <tr>
                                 <td>{{$loop->iteration}}</td>
-                                <td>{{$fuelStation['FUEL_STATION_NAME']}}</td>
-                                <td>{{$fuelStation['VENDOR_NAME']}}</td>
-                                <td>{{$fuelStation['AUTHORIZE_PERSON']}}</td>
-                                <td>{{$fuelStation['CONTACT_NUMBER']}}</td>
-                                <td>@if($fuelStation['IS_AUTHORIZED'] == 'Y') {{"Yes"}} @else {{"No"}} @endif</td>
-                                <td>
-                                    <button type="button" class="btn btn-info mr-1" title="Edit" data-id="{{$fuelStation['FUEL_STATION_ID']}}" onclick="editInfo(this, '{{$fuelStation['FUEL_STATION_NAME']}}')"><i class="ti-pencil"></i></button>
-                                    @if($fuelStation['IS_ACTIVE'] == 'Y')
-                                    <button type="button" class="btn btn-danger mr-1" title="Deactivate" data-id="{{$fuelStation['FUEL_STATION_ID']}}" onclick="updateStatus(this)"><i class="ti-close"></i></button>
-                                    @else
-                                    <button type="button" class="btn btn-success mr-1" title="Activate" data-id="{{$fuelStation['FUEL_STATION_ID']}}" onclick="updateStatus(this)"><i class="ti-reload"></i></button>
-                                    @endif
-                                </td>
+                            <td>{{$fuelStation['FUEL_STATION_NAME']}}</td>
+                            <td>{{$fuelStation['VENDOR_NAME']}}</td>
+                            <td>{{$fuelStation['AUTHORIZE_PERSON']}}</td>
+                            <td>{{$fuelStation['CONTACT_NUMBER']}}</td>
+                            <td>@if($fuelStation['IS_AUTHORIZED'] == 'Y') {{"Yes"}} @else {{"No"}} @endif</td>
+                            <td>
+                                <button type="button" class="btn btn-info mr-1" title="Edit" data-id="{{$fuelStation['FUEL_STATION_ID']}}" onclick="editInfo(this)"><i class="ti-pencil"></i></button>
+                                @if($fuelStation['IS_ACTIVE'] == 'Y')
+                                <button type="button" class="btn btn-danger mr-1" title="Deactivate" data-id="{{$fuelStation['FUEL_STATION_ID']}}" onclick="updateStatus(this)"><i class="ti-close"></i></button>
+                                @else
+                                <button type="button" class="btn btn-success mr-1" title="Activate" data-id="{{$fuelStation['FUEL_STATION_ID']}}" onclick="updateStatus(this)"><i class="ti-reload"></i></button>
+                                @endif
+                            </td>
                             </tr>
-                            @endforeach
+                            @endforeach -->
+                            --}}
 
                             <!-- <tr role="row" class="odd">
                                 <td class="sorting_1" tabindex="0">1</td>
@@ -287,8 +289,10 @@
 <script>
     let csrfToken = '{{csrf_token()}}';
     let getFuelStationDetailsURl = '{{route("fuel-stations.get-details")}}';
+    let fuelStationsListURL = '{{route("fuel-stations.list")}}';
+    let updateActivationStatusURL = "{{ route('fuel-stations.update-status') }}";
 </script>
-<script src="{{asset('dist/js/refueling/fuel-stations.js')}}">
+<script src="{{asset('dist/js/refueling/fuel_stations.js')}}">
 </script>
 
 @endsection

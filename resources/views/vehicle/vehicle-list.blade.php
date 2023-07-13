@@ -640,7 +640,7 @@
             success: function(res) {
                 table.clear();
                 $.each(res, function(i, data) {
-                    console.log(data);
+                    // console.log(data);
                     let buttons = '<button class="btn btn-sm btn-primary mr-1" data-id="' + data.VEHICLE_ID + '" onclick="editInfo(this)" title="Edit"><i class="fa fa-edit"></i></button>';
                     if (data.IS_ACTIVE == 'Y')
                         buttons += '<button class="btn btn-sm btn-danger mr-1" data-id="' + data.VEHICLE_ID + '" onclick="updateStatus(this)" title="Deactivate"><i class="ti-close"></i></button>';

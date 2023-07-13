@@ -23,7 +23,7 @@ use App\Http\Controllers\Masters\TripTypeController;
 use App\Http\Controllers\Masters\VehicleDivisionController;
 use App\Http\Controllers\Masters\VehicleTypeController;
 use App\Http\Controllers\Masters\VendorController;
-
+use App\Http\Controllers\RefuelRequisitionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -217,12 +217,14 @@ Route::middleware('auth')->group(function () {
 
     //Fuel Station sub-module Routes
     Route::get('refueling/fuel-stations', [FuelStationController::class, 'index'])->name('fuel-stations');
+    Route::post('refueling/fuel-stations/all', [FuelStationController::class, 'list'])->name('fuel-stations.list');
     Route::post('refueling/fuel-stations/add', [FuelStationController::class, 'store'])->name('fuel-stations.add');
+    Route::post('refueling/fuel-stations/update', [FuelStationController::class, 'update'])->name('fuel-stations.update');
+    Route::post('refueling/fuel-stations/update-status', [FuelStationController::class, 'statusUpdate'])->name('fuel-stations.update-status');
     Route::post('refueling/fuel-stations/get-details', [FuelStationController::class, 'getDetails'])->name('fuel-stations.get-details');
 
-    Route::get('refueling/requisitions', function () {
-        return view('refueling.refuel-requisitions');
-    })->name('refuel-requisitions');
+    // Refueling Requisitions sub-module Routes
+    Route::get('refueling/requisitions', [RefuelRequisitionController::class, 'index'])->name('refuel-requisitions');
 
     Route::get('refueling/approval-authorities', function () {
         return view('refueling.refuel-approval-authorities');
