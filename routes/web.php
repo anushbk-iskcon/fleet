@@ -121,7 +121,7 @@ Route::middleware('auth')->group(function () {
     })->name('legal-documents');
 
     Route::get('vehicle/reminders', function () {
-        return view('vehicle.remider-list');
+        return view('vehicle.reminder-list');
     })->name('vehicle-reminders');
     /*** END Vehicle Management Routes ***/
 
