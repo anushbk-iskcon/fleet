@@ -225,6 +225,7 @@ Route::middleware('auth')->group(function () {
 
     // Refueling Requisitions sub-module Routes
     Route::get('refueling/requisitions', [RefuelRequisitionController::class, 'index'])->name('refuel-requisitions');
+    Route::post('refueling/requisitions/list', [RefuelRequisitionController::class, 'list'])->name('refuel-requisitions');
 
     Route::get('refueling/approval-authorities', function () {
         return view('refueling.refuel-approval-authorities');

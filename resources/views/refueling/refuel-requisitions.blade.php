@@ -12,6 +12,20 @@
 <small id="controllerName">Refueling Requisitions</small>
 @endsection
 
+@section('css-content')
+<style>
+    div.error {
+        font-size: .8em;
+        color: #f66;
+    }
+
+
+    select.error~.select2 .select2-selection {
+        border: 1px solid #f99;
+    }
+</style>
+@endsection
+
 @section('content')
 
 <div id="add0" class="modal fade bd-example-modal-lg" role="dialog">
@@ -22,23 +36,17 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="" id="emp_form" class="row" method="post" accept-charset="utf-8">
+                <form action="" id="addRefuelRequisitionForm" class="row" method="post" accept-charset="utf-8">
+                    @csrf
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
                             <label for="vehicle_name" class="col-sm-5 col-form-label">Vehicle Name <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <select class="form-control basic-single" required name="vehicle_name" id="vehicle_name">
-                                    <option value="" selected="selected">Please Select One</option>
-                                    <option value="Shah Latif Express UP">Shah Latif Express UP </option>
-                                    <option value="Sukkur Express UP">Sukkur Express UP </option>
-                                    <option value="Khyber Express">Khyber Express </option>
-                                    <option value="Fareed Express">Fareed Express </option>
-                                    <option value="d">d </option>
-                                    <option value="AS">AS </option>
-                                    <option value="quad r647">quad r647 </option>
-                                    <option value="Kia Soul">Kia Soul </option>
-                                    <option value="red">red </option>
-                                    <option value="Kia">Kia </option>
+                                <select class="form-control basic-single" name="vehicle_name" id="vehicle_name">
+                                    <option value="" selected="selected">Select Vehicle</option>
+                                    @foreach($vehicles as $vehicle)
+                                    <option value="{{$vehicle['VEHICLE_ID']}}">{{$vehicle['VEHICLE_NAME']}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -53,9 +61,9 @@
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required name="fuel_station" id="fuel_station">
                                     <option value="" selected="selected">Please Select One</option>
-                                    <option value="GM Filling Station">GM Filling Station </option>
-                                    <option value="Khalek filling Station">Khalek filling Station </option>
-                                    <option value=" cvbc"> cvbc </option>
+                                    @foreach($fuelStations as $fuelStation)
+                                    <option value="{{$fuelStation['FUEL_STATION_ID']}}">{{$fuelStation['FUEL_STATION_NAME']}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -67,10 +75,9 @@
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required name="fuel_type" id="fuel_type">
                                     <option value="" selected="selected">Please Select One</option>
-                                    <option value="Diesel">
-                                        Diesel</option>
-                                    <option value="SP95">
-                                        SP95</option>
+                                    @foreach($fuelTypes as $fuelType)
+                                    <option value="{{$fuelType['FUEL_ID']}}">{{$fuelType['FUEL_TYPE_NAME']}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -132,6 +139,7 @@
                                 <th>Odometer</th>
                                 <th>Quantity</th>
                                 <th>Fuel Station</th>
+                                <th>Amount</th>
                                 <th>Status</th>
                                 <th>Action(s)</th>
                             </tr>
@@ -149,6 +157,9 @@
 
 @section('js-content')
 <!-- <script src="{{asset('dist/js/refuel_requisition.js')}}"></script> -->
+<script>
+    let refuelRequisitionsListURL = "";
+</script>
 <script src="{{asset('dist/js/refueling/refuel_requisition.js')}}">
 </script>
 @endsection
