@@ -24,6 +24,7 @@ use App\Http\Controllers\Masters\VehicleDivisionController;
 use App\Http\Controllers\Masters\VehicleTypeController;
 use App\Http\Controllers\Masters\VendorController;
 use App\Http\Controllers\RefuelRequisitionController;
+use App\Models\RefuelRequisition;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -225,7 +226,12 @@ Route::middleware('auth')->group(function () {
 
     // Refueling Requisitions sub-module Routes
     Route::get('refueling/requisitions', [RefuelRequisitionController::class, 'index'])->name('refuel-requisitions');
-    Route::post('refueling/requisitions/list', [RefuelRequisitionController::class, 'list'])->name('refuel-requisitions');
+    Route::post('refueling/requisitions/list', [RefuelRequisitionController::class, 'list'])->name('refuel-requisitions.list');
+    Route::post('refueling/requisitions/add', [RefuelRequisitionController::class, 'store'])->name('refuel-requisitions.add');
+    Route::post('refueling/requisitions/update', [RefuelRequisitionController::class, 'update'])->name('refuel-requisitions.update');
+    Route::post('refueling/requisitions/change-activation', [RefuelRequisitionController::class, 'changeActivationStatus'])->name('refuel-requisitions.change-activation');
+    Route::post('refueling/requisitions/change-status', [RefuelRequisitionController::class, 'changeStatus'])->name('refuel-requisitions.change-status');
+    Route::post('refueling/requisitions/get-details', [RefuelRequisitionController::class, 'getDetails'])->name('refuel-requisitions.get-details');
 
     Route::get('refueling/approval-authorities', function () {
         return view('refueling.refuel-approval-authorities');

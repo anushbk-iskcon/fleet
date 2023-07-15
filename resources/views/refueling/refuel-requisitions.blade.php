@@ -36,7 +36,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="" id="addRefuelRequisitionForm" class="row" method="post" accept-charset="utf-8">
+                <form action="{{route('refuel-requisitions.add')}}" id="addRefuelRequisitionForm" class="row" method="post" accept-charset="utf-8">
                     @csrf
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
@@ -88,6 +88,12 @@
                                 <input name="current_odometer" required class="form-control" type="number" placeholder="Current Odometer" id="current_odometer">
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="amount" class="col-sm-5 col-form-label">Amount (INR) <i class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <input name="amount" required class="form-control" type="number" placeholder="Amount" id="amount">
+                            </div>
+                        </div>
                         <div class="form-group text-right">
                             <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
@@ -107,7 +113,72 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body editinfo">
+                <form action="{{route('refuel-requisitions.update')}}" id="editRefuelRequisitionForm" class="row" method="post" accept-charset="utf-8">
+                    @csrf
+                    <input type="hidden" name="refuel_req_id" id="editRefuelReqId">
+                    <div class="col-md-12 col-lg-6">
+                        <div class="form-group row">
+                            <label for="new_vehicle_name" class="col-sm-5 col-form-label">Vehicle Name <i class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <select class="form-control basic-single" name="vehicle_name" id="new_vehicle_name">
+                                    <option value="" selected="selected">Select Vehicle</option>
+                                    @foreach($vehicles as $vehicle)
+                                    <option value="{{$vehicle['VEHICLE_ID']}}">{{$vehicle['VEHICLE_NAME']}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="new_qty" class="col-sm-5 col-form-label">Quantity <i class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <input name="qty" required class="form-control" type="number" placeholder="Quantity" id="new_qty">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="new_fuel_station" class="col-sm-5 col-form-label">Fuel Station <i class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <select class="form-control basic-single" required name="fuel_station" id="new_fuel_station">
+                                    <option value="" selected="selected">Please Select One</option>
+                                    @foreach($fuelStations as $fuelStation)
+                                    <option value="{{$fuelStation['FUEL_STATION_ID']}}">{{$fuelStation['FUEL_STATION_NAME']}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
 
+                    </div>
+                    <div class="col-md-12 col-lg-6">
+                        <div class="form-group row">
+                            <label for="new_fuel_type" class="col-sm-5 col-form-label">Fuel Type <i class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <select class="form-control basic-single" required name="fuel_type" id="new_fuel_type">
+                                    <option value="" selected="selected">Please Select One</option>
+                                    @foreach($fuelTypes as $fuelType)
+                                    <option value="{{$fuelType['FUEL_ID']}}">{{$fuelType['FUEL_TYPE_NAME']}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="new_current_odometer" class="col-sm-5 col-form-label">Current Odometer <i class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <input name="current_odometer" required class="form-control" type="number" placeholder="Current Odometer" id="new_current_odometer">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="new_amount" class="col-sm-5 col-form-label">Amount (INR) <i class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <input name="amount" required class="form-control" type="number" placeholder="Amount" id="new_amount">
+                            </div>
+                        </div>
+                        <div class="form-group text-right">
+                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="submit" class="btn btn-success w-md m-b-5">Update</button>
+                        </div>
+                    </div>
+
+                </form>
             </div>
 
         </div>
@@ -158,7 +229,12 @@
 @section('js-content')
 <!-- <script src="{{asset('dist/js/refuel_requisition.js')}}"></script> -->
 <script>
-    let refuelRequisitionsListURL = "";
+    let refuelRequisitionsListURL = "{{route('refuel-requisitions.list')}}";
+    let addRefuelReqURL = "{{route('refuel-requisitions.add')}}";
+    let updateRefuelReqURL = "{{route('refuel-requisitions.update')}}";
+    let reqStatusUpdateURL = "{{route('refuel-requisitions.change-status')}}";
+    let reqActivationUpdateURL = "{{route('refuel-requisitions.change-activation')}}";
+    let getReqDetailsURL = "{{route('refuel-requisitions.get-details')}}";
 </script>
 <script src="{{asset('dist/js/refueling/refuel_requisition.js')}}">
 </script>

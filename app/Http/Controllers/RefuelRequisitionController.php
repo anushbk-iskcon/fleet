@@ -8,6 +8,7 @@ use App\Models\FuelStation;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
 class RefuelRequisitionController extends Controller
@@ -25,14 +26,42 @@ class RefuelRequisitionController extends Controller
     }
 
     /**
+     * Return Details of Refuel Requisition
+     */
+    public function getDetails(Request $request)
+    {
+        $refuel_req_id = $request->refuel_req_id;
+        $refuelRequest = RefuelRequisition::find($refuel_req_id);
+        if ($refuelRequest)
+            return response()->json(['successCode' => 1, 'data' => $refuelRequest]);
+        else
+            return response()->json(['successCode' => 0, 'message' => 'No data found']);
+    }
+
+    /**
      * Return JSON Response listing all or filtered Requisitions, for drawing/re-drawing table
      */
-    public function reqList(Request $request)
+    public function list(Request $request)
     {
         // Filters if applied
 
         // Data filtered if any of the values above are present
-        $reqList = RefuelRequisition::all();
+        $reqList = DB::table('refueling_requisition')
+            ->join('vehicles', 'refueling_requisition.VEHICLE_ID', '=', 'vehicles.VEHICLE_ID')
+            ->join('mstr_fuel', 'refueling_requisition.FUEL_TYPE', '=', 'mstr_fuel.FUEL_ID')
+            ->join('mstr_fuel_station', 'refueling_requisition.FUEL_STATION', '=', 'mstr_fuel_station.FUEL_STATION_ID')
+            ->select(
+                'refueling_requisition.REFUEL_REQUISITION_ID as REFUEL_REQUISITION_ID',
+                'vehicles.VEHICLE_NAME as VEHICLE_NAME',
+                'mstr_fuel.FUEL_TYPE_NAME as FUEL_TYPE',
+                'refueling_requisition.QUANTITY as QUANTITY',
+                'refueling_requisition.CURRENT_ODOMETER as CURRENT_ODOMETER',
+                'mstr_fuel_station.FUEL_STATION_NAME as FUEL_STATION',
+                'refueling_requisition.AMOUNT as AMOUNT',
+                'refueling_requisition.STATUS as STATUS',
+                'refueling_requisition.IS_ACTIVE as IS_ACTIVE'
+            )
+            ->get();
         return $reqList->toJson();
     }
 
@@ -47,6 +76,7 @@ class RefuelRequisitionController extends Controller
         $refuelRequest->QUANTITY = $request->qty;
         $refuelRequest->CURRENT_ODOMETER = $request->current_odometer;
         $refuelRequest->FUEL_STATION = $request->fuel_station;
+        $refuelRequest->AMOUNT = $request->amount;
         $refuelRequest->STATUS = 'P';
         $refuelRequest->CREATED_BY = Auth::id();
         $added = $refuelRequest->save();
@@ -69,6 +99,14 @@ class RefuelRequisitionController extends Controller
         $refuelRequest->FUEL_TYPE = $request->fuel_type;
         $refuelRequest->QUANTITY = $request->qty;
         $refuelRequest->CURRENT_ODOMETER = $request->current_odometer;
+
+        // Check if Requisition is Pending and update amount if present
+        if ($refuelRequest->STATUS == 'P') {
+            if (isset($request->amount)) {
+                $refuelRequest->AMOUNT = $request->amount;
+            }
+        }
+
         $refuelRequest->FUEL_STATION = $request->fuel_station;
         $refuelRequest->MODIFIED_BY = Auth::id();
         $modified = $refuelRequest->save();
@@ -105,9 +143,9 @@ class RefuelRequisitionController extends Controller
         $refuel_req_id = $request->refuel_req_id;
         $refuelRequest = RefuelRequisition::find($refuel_req_id);
         $requisition_status = $request->requisition_status;
-        if ($requisition_status == 'P') // Pending
+        if ($requisition_status == '0') // Pending
             $refuelRequest->STATUS = 'P';
-        else if ($requisition_status == 'R') // Released
+        else if ($requisition_status == '1') // Released
             $refuelRequest->STATUS = 'R';
         else                                 // Default
             $refuelRequest->STATUS = 'P';

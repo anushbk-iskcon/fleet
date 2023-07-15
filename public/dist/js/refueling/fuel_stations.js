@@ -157,11 +157,12 @@ function populateTable(table) {
                 else
                     actionBtns += '<button type="button" class="btn btn-success mr-1" title="Activate" data-id="' + data.FUEL_STATION_ID + '" onclick="updateStatus(this)"><i class="ti-reload"></i></button>';
 
-                table.row.add([i + 1,
-                data.FUEL_STATION_NAME,
-                data.VENDOR_NAME,
-                data.AUTHORIZE_PERSON,
-                data.CONTACT_NUMBER,
+                table.row.add([
+                    i + 1,
+                    data.FUEL_STATION_NAME,
+                    data.VENDOR_NAME,
+                    data.AUTHORIZE_PERSON,
+                    data.CONTACT_NUMBER,
                     isAuthorized,
                     actionBtns
                 ]);
