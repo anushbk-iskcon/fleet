@@ -4,6 +4,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Masters\CompanyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\Masters\DepartmentController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\Masters\NotificationTypeController;
 use App\Http\Controllers\Masters\OwnershipController;
 use App\Http\Controllers\Masters\PhaseController;
 use App\Http\Controllers\Masters\PriorityController;
+use App\Http\Controllers\Masters\RecurringPeriodController;
 use App\Http\Controllers\Masters\RequisitionPurposeController;
 use App\Http\Controllers\Masters\RequisitionTypeController;
 use App\Http\Controllers\Masters\RTACircleOfficeController;
@@ -24,7 +26,7 @@ use App\Http\Controllers\Masters\VehicleDivisionController;
 use App\Http\Controllers\Masters\VehicleTypeController;
 use App\Http\Controllers\Masters\VendorController;
 use App\Http\Controllers\RefuelRequisitionController;
-use App\Models\RefuelRequisition;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -282,13 +284,17 @@ Route::middleware('auth')->group(function () {
     /*** END Reports Module ***/
 
     /*** START System Settings Module ***/
-    Route::get('settings/manage-companies', function () {
-        return view('system-settings.manage-companies');
-    })->name('manage-companies');
+    // Companies Master Data routes
+    Route::get('settings/manage-companies', [CompanyController::class, 'index'])->name('manage-companies');
+    Route::post('settings/manage-companies/add', [CompanyController::class, 'store'])->name('manage-companies.add');
+    Route::post('settings/manage-companies/update', [CompanyController::class, 'update'])->name('manage-companies.update');
+    Route::post('settings/manage-companies/update-status', [CompanyController::class, 'statusUpdate'])->name('manage-companies.update-status');
 
-    Route::get('settings/recurring-periods', function () {
-        return view('system-settings.recurring-periods');
-    })->name('recurring-periods');
+    // Recurring Periods Data routes
+    Route::get('settings/recurring-periods', [RecurringPeriodController::class, 'index'])->name('recurring-periods');
+    Route::post('settings/recurring-periods/add', [RecurringPeriodController::class, 'store'])->name('recurring-periods.add');
+    Route::post('settings/recurring-periods/update', [RecurringPeriodController::class, 'update'])->name('recurring-periods.update');
+    Route::post('settings/recurring-periods/update-status', [RecurringPeriodController::class, 'statusUpdate'])->name('recurring-periods.update-status');
 
     // Notification types/ periods master data routes
     Route::get('settings/notifications', [NotificationTypeController::class, 'index'])->name('notification-settings');
