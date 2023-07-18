@@ -55,7 +55,7 @@ class CompanyController extends Controller
     }
 
     /**
-     * Activate / De-activate Compamny in DB
+     * Activate / De-activate Company in DB
      */
     public function statusUpdate(Request $request)
     {

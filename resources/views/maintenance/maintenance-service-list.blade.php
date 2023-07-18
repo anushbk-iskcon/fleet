@@ -22,18 +22,18 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="" id="emp_form" class="row" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+                <form action="" id="addMaintenanceServiceForm" class="row" method="post" accept-charset="utf-8">
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
                             <label for="ser_name" class="col-sm-5 col-form-label">Service Name <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="ser_name" required="" class="form-control" type="text" placeholder="Service Name" id="ser_name">
+                                <input name="service_name" required="" class="form-control" type="text" placeholder="Service Name" id="ser_name">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="serv_type" class="col-sm-5 col-form-label">Service Type <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <select class="form-control basic-single" required="" name="serv_type" id="serv_type">
+                                <select class="form-control" required="" name="service_type" id="serv_type">
                                     <option value="" selected="selected">Please Select One</option>
                                     <option value="Repair">
                                         Repair</option>
@@ -53,14 +53,14 @@
                             <label for="fuel_traking" class="col-sm-5 col-form-label">&nbsp;</label>
                             <div class="col-sm-7 checkbox checkbox-primary">
                                 <input id="checkbox3" type="checkbox" name="fuel_traking">
-                                <label for="checkbox3">Fuel Traking</label>
+                                <label for="checkbox3">Fuel Tracking</label>
                             </div>
                         </div>
                         <div class="form-group row m-0">
                             <label for="milage_traking" class="col-sm-5 col-form-label">&nbsp; </label>
                             <div class="col-sm-7 checkbox checkbox-primary">
                                 <input id="checkbox4" type="checkbox" name="milage_traking">
-                                <label for="checkbox4">Milage Traking</label>
+                                <label for="checkbox4">Milage Tracking</label>
                             </div>
                         </div>
 
@@ -86,10 +86,14 @@
     <div class="col-sm-12">
         <div class="card mb-3">
             <div class="card-header p-2">
-                <h4 class="pl-3">Search Here<small class="float-right">
-                        <button type="button" class="btn btn-primary btn-md" data-target="#add0" data-toggle="modal"><i class="ti-plus" aria-hidden="true"></i>
-                            Add Maintenance Service</button>
-                    </small></h4>
+                <h4 class="pl-3">Search Here
+                    <small class="float-right">
+                        <button type="button" class="btn btn-primary btn-md" data-target="#add0" data-toggle="modal">
+                            <i class="ti-plus" aria-hidden="true"></i>
+                            Add Maintenance Service
+                        </button>
+                    </small>
+                </h4>
             </div>
             <div class="card-body row">
                 <div class="col-sm-12 col-xl-4">
@@ -98,15 +102,14 @@
                         <div class="col-sm-8">
                             <select class="form-control basic-single" name="serv_typesr" id="serv_typesr">
                                 <option value="" selected="selected">Please Select One</option>
-                                <option value="Repair">
-                                    Repair</option>
+                                <option value="Repair">Repair</option>
                             </select>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-12 col-xl-4">
                     <div class="form-group row mb-1">
-                        <label for="ser_namesr" class="col-sm-4 col-form-label justify-content-start text-left">Service Name <i class="text-danger">*</i></label>
+                        <label for="ser_namesr" class="col-sm-4 col-form-label justify-content-start text-left">Service Name</label>
                         <div class="col-sm-8">
                             <input name="ser_namesr" class="form-control" type="text" placeholder="Service Name" id="ser_namesr">
                         </div>
@@ -136,9 +139,6 @@
                 </div>
 
             </div>
-            <div class="modal-footer">
-
-            </div>
 
         </div>
 
@@ -150,14 +150,14 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="mserviceinfo" class="table table-striped table-bordered dt-responsive nowrap">
+                    <table id="maintenServiceInfoTable" class="table table-striped table-bordered dt-responsive nowrap">
                         <thead>
                             <tr>
-                                <th>SL</th>
+                                <th>Sl No.</th>
                                 <th>Service Type</th>
                                 <th>Service Name</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <th>Action(s)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -232,12 +232,15 @@
         </div>
     </div>
 </div>
-<!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/maintenservice_list.js"></script> -->
+@endsection
 
+@section('js-content')
+<!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/maintenservice_list.js"></script> -->
 <script>
-    $(document).ready(function() {
-        $("#mserviceinfo").DataTable();
-    });
+    let csrfToken = "{{csrf_token()}}";
+</script>
+
+<script src="{{asset('dist/js/maintenance/maintenance_services.js')}}">
 </script>
 
 @endsection

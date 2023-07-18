@@ -159,6 +159,7 @@ Route::middleware('auth')->group(function () {
         return view('maintenance.maintenance-approval-authorities');
     })->name('maintenance-approval-authorities');
 
+    // Maintenance Services Master routes
     Route::get('maintenance/service-list', function () {
         return view('maintenance.maintenance-service-list');
     })->name('maintenance-service-list');
