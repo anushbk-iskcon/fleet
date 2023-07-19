@@ -36,7 +36,8 @@
                                 <select class="form-control" required="" name="service_type" id="serv_type">
                                     <option value="" selected="selected">Please Select One</option>
                                     <option value="Repair">
-                                        Repair</option>
+                                        Repair
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -50,16 +51,16 @@
                     </div>
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row m-0">
-                            <label for="fuel_traking" class="col-sm-5 col-form-label">&nbsp;</label>
+                            <label for="fuel_tracking" class="col-sm-5 col-form-label">&nbsp;</label>
                             <div class="col-sm-7 checkbox checkbox-primary">
-                                <input id="checkbox3" type="checkbox" name="fuel_traking">
+                                <input id="checkbox3" type="checkbox" name="fuel_tracking" id="fuel_tracking">
                                 <label for="checkbox3">Fuel Tracking</label>
                             </div>
                         </div>
                         <div class="form-group row m-0">
-                            <label for="milage_traking" class="col-sm-5 col-form-label">&nbsp; </label>
+                            <label for="milage_tracking" class="col-sm-5 col-form-label">&nbsp; </label>
                             <div class="col-sm-7 checkbox checkbox-primary">
-                                <input id="checkbox4" type="checkbox" name="milage_traking">
+                                <input id="checkbox4" type="checkbox" name="milage_tracking">
                                 <label for="checkbox4">Milage Tracking</label>
                             </div>
                         </div>
@@ -86,7 +87,8 @@
     <div class="col-sm-12">
         <div class="card mb-3">
             <div class="card-header p-2">
-                <h4 class="pl-3">Search Here
+                <h4 class="pl-3">
+                    Search Here
                     <small class="float-right">
                         <button type="button" class="btn btn-primary btn-md" data-target="#add0" data-toggle="modal">
                             <i class="ti-plus" aria-hidden="true"></i>
@@ -238,6 +240,7 @@
 <!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/maintenservice_list.js"></script> -->
 <script>
     let csrfToken = "{{csrf_token()}}";
+    let activationStatusChangeURL = '';
 </script>
 
 <script src="{{asset('dist/js/maintenance/maintenance_services.js')}}">

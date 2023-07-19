@@ -18,7 +18,10 @@ $(document).ready(function () {
     });
 
     // On closing Add New Maintenance Service modal, reset form and remove validation errors
-    $("#add0").on('hidden.bs.modal', function () { });
+    $("#add0").on('hidden.bs.modal', function () {
+        $("#addMaintenanceServiceForm").trigger('reset');
+        $("#addMaintenanceServiceForm").data('validator').resetForm();
+    });
 
     // Validate and Submit Edit Maintenance Service Form
     $("#editMaintenanceServiceForm").validate({
@@ -35,7 +38,10 @@ $(document).ready(function () {
     });
 
     // On closing Edit Mainteneance Service modal, reset form and remove validation errors
-    $("#edit").on('hidden.bs.modal', function () { });
+    $("#edit").on('hidden.bs.modal', function () {
+        $("#editMaintenanceServiceForm").trigger('reset');
+        $("#editMaintenanceServiceForm").data('validator').resetForm();
+    });
 });
 
 // To draw table on page load or refresh after update

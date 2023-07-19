@@ -4,6 +4,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MaintenanceServiceController;
 use App\Http\Controllers\Masters\CompanyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VehicleController;
@@ -160,9 +161,10 @@ Route::middleware('auth')->group(function () {
     })->name('maintenance-approval-authorities');
 
     // Maintenance Services Master routes
-    Route::get('maintenance/service-list', function () {
-        return view('maintenance.maintenance-service-list');
-    })->name('maintenance-service-list');
+    Route::get('maintenance/service-list', [MaintenanceServiceController::class, 'index'])->name('maintenance-service-list');
+    Route::get('maintenance/service-list/add', [MaintenanceServiceController::class, 'store'])->name('maintenance-service-list.add');
+    Route::get('maintenance/service-list/update', [MaintenanceServiceController::class, 'update'])->name('maintenance-service-list.update');
+    Route::get('maintenance/service-list/update-status', [MaintenanceServiceController::class, 'activationStatusUpdate'])->name('maintenance-service-list.update-status');
     /*** END Maintenance Routes ***/
 
     /*** START Cost and Inventory Routes ***/

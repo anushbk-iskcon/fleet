@@ -331,7 +331,7 @@ function deactivateDriver(el) {
                     closeButton: true
                 });
             }
-        })
+        });
     }
 }
 
@@ -365,6 +365,6 @@ function activateDriver(el) {
                     closeButton: true
                 });
             }
-        })
+        });
     }
 }
