@@ -22,7 +22,8 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="" id="addMaintenanceServiceForm" class="row" method="post" accept-charset="utf-8">
+                <form action="{{route('maintenance-service-list.add')}}" id="addMaintenanceServiceForm" class="row" method="post" accept-charset="utf-8">
+                    @csrf
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
                             <label for="ser_name" class="col-sm-5 col-form-label">Service Name <i class="text-danger">*</i></label>
@@ -35,9 +36,9 @@
                             <div class="col-sm-7">
                                 <select class="form-control" required="" name="service_type" id="serv_type">
                                     <option value="" selected="selected">Please Select One</option>
-                                    <option value="Repair">
-                                        Repair
-                                    </option>
+                                    @foreach($serviceTypes as $serviceType)
+                                    <option value="{{$serviceType['MAINTENANCE_ID']}}">{{$serviceType['MAINTENANCE_NAME']}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -145,6 +146,7 @@
         </div>
 
     </div>
+
     <div class="col-sm-12">
         <div class="card mb-3">
             <div class="card-header p-2">
@@ -152,7 +154,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="maintenServiceInfoTable" class="table table-striped table-bordered dt-responsive nowrap">
+                    <table id="maintenServiceInfoTable" class="table table-striped table-bordered dt-responsive">
                         <thead>
                             <tr>
                                 <th>Sl No.</th>
@@ -163,69 +165,96 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr role="row" class="odd">
+                            @foreach($services as $service)
+                            <tr>
+                                <td>{{$loop->iteration}}</td>
+                                <td>{{$service->MAINTENANCE_NAME}}</td>
+                                <td>{{$service->MAINTENANCE_SERVICE_NAME}}</td>
+                                <td>
+                                    @if($service->IS_ACTIVE == 'Y')
+                                    Active
+                                    @else
+                                    Inactive
+                                    @endif
+                                </td>
+                                <td>
+                                    <button class="btn btn-info mr-1" title="Edit" data-id="{{$service->MAINTENANCE_SERVICE_ID}}" onclick="editInfo(this);"><i class="ti-pencil"></i></button>
+                                    @if($service->IS_ACTIVE == 'Y')
+                                    <button class="btn btn-danger mr-1" data-id="{{$service->MAINTENANCE_SERVICE_ID}}" onclick="changeActivationStatus(this);" title="Deactivate">
+                                        <i class="ti-close"></i>
+                                    </button>
+                                    @else
+                                    <button class="btn btn-success mr-1" data-id="{{$service->MAINTENANCE_SERVICE_ID}}" onclick="changeActivationStatus(this);" title="Activate">
+                                        <i class="ti-reload"></i>
+                                    </button>
+                                    @endif
+                                </td>
+
+                            </tr>
+                            @endforeach
+                            <!-- <tr role="row" class="odd">
                                 <td class="sorting_1" tabindex="0">1</td>
                                 <td>Preventive Maintenance</td>
                                 <td>Inspect Struts</td>
                                 <td>No</td>
-                                <td><input name="url" type="hidden" id="url_3" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updatemaintservicefrm"><a onclick="editinfo(3)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_maintservice/3" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
+                                <td><a onclick="editinfo(3)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_maintservice/3" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
                             </tr>
                             <tr role="row" class="even">
                                 <td class="sorting_1" tabindex="0">2</td>
                                 <td>Preventive Maintenance</td>
                                 <td>Fuel Change</td>
                                 <td>No</td>
-                                <td><input name="url" type="hidden" id="url_4" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updatemaintservicefrm"><a onclick="editinfo(4)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_maintservice/4" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
+                                <td><a onclick="editinfo(4)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_maintservice/4" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
                             </tr>
                             <tr role="row" class="odd">
                                 <td class="sorting_1" tabindex="0">3</td>
                                 <td>Repair</td>
                                 <td>new</td>
                                 <td>No</td>
-                                <td><input name="url" type="hidden" id="url_7" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updatemaintservicefrm"><a onclick="editinfo(7)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_maintservice/7" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
+                                <td><a onclick="editinfo(7)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_maintservice/7" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
                             </tr>
                             <tr role="row" class="even">
                                 <td class="sorting_1" tabindex="0">4</td>
                                 <td>Repair</td>
                                 <td>vbn</td>
                                 <td>No</td>
-                                <td><input name="url" type="hidden" id="url_8" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updatemaintservicefrm"><a onclick="editinfo(8)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_maintservice/8" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
+                                <td><a onclick="editinfo(8)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_maintservice/8" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
                             </tr>
                             <tr role="row" class="odd">
                                 <td class="sorting_1" tabindex="0">5</td>
                                 <td>Repair</td>
                                 <td>Windscreen Replacement</td>
                                 <td>No</td>
-                                <td><input name="url" type="hidden" id="url_9" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updatemaintservicefrm"><a onclick="editinfo(9)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_maintservice/9" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
+                                <td><a onclick="editinfo(9)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_maintservice/9" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
                             </tr>
                             <tr role="row" class="even">
                                 <td class="sorting_1" tabindex="0">6</td>
                                 <td>Repair</td>
                                 <td>Windscreen Replacement</td>
                                 <td>No</td>
-                                <td><input name="url" type="hidden" id="url_10" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updatemaintservicefrm"><a onclick="editinfo(10)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_maintservice/10" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
+                                <td><a onclick="editinfo(10)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_maintservice/10" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
                             </tr>
                             <tr role="row" class="odd">
                                 <td class="sorting_1" tabindex="0">7</td>
                                 <td>Preventive Maintenance</td>
                                 <td>Entretien</td>
                                 <td>No</td>
-                                <td><input name="url" type="hidden" id="url_11" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updatemaintservicefrm"><a onclick="editinfo(11)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_maintservice/11" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
+                                <td><a onclick="editinfo(11)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_maintservice/11" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
                             </tr>
                             <tr role="row" class="even">
                                 <td class="sorting_1" tabindex="0">8</td>
                                 <td>Preventive Maintenance</td>
                                 <td>gas</td>
                                 <td>Yes</td>
-                                <td><input name="url" type="hidden" id="url_12" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updatemaintservicefrm"><a onclick="editinfo(12)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_maintservice/12" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
+                                <td><a onclick="editinfo(12)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_maintservice/12" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
                             </tr>
                             <tr role="row" class="odd">
                                 <td class="sorting_1" tabindex="0">9</td>
                                 <td>Preventive Maintenance</td>
                                 <td>tank</td>
                                 <td>Yes</td>
-                                <td><input name="url" type="hidden" id="url_13" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updatemaintservicefrm"><a onclick="editinfo(13)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_maintservice/13" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
+                                <td><a onclick="editinfo(13)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_maintservice/13" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
+                            </tr> -->
 
                         </tbody>
                     </table> <!-- /.table-responsive -->
@@ -241,9 +270,9 @@
 <script>
     let csrfToken = "{{csrf_token()}}";
     let activationStatusChangeURL = '';
+    let getTableDataURL = "{{route('maintenance-service-list.list')}}";
 </script>
 
 <script src="{{asset('dist/js/maintenance/maintenance_services.js')}}">
 </script>
-
 @endsection

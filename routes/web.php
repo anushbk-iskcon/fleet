@@ -162,9 +162,10 @@ Route::middleware('auth')->group(function () {
 
     // Maintenance Services Master routes
     Route::get('maintenance/service-list', [MaintenanceServiceController::class, 'index'])->name('maintenance-service-list');
-    Route::get('maintenance/service-list/add', [MaintenanceServiceController::class, 'store'])->name('maintenance-service-list.add');
-    Route::get('maintenance/service-list/update', [MaintenanceServiceController::class, 'update'])->name('maintenance-service-list.update');
-    Route::get('maintenance/service-list/update-status', [MaintenanceServiceController::class, 'activationStatusUpdate'])->name('maintenance-service-list.update-status');
+    Route::post('maintenance/service-list', [MaintenanceServiceController::class, 'index'])->name('maintenance-service-list.list');
+    Route::post('maintenance/service-list/add', [MaintenanceServiceController::class, 'store'])->name('maintenance-service-list.add');
+    Route::post('maintenance/service-list/update', [MaintenanceServiceController::class, 'update'])->name('maintenance-service-list.update');
+    Route::post('maintenance/service-list/update-status', [MaintenanceServiceController::class, 'activationStatusUpdate'])->name('maintenance-service-list.update-status');
     /*** END Maintenance Routes ***/
 
     /*** START Cost and Inventory Routes ***/

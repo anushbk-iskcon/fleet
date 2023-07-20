@@ -116,9 +116,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="service_data" class="col-sm-5 col-form-label">Service Data <i class="text-danger">*</i></label>
+                            <label for="service_date" class="col-sm-5 col-form-label">Service Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="service_data" required class="form-control newdatetimepicker" type="text" placeholder="Service Data" id="service_data">
+                                <input name="service_date" required class="form-control newdatetimepicker" type="text" placeholder="Service Data" id="service_date">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -142,9 +142,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="piority" class="col-sm-5 col-form-label">Priority <i class="text-danger">*</i></label>
+                            <label for="priority" class="col-sm-5 col-form-label">Priority <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <select class="form-control basic-single" required name="piority" id="piority">
+                                <select class="form-control basic-single" required name="priority" id="priority">
                                     <option value selected="selected">Please Select One</option>
                                     <option value="High">
                                         High</option>

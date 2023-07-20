@@ -226,55 +226,6 @@
                             </tr>
                         </thead>
                         <tbody>
-
-                            {{--
-                            <!-- @foreach($fuelStations as $fuelStation)
-                            <tr>
-                                <td>{{$loop->iteration}}</td>
-                            <td>{{$fuelStation['FUEL_STATION_NAME']}}</td>
-                            <td>{{$fuelStation['VENDOR_NAME']}}</td>
-                            <td>{{$fuelStation['AUTHORIZE_PERSON']}}</td>
-                            <td>{{$fuelStation['CONTACT_NUMBER']}}</td>
-                            <td>@if($fuelStation['IS_AUTHORIZED'] == 'Y') {{"Yes"}} @else {{"No"}} @endif</td>
-                            <td>
-                                <button type="button" class="btn btn-info mr-1" title="Edit" data-id="{{$fuelStation['FUEL_STATION_ID']}}" onclick="editInfo(this)"><i class="ti-pencil"></i></button>
-                                @if($fuelStation['IS_ACTIVE'] == 'Y')
-                                <button type="button" class="btn btn-danger mr-1" title="Deactivate" data-id="{{$fuelStation['FUEL_STATION_ID']}}" onclick="updateStatus(this)"><i class="ti-close"></i></button>
-                                @else
-                                <button type="button" class="btn btn-success mr-1" title="Activate" data-id="{{$fuelStation['FUEL_STATION_ID']}}" onclick="updateStatus(this)"><i class="ti-reload"></i></button>
-                                @endif
-                            </td>
-                            </tr>
-                            @endforeach -->
-                            --}}
-
-                            <!-- <tr role="row" class="odd">
-                                <td class="sorting_1" tabindex="0">1</td>
-                                <td>GM Filling Station</td>
-                                <td>Honda</td>
-                                <td>Jaman</td>
-                                <td>0172345600</td>
-                                <td>Yes</td>
-                                <td style=""><input name="url" type="hidden" id="url_1" value="https://vmsdemo.bdtask-demo.com/refueling/refueling/updaterefuelstfrm"><a onclick="editinfo(1)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/refueling/refueling/delete_refuelst/1" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
-                            <tr role="row" class="even">
-                                <td class="sorting_1" tabindex="0">2</td>
-                                <td>Khalek filling Station</td>
-                                <td>Auto Parts</td>
-                                <td>Khalek</td>
-                                <td>01723456001</td>
-                                <td>No</td>
-                                <td style=""><input name="url" type="hidden" id="url_2" value="https://vmsdemo.bdtask-demo.com/refueling/refueling/updaterefuelstfrm"><a onclick="editinfo(2)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/refueling/refueling/delete_refuelst/2" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="sorting_1" tabindex="0">3</td>
-                                <td> cvbc</td>
-                                <td>vandor</td>
-                                <td>rtytryrtyyy</td>
-                                <td>464564654</td>
-                                <td>No</td>
-                                <td style=""><input name="url" type="hidden" id="url_4" value="https://vmsdemo.bdtask-demo.com/refueling/refueling/updaterefuelstfrm"><a onclick="editinfo(4)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/refueling/refueling/delete_refuelst/4" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr> -->
                         </tbody>
                     </table> <!-- /.table-responsive -->
                 </div>
