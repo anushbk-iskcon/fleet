@@ -105,7 +105,9 @@
                         <div class="col-sm-8">
                             <select class="form-control basic-single" name="serv_typesr" id="serv_typesr">
                                 <option value="" selected="selected">Please Select One</option>
-                                <option value="Repair">Repair</option>
+                                @foreach($serviceTypes as $serviceType)
+                                <option value="{{$serviceType['MAINTENANCE_ID']}}">{{$serviceType['MAINTENANCE_NAME']}}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -138,7 +140,9 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body editinfo">
-
+                    <form action="{{route('maintenance-service-list.update')}}" id="editMaintenanceServiceForm" method="post" class="row" accept-charset="utf-8">
+                        @csrf
+                    </form>
                 </div>
 
             </div>
@@ -269,10 +273,10 @@
 <!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/maintenservice_list.js"></script> -->
 <script>
     let csrfToken = "{{csrf_token()}}";
-    let activationStatusChangeURL = '';
+    let activationStatusChangeURL = "{{route('maintenance-service-list.update-status')}}";
     let getTableDataURL = "{{route('maintenance-service-list.list')}}";
+    let editMaintenServiceURL = "{{route('maintenance-service-list.edit')}}";
 </script>
-
 <script src="{{asset('dist/js/maintenance/maintenance_services.js')}}">
 </script>
 @endsection

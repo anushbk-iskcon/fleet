@@ -2,7 +2,17 @@ $(document).ready(function () {
     let maintenServiceInfoTable = $("#maintenServiceInfoTable").DataTable();
 
     // Draw table on Page Load
-    populateTable(maintenServiceInfoTable);
+    //On Clicking Filter button
+    $("#btn-filter").on('click', function () {
+        populateTable(maintenServiceInfoTable);
+    });
+
+    $("#btn-reset").on('click', function () {
+        $("#serv_typesr").val('').trigger('change');
+        $("#ser_namesr").val('');
+        populateTable(maintenServiceInfoTable);
+    });
+    // 
 
     // Validate and submit Add New Maintenance Service Form
     $("#addMaintenanceServiceForm").validate({
@@ -78,16 +88,17 @@ $(document).ready(function () {
         }
     });
 
-    // On closing Edit Mainteneance Service modal, reset form and remove validation errors
+    // On closing Edit Maintenance Service modal, reset form and remove validation errors
     $("#edit").on('hidden.bs.modal', function () {
         $("#editMaintenanceServiceForm").trigger('reset');
         $("#editMaintenanceServiceForm").data('validator').resetForm();
+        $("#editMaintenanceServiceForm .form-control.error").removeClass('error');
+        $("#editMaintenanceServiceForm .form-control").removeAttr('aria-invalid');
     });
 });
 
 // To draw table on page load or refresh after update
 function populateTable(table) {
-
     $.ajax({
         url: getTableDataURL,
         type: 'post',
@@ -129,5 +140,72 @@ function populateTable(table) {
 
 // Set ID for Editing Maintenance Service Details
 function editInfo(el) {
+    $.ajax({
+        url: editMaintenServiceURL,
+        type: 'post',
+        data: {
+            _token: csrfToken,
+            mainten_service_id: $(el).data('id')
+        },
+        success: function (res) {
+            // Success
+            $("#editMaintenanceServiceForm").html('');
+            $("#editMaintenanceServiceForm").html('<input type="hidden" name="_token" value=' + csrfToken + '">');
+            $("#editMaintenanceServiceForm").append(res);
+            $("#edit").modal('show');
+        },
+        error: function (jqXHR, status, err) {
+            toastr.error("Could not get details. Please try again", '', { closeButton: true });
+        }
+    });
+}
 
+function changeActivationStatus(el) {
+    let maintenServiceId = $(el).data('id');
+
+    toastr.warning("<br /><button type='button' class='btn btn-success mr-2' value='yes'>Yes</button><button class='btn btn-danger' type='button' value='no' >No</button>", 'Are you sure?', {
+        allowHtml: true,
+        onclick: function (toast) {
+            value = toast.target.value
+            if (value == 'yes') {
+                var url = activationStatusChangeURL;
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        "_token": csrfToken,
+                        mainten_service_id: maintenServiceId
+                    },
+                    success: function (response) {
+                        toastr.remove();
+
+                        if (response['IS_ACTIVE'] == 'Y') {
+                            $(el).removeClass('btn-success').addClass('btn-danger');
+                            $(el).html('<i class="ti-close"></i>');
+                            $(el).attr('title', 'Deactivate');
+                            $(el).closest('td').prev().html('Active');
+
+                        } else {
+                            $(el).removeClass('btn-danger').addClass('btn-success');
+                            $(el).html('<i class="ti-reload"></i>');
+                            $(el).attr('title', 'Activate');
+                            $(el).closest('td').prev().html('Inactive');
+                        }
+
+                        toastr.success('Status Updated', '', {
+                            closeButton: true
+                        });
+                    },
+                    error: function (jqXHR, textStatus, err) {
+                        toastr.remove();
+                        toastr.error("Error updating status. Please try again", '', { closeButton: true });
+                    }
+                });
+
+            } else {
+                toastr.remove();
+            }
+        }
+    });
 }

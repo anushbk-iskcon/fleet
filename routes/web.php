@@ -164,6 +164,7 @@ Route::middleware('auth')->group(function () {
     Route::get('maintenance/service-list', [MaintenanceServiceController::class, 'index'])->name('maintenance-service-list');
     Route::post('maintenance/service-list', [MaintenanceServiceController::class, 'index'])->name('maintenance-service-list.list');
     Route::post('maintenance/service-list/add', [MaintenanceServiceController::class, 'store'])->name('maintenance-service-list.add');
+    Route::post('maintenance/service-list/edit', [MaintenanceServiceController::class, 'edit'])->name('maintenance-service-list.edit');
     Route::post('maintenance/service-list/update', [MaintenanceServiceController::class, 'update'])->name('maintenance-service-list.update');
     Route::post('maintenance/service-list/update-status', [MaintenanceServiceController::class, 'activationStatusUpdate'])->name('maintenance-service-list.update-status');
     /*** END Maintenance Routes ***/
