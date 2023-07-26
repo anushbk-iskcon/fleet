@@ -24,12 +24,9 @@
             {{session('success') . ", " . auth()->user()->FIRST_NAME . "!"}}
         </div>
         @endif
-        <div>
-            {{auth()->user()->USER_ID}}
-        </div>
-
     </div>
 </div>
+
 <div class="row mb-3">
     <div class="col-md-3">
         <div class="card">
