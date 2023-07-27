@@ -223,7 +223,7 @@ Route::middleware('auth')->group(function () {
         return view('refueling.refuel-setting');
     })->name('refuel-setting');
 
-    //Fuel Station sub-module Routes
+    // Fuel Station sub-module Routes
     Route::get('refueling/fuel-stations', [FuelStationController::class, 'index'])->name('fuel-stations');
     Route::post('refueling/fuel-stations/all', [FuelStationController::class, 'list'])->name('fuel-stations.list');
     Route::post('refueling/fuel-stations/add', [FuelStationController::class, 'store'])->name('fuel-stations.add');
