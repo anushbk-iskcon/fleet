@@ -95,7 +95,7 @@ $(document).ready(function () {
         $("#editMaintenanceServiceForm .form-control.error").removeClass('error');
         $("#editMaintenanceServiceForm .form-control").removeAttr('aria-invalid');
 
-        // Or, change to
+        // Or, change to:
         // $("#editMaintenanceServiceForm").html("");
         // Since form code for pre-populated form is sent from the server
     });
