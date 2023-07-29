@@ -31,97 +31,64 @@
     <div class="col-sm-12">
         <div class="card mb-3">
             <div class="card-header p-2">
-                <h4 class="pl-3">Search Here <small class="float-right">
-
-                        <a href="{{route('add-maintenance-list')}}" class="btn btn-primary btn-md"><i class="ti-plus" aria-hidden="true"></i>
-                            Add Maintenance</a>
-                    </small></h4>
+                <h4 class="pl-3">
+                    Search Here
+                    <small class="float-right">
+                        <a href="{{route('add-maintenance-list')}}" class="btn btn-primary btn-md">
+                            <i class="ti-plus" aria-hidden="true"></i>
+                            Add Maintenance
+                        </a>
+                    </small>
+                </h4>
             </div>
             <div class="card-body row">
                 <div class="col-sm-12 col-xl-4">
                     <div class="form-group row mb-1">
-                        <label for="mainte_type" class="col-sm-5 col-form-label justify-content-start text-left">Maintenance Type </label>
+                        <label for="mainten_type" class="col-sm-5 col-form-label justify-content-start text-left">Maintenance Type </label>
                         <div class="col-sm-7">
-                            <select class="form-control basic-single" name="mainte_type" id="mainte_type">
+                            <select class="form-control basic-single" name="mainten_type" id="mainten_type">
                                 <option value="" selected="selected">Please Select One</option>
-                                <option value="Repair">
-                                    Repair</option>
+                                @foreach($maintenanceTypes as $maintenanceType)
+                                <option value="{{$maintenanceType['MAINTENANCE_ID']}}">{{$maintenanceType['MAINTENANCE_NAME']}}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="form-group row mb-1">
-                        <label for="vehicle" class="col-sm-5 col-form-label justify-content-start text-left">Vehicles </label>
+                        <label for="vehicle" class="col-sm-5 col-form-label justify-content-start text-left">Vehicle </label>
                         <div class="col-sm-7">
                             <select class="form-control basic-single" name="vehicle" id="vehicle">
                                 <option value="" selected="selected">Please Select One</option>
-                                <option value="Shah Latif Express UP">Test Express </option>
-                                <option value="Sukkur Express UP">Test2 Express UP </option>
-                                <option value="d">d </option>
-                                <option value="AS">AS </option>
-                                <option value="Kia Soul">Kia Soul </option>
-                                <option value="red">red </option>
-                                <option value="Kia">Kia </option>
+                                @foreach($vehicles as $vehicle)
+                                <option value="{{$vehicle['VEHICLE_ID']}}">{{$vehicle['VEHICLE_NAME']}}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-12 col-xl-4">
                     <div class="form-group row mb-1">
-                        <label for="status" class="col-sm-5 col-form-label justify-content-start text-left">Status <i class="text-danger">*</i></label>
+                        <label for="status" class="col-sm-5 col-form-label justify-content-start text-left">Status </label>
                         <div class="col-sm-7">
                             <select class="form-control basic-single" name="status" id="status">
                                 <option value="" selected="selected">Please Select One</option>
-                                <option value="Approved">Approved</option>
+                                @foreach($statuses as $status)
+                                <option value="{{$status['PHASE_ID']}}">{{$status['PHASE_NAME']}}</option>
+                                @endforeach
+                                <!-- <option value="Approved">Approved</option>
                                 <option value="Pending">Pending</option>
-                                <option value="Rejected">Reject</option>
+                                <option value="Rejected">Rejected</option> -->
                             </select>
                         </div>
                     </div>
                     <div class="form-group row mb-1">
-                        <label for="service_fr" class="col-sm-5 col-form-label justify-content-start text-left">Service From <i class="text-danger">*</i></label>
+                        <label for="service_fr" class="col-sm-5 col-form-label justify-content-start text-left">Maintenance Service</label>
                         <div class="col-sm-7">
                             <select class="form-control basic-single" name="service_fr" id="service_fr">
                                 <option value="" selected="selected">Please Select One</option>
-                                <option value="Maintenance">
-                                    Maintenance</option>
-                                <option value="repair">
-                                    repair</option>
-                                <option value="test asdff">
-                                    test asdff</option>
-                                <option value="Test">
-                                    Test</option>
-                                <option value="mjhkjk">
-                                    mjhkjk</option>
-                                <option value="repain ">
-                                    repain </option>
-                                <option value="asd">
-                                    asd</option>
-                                <option value="BAV">
-                                    BAV</option>
-                                <option value="entretien">
-                                    entretien</option>
-                                <option value="change bat">
-                                    change bat</option>
-                                <option value="645132">
-                                    645132</option>
-                                <option value="motor change">
-                                    motor change</option>
-                                <option value="Christine Bowman">
-                                    Christine Bowman</option>
-                                <option value="Zelenia Morrow">
-                                    Zelenia Morrow</option>
-                                <option value="hhh">
-                                    hhh</option>
-                                <option value="hh">
-                                    hh</option>
-                                <option value="Aceite">
-                                    Aceite</option>
-                                <option value="´90YUT">
-                                    ´90YUT</option>
-                                <option value="Llantas Cazzu">
-                                    Llantas Cazzu</option>
-                                <option value="Oil Change">
-                                    Oil Change</option>
+                                @foreach($maintenanceServices as $maintenanceService)
+                                <option value="{{$maintenanceService['MAINTENANCE_SERVICE_ID']}}">{{$maintenanceService['MAINTENANCE_SERVICE_NAME']}}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -160,13 +127,13 @@
                     <table id="mainreq" class="table table-striped table-bordered dt-responsive nowrap">
                         <thead>
                             <tr>
-                                <th>SL</th>
+                                <th>Sl No.</th>
                                 <th>Requisition Date</th>
                                 <th>Vehicle Name</th>
                                 <th>Maintenance Type</th>
                                 <th>Requested By </th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <th>Action(s)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -174,7 +141,7 @@
                             <tr role="row" class="odd">
                                 <td class="sorting_1" tabindex="0">1</td>
                                 <td>2019-09-03</td>
-                                <td>Fareed Express</td>
+                                <td>Test Express 1</td>
                                 <td>Repair</td>
                                 <td>Kamal</td>
                                 <td>Denied</td>
@@ -195,7 +162,7 @@
                             <tr role="row" class="even">
                                 <td class="sorting_1" tabindex="0">2</td>
                                 <td>2019-09-01</td>
-                                <td>Khyber Express</td>
+                                <td>Test Express 2</td>
                                 <td>Repair</td>
                                 <td>Kobir</td>
                                 <td>Denied</td>
@@ -388,6 +355,8 @@
         </div>
     </div>
 </div>
+@endsection
+@section('js-content')
 <!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/maintainrequisition_list.js"></script> -->
 <script>
     $(document).ready(function() {

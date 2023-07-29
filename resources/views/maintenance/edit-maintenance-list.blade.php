@@ -1,6 +1,6 @@
 @extends('layouts.main.app')
 
-@section('title', 'Add Maintenance Requisitions')
+@section('title', 'Edit Maintenance Requisition')
 
 @section('breadcrumb-content')
 <li class="breadcrumb-item"><a href="{{url('home')}}">Home</a></li>
@@ -9,7 +9,7 @@
 
 @section('header-title-media-body')
 <h1 class="font-weight-bold" id="moduleName1">Maintenance</h1>
-<small id="controllerName">Add Maintenance List</small>
+<small id="controllerName">Edit Maintenance List</small>
 @endsection
 
 @section('css-content')
@@ -46,7 +46,7 @@
                 </h6>
             </div>
             <div class="card-body">
-                <form action="" id="addMaintenRequisitionForm" class="row" method="post" accept-charset="utf-8">
+                <form action="" id="editMaintenRequisitionForm" class="row" method="post" accept-charset="utf-8">
                     <div class="col-md-12 col-lg-12">
                         <div class="form-group row">
                             <label for="req_type" class="col-sm-2 col-form-label">Requisition Type <i class="text-danger">*</i> </label>
@@ -236,9 +236,9 @@
 @endsection
 
 @section('js-content')
-<!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/add_maintenance.js"></script> -->
+<!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/maintenance_edit.js"></script> -->
 <script>
 
 </script>
-<script src="{{asset('dist/js/maintenance/add_mainten_req.js')}}"></script>
+<script src="{{asset('dist/js/maintenance/edit_mainten_req.js')}}"></script>
 @endsection

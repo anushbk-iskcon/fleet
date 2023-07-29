@@ -4,6 +4,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MaintenanceRequisitionController;
 use App\Http\Controllers\MaintenanceServiceController;
 use App\Http\Controllers\Masters\CompanyController;
 use App\Http\Controllers\ProfileController;
@@ -109,7 +110,7 @@ Route::middleware('auth')->group(function () {
     Route::get('vehicles', [VehicleController::class, 'index'])->name('vehicle.index');
     Route::post('vehicles/add', [VehicleController::class, 'store'])->name('vehicle.add');
     Route::post('vehicles/details', [VehicleController::class, 'getDetails'])->name('vehicle.get-details');
-    // Get all vehicles / filtered list of vehicles
+    // Get all vehicles / filtered list of vehicles:
     Route::post('vehicle-details', [VehicleController::class, 'getAllVehicleDetails']);
     // Update vehicle details
     Route::post('vehicles/update/{vehicle}', [VehicleController::class, 'update'])->name('vehicle.update');
@@ -148,13 +149,9 @@ Route::middleware('auth')->group(function () {
     /*** END Vehicle Requisition Routes ***/
 
     /*** START Maintenance Routes ***/
-    Route::get('maintenance/requisitions', function () {
-        return view('maintenance.maintenance-requisition');
-    })->name('maintenance-requisitions');
-
-    Route::get('maintenance/add', function () {
-        return view('maintenance.add-maintenance-list');
-    })->name('add-maintenance-list');
+    Route::get('maintenance/requisitions', [MaintenanceRequisitionController::class, 'index'])->name('maintenance-requisitions');
+    Route::post('maintenance/requisitions', [MaintenanceRequisitionController::class, 'index'])->name('maintenance-requisitions.list');
+    Route::get('maintenance/requisitions/create', [MaintenanceRequisitionController::class, 'create'])->name('add-maintenance-list');
 
     Route::get('maintenance/approval-authorities', function () {
         return view('maintenance.maintenance-approval-authorities');
