@@ -238,7 +238,7 @@
 @section('js-content')
 <!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/add_maintenance.js"></script> -->
 <script>
-
+    // Any global variables like routes etc.
 </script>
 <script src="{{asset('dist/js/maintenance/add_mainten_req.js')}}"></script>
 @endsection

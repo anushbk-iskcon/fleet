@@ -53,7 +53,7 @@ class MaintenanceRequisitionController extends Controller
         $maintenRequisition->CHARGE = $request->charge ?? "";
         $maintenRequisition->CHARGE_BEAR_BY = $request->charge_bear_by ?? "";
         $maintenRequisition->PRIORITY = $request->priority;
-        $maintenRequisition->IS_ACTIVE = $request->is_active;
+        $maintenRequisition->IS_ACTIVE = $request->is_active ? 'Y' : 'N';
 
         $entrySaved = ''; // Set to Boolean based on whether entry was saved
 

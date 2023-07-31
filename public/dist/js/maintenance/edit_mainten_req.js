@@ -31,7 +31,7 @@ $(document).ready(function () {
 
     $('.form-check-input').bootstrapToggle();
 
-    $("#addMaintenRequisitionForm").validate({
+    $("#editMaintenRequisitionForm").validate({
         rules: {
             requested_by: 'required',
             vehicle_name: 'required',
@@ -151,7 +151,7 @@ function addmore(divName) {
     }
 }
 
-//Calculate store Item
+// Calculate store Item
 function calculate_store(sl) {
     var gr_tot = 0;
     var item_ctn_qty = $("#cartoon_" + sl).val();
@@ -161,7 +161,7 @@ function calculate_store(sl) {
     $("#total_price_" + sl).val(total_price.toFixed(2));
 
 
-    //Total Price
+    // Total Price
     $(".total_price").each(function () {
         isNaN(this.value) || 0 == this.value.length || (gr_tot += parseFloat(this.value))
     });
@@ -169,7 +169,7 @@ function calculate_store(sl) {
     $("#grandTotal").val(gr_tot.toFixed(2, 2));
 }
 
-//Calculate Sum
+// Calculate Sum
 function calculateSum() {
     var t = 0,
         a = 0,
