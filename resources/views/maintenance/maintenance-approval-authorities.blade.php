@@ -59,10 +59,6 @@
                                     <option value="" selected="selected">Please Select One</option>
                                     <option value="Administration">
                                         Administration</option>
-                                    <option value="yhyh">
-                                        yhyh</option>
-                                    <option value="Rose Water">
-                                        Rose Water</option>
                                     <option value="Computer">
                                         Computer</option>
                                     <option value="Testing">
@@ -102,10 +98,15 @@
     <div class="col-sm-12">
         <div class="card mb-3">
             <div class="card-header p-2">
-                <h4 class="pl-3">Search Here<small class="float-right">
-                        <button type="button" class="btn btn-primary btn-md" data-target="#add0" data-toggle="modal"><i class="ti-plus" aria-hidden="true"></i>
-                            Add Approval Authority </button>
-                    </small></h4>
+                <h4 class="pl-3">
+                    Search Here
+                    <small class="float-right">
+                        <button type="button" class="btn btn-primary btn-md" data-target="#add0" data-toggle="modal">
+                            <i class="ti-plus" aria-hidden="true"></i>
+                            Add Approval Authority
+                        </button>
+                    </small>
+                </h4>
             </div>
             <div class="card-body row">
                 <div class="col-sm-12 col-xl-4">
@@ -184,12 +185,12 @@
                     <table id="authinfo" class="table table-striped table-bordered dt-responsive nowrap">
                         <thead>
                             <tr>
-                                <th>SL</th>
+                                <th>Sl No.</th>
                                 <th>Requisition Type</th>
                                 <th>Requisition Phase</th>
                                 <th>Department</th>
                                 <th>Employee</th>
-                                <th>Action</th>
+                                <th>Action(s)</th>
                             </tr>
                         </thead>
 
@@ -283,6 +284,8 @@
         </div>
     </div>
 </div>
+@endsection
+@section('js-content')
 <!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/approval_authority.js"></script> -->
 <script>
     $(document).ready(function() {

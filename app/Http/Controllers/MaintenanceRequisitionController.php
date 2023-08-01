@@ -67,6 +67,7 @@ class MaintenanceRequisitionController extends Controller
     public function getDetails(Request $request)
     {
         // Get Requisition Details from Requisitions Table
+        $maintenRequisition = '';
 
         // Get Items connected to requisition from Items Table
     }

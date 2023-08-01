@@ -78,10 +78,6 @@
                                         rohit_(Accounting_EQW70GU6) </option>
                                     <option value="15">
                                         sayed_(Human Resource_EQ4QCE9D) </option>
-                                    <option value="16">
-                                        أمير أبو اسنينة_(????? ?????_EPXJHTX3) </option>
-                                    <option value="14">
-                                        Rahim_(Technical_EODSVEIF) </option>
                                     <option value="19">
                                         Sandip Sharma_(Marketing & Sales_ELHLYIMC) </option>
                                     <option value="5">
@@ -90,12 +86,6 @@
                                         abc_(ACCOUNTING_EJ5MOH4S) </option>
                                     <option value="7">
                                         Test Employee_(ACCOUNTING_EDWWDMAV) </option>
-                                    <option value="9">
-                                        taslimul_(Human Resource_ECN3UOZ8) </option>
-                                    <option value="13">
-                                        demo2_(Human Resource_E62WYC4J) </option>
-                                    <option value="4">
-                                        Rashid_(Human Resource_E0CRB403) </option>
                                 </select>
                             </div>
                         </div>
@@ -167,7 +157,7 @@
                         <div class="form-group row">
                             <label for="is_add_schedule" class="col-sm-5 col-form-label"> </label>
                             <div class="col-sm-7 checkbox checkbox-primary">
-                                <input id="checkbox2" type="checkbox" name="is_active">
+                                <input id="checkbox2" type="checkbox" name="is_add_schedule">
                                 <label for="checkbox2">Is Add Schedule</label>
                             </div>
                         </div>
