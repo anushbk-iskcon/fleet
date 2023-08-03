@@ -143,7 +143,7 @@
                                 <option value="" selected="selected">Please Select One</option>
                                 <option value="Approved">Approved</option>
                                 <option value="Pending">Pending</option>
-                                <option value="Rejected">Reject</option>
+                                <option value="Rejected">Rejected</option>
                             </select>
                         </div>
                         <div class="col-sm-12">

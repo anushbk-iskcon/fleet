@@ -341,7 +341,7 @@
                                                 <a href="#" class="action-item"><i class="ti-more-alt"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <a onclick="changestatus2(0,'tbl_maintenance',13,'maintenanceid')" class="dropdown-item">Accept</a>
-                                                    <a onclick="changestatus2(1,'tbl_maintenance',13,'maintenanceid')" class="dropdown-item">Denied</a>
+                                                    <a onclick="changestatus2(1,'tbl_maintenance',13,'maintenanceid')" class="dropdown-item">Deny</a>
                                                 </div>
                                             </div>
                                         </div>

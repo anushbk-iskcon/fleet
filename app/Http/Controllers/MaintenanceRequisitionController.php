@@ -7,7 +7,9 @@ use App\Models\MaintenanceType;
 use App\Models\Phase;
 use App\Models\Priority;
 use App\Models\Vehicle;
+use Dotenv\Util\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use stdClass;
 
 class MaintenanceRequisitionController extends Controller
@@ -44,8 +46,8 @@ class MaintenanceRequisitionController extends Controller
     public function store(Request $request)
     {
         $maintenRequisition = new stdClass;
-        $maintenRequisition->REQ_TYPE = $request->req_type;
-        $maintenRequisition->REQ_FOR = $request->requested_by;
+        $maintenRequisition->REQUISITION_TYPE = $request->req_type;
+        $maintenRequisition->REQUISITION_FOR = $request->requested_by;
         $maintenRequisition->VEHICLE = $request->vehicle_name;
         $maintenRequisition->MAINTEN_TYPE = $request->mainten_type;
         $maintenRequisition->MAINTEN_SERVICE_NAME = $request->mainten_service_name;
@@ -59,6 +61,8 @@ class MaintenanceRequisitionController extends Controller
 
         // Add all items required to Maintenance Requisition Items Table
         $itemsSaved = '';
+
+        // To return successCode and message/data
     }
 
     /**
@@ -89,6 +93,7 @@ class MaintenanceRequisitionController extends Controller
      */
     public function update(Request $request)
     {
+        $maintenRequisition = new stdClass;
     }
 
     /**
@@ -96,6 +101,12 @@ class MaintenanceRequisitionController extends Controller
      */
     public function changeActivationStatus(Request $request)
     {
+        $maintenRequisition = new stdClass;
+        $currentStatus = $maintenRequisition->IS_ACTIVE;
+        $maintenRequisition->IS_ACTIVE = $currentStatus == 'Y' ? 'N' : 'Y';
+        $maintenRequisition->MODIFIED_BY = Auth::id();
+        // Save changes
+        return response($maintenRequisition, 200);
     }
 
     /**
@@ -103,5 +114,10 @@ class MaintenanceRequisitionController extends Controller
      */
     public function approvalStatusUpdate(Request $request)
     {
+        $maintenRequisition = new stdClass; // Find by Id
+        // Change status based on flag value in request
+
+        $maintenRequisition->MODIFIED_BY = Auth::id();
+        // Save changes
     }
 }

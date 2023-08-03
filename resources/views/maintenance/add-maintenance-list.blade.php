@@ -124,9 +124,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="service_data" class="col-sm-5 col-form-label">Remarks</label>
+                            <label for="remarks" class="col-sm-5 col-form-label">Remarks</label>
                             <div class="col-sm-7">
-                                <textarea name="remarks" class="form-control" cols="30" rows="3" placeholder="Remarks"></textarea>
+                                <textarea name="remarks" id="remarks" class="form-control" cols="30" rows="3" placeholder="Remarks"></textarea>
                             </div>
                         </div>
                     </div>
