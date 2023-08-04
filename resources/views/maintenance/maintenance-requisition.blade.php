@@ -75,9 +75,6 @@
                                 @foreach($statuses as $status)
                                 <option value="{{$status['PHASE_ID']}}">{{$status['PHASE_NAME']}}</option>
                                 @endforeach
-                                <!-- <option value="Approved">Approved</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Rejected">Rejected</option> -->
                             </select>
                         </div>
                     </div>
@@ -143,9 +140,9 @@
                                 <td>2019-09-03</td>
                                 <td>Test Express 1</td>
                                 <td>Repair</td>
-                                <td>Kamal</td>
+                                <td>Kumar</td>
                                 <td>Denied</td>
-                                <td><input name="url" type="hidden" id="url_1" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updatemaintfrm"><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/editmaintfrm/1" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a onclick="editinfo(1)" style="cursor:pointer;color:#fff;" class="btn btn-primary btn-sm mr-1"><i class="far fa-eye"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_mainten/1" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
+                                <td><a href="#" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a onclick="editinfo(1)" style="cursor:pointer;color:#fff;" class="btn btn-primary btn-sm mr-1"><i class="far fa-eye"></i></a><a href="#" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
                                     <div class="text-right" style="display:inline-block;">
                                         <div class="actions" style="display:inline-block;">
                                             <div class="dropdown action-item" data-toggle="dropdown">
@@ -164,9 +161,9 @@
                                 <td>2019-09-01</td>
                                 <td>Test Express 2</td>
                                 <td>Repair</td>
-                                <td>Kobir</td>
+                                <td>Krishna</td>
                                 <td>Denied</td>
-                                <td><input name="url" type="hidden" id="url_2" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updatemaintfrm"><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/editmaintfrm/2" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a onclick="editinfo(2)" style="cursor:pointer;color:#fff;" class="btn btn-primary btn-sm mr-1"><i class="far fa-eye"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_mainten/2" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
+                                <td><a href="#" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a onclick="editinfo(2)" style="cursor:pointer;color:#fff;" class="btn btn-primary btn-sm mr-1"><i class="far fa-eye"></i></a><a href="#" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
                                     <div class="text-right" style="display:inline-block;">
                                         <div class="actions" style="display:inline-block;">
                                             <div class="dropdown action-item" data-toggle="dropdown">
@@ -185,9 +182,9 @@
                                 <td>2019-11-16</td>
                                 <td>Toyata</td>
                                 <td>Preventive Maintenance</td>
-                                <td>Maruf</td>
+                                <td>Madhav</td>
                                 <td>Denied</td>
-                                <td><input name="url" type="hidden" id="url_3" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updatemaintfrm"><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/editmaintfrm/3" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a onclick="editinfo(3)" style="cursor:pointer;color:#fff;" class="btn btn-primary btn-sm mr-1"><i class="far fa-eye"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_mainten/3" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
+                                <td><a href="#" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a onclick="editinfo(3)" style="cursor:pointer;color:#fff;" class="btn btn-primary btn-sm mr-1"><i class="far fa-eye"></i></a><a href="#" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
                                     <div class="text-right" style="display:inline-block;">
                                         <div class="actions" style="display:inline-block;">
                                             <div class="dropdown action-item" data-toggle="dropdown">
@@ -208,7 +205,7 @@
                                 <td>Preventive Maintenance</td>
                                 <td>test data</td>
                                 <td>Denied</td>
-                                <td><input name="url" type="hidden" id="url_4" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updatemaintfrm"><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/editmaintfrm/4" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a onclick="editinfo(4)" style="cursor:pointer;color:#fff;" class="btn btn-primary btn-sm mr-1"><i class="far fa-eye"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_mainten/4" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
+                                <td><a href="#" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a onclick="editinfo(4)" style="cursor:pointer;color:#fff;" class="btn btn-primary btn-sm mr-1"><i class="far fa-eye"></i></a><a href="#" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
                                     <div class="text-right" style="display:inline-block;">
                                         <div class="actions" style="display:inline-block;">
                                             <div class="dropdown action-item" data-toggle="dropdown">
@@ -229,7 +226,7 @@
                                 <td>Repair</td>
                                 <td></td>
                                 <td>Denied</td>
-                                <td><input name="url" type="hidden" id="url_7" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updatemaintfrm"><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/editmaintfrm/7" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a onclick="editinfo(7)" style="cursor:pointer;color:#fff;" class="btn btn-primary btn-sm mr-1"><i class="far fa-eye"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_mainten/7" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
+                                <td><a href="#" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a onclick="editinfo(7)" style="cursor:pointer;color:#fff;" class="btn btn-primary btn-sm mr-1"><i class="far fa-eye"></i></a><a href="#" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
                                     <div class="text-right" style="display:inline-block;">
                                         <div class="actions" style="display:inline-block;">
                                             <div class="dropdown action-item" data-toggle="dropdown">
@@ -250,7 +247,7 @@
                                 <td>Preventive Maintenance</td>
                                 <td></td>
                                 <td>Denied</td>
-                                <td><input name="url" type="hidden" id="url_8" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updatemaintfrm"><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/editmaintfrm/8" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a onclick="editinfo(8)" style="cursor:pointer;color:#fff;" class="btn btn-primary btn-sm mr-1"><i class="far fa-eye"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_mainten/8" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
+                                <td><a href="#" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a onclick="editinfo(8)" style="cursor:pointer;color:#fff;" class="btn btn-primary btn-sm mr-1"><i class="far fa-eye"></i></a><a href="#" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
                                     <div class="text-right" style="display:inline-block;">
                                         <div class="actions" style="display:inline-block;">
                                             <div class="dropdown action-item" data-toggle="dropdown">
@@ -271,7 +268,7 @@
                                 <td>Repair</td>
                                 <td></td>
                                 <td>Denied</td>
-                                <td><input name="url" type="hidden" id="url_9" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updatemaintfrm"><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/editmaintfrm/9" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a onclick="editinfo(9)" style="cursor:pointer;color:#fff;" class="btn btn-primary btn-sm mr-1"><i class="far fa-eye"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_mainten/9" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
+                                <td><a href="#" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a onclick="editinfo(9)" style="cursor:pointer;color:#fff;" class="btn btn-primary btn-sm mr-1"><i class="far fa-eye"></i></a><a href="#" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
                                     <div class="text-right" style="display:inline-block;">
                                         <div class="actions" style="display:inline-block;">
                                             <div class="dropdown action-item" data-toggle="dropdown">
@@ -292,7 +289,7 @@
                                 <td>Repair</td>
                                 <td>owner</td>
                                 <td>Denied</td>
-                                <td><input name="url" type="hidden" id="url_10" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updatemaintfrm"><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/editmaintfrm/10" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a onclick="editinfo(10)" style="cursor:pointer;color:#fff;" class="btn btn-primary btn-sm mr-1"><i class="far fa-eye"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_mainten/10" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
+                                <td><a href="#" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a onclick="editinfo(10)" style="cursor:pointer;color:#fff;" class="btn btn-primary btn-sm mr-1"><i class="far fa-eye"></i></a><a href="#" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
                                     <div class="text-right" style="display:inline-block;">
                                         <div class="actions" style="display:inline-block;">
                                             <div class="dropdown action-item" data-toggle="dropdown">
@@ -313,7 +310,7 @@
                                 <td>Preventive Maintenance</td>
                                 <td></td>
                                 <td>Denied</td>
-                                <td><input name="url" type="hidden" id="url_12" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updatemaintfrm"><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/editmaintfrm/12" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a onclick="editinfo(12)" style="cursor:pointer;color:#fff;" class="btn btn-primary btn-sm mr-1"><i class="far fa-eye"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_mainten/12" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
+                                <td><a href="#" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a onclick="editinfo(12)" style="cursor:pointer;color:#fff;" class="btn btn-primary btn-sm mr-1"><i class="far fa-eye"></i></a><a href="#" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
                                     <div class="text-right" style="display:inline-block;">
                                         <div class="actions" style="display:inline-block;">
                                             <div class="dropdown action-item" data-toggle="dropdown">
@@ -334,7 +331,7 @@
                                 <td>Repair</td>
                                 <td></td>
                                 <td>Denied</td>
-                                <td><input name="url" type="hidden" id="url_13" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updatemaintfrm"><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/editmaintfrm/13" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a onclick="editinfo(13)" style="cursor:pointer;color:#fff;" class="btn btn-primary btn-sm mr-1"><i class="far fa-eye"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_mainten/13" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
+                                <td><a href="#" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a onclick="editinfo(13)" style="cursor:pointer;color:#fff;" class="btn btn-primary btn-sm mr-1"><i class="far fa-eye"></i></a><a href="#" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
                                     <div class="text-right" style="display:inline-block;">
                                         <div class="actions" style="display:inline-block;">
                                             <div class="dropdown action-item" data-toggle="dropdown">
@@ -359,8 +356,8 @@
 @section('js-content')
 <!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/maintainrequisition_list.js"></script> -->
 <script>
-    $(document).ready(function() {
-        $("#mainreq").DataTable();
-    });
+    // For storing routes and other global variables
+</script>
+<script src="{{asset('dist/js/maintenance/mainten_req_list.js')}}">
 </script>
 @endsection

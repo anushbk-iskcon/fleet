@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MaintenanceRequisition;
 use App\Models\MaintenanceService;
 use App\Models\MaintenanceType;
 use App\Models\Phase;
@@ -45,24 +46,36 @@ class MaintenanceRequisitionController extends Controller
      */
     public function store(Request $request)
     {
-        $maintenRequisition = new stdClass;
+        $maintenRequisition = new MaintenanceRequisition;
         $maintenRequisition->REQUISITION_TYPE = $request->req_type;
         $maintenRequisition->REQUISITION_FOR = $request->requested_by;
-        $maintenRequisition->VEHICLE = $request->vehicle_name;
-        $maintenRequisition->MAINTEN_TYPE = $request->mainten_type;
-        $maintenRequisition->MAINTEN_SERVICE_NAME = $request->mainten_service_name;
+        $maintenRequisition->VEHICLE_ID = $request->vehicle_name;
+        $maintenRequisition->MAINTENANCE_TYPE = $request->mainten_type;
+        $maintenRequisition->MAINTENANCE_SERVICE_NAME = $request->mainten_service_name;
         $maintenRequisition->SERVICE_DATE = $request->service_date;
         $maintenRequisition->CHARGE = $request->charge ?? "";
         $maintenRequisition->CHARGE_BEAR_BY = $request->charge_bear_by ?? "";
+        $maintenRequisition->TOTAL_AMOUNT = $request->total_amount; // Or use session stored value
         $maintenRequisition->PRIORITY = $request->priority;
-        $maintenRequisition->IS_ACTIVE = $request->is_active ? 'Y' : 'N';
+        $maintenRequisition->IS_SCHEDULED = $request->is_add_schedule ? 'Y' : 'N';
 
-        $entrySaved = ''; // Set to Boolean based on whether entry was saved
+        $entrySaved = $maintenRequisition->save(); // Set to Boolean based on whether entry was saved
 
         // Add all items required to Maintenance Requisition Items Table
         $itemsSaved = '';
 
         // To return successCode and message/data
+        if ($entrySaved && $itemsSaved) {
+            return response()->json([
+                'successCode' => 1,
+                'message' => "Requisition details successfully saved"
+            ]);
+        } else {
+            return response()->json([
+                'successCode' => 0,
+                'message' => "Failed to add requisition details"
+            ]);
+        }
     }
 
     /**
@@ -71,7 +84,8 @@ class MaintenanceRequisitionController extends Controller
     public function getDetails(Request $request)
     {
         // Get Requisition Details from Requisitions Table
-        $maintenRequisition = '';
+        $mainten_req_id = $request->mainten_req_id;
+        $maintenRequisition = MaintenanceRequisition::find($mainten_req_id);
 
         // Get Items connected to requisition from Items Table
     }
@@ -93,7 +107,24 @@ class MaintenanceRequisitionController extends Controller
      */
     public function update(Request $request)
     {
-        $maintenRequisition = new stdClass;
+        $mainten_req_id = $request->mainten_req_id;
+        $maintenRequisition = MaintenanceRequisition::find($mainten_req_id);
+
+        $maintenRequisition->REQUISITION_TYPE = $request->req_type;
+        $maintenRequisition->REQUISITION_FOR = $request->requested_by;
+        $maintenRequisition->VEHICLE_ID = $request->vehicle_name;
+        $maintenRequisition->MAINTENANCE_TYPE = $request->mainten_type;
+        $maintenRequisition->MAINTENANCE_SERVICE_NAME = $request->mainten_service_name;
+        $maintenRequisition->SERVICE_DATE = $request->service_date;
+        $maintenRequisition->CHARGE = $request->charge ?? "";
+        $maintenRequisition->CHARGE_BEAR_BY = $request->charge_bear_by ?? "";
+        $maintenRequisition->TOTAL_AMOUNT = $request->total_amount; // Or use session stored value
+        $maintenRequisition->PRIORITY = $request->priority;
+        $maintenRequisition->IS_SCHEDULED = $request->is_add_schedule ? 'Y' : 'N';
+
+        $maintenReqUpdated = $maintenRequisition->save(); // Set to Boolean based on whether entry was saved
+
+        // Update items connected to Requisition
     }
 
     /**

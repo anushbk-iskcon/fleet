@@ -195,14 +195,21 @@
                         </thead>
 
                         <tbody>
-
+                            <!-- <tr role="row" class="odd">
+                                <td class="sorting_1" tabindex="0">1</td>
+                                <td>Maintenance Requisition</td>
+                                <td>Approved</td>
+                                <td>Administration</td>
+                                <td></td>
+                                <td><input name="url" type="hidden" id="url_24" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updateapprovalfrm"><a onclick="editinfo(24)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="#" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
+                            </tr> -->
                             <tr role="row" class="odd">
                                 <td class="sorting_1" tabindex="0">1</td>
                                 <td>Maintenance Requisition</td>
                                 <td>Approved</td>
                                 <td>Administration</td>
                                 <td></td>
-                                <td><input name="url" type="hidden" id="url_24" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updateapprovalfrm"><a onclick="editinfo(24)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_approval/24" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
+                                <td><a onclick="editinfo(24)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="#" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
                             </tr>
                             <tr role="row" class="even">
                                 <td class="sorting_1" tabindex="0">2</td>
@@ -210,7 +217,7 @@
                                 <td>Reject</td>
                                 <td>ACCOUNTING</td>
                                 <td>Test Employee</td>
-                                <td><input name="url" type="hidden" id="url_25" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updateapprovalfrm"><a onclick="editinfo(25)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_approval/25" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
+                                <td><a onclick="editinfo(25)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="#" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
                             </tr>
                             <tr role="row" class="odd">
                                 <td class="sorting_1" tabindex="0">3</td>
@@ -218,15 +225,15 @@
                                 <td>Approved</td>
                                 <td>Human Resource</td>
                                 <td></td>
-                                <td><input name="url" type="hidden" id="url_31" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updateapprovalfrm"><a onclick="editinfo(31)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_approval/31" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
+                                <td><a onclick="editinfo(31)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="#" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
                             </tr>
                             <tr role="row" class="even">
                                 <td class="sorting_1" tabindex="0">4</td>
                                 <td>Maintenance Requisition</td>
                                 <td>Pending,Reject,Approved</td>
                                 <td>Technical</td>
-                                <td>Rahim</td>
-                                <td><input name="url" type="hidden" id="url_36" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updateapprovalfrm"><a onclick="editinfo(36)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_approval/36" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
+                                <td>Ramkrishna</td>
+                                <td><a onclick="editinfo(36)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="36" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
                             </tr>
                             <tr role="row" class="odd">
                                 <td class="sorting_1" tabindex="0">5</td>
@@ -234,7 +241,7 @@
                                 <td>Approved</td>
                                 <td>Marketing &amp; Sales</td>
                                 <td></td>
-                                <td><input name="url" type="hidden" id="url_39" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updateapprovalfrm"><a onclick="editinfo(39)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_approval/39" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
+                                <td><a onclick="editinfo(39)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="39" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
                             </tr>
                             <tr role="row" class="even">
                                 <td class="sorting_1" tabindex="0">6</td>
@@ -242,7 +249,7 @@
                                 <td>Approved</td>
                                 <td>Planning department</td>
                                 <td></td>
-                                <td><input name="url" type="hidden" id="url_41" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updateapprovalfrm"><a onclick="editinfo(41)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_approval/41" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
+                                <td><a onclick="editinfo(41)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="41" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
                             </tr>
                             <tr role="row" class="odd">
                                 <td class="sorting_1" tabindex="0">7</td>
@@ -250,15 +257,15 @@
                                 <td>Pending</td>
                                 <td>Planning department</td>
                                 <td></td>
-                                <td><input name="url" type="hidden" id="url_42" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updateapprovalfrm"><a onclick="editinfo(42)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_approval/42" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
+                                <td><a onclick="editinfo(42)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="42" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
                             </tr>
                             <tr role="row" class="even">
                                 <td class="sorting_1" tabindex="0">8</td>
                                 <td>Maintenance Requisition</td>
                                 <td>Pending</td>
                                 <td>Human Resource</td>
-                                <td>taslimul,dsfdf</td>
-                                <td><input name="url" type="hidden" id="url_43" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updateapprovalfrm"><a onclick="editinfo(43)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_approval/43" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
+                                <td>abcde,dsfdf</td>
+                                <td><a onclick="editinfo(43)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="43" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
                             </tr>
                             <tr role="row" class="odd">
                                 <td class="sorting_1" tabindex="0">9</td>
@@ -266,15 +273,7 @@
                                 <td>Pending</td>
                                 <td>Planning department</td>
                                 <td></td>
-                                <td><input name="url" type="hidden" id="url_45" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updateapprovalfrm"><a onclick="editinfo(45)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_approval/45" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
-                            <tr role="row" class="even">
-                                <td class="sorting_1" tabindex="0">10</td>
-                                <td>Maintenance Requisition</td>
-                                <td>Pending,Reject</td>
-                                <td>Rose Water</td>
-                                <td></td>
-                                <td><input name="url" type="hidden" id="url_48" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updateapprovalfrm"><a onclick="editinfo(48)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/delete_approval/48" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
+                                <td><a onclick="editinfo(45)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="45" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
                             </tr>
                         </tbody>
 
@@ -287,6 +286,9 @@
 @endsection
 @section('js-content')
 <!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/approval_authority.js"></script> -->
+<script>
+    // To save routes and other global variables
+</script>
 <script>
     $(document).ready(function() {
         $("#authinfo").DataTable();
