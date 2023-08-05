@@ -355,6 +355,13 @@
 @endsection
 @section('js-content')
 <!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/maintainrequisition_list.js"></script> -->
+@if(session('message'))
+<script>
+    toastr.success('{{session("message")}}', '', {
+        closeButton: true
+    });
+</script>
+@endif
 <script>
     // For storing routes and other global variables
 </script>

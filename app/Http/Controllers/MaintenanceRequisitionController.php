@@ -11,6 +11,7 @@ use App\Models\Vehicle;
 use Dotenv\Util\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use stdClass;
 
 class MaintenanceRequisitionController extends Controller
@@ -46,8 +47,16 @@ class MaintenanceRequisitionController extends Controller
      */
     public function store(Request $request)
     {
+        $items = $request->product_name;
+        $item_names = $request->pitem;
+        $qty = $request->product_quantity;
+        $rates = $request->product_rate;
+        $total_prices = $request->total_price;
+
+        $num_of_items = count($items);
+        // dd($items, $qty, $rates, $qty, $total_prices, $item_names, count($items));
         $maintenRequisition = new MaintenanceRequisition;
-        $maintenRequisition->REQUISITION_TYPE = $request->req_type;
+        $maintenRequisition->REQUISITION_TYPE = $request->req_type ?? 'M';
         $maintenRequisition->REQUISITION_FOR = $request->requested_by;
         $maintenRequisition->VEHICLE_ID = $request->vehicle_name;
         $maintenRequisition->MAINTENANCE_TYPE = $request->mainten_type;
@@ -55,26 +64,40 @@ class MaintenanceRequisitionController extends Controller
         $maintenRequisition->SERVICE_DATE = $request->service_date;
         $maintenRequisition->CHARGE = $request->charge ?? "";
         $maintenRequisition->CHARGE_BEAR_BY = $request->charge_bear_by ?? "";
-        $maintenRequisition->TOTAL_AMOUNT = $request->total_amount; // Or use session stored value
+        $maintenRequisition->TOTAL_AMOUNT = $request->grand_total_price; // Or use session stored value
         $maintenRequisition->PRIORITY = $request->priority;
         $maintenRequisition->IS_SCHEDULED = $request->is_add_schedule ? 'Y' : 'N';
+        $maintenRequisition->CREATED_BY = Auth::id();
 
+        dd($items, $qty, $rates, $qty, $total_prices, $item_names, count($items), $maintenRequisition);
         $entrySaved = $maintenRequisition->save(); // Set to Boolean based on whether entry was saved
+        $maintenReqId = $maintenRequisition->id;
 
         // Add all items required to Maintenance Requisition Items Table
-        $itemsSaved = '';
+        $itemsSaved = false;
+        if ($num_of_items) {
+            for ($i = 0; $i < $num_of_items; $i++) {
+                $currentId = DB::table('maintenance_req_items')->insertGetId(
+                    [
+                        'MAINTENANCE_REQ_ID' => $maintenReqId,
+                        'ITEM_TYPE_NAME' => $items[$i],
+                        'ITEM_NAME' => $item_names[$i],
+                        'UNITS' => $qty[$i],
+                        'UNIT_PRICE' => $rates[$i],
+                        'TOTAL_AMOUNT' => $total_prices[$i],
+                        'CREATED_BY' => Auth::id()
+                    ]
+                );
+                if ($currentId) $itemsSaved = true;
+                else $itemsSaved = false;
+            }
+        }
 
         // To return successCode and message/data
         if ($entrySaved && $itemsSaved) {
-            return response()->json([
-                'successCode' => 1,
-                'message' => "Requisition details successfully saved"
-            ]);
+            return redirect()->route('maintenance-requisitions')->with('message', "Requisition details successfully saved");
         } else {
-            return response()->json([
-                'successCode' => 0,
-                'message' => "Failed to add requisition details"
-            ]);
+            return back()->withInput()->with('message', 'Could not save requisition details. Please try again');
         }
     }
 
@@ -132,7 +155,9 @@ class MaintenanceRequisitionController extends Controller
      */
     public function changeActivationStatus(Request $request)
     {
-        $maintenRequisition = new stdClass;
+        $mainten_req_id = $request->mainten_req_id;
+        $maintenRequisition = MaintenanceRequisition::find($mainten_req_id);
+
         $currentStatus = $maintenRequisition->IS_ACTIVE;
         $maintenRequisition->IS_ACTIVE = $currentStatus == 'Y' ? 'N' : 'Y';
         $maintenRequisition->MODIFIED_BY = Auth::id();
@@ -145,10 +170,12 @@ class MaintenanceRequisitionController extends Controller
      */
     public function approvalStatusUpdate(Request $request)
     {
-        $maintenRequisition = new stdClass; // Find by Id
+        $mainten_req_id = $request->mainten_req_id;
+        $maintenRequisition = MaintenanceRequisition::find($mainten_req_id); // Find by Id
         // Change status based on flag value in request
 
         $maintenRequisition->MODIFIED_BY = Auth::id();
         // Save changes
+        $maintenRequisition->save();
     }
 }

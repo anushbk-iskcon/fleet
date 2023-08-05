@@ -46,17 +46,18 @@
                 </h6>
             </div>
             <div class="card-body">
-                <form action="" id="addMaintenRequisitionForm" class="row" method="post" accept-charset="utf-8">
+                <form action="{{route('maintenance-requisitions.add')}}" id="addMaintenRequisitionForm" class="row" method="post" accept-charset="utf-8">
+                    @csrf
                     <div class="col-md-12 col-lg-12">
                         <div class="form-group row">
                             <label for="req_type" class="col-sm-2 col-form-label">Requisition Type <i class="text-danger">*</i> </label>
                             <div class="col-sm-7">
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" id="maintenance" name="req_type" class="custom-control-input" value="Maintenance">
+                                    <input type="radio" id="maintenance" name="req_type" class="custom-control-input" value="M">
                                     <label class="custom-control-label" for="maintenance">Maintenance</label>
                                 </div>
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" id="general" name="req_type" class="custom-control-input" value="General">
+                                    <input type="radio" id="general" name="req_type" class="custom-control-input" value="G">
                                     <label class="custom-control-label" for="general">General</label>
                                 </div>
                             </div>
@@ -114,7 +115,12 @@
                         <div class="form-group row">
                             <label for="mainten_service_name" class="col-sm-5 col-form-label">Maintenance Service Name <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="mainten_service_name" required class="form-control" type="text" placeholder="Maintenance Service Name" id="mainten_service_name">
+                                <select class="form-control basic-single" required name="mainten_service_name" id="mainten_service_name">
+                                    <option value selected="selected">Please Select One</option>
+                                    @foreach($maintenanceServices as $maintenanceService)
+                                    <option value="{{$maintenanceService['MAINTENANCE_SERVICE_ID']}}">{{$maintenanceService['MAINTENANCE_SERVICE_NAME']}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -227,6 +233,13 @@
 
 @section('js-content')
 <!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/add_maintenance.js"></script> -->
+@if(session('message'))
+<script>
+    toastr.success('{{session("message")}}', '', {
+        closeButton: true
+    });
+</script>
+@endif
 <script>
     // Any global variables like routes etc.
 </script>

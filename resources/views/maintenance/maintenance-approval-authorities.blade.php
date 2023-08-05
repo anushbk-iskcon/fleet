@@ -40,15 +40,15 @@
                         <div class="form-group row">
                             <label for="req_phase" class="col-sm-3 col-form-label">Requisition Phase <i class="text-danger">*</i></label>
                             <div class="col-sm-2 checkbox checkbox-primary">
-                                <input id="checkbox1" type="checkbox" name="phase[]" value="Pending">
+                                <input id="checkbox1" type="checkbox" name="phase[]" value="P">
                                 <label for="checkbox1">Pending</label>
                             </div>
                             <div class="col-sm-2 checkbox checkbox-primary">
-                                <input id="checkbox2" type="checkbox" name="phase[]" value="Reject">
-                                <label for="checkbox2">Reject</label>
+                                <input id="checkbox2" type="checkbox" name="phase[]" value="R">
+                                <label for="checkbox2">Rejected</label>
                             </div>
                             <div class="col-sm-2 checkbox checkbox-primary">
-                                <input id="checkbox3" type="checkbox" name="phase[]" value="Approved">
+                                <input id="checkbox3" type="checkbox" name="phase[]" value="A">
                                 <label for="checkbox3">Approved</label>
                             </div>
                         </div>

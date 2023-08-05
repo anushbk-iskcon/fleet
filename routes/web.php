@@ -149,9 +149,14 @@ Route::middleware('auth')->group(function () {
     /*** END Vehicle Requisition Routes ***/
 
     /*** START Maintenance Routes ***/
+    // Return listing of all maintenance requisitions
     Route::get('maintenance/requisitions', [MaintenanceRequisitionController::class, 'index'])->name('maintenance-requisitions');
+    // Get list of maintenance requisitions for populating table:
     Route::post('maintenance/requisitions', [MaintenanceRequisitionController::class, 'index'])->name('maintenance-requisitions.list');
+    // Return form to create new requisition:
     Route::get('maintenance/requisitions/create', [MaintenanceRequisitionController::class, 'create'])->name('add-maintenance-list');
+    // Add new requisition to DB:
+    Route::post('maintenance/requisitions/create', [MaintenanceRequisitionController::class, 'store'])->name('maintenance-requisitions.add');
 
     Route::get('maintenance/approval-authorities', function () {
         return view('maintenance.maintenance-approval-authorities');

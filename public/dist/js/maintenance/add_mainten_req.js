@@ -31,6 +31,11 @@ $(document).ready(function () {
 
     $('.form-check-input').bootstrapToggle();
 
+    // To validate select2 selections on change
+    $(".basic-single").on("select2:close", function (e) {
+        $(this).valid();
+    });
+
     $("#addMaintenRequisitionForm").validate({
         rules: {
             requested_by: 'required',
@@ -52,6 +57,17 @@ $(document).ready(function () {
         },
         submitHandler: function (form, ev) {
             ev.preventDefault();
+
+            // $.ajax({
+            //     url: form.action,
+            //     type: form.method,
+            //     data: $(form).serialize(),
+            //     success: function (res) {
+            //         console.log("Form submitted");
+            //     },
+            //     error: function (jqxhr, textStatus, err) { }
+            // });
+            form.submit();
         }
     });
 
@@ -134,7 +150,7 @@ function addmore(divName) {
             ')"></td><td class="text-right"><input type="number" name="product_quantity[]" tabindex="' + tab2 +
             '" required  id="cartoon_' + count + '" class="form-control pqty text-right store_cal_' + count +
             '" onkeyup="calculate_store(' + count + ');" onchange="calculate_store(' + count +
-            ');" placeholder="0.00" value="" min="0"/>  </td><td class="test"><input type="number" name="product_rate[]" onkeyup="calculate_store(' +
+            ');" placeholder="0.00" value="" min="0"/>  </td><td class="test text-right"><input type="number" name="product_rate[]" onkeyup="calculate_store(' +
             count + ');" onchange="calculate_store(' + count + ');" required id="product_rate_' + count +
             '" class="form-control product_rate product_rate_' + count +
             ' text-right" placeholder="0.00" value="" min="0" tabindex="' + tab3 +

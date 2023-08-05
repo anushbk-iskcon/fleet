@@ -119,7 +119,7 @@ function populateTable(table) {
                 $.each(res, function (i, data) {
                     let status = data.IS_ACTIVE == 'Y' ? 'Active' : 'Inactive';
                     let actionBtns = `
-                    <button type="button" class="btn btn-info mr-1" data-id="${data.MAINTENANCE_SERVICE_ID}" onclick="editInfo(this);">
+                    <button type="button" class="btn btn-info mr-1" data-id="${data.MAINTENANCE_SERVICE_ID}" title="Edit" onclick="editInfo(this);">
                     <i class="ti-pencil"></i>
                     </button>
                     <button type="button" class="btn ${data.IS_ACTIVE == 'Y' ? 'btn-danger mr-1' : 'btn-success mr-1'}" data-id="${data.MAINTENANCE_SERVICE_ID}"
