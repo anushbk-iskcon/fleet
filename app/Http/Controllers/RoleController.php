@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 
@@ -79,7 +80,7 @@ class RoleController extends Controller
                 'CAN_EDIT' => $canEdit,
                 'CAN_DELETE' => $canDelete,
                 'CREATED_BY' => 'Admin',
-                'CREATED_ON' => date('Y-m-d h:i:s')
+                'CREATED_ON' => date('Y-m-d H:i:s')
             ]);
         }
 
@@ -143,8 +144,8 @@ class RoleController extends Controller
                 'CAN_READ' => $canRead,
                 'CAN_EDIT' => $canEdit,
                 'CAN_DELETE' => $canDelete,
-                'MODIFIED_BY' => 'Admin',
-                'MODIFIED_ON' => date('Y-m-d h:i:s')
+                'MODIFIED_BY' => Auth::id(),
+                'MODIFIED_ON' => date('Y-m-d H:i:s')
             ]);
         }
         if ($updated) {

@@ -24,7 +24,7 @@
             </div>
             <div class="modal-body">
                 <!-- form action="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/add_approval" -->
-                <form action="" id="emp_form" class="row" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+                <form action="" id="emp_form" class="row" method="post" accept-charset="utf-8">
                     <div class="col-md-12 col-lg-12">
                         <div class="form-group row">
                             <label for="req_type" class="col-sm-3 col-form-label">Requisition Type <i class="text-danger">*</i></label>

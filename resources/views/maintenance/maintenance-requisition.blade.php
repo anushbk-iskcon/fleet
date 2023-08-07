@@ -27,6 +27,7 @@
         </div>
     </div>
 </div>
+
 <div class="row">
     <div class="col-sm-12">
         <div class="card mb-3">
@@ -81,7 +82,7 @@
                     <div class="form-group row mb-1">
                         <label for="service_fr" class="col-sm-5 col-form-label justify-content-start text-left">Maintenance Service</label>
                         <div class="col-sm-7">
-                            <select class="form-control basic-single" name="service_fr" id="service_fr">
+                            <select class="form-control basic-single" name="mainten_service" id="service_fr">
                                 <option value="" selected="selected">Please Select One</option>
                                 @foreach($maintenanceServices as $maintenanceService)
                                 <option value="{{$maintenanceService['MAINTENANCE_SERVICE_ID']}}">{{$maintenanceService['MAINTENANCE_SERVICE_NAME']}}</option>
@@ -135,7 +136,7 @@
                         </thead>
                         <tbody>
 
-                            <tr role="row" class="odd">
+                            <!-- <tr role="row" class="odd">
                                 <td class="sorting_1" tabindex="0">1</td>
                                 <td>2019-09-03</td>
                                 <td>Test Express 1</td>
@@ -344,7 +345,7 @@
                                         </div>
                                     </div>
                                 </td>
-                            </tr>
+                            </tr> -->
                         </tbody>
                     </table> <!-- /.table-responsive -->
                 </div>
@@ -364,6 +365,8 @@
 @endif
 <script>
     // For storing routes and other global variables
+    getRequisitionsDataURL = "{{route('maintenance-requisitions.list')}}";
+    csrfToken = "{{csrf_token()}}";
 </script>
 <script src="{{asset('dist/js/maintenance/mainten_req_list.js')}}">
 </script>

@@ -28,7 +28,7 @@ use App\Http\Controllers\Masters\VehicleDivisionController;
 use App\Http\Controllers\Masters\VehicleTypeController;
 use App\Http\Controllers\Masters\VendorController;
 use App\Http\Controllers\RefuelRequisitionController;
-
+use App\Models\Role;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -153,14 +153,44 @@ Route::middleware('auth')->group(function () {
     Route::get('maintenance/requisitions', [MaintenanceRequisitionController::class, 'index'])->name('maintenance-requisitions');
     // Get list of maintenance requisitions for populating table:
     Route::post('maintenance/requisitions', [MaintenanceRequisitionController::class, 'index'])->name('maintenance-requisitions.list');
-    // Return form to create new requisition:
+    // Return form (page) to create new requisition:
     Route::get('maintenance/requisitions/create', [MaintenanceRequisitionController::class, 'create'])->name('add-maintenance-list');
     // Add new requisition to DB:
     Route::post('maintenance/requisitions/create', [MaintenanceRequisitionController::class, 'store'])->name('maintenance-requisitions.add');
+    // Show form/page to allow updating maintenance requisition details:
+    Route::get('maintenance/requisitions/{requisition}/edit', [MaintenanceRequisitionController::class, 'edit'])
+        ->name('maintenance-requisitions.edit');
+    // Update maintenance requisition details in DB:
+    Route::post('maintenance/requisitions/update', [MaintenanceRequisitionController::class, 'update'])
+        ->name('maintenance-requisitions.update');
 
-    Route::get('maintenance/approval-authorities', function () {
-        return view('maintenance.maintenance-approval-authorities');
-    })->name('maintenance-approval-authorities');
+    // Get details of specified Maintenance Requisition
+    Route::post('maintenance/requsitions/get-details', [MaintenanceRequisitionController::class, 'getDetails'])
+        ->name('maintenance-requisitions.get-details');
+
+    // Activate / De-activate specified requisition in DB
+    Route::post('maintenance/requsitions/change-activation', [MaintenanceRequisitionController::class, 'changeActivationStatus'])
+        ->name('maintenance-requisitions.change-activation-status');
+
+    // Approve/Reject Maintenance Requisition
+    Route::post('maintenance/requsitions/change-activation', [MaintenanceRequisitionController::class, 'approvalStatusUpdate'])
+        ->name('maintenance-requisitions.change-approval-status');
+
+    // Show list of all maintenance approval authorities
+    Route::get('maintenance/approval-authorities', [MaintenanceRequisitionController::class, 'approvalAuthorities'])
+        ->name('maintenance-approval-authorities');
+
+    // Add Maintenance Approval Authority to DB
+    Route::post('maintenance/approval-authorities/add', [MaintenanceRequisitionController::class, 'addApprovalAuthority'])
+        ->name('maintenance-approval-authorities.add');
+
+    // Update Maintenance Approval Authority details in DB
+    Route::post('maintenance/approval-authorities/update', [MaintenanceRequisitionController::class, 'updateApprovalAuthority'])
+        ->name('maintenance-approval-authorities.update');
+
+    // Activate/de-activate Maintenance approval Authority
+    Route::post('maintenance/approval-authorities/change-activation', [MaintenanceRequisitionController::class, 'changeActivationOfApprovalAuthority'])
+        ->name('maintenance-approval-authorities.change-activation');
 
     // Maintenance Services Master routes
     Route::get('maintenance/service-list', [MaintenanceServiceController::class, 'index'])->name('maintenance-service-list');
