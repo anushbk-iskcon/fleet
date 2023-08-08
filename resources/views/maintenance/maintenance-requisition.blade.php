@@ -14,7 +14,7 @@
 
 @section('content')
 
-<div id="edit" class="modal fade bd-example-modal-lg" role="dialog">
+<div id="viewInfo" class="modal fade bd-example-modal-lg" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -37,7 +37,7 @@
                     <small class="float-right">
                         <a href="{{route('add-maintenance-list')}}" class="btn btn-primary btn-md">
                             <i class="ti-plus" aria-hidden="true"></i>
-                            Add Maintenance
+                            Add Requisition
                         </a>
                     </small>
                 </h4>
@@ -366,6 +366,8 @@
 <script>
     // For storing routes and other global variables
     getRequisitionsDataURL = "{{route('maintenance-requisitions.list')}}";
+    editRequisitionPlaceholderURL = "{{route('maintenance-requisitions.edit', ['requisition'=>'0'])}}"; // 0 in URL is replaced by ID in script
+    getRequisitionDetailsURL = "{{route('maintenance-requisitions.get-details')}}";
     csrfToken = "{{csrf_token()}}";
 </script>
 <script src="{{asset('dist/js/maintenance/mainten_req_list.js')}}">

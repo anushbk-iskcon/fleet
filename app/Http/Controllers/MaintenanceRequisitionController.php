@@ -32,7 +32,17 @@ class MaintenanceRequisitionController extends Controller
             $serviceToDate = $request->to;
 
             $mainten_reqs = DB::table('maintenance_requisitions')
-                ->select('maintenance_requisitions.*')
+                ->join('vehicles', 'maintenance_requisitions.VEHICLE_ID', '=', 'vehicles.VEHICLE_ID')
+                ->join('mstr_maintenance', 'maintenance_requisitions.MAINTENANCE_TYPE', '=', 'mstr_maintenance.MAINTENANCE_ID')
+                ->join('maintenance_services', 'maintenance_requisitions.MAINTENANCE_SERVICE_NAME', '=', 'maintenance_services.MAINTENANCE_SERVICE_ID')
+                ->join('mstr_priority', 'maintenance_requisitions.PRIORITY', '=', 'mstr_priority.PRIORITY_ID')
+                ->select(
+                    'maintenance_requisitions.*',
+                    'vehicles.VEHICLE_NAME as VEHICLE_NAME',
+                    'mstr_maintenance.MAINTENANCE_NAME as MAINTENANCE_NAME',
+                    'maintenance_services.MAINTENANCE_SERVICE_NAME as SERVICE_NAME',
+                    'mstr_priority.PRIORITY_NAME as PRIORITY'
+                )
                 ->when($maintenance_type, function ($query, $maintenance_type) {
                     return $query->where('maintenance_requisitions.MAINTENANCE_TYPE', '=', $maintenance_type);
                 })
@@ -147,9 +157,95 @@ class MaintenanceRequisitionController extends Controller
     {
         // Get Requisition Details from Requisitions Table
         $mainten_req_id = $request->mainten_req_id;
-        $maintenRequisition = MaintenanceRequisition::find($mainten_req_id);
+        $maintenRequisition = MaintenanceRequisition::where('MAINTENANCE_REQ_ID', '=', $mainten_req_id)
+            ->join('vehicles', 'maintenance_requisitions.VEHICLE_ID', '=', 'vehicles.VEHICLE_ID')
+            ->join('mstr_maintenance', 'maintenance_requisitions.MAINTENANCE_TYPE', '=', 'mstr_maintenance.MAINTENANCE_ID')
+            ->join('maintenance_services', 'maintenance_requisitions.MAINTENANCE_SERVICE_NAME', '=', 'maintenance_services.MAINTENANCE_SERVICE_ID')
+            ->join('mstr_priority', 'maintenance_requisitions.PRIORITY', '=', 'mstr_priority.PRIORITY_ID')
+            ->select(
+                'maintenance_requisitions.*',
+                'vehicles.VEHICLE_NAME as VEHICLE_NAME',
+                'mstr_maintenance.MAINTENANCE_NAME as MAINTENANCE_NAME',
+                'maintenance_services.MAINTENANCE_SERVICE_NAME as SERVICE_NAME',
+                'mstr_priority.PRIORITY_NAME as REQ_PRIORITY'
+            )
+            ->first();
+
+
+        // $maintenRequisition = json_decode(json_encode($maintenRequisition));
+        // dd($maintenRequisition);
 
         // Get Details of Items connected to requisition from Items Table
+        $requestedItems = DB::table('maintenance_req_items')->where('MAINTENANCE_REQ_ID', $mainten_req_id)->get();
+        // dd($requestedItems);
+
+        // Details returned in Invoice Format to client
+        $editURL = route('maintenance-requisitions.edit', ['requisition' => $mainten_req_id]);
+
+        $requisitionDetails = '<div class="row-justify content-center">';
+        $requisitionDetails .= '<div class="col-sm-12" id="printin"><div class="col-auto">';
+        $requisitionDetails .= '<a href="';
+        $requisitionDetails .= $editURL;
+        $requisitionDetails .= '" class="btn btn-success ml-2"><i class="typcn typcn-edit mr-1"></i>Edit Maintenance </a></div>';
+        $requisitionDetails .= ' <div class="card card-body p-5"><div class="row"><div class="col-12 col-md-6"><p class="text-muted mb-4">';
+        $requisitionDetails .= '<strong>Requisition Type</strong>: ';
+        $requisitionDetails .= $maintenRequisition->REQUISITION_TYPE == 'M' ? 'Maintenance' : 'General';
+        $requisitionDetails .= '<br> <strong>Vehicle Name</strong>: ';
+        $requisitionDetails .= $maintenRequisition->VEHICLE_NAME . '<br>';
+        $requisitionDetails .= '<strong>Maintenance Type</strong>: ';
+        $requisitionDetails .= $maintenRequisition->MAINTENANCE_NAME . '<br>';
+        $requisitionDetails .= '<strong>Maintenance Service Name</strong>: ';
+        $requisitionDetails .= $maintenRequisition->SERVICE_NAME . '<br>';
+        $requisitionDetails .= '</p></div>';
+        $requisitionDetails .= '<div class="col-12 col-md-6 text-md-right"><p class="text-muted mb-4">';
+        $requisitionDetails .= '<strong>Charge</strong>: ';
+        $requisitionDetails .= $maintenRequisition->CHARGE . '<br>';
+        $requisitionDetails .= '<strong>Charge Bear By</strong>: ';
+        $requisitionDetails .= $maintenRequisition->CHARGE_BEAR_BY . '<br>';
+        $requisitionDetails .= '<strong>Priority</strong>: ';
+        $requisitionDetails .= $maintenRequisition->REQ_PRIORITY . '<br>';
+        $requisitionDetails .= '<p><h6 class="text-uppercase text-muted fs-12 font-weight-600">Service Date</h6>';
+        $requisitionDetails .= '<p class="mb-4"><time datetime="' . $maintenRequisition->SERVICE_DATE . '">' . $maintenRequisition->SERVICE_DATE . '</time></p>';
+        $requisitionDetails .= '</div></div>';
+        $requisitionDetails .= '<div class="row"><div class="col-12"><div class="table-responsive"><table class="table my-4">';
+        $requisitionDetails .= '<thead>
+        <tr>
+            <th class="px-0 bg-transparent border-top-0">
+                <span class="h6 font-weight-bold">Item Type</span>
+            </th>
+            <th class="px-0 bg-transparent border-top-0">
+                <span class="h6 font-weight-bold">Item Name</span>
+            </th>
+            <th class="px-0 bg-transparent border-top-0">
+                <span class="h6 font-weight-bold">Item Unit</span>
+            </th>
+            <th class="px-0 bg-transparent border-top-0">
+                <span class="h6 font-weight-bold">Unit Price</span>
+            </th>
+            <th class="px-0 bg-transparent border-top-0 text-right">
+                <span class="h6 font-weight-bold">Total Amount</span>
+            </th>
+        </tr>
+    </thead>';
+
+        $requisitionDetails .= '<tbody>';
+        foreach ($requestedItems as $item) {
+            $requisitionDetails .= '<tr>';
+            $requisitionDetails .= '<td class="px-0">' . $item->ITEM_TYPE_NAME . '</td>';
+            $requisitionDetails .= '<td class="px-0 text-center">' . $item->ITEM_NAME . '</td>';
+            $requisitionDetails .= '<td class="px-0 text-center">' . $item->UNITS . '</td>';
+            $requisitionDetails .= '<td class="px-0 text-center">' . $item->UNIT_PRICE . '</td>';
+            $requisitionDetails .= '<td class="px-0 text-right">' . $item->TOTAL_AMOUNT . '</td>';
+            $requisitionDetails .= '</tr>';
+        }
+        $requisitionDetails .= '<tr><td class="px-0 border-top border-top-2"><strong>Total Amount</strong></td>';
+        $requisitionDetails .= ' <td colspan="4" class="px-0 text-right border-top border-top-2"><span class="fs-16 font-weight-600">';
+        $requisitionDetails .=  $maintenRequisition->TOTAL_AMOUNT . '</span></td></tr>';
+        $requisitionDetails .= '</tbody>';
+        $requisitionDetails .= '</table>';
+
+        $requisitionDetails .= '</div></div></div></div></div></div>';
+        return $requisitionDetails;
     }
 
     /**

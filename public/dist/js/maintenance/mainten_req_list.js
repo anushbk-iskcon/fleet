@@ -28,6 +28,8 @@ function populateTable(table) {
                 // Fill rows in the table
                 $.each(res, function (i, data) {
                     let reqStatus = '';
+                    let editURL = editRequisitionPlaceholderURL;
+                    editURL = editURL.replace('0', data.MAINTENANCE_REQ_ID);
                     if (data.APPROVAL_STATUS == 'P')
                         reqStatus = 'Pending';
                     else if (data.APPROVAL_STATUS == 'A')
@@ -35,7 +37,7 @@ function populateTable(table) {
                     else
                         reqStatus = 'Rejected';
 
-                    let actionBtns = '<a href="javascript:void(0);" class="btn btn-success mr-1" title="Update" onclick="editInfo(' + data.MAINTENANCE_REQ_ID + ')"><i class="ti-pencil"></i></a> ';
+                    let actionBtns = '<a href="' + editURL + '" class="btn btn-success mr-1" title="Update"><i class="ti-pencil"></i></a> ';
                     actionBtns += '<a href="javascript:void(0);" class="btn btn-info mr-1" title="View" onclick="viewInfo(' + data.MAINTENANCE_REQ_ID + ')"><i class="far fa-eye"></i></a> ';
                     if (data.IS_ACTIVE == 'Y')
                         actionBtns += '<a href="javascript:void(0);" class="btn btn-danger mr-1" title="Deactivate" onclick="changeActivationstatus(' + data.MAINTENANCE_REQ_ID + ')"><i class="ti-close"></i></a> ';
@@ -58,8 +60,8 @@ function populateTable(table) {
                     table.row.add([
                         i + 1,
                         data.SERVICE_DATE,
-                        data.VEHICLE_ID,
-                        data.MAINTENANCE_TYPE,
+                        data.VEHICLE_NAME,
+                        data.MAINTENANCE_NAME,
                         data.REQUISITION_FOR,
                         reqStatus,
                         actionBtns
@@ -73,9 +75,24 @@ function populateTable(table) {
         }
     });
 }
-function editInfo(reqId) { }
 
-function viewInfo(reqId) { }
+function viewInfo(reqId) {
+    $.ajax({
+        url: getRequisitionDetailsURL,
+        type: 'post',
+        data: {
+            mainten_req_id: reqId,
+            _token: csrfToken
+        },
+        success: function (res) {
+            $("#viewInfo .modal-body").empty().html(res);
+            $("#viewInfo").modal('show');
+        },
+        error: function (jqXHR, status, err) {
+            console.log("Error fetching details");
+        }
+    });
+}
 
 function changeStatus2(approvalStatus, requisitionId) {
     // approvalStatus 1 = Accept (Approve), 2 = Deny (Reject)

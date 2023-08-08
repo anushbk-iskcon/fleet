@@ -36,7 +36,7 @@
         <div class="card mb-3">
             <div class="card-header p-2">
                 <h6 class="fs-17 font-weight-600 mb-0">
-                    Add Maintenance
+                    Update Maintenance Requisition
                     <small class="float-right">
                         <a href="{{route('maintenance-requisitions')}}" class="btn btn-primary btn-md">
                             <i class="ti-arrow-circle-left" aria-hidden="true"></i>
