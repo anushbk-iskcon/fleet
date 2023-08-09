@@ -52,52 +52,59 @@ $(document).ready(function () {
         },
         submitHandler: function (form, ev) {
             ev.preventDefault();
+            form.submit();
         }
     });
 
 });
 
 function deleteRow(t) {
-    var a = $("#purchaseTable > tbody > tr").length;
-    if (1 == a) alert("Minimum 1 item required.");
-    else {
-        var e = t.parentNode.parentNode;
-        e.parentNode.removeChild(e),
-            calculateSum();
+    let itemId = $(t).find('input[name*="item_id"]').val();
+    console.log(itemId);
+    if (itemId != undefined || itemId != '') {
+        if (confirm("Are you sure you want to delete this item?")) {
+            var a = $("#purchaseTable > tbody > tr").length;
+            if (1 == a) alert("Minimum 1 item required.");
+            else {
+                var e = t.parentNode.parentNode;
+                e.parentNode.removeChild(e),
+                    calculateSum();
 
-        var current = 0;
-        $("#purchaseTable > tbody > tr td input.product_name").each(function () {
-            current++;
-            $(this).attr('id', 'product_name_' + current);
-            $(this).attr('onkeypress', 'getexpenceitem(' + current + ');')
-        });
-        var it = 0;
-        $("#purchaseTable > tbody > tr td input.pitem").each(function () {
-            it++;
-            $(this).attr('id', 'itemname' + it);
-            $(this).attr('onkeypress', 'getpitem(' + it + ');')
-        });
-        var common_avail_qnt = 0;
-        $("#purchaseTable > tbody > tr td input.pqty").each(function () {
-            common_avail_qnt++;
-            $(this).attr('class', 'form-control text-right pqty store_cal_' + common_avail_qnt);
-            $(this).attr('id', 'cartoon_' + common_avail_qnt);
-            $(this).attr('onkeyup', 'calculate_store(' + common_avail_qnt + ');');
-            $(this).attr('onchange', 'calculate_store(' + common_avail_qnt + ');');
-        });
-        var common_qnt = 0;
-        $("#purchaseTable > tbody > tr td input.product_rate").each(function () {
-            common_qnt++;
-            $(this).attr('class', 'form-control product_rate text-right product_rate_' + common_qnt);
-            $(this).attr('id', 'product_rate_' + common_qnt);
-            $(this).attr('onkeyup', 'calculate_store(' + common_qnt + ');');
-            $(this).attr('onchange', 'calculate_store(' + common_qnt + ');');
-        });
-        var common_total_price = 0;
-        $("#purchaseTable > tbody > tr td input.total_price").each(function () {
-            common_total_price++;
-            $(this).attr('id', 'total_price_' + common_total_price);
-        });
+                var current = 0;
+                $("#purchaseTable > tbody > tr td input.product_name").each(function () {
+                    current++;
+                    $(this).attr('id', 'product_name_' + current);
+                    $(this).attr('onkeypress', 'getexpenceitem(' + current + ');')
+                });
+                var it = 0;
+                $("#purchaseTable > tbody > tr td input.pitem").each(function () {
+                    it++;
+                    $(this).attr('id', 'itemname' + it);
+                    $(this).attr('onkeypress', 'getpitem(' + it + ');')
+                });
+                var common_avail_qnt = 0;
+                $("#purchaseTable > tbody > tr td input.pqty").each(function () {
+                    common_avail_qnt++;
+                    $(this).attr('class', 'form-control text-right pqty store_cal_' + common_avail_qnt);
+                    $(this).attr('id', 'cartoon_' + common_avail_qnt);
+                    $(this).attr('onkeyup', 'calculate_store(' + common_avail_qnt + ');');
+                    $(this).attr('onchange', 'calculate_store(' + common_avail_qnt + ');');
+                });
+                var common_qnt = 0;
+                $("#purchaseTable > tbody > tr td input.product_rate").each(function () {
+                    common_qnt++;
+                    $(this).attr('class', 'form-control product_rate text-right product_rate_' + common_qnt);
+                    $(this).attr('id', 'product_rate_' + common_qnt);
+                    $(this).attr('onkeyup', 'calculate_store(' + common_qnt + ');');
+                    $(this).attr('onchange', 'calculate_store(' + common_qnt + ');');
+                });
+                var common_total_price = 0;
+                $("#purchaseTable > tbody > tr td input.total_price").each(function () {
+                    common_total_price++;
+                    $(this).attr('id', 'total_price_' + common_total_price);
+                });
+            }
+        }
     }
 }
 
@@ -125,7 +132,9 @@ function addmore(divName) {
 
 
         newdiv.innerHTML =
-            '<td class="span3 supplier" style="position:relative"><input type="text" name="product_name[]" required class="form-control product_name productSelection" onkeypress="getexpenceitem(' +
+            '<td class="span3 supplier" style="position:relative">' +
+            '<input type="hidden" name="item_id[]" value="">' +
+            '<input type="text" name="product_name[]" required class="form-control product_name productSelection" onkeypress="getexpenceitem(' +
             count + ');" placeholder="Item Type Name" id="product_name_' + count + '" tabindex="' + tab1 +
             '" autocomplete="off" > <input type="hidden" class="autocomplete_hidden_value product_id_' + count +
             '" name="product_id[]" id="SchoolHiddenId"/>  <input type="hidden" class="sl" value="' + count +
@@ -134,7 +143,7 @@ function addmore(divName) {
             ')"></td><td class="text-right"><input type="number" name="product_quantity[]" tabindex="' + tab2 +
             '" required  id="cartoon_' + count + '" class="form-control pqty text-right store_cal_' + count +
             '" onkeyup="calculate_store(' + count + ');" onchange="calculate_store(' + count +
-            ');" placeholder="0.00" value="" min="0"/>  </td><td class="test"><input type="number" name="product_rate[]" onkeyup="calculate_store(' +
+            ');" placeholder="0.00" value="" min="0"/>  </td><td class="test text-right"><input type="number" name="product_rate[]" onkeyup="calculate_store(' +
             count + ');" onchange="calculate_store(' + count + ');" required id="product_rate_' + count +
             '" class="form-control product_rate product_rate_' + count +
             ' text-right" placeholder="0.00" value="" min="0" tabindex="' + tab3 +
@@ -144,7 +153,7 @@ function addmore(divName) {
         document.getElementById(divName).appendChild(newdiv);
         document.getElementById(tabin).focus();
         document.getElementById("add_invoice_item").setAttribute("tabindex", tab5);
-        document.getElementById("add_purchase").setAttribute("tabindex", tab6);
+        document.getElementById("update_purchase").setAttribute("tabindex", tab6);
 
         count++;
 

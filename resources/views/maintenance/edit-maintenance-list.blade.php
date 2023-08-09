@@ -46,17 +46,19 @@
                 </h6>
             </div>
             <div class="card-body">
-                <form action="" id="editMaintenRequisitionForm" class="row" method="post" accept-charset="utf-8">
+                <form action="{{route('maintenance-requisitions.update')}}" id="editMaintenRequisitionForm" class="row" method="post" accept-charset="utf-8">
+                    @csrf
                     <div class="col-md-12 col-lg-12">
+                        <input type="hidden" name="mainten_req_id" value="{{$maintenReqDetails['MAINTENANCE_REQ_ID']}}">
                         <div class="form-group row">
                             <label for="req_type" class="col-sm-2 col-form-label">Requisition Type <i class="text-danger">*</i> </label>
                             <div class="col-sm-7">
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" id="maintenance" name="req_type" class="custom-control-input" value="Maintenance">
+                                    <input type="radio" id="maintenance" name="req_type" class="custom-control-input" value="M" @if($maintenReqDetails['REQUISITION_TYPE']=='M' ) checked @endif>
                                     <label class="custom-control-label" for="maintenance">Maintenance</label>
                                 </div>
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" id="general" name="req_type" class="custom-control-input" value="General">
+                                    <input type="radio" id="general" name="req_type" class="custom-control-input" value="G" @if($maintenReqDetails['REQUISITION_TYPE']=='G' ) checked @endif>
                                     <label class="custom-control-label" for="general">General</label>
                                 </div>
                             </div>
@@ -105,7 +107,11 @@
                                 <select class="form-control basic-single" required name="vehicle_name" id="vehicle_name">
                                     <option value selected="selected">Please Select One</option>
                                     @foreach($vehicles as $vehicle)
+                                    @if($maintenReqDetails['VEHICLE_ID'] == $vehicle['VEHICLE_ID'])
+                                    <option value="{{$vehicle['VEHICLE_ID']}}" selected>{{$vehicle['VEHICLE_NAME']}}</option>
+                                    @else
                                     <option value="{{$vehicle['VEHICLE_ID']}}">{{$vehicle['VEHICLE_NAME']}}</option>
+                                    @endif
                                     @endforeach
                                 </select>
                             </div>
@@ -116,7 +122,11 @@
                                 <select class="form-control basic-single" required name="mainten_type" id="mainten_type">
                                     <option value selected="selected">Please Select One</option>
                                     @foreach($maintenanceTypes as $maintenanceType)
+                                    @if($maintenReqDetails['MAINTENANCE_TYPE'] == $maintenanceType['MAINTENANCE_ID'])
+                                    <option value="{{$maintenanceType['MAINTENANCE_ID']}}" selected>{{$maintenanceType['MAINTENANCE_NAME']}}</option>
+                                    @else
                                     <option value="{{$maintenanceType['MAINTENANCE_ID']}}">{{$maintenanceType['MAINTENANCE_NAME']}}</option>
+                                    @endif
                                     @endforeach
                                 </select>
                             </div>
@@ -124,13 +134,22 @@
                         <div class="form-group row">
                             <label for="mainten_service_name" class="col-sm-5 col-form-label">Maintenance Service Name <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="mainten_service_name" required class="form-control" type="text" placeholder="Maintenance Service Name" id="mainten_service_name">
+                                <select class="form-control basic-single" required name="mainten_service_name" id="mainten_service_name">
+                                    <option value selected="selected">Please Select One</option>
+                                    @foreach($maintenanceServices as $maintenanceService)
+                                    @if($maintenReqDetails['MAINTENANCE_SERVICE_NAME'] == $maintenanceService['MAINTENANCE_SERVICE_ID'])
+                                    <option value="{{$maintenanceService['MAINTENANCE_SERVICE_ID']}}" selected>{{$maintenanceService['MAINTENANCE_SERVICE_NAME']}}</option>
+                                    @else
+                                    <option value="{{$maintenanceService['MAINTENANCE_SERVICE_ID']}}">{{$maintenanceService['MAINTENANCE_SERVICE_NAME']}}</option>
+                                    @endif
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="service_date" class="col-sm-5 col-form-label">Service Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="service_date" required class="form-control newdatetimepicker" type="text" placeholder="Service Date" id="service_date">
+                                <input name="service_date" required class="form-control newdatetimepicker" type="text" placeholder="Service Date" id="service_date" value="{{$maintenReqDetails['SERVICE_DATE']}}">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -144,13 +163,13 @@
                         <div class="form-group row">
                             <label for="charge" class="col-sm-5 col-form-label">Charge </label>
                             <div class="col-sm-7">
-                                <input name="charge" class="form-control" type="text" placeholder="Charge" id="charge">
+                                <input name="charge" class="form-control" type="text" placeholder="Charge" id="charge" value="{{$maintenReqDetails['CHARGE']}}">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="charge_bear_by" class="col-sm-5 col-form-label">Charge Bear By </label>
                             <div class="col-sm-7">
-                                <input name="charge_bear_by" class="form-control" type="text" placeholder="Charge Bear By" id="charge_bear_by">
+                                <input name="charge_bear_by" class="form-control" type="text" placeholder="Charge Bear By" id="charge_bear_by" value="{{$maintenReqDetails['CHARGE_BEAR_BY']}}">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -159,7 +178,11 @@
                                 <select class="form-control basic-single" required name="priority" id="priority">
                                     <option value selected="selected">Please Select One</option>
                                     @foreach($priorities as $priority)
+                                    @if($maintenReqDetails['PRIORITY'] == $priority['PRIORITY_ID'])
+                                    <option value="{{$priority['PRIORITY_ID']}}" selected>{{$priority['PRIORITY_NAME']}}</option>
+                                    @else
                                     <option value="{{$priority['PRIORITY_ID']}}">{{$priority['PRIORITY_NAME']}}</option>
+                                    @endif
                                     @endforeach
                                 </select>
                             </div>
@@ -167,7 +190,7 @@
                         <div class="form-group row">
                             <label for="is_add_schedule" class="col-sm-5 col-form-label"> </label>
                             <div class="col-sm-7 checkbox checkbox-primary">
-                                <input id="checkbox2" type="checkbox" name="is_active">
+                                <input id="checkbox2" type="checkbox" name="is_add_schedule" @if($maintenReqDetails['IS_SCHEDULED']=='Y' ) checked @endif>
                                 <label for="checkbox2">Is Add Schedule</label>
                             </div>
                         </div>
@@ -190,25 +213,31 @@
                                 </tr>
                             </thead>
                             <tbody id="addPurchaseItem">
+                                @php $i = 1; @endphp
+                                {{-- $i index for each item --}}
+                                @foreach($requestedItems as $item)
                                 <tr>
                                     <td class="span3 supplier">
-                                        <input type="text" name="product_name[]" required class="form-control product_name" onkeypress="getexpenceitem(1);" placeholder="Item Type Name" id="product_name_1" tabindex="5">
+                                        <input type="hidden" name="item_id[]" id="itemId{{$i}}" value="{{$item->ITEM_ID}}">
+                                        <input type="text" name="product_name[]" required class="form-control product_name" onkeypress="getexpenceitem({{$i}});" placeholder="Item Type Name" id="product_name_{{$i}}" value="{{$item->ITEM_TYPE_NAME}}" tabindex="5">
                                     </td>
-                                    <td class="wt position-relative"><input type="text" id="itemname_1" class="form-control text-right pitem" name="pitem[]" onkeypress="getpitem(1)">
-                                    </td>
-                                    <td class="text-right">
-                                        <input type="number" required name="product_quantity[]" id="cartoon_1" class="form-control text-right pqty store_cal_1" onkeyup="calculate_store(1);" onchange="calculate_store(1);" placeholder="0.00" value min="0" tabindex="6">
+                                    <td class="wt position-relative"><input type="text" id="itemname_{{$i}}" class="form-control text-right pitem" name="pitem[]" value="{{$item->ITEM_NAME}}" onkeypress="getpitem({{$i}})">
                                     </td>
                                     <td class="text-right">
-                                        <input type="number" required name="product_rate[]" onkeyup="calculate_store(1);" onchange="calculate_store(1);" id="product_rate_1" class="form-control product_rate product_rate_1 text-right" placeholder="0.00" value min="0" tabindex="7">
+                                        <input type="number" required name="product_quantity[]" id="cartoon_{{$i}}" class="form-control text-right pqty store_cal_{{$i}}" onkeyup="calculate_store({{$i}});" onchange="calculate_store({{$i}});" placeholder="0.00" value="{{$item->UNITS}}" min="0" tabindex="6">
+                                    </td>
+                                    <td class="text-right">
+                                        <input type="number" required name="product_rate[]" value="{{$item->UNIT_PRICE}}" onkeyup="calculate_store({{$i}});" onchange="calculate_store({{$i}});" id="product_rate_{{$i}}" class="form-control product_rate product_rate_{{$i}} text-right" placeholder="0.00" min="0" tabindex="7">
                                     </td>
                                     <td class="test">
-                                        <input class="form-control total_price text-right" type="text" name="total_price[]" id="total_price_1" value="0.00" readonly="readonly">
+                                        <input class="form-control total_price text-right" type="text" name="total_price[]" id="total_price_{{$i}}" value="{{$item->TOTAL_AMOUNT}}" readonly="readonly">
                                     </td>
                                     <td>
                                         <button class="btn btn-danger red" type="button" value="Delete" onclick="deleteRow(this)" tabindex="8">Delete</button>
                                     </td>
                                 </tr>
+                                @php $i++; @endphp
+                                @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>
@@ -217,12 +246,12 @@
                                     </td>
                                     <td class="text-right"><b>Grand Total:</b></td>
                                     <td class="text-right">
-                                        <input type="text" id="grandTotal" class="text-right form-control" name="grand_total_price" value="0.00" readonly="readonly">
+                                        <input type="text" id="grandTotal" class="text-right form-control" name="grand_total_price" value="{{$maintenReqDetails['TOTAL_AMOUNT']}}" readonly="readonly">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="5" class="text-right">
-                                        <button type="submit" id="add_purchase" class="btn btn-success w-md m-b-5">Add</button>
+                                        <button type="submit" id="update_purchase" class="btn btn-success w-md m-b-5">Save</button>
                                     </td>
                                 </tr>
                             </tfoot>

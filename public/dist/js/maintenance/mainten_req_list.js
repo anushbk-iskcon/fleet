@@ -5,6 +5,16 @@ $(document).ready(function () {
         populateTable(maintenReqTable);
     });
 
+    $("#btn-reset").click(function () {
+        $("#mainten_type").val("");
+        $("#vehicle").val("");
+        $("#status").val("");
+        $("#service_fr").val("");
+        $("#from").val("");
+        $("#to").val("");
+        populateTable(maintenReqTable);
+    });
+
     populateTable(maintenReqTable);
 });
 
@@ -39,10 +49,10 @@ function populateTable(table) {
 
                     let actionBtns = '<a href="' + editURL + '" class="btn btn-success mr-1" title="Update"><i class="ti-pencil"></i></a> ';
                     actionBtns += '<a href="javascript:void(0);" class="btn btn-info mr-1" title="View" onclick="viewInfo(' + data.MAINTENANCE_REQ_ID + ')"><i class="far fa-eye"></i></a> ';
-                    if (data.IS_ACTIVE == 'Y')
-                        actionBtns += '<a href="javascript:void(0);" class="btn btn-danger mr-1" title="Deactivate" onclick="changeActivationstatus(' + data.MAINTENANCE_REQ_ID + ')"><i class="ti-close"></i></a> ';
-                    else
-                        actionBtns += '<a href="javascript:void(0);" class="btn btn-danger mr-1" title="Activate" onclick="changeActivationstatus(' + data.MAINTENANCE_REQ_ID + ')"><i class="ti-close"></i></a> ';
+                    // if (data.IS_ACTIVE == 'Y')
+                    //     actionBtns += '<a href="javascript:void(0);" class="btn btn-danger mr-1" title="Deactivate" onclick="changeActivationstatus(' + data.MAINTENANCE_REQ_ID + ')"><i class="ti-close"></i></a> ';
+                    // else
+                    //     actionBtns += '<a href="javascript:void(0);" class="btn btn-danger mr-1" title="Activate" onclick="changeActivationstatus(' + data.MAINTENANCE_REQ_ID + ')"><i class="ti-close"></i></a> ';
 
                     let approvalBtnsContainer = `<div class="" style="display:inline-block;">
                                                 <div class="actions" style="display:inline-block;">
@@ -89,7 +99,7 @@ function viewInfo(reqId) {
             $("#viewInfo").modal('show');
         },
         error: function (jqXHR, status, err) {
-            console.log("Error fetching details");
+            toastr.error("Error fetching details. Please try again");
         }
     });
 }

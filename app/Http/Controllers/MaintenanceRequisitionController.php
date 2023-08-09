@@ -144,9 +144,9 @@ class MaintenanceRequisitionController extends Controller
 
         // To return successCode and message/data
         if ($entrySaved && $itemsSaved) {
-            return redirect()->route('maintenance-requisitions')->with('message', "Requisition details successfully saved");
+            return redirect()->route('maintenance-requisitions')->with('message', "Requisition details successfully added");
         } else {
-            return back()->withInput()->with('message', 'Could not save requisition details. Please try again');
+            return back()->withInput()->with('message', 'Could not add requisition details. Please try again');
         }
     }
 
@@ -176,7 +176,8 @@ class MaintenanceRequisitionController extends Controller
         // dd($maintenRequisition);
 
         // Get Details of Items connected to requisition from Items Table
-        $requestedItems = DB::table('maintenance_req_items')->where('MAINTENANCE_REQ_ID', $mainten_req_id)->get();
+        $requestedItems = DB::table('maintenance_req_items')->where('MAINTENANCE_REQ_ID', $mainten_req_id)->where('IS_ACTIVE', 'Y')
+            ->get();
         // dd($requestedItems);
 
         // Details returned in Invoice Format to client
@@ -226,13 +227,13 @@ class MaintenanceRequisitionController extends Controller
                 <span class="h6 font-weight-bold">Total Amount</span>
             </th>
         </tr>
-    </thead>';
+        </thead>';
 
         $requisitionDetails .= '<tbody>';
         foreach ($requestedItems as $item) {
             $requisitionDetails .= '<tr>';
             $requisitionDetails .= '<td class="px-0">' . $item->ITEM_TYPE_NAME . '</td>';
-            $requisitionDetails .= '<td class="px-0 text-center">' . $item->ITEM_NAME . '</td>';
+            $requisitionDetails .= '<td class="px-0">' . $item->ITEM_NAME . '</td>';
             $requisitionDetails .= '<td class="px-0 text-center">' . $item->UNITS . '</td>';
             $requisitionDetails .= '<td class="px-0 text-center">' . $item->UNIT_PRICE . '</td>';
             $requisitionDetails .= '<td class="px-0 text-right">' . $item->TOTAL_AMOUNT . '</td>';
@@ -251,13 +252,40 @@ class MaintenanceRequisitionController extends Controller
     /**
      * Show page to edit details of specified Maintenance Requisition
      */
-    public function edit(Request $request)
+    public function edit(Request $request, $requisition)
     {
+        // Get master data
         $maintenanceTypes = MaintenanceType::all();
         $maintenanceServices = MaintenanceService::all();
         $vehicles = Vehicle::where('IS_ACTIVE', 'Y')->get();
         $priorities = Priority::all();
-        return view('maintenance.edit-maintenance-list', compact('maintenanceTypes', 'maintenanceServices', 'vehicles', 'priorities'));
+
+        // Get requisition details
+        $maintenReqDetails = MaintenanceRequisition::where('MAINTENANCE_REQ_ID', $requisition)
+            ->join('vehicles', 'maintenance_requisitions.VEHICLE_ID', '=', 'vehicles.VEHICLE_ID')
+            ->join('mstr_maintenance', 'maintenance_requisitions.MAINTENANCE_TYPE', '=', 'mstr_maintenance.MAINTENANCE_ID')
+            ->join('maintenance_services', 'maintenance_requisitions.MAINTENANCE_SERVICE_NAME', '=', 'maintenance_services.MAINTENANCE_SERVICE_ID')
+            ->join('mstr_priority', 'maintenance_requisitions.PRIORITY', '=', 'mstr_priority.PRIORITY_ID')
+            ->select(
+                'maintenance_requisitions.*',
+                'vehicles.VEHICLE_NAME as VEHICLE_NAME',
+                'mstr_maintenance.MAINTENANCE_NAME as MAINTENANCE_NAME',
+                'maintenance_services.MAINTENANCE_SERVICE_NAME as SERVICE_NAME',
+                'mstr_priority.PRIORITY_NAME as REQ_PRIORITY'
+            )
+            ->first();
+
+        // Get details of items connected to requisition
+        $requestedItems = DB::table('maintenance_req_items')->where('MAINTENANCE_REQ_ID', $requisition)->where('IS_ACTIVE', 'Y')->get();
+
+        return view('maintenance.edit-maintenance-list', compact(
+            'maintenanceTypes',
+            'maintenanceServices',
+            'vehicles',
+            'priorities',
+            'maintenReqDetails',
+            'requestedItems'
+        ));
     }
 
     /**
@@ -268,7 +296,7 @@ class MaintenanceRequisitionController extends Controller
         $mainten_req_id = $request->mainten_req_id;
         $maintenRequisition = MaintenanceRequisition::find($mainten_req_id);
 
-        $maintenRequisition->REQUISITION_TYPE = $request->req_type;
+        $maintenRequisition->REQUISITION_TYPE = $request->req_type ?? "M";
         $maintenRequisition->REQUISITION_FOR = $request->requested_by;
         $maintenRequisition->VEHICLE_ID = $request->vehicle_name;
         $maintenRequisition->MAINTENANCE_TYPE = $request->mainten_type;
@@ -276,13 +304,70 @@ class MaintenanceRequisitionController extends Controller
         $maintenRequisition->SERVICE_DATE = $request->service_date;
         $maintenRequisition->CHARGE = $request->charge ?? "";
         $maintenRequisition->CHARGE_BEAR_BY = $request->charge_bear_by ?? "";
-        $maintenRequisition->TOTAL_AMOUNT = $request->total_amount; // Or use session stored value
+        $maintenRequisition->TOTAL_AMOUNT = $request->grand_total_price; // Or use session stored value
         $maintenRequisition->PRIORITY = $request->priority;
         $maintenRequisition->IS_SCHEDULED = $request->is_add_schedule ? 'Y' : 'N';
+
+        // Get items currently connected to Requisition
+        $prevItemIds = DB::table('maintenance_req_items')->where('MAINTENANCE_REQ_ID', $mainten_req_id)->pluck('ITEM_ID');
 
         $maintenReqUpdated = $maintenRequisition->save(); // Set to Boolean based on whether entry was saved
 
         // Update items connected to Requisition
+        $itemsUpdated = false;
+        $items = $request->product_name;
+        $itemIds = $request->item_id;
+        $item_names = $request->pitem;
+        $qty = $request->product_quantity;
+        $rates = $request->product_rate;
+        $total_prices = $request->total_price;
+
+        $num_items = count($items);
+        // Update any items where details were changed
+        for ($i = 0; $i < $num_items; $i++) {
+            if ($itemIds[$i] != '' || $itemIds[$i] != null) {
+                // If ID for index (form row) is not null, that entry currently exists in DB table, has to be updated
+                DB::table('maintenance_req_items')->where('ITEM_ID', $itemIds[$i])
+                    ->update([
+                        'ITEM_TYPE_NAME' => $items[$i],
+                        'ITEM_NAME' => $item_names[$i],
+                        'UNITS' => $qty[$i],
+                        'UNIT_PRICE' => $rates[$i],
+                        'TOTAL_AMOUNT' => $total_prices[$i],
+                        'MODIFIED_BY' => Auth::id(),
+                        'MODIFIED_ON' => date('Y-m-d H:i:s')
+                    ]);
+            } else {
+                // If ID for Item doesn't exist in DB table, it was newly added in form, should be inserted to DB
+                DB::table('maintenance_req_items')->insert([
+                    'MAINTENANCE_REQ_ID' => $mainten_req_id,
+                    'ITEM_TYPE_NAME' => $items[$i],
+                    'ITEM_NAME' => $item_names[$i],
+                    'UNITS' => $qty[$i],
+                    'UNIT_PRICE' => $rates[$i],
+                    'TOTAL_AMOUNT' => $total_prices[$i],
+                    'CREATED_BY' => Auth::id(),
+                    'CREATED_ON' => date('Y-m-d H:i:s')
+                ]);
+            }
+        }
+
+        // Check if any items were removed from the form for this requisition, and deactivate them in DB
+        # prevItemsIds has item IDs connected to the requisition before update
+        foreach ($prevItemIds as $prevItemId) {
+            if (!in_array($prevItemId, $itemIds)) {
+                // In case the item ID in table is not in form submitted data, item has been removed, deactivate it in table
+                DB::table('maintenance_req_items')->where('ITEM_ID', $prevItemId)
+                    ->update([
+                        'IS_ACTIVE' => 'N',
+                        'MODIFIED_BY' => Auth::id(),
+                        'MODIFIED_ON' => date('Y-m-d H:i:s')
+                    ]);
+            }
+        }
+
+        // Return to Maintenance Requisitions Listing if update successful
+        return redirect()->route('maintenance-requisitions')->with('message', "Requisition details successfully updated");
     }
 
     /**
@@ -290,14 +375,15 @@ class MaintenanceRequisitionController extends Controller
      */
     public function changeActivationStatus(Request $request)
     {
-        $mainten_req_id = $request->mainten_req_id;
-        $maintenRequisition = MaintenanceRequisition::find($mainten_req_id);
+        # Uncomment code below if Activate / De-activate feature is required
+        // $mainten_req_id = $request->mainten_req_id;
+        // $maintenRequisition = MaintenanceRequisition::find($mainten_req_id);
 
-        $currentStatus = $maintenRequisition->IS_ACTIVE;
-        $maintenRequisition->IS_ACTIVE = $currentStatus == 'Y' ? 'N' : 'Y';
-        $maintenRequisition->MODIFIED_BY = Auth::id();
-        // Save changes
-        return response($maintenRequisition, 200);
+        // $currentStatus = $maintenRequisition->IS_ACTIVE;
+        // $maintenRequisition->IS_ACTIVE = $currentStatus == 'Y' ? 'N' : 'Y';
+        // $maintenRequisition->MODIFIED_BY = Auth::id();
+        // // Save changes
+        // return response($maintenRequisition, 200);
     }
 
     /**
