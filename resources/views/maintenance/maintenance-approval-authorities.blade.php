@@ -2,6 +2,20 @@
 
 @section('title', 'Maintenance Approval Authorities')
 
+@section('css-content')
+<style>
+    div.error {
+        font-size: .8em;
+        color: #f66;
+    }
+
+
+    select.error~.select2 .select2-selection {
+        border: 1px solid #f99;
+    }
+</style>
+@endsection
+
 @section('breadcrumb-content')
 <li class="breadcrumb-item"><a href="{{url('home')}}">Home</a></li>
 <li class="breadcrumb-item active" id="moduleName">Maintenance</li>
@@ -23,64 +37,53 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <!-- form action="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/add_approval" -->
-                <form action="" id="emp_form" class="row" method="post" accept-charset="utf-8">
+                <form action="" id="addMaintenAuthorityForm" class="row" method="post" accept-charset="utf-8">
                     <div class="col-md-12 col-lg-12">
                         <div class="form-group row">
                             <label for="req_type" class="col-sm-3 col-form-label">Requisition Type <i class="text-danger">*</i></label>
                             <div class="col-sm-5">
-                                <select class="form-control basic-single" required="" name="req_type" id="req_type">
-                                    <option value="" selected="selected">Please Select One</option>
-                                    <option value="Re-Fueling Requisition ">Re-Fueling Requisition </option>
-                                    <option value="Maintenance Requisition">Maintenance Requisition </option>
-                                    <option value="Vehicle Requisition">Vehicle Requisition </option>
+                                <select class="form-control" required="" name="req_type" id="req_type" disabled>
+                                    <option value="">Please Select One</option>
+                                    @foreach($reqTypes as $reqType)
+                                    <option value="{{$reqType['REQUISITION_TYPE_ID']}}" @if($reqType['REQUISITION_TYPE_ID']==2) selected @endif>
+                                        {{$reqType['REQUISITION_TYPE_NAME']}}
+                                    </option>
+                                    @endforeach
                                 </select>
+                                {{-- For Sending Requisition Type since select filed above is disabled to make it unchangeable --}}
+                                <input type="hidden" name="req_type" value="2">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="req_phase" class="col-sm-3 col-form-label">Requisition Phase <i class="text-danger">*</i></label>
-                            <div class="col-sm-2 checkbox checkbox-primary">
-                                <input id="checkbox1" type="checkbox" name="phase[]" value="P">
-                                <label for="checkbox1">Pending</label>
-                            </div>
-                            <div class="col-sm-2 checkbox checkbox-primary">
-                                <input id="checkbox2" type="checkbox" name="phase[]" value="R">
-                                <label for="checkbox2">Rejected</label>
-                            </div>
-                            <div class="col-sm-2 checkbox checkbox-primary">
-                                <input id="checkbox3" type="checkbox" name="phase[]" value="A">
-                                <label for="checkbox3">Approved</label>
+                            <div class="col-sm-9">
+                                @foreach($phases as $phase)
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input id="radio{{$phase['PHASE_ID']}}" type="radio" class="custom-control-input" name="phase" value="{{$phase['PHASE_ID']}}">
+                                    <label class="custom-control-label" for="radio{{$phase['PHASE_ID']}}">{{$phase['PHASE_NAME']}}</label>
+                                </div>
+                                @endforeach
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="department" class="col-sm-3 col-form-label">Department <i class="text-danger">*</i></label>
                             <div class="col-sm-5">
-                                <select class="form-control basic-single" required="" name="department" id="department" onchange="getemployee()">
+                                <select class="form-control basic-single" required="" name="department" id="department" onchange="loadEmployees()">
                                     <option value="" selected="selected">Please Select One</option>
-                                    <option value="Administration">
-                                        Administration</option>
-                                    <option value="Computer">
-                                        Computer</option>
-                                    <option value="Testing">
-                                        Testing</option>
-                                    <option value="Planning department">
-                                        Planning department</option>
-                                    <option value="mmkmk">
-                                        mmkmk</option>
-                                    <option value="Technical">
-                                        Technical</option>
-                                    <option value="Marketing & Sales">
-                                        Marketing & Sales</option>
-                                    <option value="Human Resource">
-                                        Human Resource</option>
-                                    <option value="Accounting">
-                                        Accounting</option>
+                                    @foreach($departments['data'] as $department)
+                                    <option value="{{$department['deptCode'] . '|' . $department['deptName']}}">
+                                        {{$department['deptName']}}
+                                    </option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="demo" class="col-sm-3 col-form-label">&nbsp;</label>
-                            <div class="col-sm-9" id="mtable">
+                            <label for="demo" class="col-sm-3 col-form-label">Employee <i class="text-danger">*</i></label>
+                            <div class="col-sm-5" id="mtable">
+                                <select name="employee" id="employeeSelect" class="form-control basic-single" required="">
+                                    <option value="" selected>Please Select Employee</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group text-right">
@@ -201,80 +204,13 @@
                                 <td>Approved</td>
                                 <td>Administration</td>
                                 <td></td>
-                                <td><input name="url" type="hidden" id="url_24" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updateapprovalfrm"><a onclick="editinfo(24)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="#" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
+                                <td>
+                                    <input name="url" type="hidden" id="url_24" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updateapprovalfrm">
+                                <a onclick="editinfo(24)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
+                                <a href="#" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
+                            </td>
                             </tr> -->
-                            <tr role="row" class="odd">
-                                <td class="sorting_1" tabindex="0">1</td>
-                                <td>Maintenance Requisition</td>
-                                <td>Approved</td>
-                                <td>Administration</td>
-                                <td></td>
-                                <td><a onclick="editinfo(24)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="#" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
-                            <tr role="row" class="even">
-                                <td class="sorting_1" tabindex="0">2</td>
-                                <td>Maintenance Requisition</td>
-                                <td>Reject</td>
-                                <td>ACCOUNTING</td>
-                                <td>Test Employee</td>
-                                <td><a onclick="editinfo(25)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="#" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="sorting_1" tabindex="0">3</td>
-                                <td>Maintenance Requisition</td>
-                                <td>Approved</td>
-                                <td>Human Resource</td>
-                                <td></td>
-                                <td><a onclick="editinfo(31)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="#" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
-                            <tr role="row" class="even">
-                                <td class="sorting_1" tabindex="0">4</td>
-                                <td>Maintenance Requisition</td>
-                                <td>Pending,Reject,Approved</td>
-                                <td>Technical</td>
-                                <td>Ramkrishna</td>
-                                <td><a onclick="editinfo(36)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="36" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="sorting_1" tabindex="0">5</td>
-                                <td>Maintenance Requisition</td>
-                                <td>Approved</td>
-                                <td>Marketing &amp; Sales</td>
-                                <td></td>
-                                <td><a onclick="editinfo(39)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="39" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
-                            <tr role="row" class="even">
-                                <td class="sorting_1" tabindex="0">6</td>
-                                <td>Maintenance Requisition</td>
-                                <td>Approved</td>
-                                <td>Planning department</td>
-                                <td></td>
-                                <td><a onclick="editinfo(41)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="41" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="sorting_1" tabindex="0">7</td>
-                                <td>Maintenance Requisition</td>
-                                <td>Pending</td>
-                                <td>Planning department</td>
-                                <td></td>
-                                <td><a onclick="editinfo(42)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="42" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
-                            <tr role="row" class="even">
-                                <td class="sorting_1" tabindex="0">8</td>
-                                <td>Maintenance Requisition</td>
-                                <td>Pending</td>
-                                <td>Human Resource</td>
-                                <td>abcde,dsfdf</td>
-                                <td><a onclick="editinfo(43)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="43" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="sorting_1" tabindex="0">9</td>
-                                <td>Maintenance Requisition</td>
-                                <td>Pending</td>
-                                <td>Planning department</td>
-                                <td></td>
-                                <td><a onclick="editinfo(45)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="45" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
+
                         </tbody>
 
                     </table> <!-- /.table-responsive -->
@@ -288,10 +224,9 @@
 <!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/approval_authority.js"></script> -->
 <script>
     // To save routes and other global variables
+    let csrfToken = "{{csrf_token()}}";
+    let loadEmployeesURL = "{{route('maintenance-approval-authorities.get-employees')}}";
 </script>
-<script>
-    $(document).ready(function() {
-        $("#authinfo").DataTable();
-    });
+<script src="{{asset('dist/js/maintenance/approval_authorities.js')}}">
 </script>
 @endsection

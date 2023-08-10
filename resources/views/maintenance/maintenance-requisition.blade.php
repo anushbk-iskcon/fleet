@@ -176,10 +176,11 @@
 @endif
 <script>
     // For storing routes and other global variables
-    getRequisitionsDataURL = "{{route('maintenance-requisitions.list')}}";
-    editRequisitionPlaceholderURL = "{{route('maintenance-requisitions.edit', ['requisition'=>'0'])}}"; // 0 in URL is replaced by ID in script
-    getRequisitionDetailsURL = "{{route('maintenance-requisitions.get-details')}}";
-    csrfToken = "{{csrf_token()}}";
+    let getRequisitionsDataURL = "{{route('maintenance-requisitions.list')}}";
+    let editRequisitionPlaceholderURL = "{{route('maintenance-requisitions.edit', ['requisition'=>'0'])}}"; // 0 in URL is replaced by ID in script
+    let getRequisitionDetailsURL = "{{route('maintenance-requisitions.get-details')}}";
+    let csrfToken = "{{csrf_token()}}";
+    let updateApprovalStatusURL = "{{route('maintenance-requisitions.change-approval-status')}}";
 </script>
 <script src="{{asset('dist/js/maintenance/mainten_req_list.js')}}">
 </script>

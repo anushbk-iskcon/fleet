@@ -48,7 +48,7 @@ function populateTable(table) {
                         reqStatus = 'Rejected';
 
                     let actionBtns = '<a href="' + editURL + '" class="btn btn-success mr-1" title="Update"><i class="ti-pencil"></i></a> ';
-                    actionBtns += '<a href="javascript:void(0);" class="btn btn-info mr-1" title="View" onclick="viewInfo(' + data.MAINTENANCE_REQ_ID + ')"><i class="far fa-eye"></i></a> ';
+                    actionBtns += '<a href="javascript:void(0);" class="btn btn-info mr-1" title="View Details" onclick="viewInfo(' + data.MAINTENANCE_REQ_ID + ')"><i class="far fa-eye"></i></a> ';
                     // if (data.IS_ACTIVE == 'Y')
                     //     actionBtns += '<a href="javascript:void(0);" class="btn btn-danger mr-1" title="Deactivate" onclick="changeActivationstatus(' + data.MAINTENANCE_REQ_ID + ')"><i class="ti-close"></i></a> ';
                     // else
@@ -59,8 +59,8 @@ function populateTable(table) {
                                                 <div class="dropdown action-item" data-toggle="dropdown">
                                                 <a href="#" class="action-item"><i class="ti-more-alt"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-right">
-                                                    <a onclick="changestatus2(1, ${data.MAINTENANCE_REQ_ID})" class="dropdown-item">Accept</a>
-                                                    <a onclick="changestatus2(2, ${data.MAINTENANCE_REQ_ID})" class="dropdown-item">Reject</a>
+                                                    <a onclick="changeStatus2(1, ${data.MAINTENANCE_REQ_ID})" class="dropdown-item">Accept</a>
+                                                    <a onclick="changeStatus2(2, ${data.MAINTENANCE_REQ_ID})" class="dropdown-item">Reject</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -72,7 +72,7 @@ function populateTable(table) {
                         data.SERVICE_DATE,
                         data.VEHICLE_NAME,
                         data.MAINTENANCE_NAME,
-                        data.REQUISITION_FOR,
+                        data.EMPLOYEE_NAME,
                         reqStatus,
                         actionBtns
                     ]);
@@ -106,4 +106,28 @@ function viewInfo(reqId) {
 
 function changeStatus2(approvalStatus, requisitionId) {
     // approvalStatus 1 = Accept (Approve), 2 = Deny (Reject)
+    console.log(approvalStatus);
+    console.log(requisitionId);
+
+    $.ajax({
+        url: updateApprovalStatusURL,
+        type: 'post',
+        data: {
+            mainten_req_id: requisitionId,
+            approval_status: approvalStatus,
+            _token: csrfToken
+        },
+        dataType: 'json',
+        success: function (res) {
+            if (res.successCode == 1) {
+                toastr.success(res.message, '', { closeButton: true });
+                populateTable($("#mainreq").DataTable());
+            } else {
+                toastr.error(res.message, '', { closeButton: true });
+            }
+        },
+        error: function (jqxhr, status, err) {
+            toastr.error("Some error occcured. Please try again", "", { closeButton: true });
+        }
+    });
 }

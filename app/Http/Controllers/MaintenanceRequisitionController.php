@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HrApi;
 use App\Models\MaintenanceRequisition;
 use App\Models\MaintenanceService;
 use App\Models\MaintenanceType;
 use App\Models\Phase;
 use App\Models\Priority;
+use App\Models\RequisitionType;
 use App\Models\Vehicle;
 use Dotenv\Util\Str;
 use Illuminate\Http\Request;
@@ -25,7 +27,15 @@ class MaintenanceRequisitionController extends Controller
         if (request()->isMethod('post')) {
             // Return list of all maintenance requisitions as JSON to populated Data Table
             $maintenance_type = $request->mainten_type;
-            $status = $request->status;
+            $status = '';
+            if ($request->status == 1)  //Based on Values in mstr_phases table
+                $status = 'P';
+            else if ($request->status == 2)
+                $status = 'A';
+            else if ($request->status == 3)
+                $status = 'R';
+            else
+                $status = null;
             $vehicle = $request->vehicle;
             $maintenance_service = $request->mainten_service;
             $serviceFromDate = $request->from;
@@ -83,7 +93,13 @@ class MaintenanceRequisitionController extends Controller
         $maintenanceServices = MaintenanceService::all();
         $vehicles = Vehicle::where('IS_ACTIVE', 'Y')->get();
         $priorities = Priority::all();
-        return view('maintenance.add-maintenance-list', compact('maintenanceTypes', 'maintenanceServices', 'vehicles', 'priorities'));
+
+        // Get Employee Names and Departments for slecting employee requisition is done for
+        $hrApi = new HrApi;
+
+        $employeeData = $hrApi->getEmployeeList(""); // No parameters sent (dept = "")
+        // dd($employeeData);
+        return view('maintenance.add-maintenance-list', compact('maintenanceTypes', 'maintenanceServices', 'vehicles', 'priorities', 'employeeData'));
     }
 
     /**
@@ -101,7 +117,14 @@ class MaintenanceRequisitionController extends Controller
         // dd($items, $qty, $rates, $qty, $total_prices, $item_names, count($items));
         $maintenRequisition = new MaintenanceRequisition;
         $maintenRequisition->REQUISITION_TYPE = $request->req_type ?? 'M';
-        $maintenRequisition->REQUISITION_FOR = $request->requested_by;
+
+        // Store both Requested By Employee ID and Employee Name:
+        # select option values are in format employeeId|employeeName
+        $requestedBy = $request->requested_by;
+        $requester = explode('|', $requestedBy);
+        $maintenRequisition->REQUISITION_FOR = $requester[0];
+        $maintenRequisition->EMPLOYEE_NAME = $requester[1];
+
         $maintenRequisition->VEHICLE_ID = $request->vehicle_name;
         $maintenRequisition->MAINTENANCE_TYPE = $request->mainten_type;
         $maintenRequisition->MAINTENANCE_SERVICE_NAME = $request->mainten_service_name;
@@ -171,14 +194,9 @@ class MaintenanceRequisitionController extends Controller
             )
             ->first();
 
-
-        // $maintenRequisition = json_decode(json_encode($maintenRequisition));
-        // dd($maintenRequisition);
-
         // Get Details of Items connected to requisition from Items Table
         $requestedItems = DB::table('maintenance_req_items')->where('MAINTENANCE_REQ_ID', $mainten_req_id)->where('IS_ACTIVE', 'Y')
             ->get();
-        // dd($requestedItems);
 
         // Details returned in Invoice Format to client
         $editURL = route('maintenance-requisitions.edit', ['requisition' => $mainten_req_id]);
@@ -278,13 +296,18 @@ class MaintenanceRequisitionController extends Controller
         // Get details of items connected to requisition
         $requestedItems = DB::table('maintenance_req_items')->where('MAINTENANCE_REQ_ID', $requisition)->where('IS_ACTIVE', 'Y')->get();
 
+        // Get employee names
+        $hrApi = new HrApi;
+        $employeeData = $hrApi->getEmployeeList(""); // No parameters sent (dept = "")
+
         return view('maintenance.edit-maintenance-list', compact(
             'maintenanceTypes',
             'maintenanceServices',
             'vehicles',
             'priorities',
             'maintenReqDetails',
-            'requestedItems'
+            'requestedItems',
+            'employeeData'
         ));
     }
 
@@ -297,7 +320,14 @@ class MaintenanceRequisitionController extends Controller
         $maintenRequisition = MaintenanceRequisition::find($mainten_req_id);
 
         $maintenRequisition->REQUISITION_TYPE = $request->req_type ?? "M";
-        $maintenRequisition->REQUISITION_FOR = $request->requested_by;
+
+        // To Store both Requested By Employee ID and Employee Name:
+        # select option values are in format employeeId|employeeName
+        $requestedBy = $request->requested_by;
+        $requester = explode('|', $requestedBy);
+        $maintenRequisition->REQUISITION_FOR = $requester[0];
+        $maintenRequisition->EMPLOYEE_NAME = $requester[1];
+
         $maintenRequisition->VEHICLE_ID = $request->vehicle_name;
         $maintenRequisition->MAINTENANCE_TYPE = $request->mainten_type;
         $maintenRequisition->MAINTENANCE_SERVICE_NAME = $request->mainten_service_name;
@@ -307,11 +337,12 @@ class MaintenanceRequisitionController extends Controller
         $maintenRequisition->TOTAL_AMOUNT = $request->grand_total_price; // Or use session stored value
         $maintenRequisition->PRIORITY = $request->priority;
         $maintenRequisition->IS_SCHEDULED = $request->is_add_schedule ? 'Y' : 'N';
-
-        // Get items currently connected to Requisition
-        $prevItemIds = DB::table('maintenance_req_items')->where('MAINTENANCE_REQ_ID', $mainten_req_id)->pluck('ITEM_ID');
+        $maintenRequisition->MODIFIED_BY = Auth::id();
 
         $maintenReqUpdated = $maintenRequisition->save(); // Set to Boolean based on whether entry was saved
+
+        // Get items currently connected to Requisition (before update)
+        $prevItemIds = DB::table('maintenance_req_items')->where('MAINTENANCE_REQ_ID', $mainten_req_id)->pluck('ITEM_ID');
 
         // Update items connected to Requisition
         $itemsUpdated = false;
@@ -394,10 +425,32 @@ class MaintenanceRequisitionController extends Controller
         $mainten_req_id = $request->mainten_req_id;
         $maintenRequisition = MaintenanceRequisition::find($mainten_req_id); // Find by Id
         // Change status based on flag value in request
+        // status = 1 => Approved, staus = 2 => Rejected
+
+        $message = '';
+        if ($request->approval_status == 1) {
+            $maintenRequisition->APPROVAL_STATUS = 'A';
+            $maintenRequisition->APPROVED_BY = Auth::id();
+            $maintenRequisition->APPROVED_ON = date('Y-m-d H:i:s');
+            $message = "Successfully approved";
+        } else if ($request->approval_status == 2) {
+            $maintenRequisition->APPROVAL_STATUS = 'R';
+            $maintenRequisition->APPROVED_BY = Auth::id();
+            $maintenRequisition->APPROVED_ON = date('Y-m-d H:i:s');
+            $message = 'Requisition rejected';
+        } else {
+            $maintenRequisition->APPROVAL_STATUS = 'P';
+        }
+
 
         $maintenRequisition->MODIFIED_BY = Auth::id();
         // Save changes
-        $maintenRequisition->save();
+        $statusUpdated = $maintenRequisition->save();
+
+        if ($statusUpdated)
+            return response()->json(['successCode' => 1, 'message' => $message]);
+        else
+            return response()->json(['successCode' => 0, 'message' => "Failed to update requisition status"]);
     }
 
     /**
@@ -405,7 +458,33 @@ class MaintenanceRequisitionController extends Controller
      */
     public function approvalAuthorities()
     {
-        return view('maintenance.maintenance-approval-authorities');
+        $reqTypes = RequisitionType::where('IS_ACTIVE', 'Y')->get();
+        $phases = Phase::where('IS_ACTIVE', 'Y')->get();
+
+        // To get departments
+        $hrApi = new HrApi;
+        $departments = $hrApi->getDepartments();
+
+        return view('maintenance.maintenance-approval-authorities', compact('reqTypes', 'departments', 'phases'));
+    }
+
+    /**
+     * Load Employees to Add/Edit Approval Authority when department is selected/changed
+     */
+    public function getEmployeeData(Request $request)
+    {
+        $dept = $request->department;
+
+        if ($dept == "" || $dept == null)
+            return;
+        $deptArray = explode('|', $dept); # Since option values are in form: deptCode|deptName
+        // dd($deptArray);
+        $data = new stdClass;
+        $data->department = $deptArray[1];
+        $hrApi = new HrApi;
+
+        $employeeData = $hrApi->getEmployeeList($data);
+        return $employeeData;
     }
 
     /**

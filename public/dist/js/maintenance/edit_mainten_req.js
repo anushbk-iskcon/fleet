@@ -41,6 +41,10 @@ $(document).ready(function () {
             remarks: {
                 maxlength: 200
             },
+            charge: {
+                required: true,
+                number: true
+            },
             priority: 'required'
         },
         errorElement: 'div',

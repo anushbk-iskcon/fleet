@@ -69,24 +69,11 @@
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required name="requested_by" id="requested_by">
                                     <option value selected="selected">Select Employee</option>
-                                    <option value="18">
-                                        Jasper Cameron_(Computer_EYELDZTR) </option>
-                                    <option value="17">
-                                        toto_(Technical_EXO9WJ1H) </option>
-                                    <option value="6">
-                                        Kamrul_(ACCOUNTING_ETMYQ36Y) </option>
-                                    <option value="20">
-                                        rohit_(Accounting_EQW70GU6) </option>
-                                    <option value="15">
-                                        sayed_(Human Resource_EQ4QCE9D) </option>
-                                    <option value="19">
-                                        Sandip Sharma_(Marketing & Sales_ELHLYIMC) </option>
-                                    <option value="5">
-                                        Al Amin_(Human Resource_EKDXW58G) </option>
-                                    <option value="8">
-                                        abc_(ACCOUNTING_EJ5MOH4S) </option>
-                                    <option value="7">
-                                        Test Employee_(ACCOUNTING_EDWWDMAV) </option>
+                                    @foreach($employeeData['data'] as $employee)
+                                    <option value="{{$employee['employeeId'] . '|' . $employee['employeeName']}}">
+                                        {{$employee['employeeName'] . ' (' . $employee['department'] . ')'}}
+                                    </option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -138,7 +125,7 @@
                     </div>
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
-                            <label for="charge" class="col-sm-5 col-form-label">Charge </label>
+                            <label for="charge" class="col-sm-5 col-form-label">Charge <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="charge" class="form-control" type="text" placeholder="Charge" id="charge">
                             </div>

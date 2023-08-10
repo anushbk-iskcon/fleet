@@ -11,7 +11,7 @@
 </div>
 <div class="container py-3 py-sm-7">
     <a class="d-flex justify-content-center mb-5 news365-logo" href>
-        <img class="z-index-2" src="{{asset('img/icons/R1.png')}}" alt="Image Description" data-pagespeed-url-hash="799927880">
+        <img class="z-index-2" src="{{asset('img/logo1.jpg')}}" alt="Image Description" data-pagespeed-url-hash="799927880">
     </a>
     <div class="row justify-content-center">
         <div class="col-md-7 col-lg-5">

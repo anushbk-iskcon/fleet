@@ -180,6 +180,10 @@ Route::middleware('auth')->group(function () {
     Route::get('maintenance/approval-authorities', [MaintenanceRequisitionController::class, 'approvalAuthorities'])
         ->name('maintenance-approval-authorities');
 
+    // Load Employee Names to Approval Authority Form
+    Route::post('maintenance/approval-authorities/get-employees', [MaintenanceRequisitionController::class, 'getEmployeeData'])
+        ->name('maintenance-approval-authorities.get-employees');
+
     // Add Maintenance Approval Authority to DB
     Route::post('maintenance/approval-authorities/add', [MaintenanceRequisitionController::class, 'addApprovalAuthority'])
         ->name('maintenance-approval-authorities.add');

@@ -70,7 +70,18 @@
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required name="requested_by" id="requested_by">
                                     <option value selected="selected">Select Employee</option>
-                                    <option value="18">
+                                    @foreach($employeeData['data'] as $employee)
+                                    @if($maintenReqDetails['REQUISITION_FOR'] == $employee['employeeId'])
+                                    <option value="{{$employee['employeeId'] . '|' . $employee['employeeName']}}" selected>
+                                        {{$employee['employeeName'] . ' (' . $employee['department'] . ')'}}
+                                    </option>
+                                    @else
+                                    <option value="{{$employee['employeeId'] . '|' . $employee['employeeName']}}">
+                                        {{$employee['employeeName'] . ' (' . $employee['department'] . ')'}}
+                                    </option>
+                                    @endif
+                                    @endforeach
+                                    <!-- <option value="18">
                                         Jasper Cameron_(Computer_EYELDZTR) </option>
                                     <option value="17">
                                         toto_(Technical_EXO9WJ1H) </option>
@@ -97,7 +108,8 @@
                                     <option value="13">
                                         demo2_(Human Resource_E62WYC4J) </option>
                                     <option value="4">
-                                        Rashid_(Human Resource_E0CRB403) </option>
+                                        Rashid_(Human Resource_E0CRB403) </option> 
+                                    -->
                                 </select>
                             </div>
                         </div>
@@ -161,7 +173,7 @@
                     </div>
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
-                            <label for="charge" class="col-sm-5 col-form-label">Charge </label>
+                            <label for="charge" class="col-sm-5 col-form-label">Charge <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="charge" class="form-control" type="text" placeholder="Charge" id="charge" value="{{$maintenReqDetails['CHARGE']}}">
                             </div>
