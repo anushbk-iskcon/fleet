@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ApprovalAuthority;
 use App\Models\HrApi;
 use App\Models\MaintenanceRequisition;
 use App\Models\MaintenanceService;
@@ -456,16 +457,39 @@ class MaintenanceRequisitionController extends Controller
     /**
      * Return listing of all Maintenance Requistion Approval Authorities
      */
-    public function approvalAuthorities()
+    public function approvalAuthorities(Request $request)
     {
-        $reqTypes = RequisitionType::where('IS_ACTIVE', 'Y')->get();
-        $phases = Phase::where('IS_ACTIVE', 'Y')->get();
+        if (request()->isMethod('post')) {
+            $filter_dept = $request->dept_sr;
+            $filter_status = $request->req_phasesr;
+            $approvalAuthData = DB::table('mstr_approval_authorities')
+                ->join('mstr_requisition_types', 'mstr_approval_authorities.REQUISITION_TYPE', '=', 'mstr_requisition_types.REQUISITION_TYPE_ID')
+                ->join('mstr_phases', 'mstr_approval_authorities.REQUISITION_PHASE', '=', 'mstr_phases.PHASE_ID')
+                ->select(
+                    'mstr_approval_authorities.*',
+                    'mstr_requisition_types.REQUISITION_TYPE_NAME as REQ_TYPE_NAME',
+                    'mstr_phases.PHASE_NAME as PHASE_NAME'
+                )
+                ->when($filter_dept, function ($query, $filter_dept) {
+                    return $query->where('DEPARTMENT_CODE', '=', $filter_dept);
+                })
+                ->when($filter_status, function ($query, $filter_status) {
+                    return $query->where('REQUISITION_PHASE', '=', $filter_status);
+                })
+                ->get();
 
-        // To get departments
-        $hrApi = new HrApi;
-        $departments = $hrApi->getDepartments();
+            return $approvalAuthData->toJson();
+        } else {
+            $reqTypes = RequisitionType::where('IS_ACTIVE', 'Y')->get();
+            $phases = Phase::where('IS_ACTIVE', 'Y')->get();
 
-        return view('maintenance.maintenance-approval-authorities', compact('reqTypes', 'departments', 'phases'));
+            // To get departments
+            $hrApi = new HrApi;
+            $departments = $hrApi->getDepartments();
+            $employees = $hrApi->getEmployeeList(""); //Dept "" to get all employees
+
+            return view('maintenance.maintenance-approval-authorities', compact('reqTypes', 'departments', 'employees', 'phases'));
+        }
     }
 
     /**
@@ -480,10 +504,20 @@ class MaintenanceRequisitionController extends Controller
         $deptArray = explode('|', $dept); # Since option values are in form: deptCode|deptName
         // dd($deptArray);
         $data = new stdClass;
-        $data->department = $deptArray[1];
+        $data->department = $deptArray[1]; # Send deptName to API method to get employee list
         $hrApi = new HrApi;
 
         $employeeData = $hrApi->getEmployeeList($data);
+        return $employeeData;
+    }
+
+    /**
+     * Load all emploees data to <select> field when adding/updating approval authority
+     */
+    public function getAllEmployeeData(Request $request)
+    {
+        $hrApi = new HrApi;
+        $employeeData = $hrApi->getEmployeeList("");  // Dept Name is "" to get all employees' data
         return $employeeData;
     }
 
@@ -492,6 +526,34 @@ class MaintenanceRequisitionController extends Controller
      */
     public function addApprovalAuthority(Request $request)
     {
+        // dd($request->req_type);
+        $maintenReqApprovalAuthority = new ApprovalAuthority;
+
+        // To get Dept and Employee Details which are in form id|value
+        $deptString = $request->department;
+        $employeeString = $request->employee;
+        $deptData = explode('|', $deptString);
+        $deptCode = $deptData[0];
+        $deptName = $deptData[1];
+        $employeeData = explode('|', $employeeString);
+        $employeeId = $employeeData[0];
+        $employeeName = $employeeData[1];
+
+        // Add Details
+        $maintenReqApprovalAuthority->REQUISITION_TYPE = $request->req_type;
+        $maintenReqApprovalAuthority->REQUISITION_PHASE = $request->phase;
+        $maintenReqApprovalAuthority->DEPARTMENT_CODE = $deptCode;
+        $maintenReqApprovalAuthority->DEPARTMENT_NAME = $deptName;
+        $maintenReqApprovalAuthority->EMPLOYEE_ID = $employeeId;
+        $maintenReqApprovalAuthority->EMPLOYEE_NAME = $employeeName;
+        $maintenReqApprovalAuthority->CREATED_BY = Auth::id();
+        $added = $maintenReqApprovalAuthority->save();
+
+        if ($added) {
+            return response()->json(['successCode' => 1, 'message' => 'Approval authority successfully added']);
+        } else {
+            return response()->json(['successCode' => 0, 'message' => 'Could not add approval authority']);
+        }
     }
 
     /**
@@ -499,6 +561,24 @@ class MaintenanceRequisitionController extends Controller
      */
     public function updateApprovalAuthority(Request $request)
     {
+        $authority_id = $request->auth_id;
+        $maintenReqApprovalAuthority = ApprovalAuthority::find($authority_id);
+        $maintenReqApprovalAuthority->REQUISITION_PHASE = $request->phase;
+
+        $deptString = $request->department;
+        $deptData = explode('|', $deptString);
+        $deptCode = $deptData[0];
+        $deptName = $deptData[1];
+
+        $maintenReqApprovalAuthority->DEPARTMENT_CODE = $deptCode;
+        $maintenReqApprovalAuthority->DEPARTMENT_NAME = $deptName;
+        $maintenReqApprovalAuthority->MODIFIED_BY = Auth::id();
+        $updated = $maintenReqApprovalAuthority->save();
+        if ($updated) {
+            return response()->json(['successCode' => 1, 'message' => 'Approval authority successfully updated']);
+        } else {
+            return response()->json(['successCode' => 0, 'message' => 'Failed to update Approval authority']);
+        }
     }
 
     /**
@@ -506,5 +586,18 @@ class MaintenanceRequisitionController extends Controller
      */
     public function changeActivationOfApprovalAuthority(Request $request)
     {
+        $authority_id = $request->req_auth_id;
+        $status = $request->req_status == 1 ? 'Y' : 'N';
+
+        $maintenReqApprovalAuthority = ApprovalAuthority::find($authority_id);
+        $maintenReqApprovalAuthority->IS_ACTIVE = $status;
+        $maintenReqApprovalAuthority->MODIFIED_BY = Auth::id();
+        $activationUpdated = $maintenReqApprovalAuthority->save();
+
+        if ($activationUpdated) {
+            return response()->json(['successCode' => 1, 'message' => 'Successfully updated']);
+        } else {
+            return response()->json(['successCode' => 0, 'message' => 'Failed to update']);
+        }
     }
 }

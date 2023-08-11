@@ -176,9 +176,13 @@ Route::middleware('auth')->group(function () {
     Route::post('maintenance/requsitions/change-activation', [MaintenanceRequisitionController::class, 'approvalStatusUpdate'])
         ->name('maintenance-requisitions.change-approval-status');
 
-    // Show list of all maintenance approval authorities
+    // Show page listing all maintenance approval authorities
     Route::get('maintenance/approval-authorities', [MaintenanceRequisitionController::class, 'approvalAuthorities'])
         ->name('maintenance-approval-authorities');
+
+    // Get list of all maintenance appoval authorities
+    Route::post('maintenance/approval-authorities', [MaintenanceRequisitionController::class, 'approvalAuthorities'])
+        ->name('maintenance-approval-authorities.list');
 
     // Load Employee Names to Approval Authority Form
     Route::post('maintenance/approval-authorities/get-employees', [MaintenanceRequisitionController::class, 'getEmployeeData'])

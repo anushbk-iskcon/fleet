@@ -37,7 +37,8 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="" id="addMaintenAuthorityForm" class="row" method="post" accept-charset="utf-8">
+                <form action="{{route('maintenance-approval-authorities.add')}}" id="addMaintenAuthorityForm" class="row" method="post" accept-charset="utf-8">
+                    @csrf
                     <div class="col-md-12 col-lg-12">
                         <div class="form-group row">
                             <label for="req_type" class="col-sm-3 col-form-label">Requisition Type <i class="text-danger">*</i></label>
@@ -68,7 +69,7 @@
                         <div class="form-group row">
                             <label for="department" class="col-sm-3 col-form-label">Department <i class="text-danger">*</i></label>
                             <div class="col-sm-5">
-                                <select class="form-control basic-single" required="" name="department" id="department" onchange="loadEmployees()">
+                                <select class="form-control basic-single" required="" name="department" id="department">
                                     <option value="" selected="selected">Please Select One</option>
                                     @foreach($departments['data'] as $department)
                                     <option value="{{$department['deptCode'] . '|' . $department['deptName']}}">
@@ -80,14 +81,17 @@
                         </div>
                         <div class="form-group row">
                             <label for="demo" class="col-sm-3 col-form-label">Employee <i class="text-danger">*</i></label>
-                            <div class="col-sm-5" id="mtable">
+                            <div class="col-sm-5">
                                 <select name="employee" id="employeeSelect" class="form-control basic-single" required="">
                                     <option value="" selected>Please Select Employee</option>
+                                    @foreach($employees['data'] as $employee)
+                                    <option value="{{$employee['employeeId'] . '|'. $employee['employeeName']}}">{{$employee['employeeName'] . ' (' . $employee['department'] . ')'}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" id="resetAddAuthorityFormBtn" class="btn btn-primary w-md m-b-5">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
                         </div>
 
@@ -112,7 +116,7 @@
                 </h4>
             </div>
             <div class="card-body row">
-                <div class="col-sm-12 col-xl-4">
+                <!-- <div class="col-sm-12 col-xl-4">
                     <div class="form-group row mb-1">
                         <label for="req_typesr" class="col-sm-5 col-form-label justify-content-start text-left">Requisition Type </label>
                         <div class="col-sm-7">
@@ -124,32 +128,32 @@
                             </select>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="col-sm-12 col-xl-4">
                     <div class="form-group row mb-1">
                         <label for="req_phasesr" class="col-sm-5 col-form-label justify-content-start text-left">Requisition Phase</label>
                         <div class="col-sm-7">
-                            <select class="form-control basic-single" name="req_phasesr" id="req_phasesr">
-                                <option value="" selected="selected">Please Select One</option>
-                                <option value="Pending">Pending </option>
-                                <option value="Reject">Reject </option>
-                                <option value="Approved">Approved </option>
+                            <select class="form-control" name="req_phasesr" id="req_phasesr">
+                                <option value="" selected>Please select</option>
+                                @foreach($phases as $phase)
+                                <option value="{{$phase['PHASE_ID']}}">{{$phase['PHASE_NAME']}}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-12 col-xl-4">
+                <div class="col-sm-12 col-xl-5">
                     <div class="form-group row mb-1">
-                        <label for="status" class="col-sm-5 col-form-label justify-content-start text-left">Status</label>
-                        <div class="col-sm-7">
-                            <select class="form-control basic-single" name="status" id="status">
-                                <option value="" selected="selected">Please Select One</option>
-                                <option value="Approved">Approved</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Rejected">Rejected</option>
+                        <label for="status" class="col-sm-3 col-form-label justify-content-start text-left">Department</label>
+                        <div class="col-sm-9">
+                            <select class="form-control basic-single" name="dept_sr" id="filterDept">
+                                <option value="" selected>Please select</option>
+                                @foreach($departments['data'] as $department)
+                                <option value="{{$department['deptCode']}}">{{$department['deptName']}}</option>
+                                @endforeach
                             </select>
                         </div>
-                        <div class="col-sm-12">
+                        <!-- <div class="col-sm-12">
                             <div class="form-group row  mb-1">
                                 <label for="joining_d_to" class="col-sm-5 col-form-label">&nbsp;</label>
                                 <div class="col-sm-7 text-right">
@@ -157,13 +161,22 @@
                                     <button type="button" class="btn btn-inverse" id="btn-reset">Reset</button>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
+                    </div>
+                </div>
+                <div class="col-sm-12 col-xl-3">
+                    <div class="form-group row  mb-1">
+                        <div class="col-sm-12 text-right">
+                            <button type="button" class="btn btn-success" id="btn-filter">Search</button>&nbsp;
+                            <button type="button" class="btn btn-inverse" id="btn-reset">Reset</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <div id="edit" class="modal fade bd-example-modal-lg" role="dialog">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -172,12 +185,75 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body editinfo">
+                    <form action="{{route('maintenance-approval-authorities.update')}}" id="editMaintenAuthorityForm" class="row" method="post" accept-charset="utf-8">
+                        @csrf
+                        <div class="col-md-12 col-lg-12">
+                            <div class="form-group row">
+                                <label for="req_type" class="col-sm-3 col-form-label">Requisition Type <i class="text-danger">*</i></label>
+                                <div class="col-sm-5">
+                                    <select class="form-control" required="" name="req_type" id="def_req_type" disabled>
+                                        <option value="">Please Select One</option>
+                                        @foreach($reqTypes as $reqType)
+                                        <option value="{{$reqType['REQUISITION_TYPE_ID']}}" @if($reqType['REQUISITION_TYPE_ID']==2) selected @endif>
+                                            {{$reqType['REQUISITION_TYPE_NAME']}}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                    {{-- For Sending Requisition Type since select field above is disabled to make it unchangeable --}}
+                                    <input type="hidden" name="req_type" value="2">
+                                    <input type="hidden" name="auth_id" value="">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="new_req_phase" class="col-sm-3 col-form-label">Requisition Phase <i class="text-danger">*</i></label>
+                                <div class="col-sm-9">
+                                    @foreach($phases as $phase)
+                                    <div class="custom-control custom-radio custom-control-inline">
+                                        <input id="new_radio{{$phase['PHASE_ID']}}" type="radio" class="custom-control-input" name="phase" value="{{$phase['PHASE_ID']}}">
+                                        <label class="custom-control-label" for="new_radio{{$phase['PHASE_ID']}}">{{$phase['PHASE_NAME']}}</label>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="department" class="col-sm-3 col-form-label">Department <i class="text-danger">*</i></label>
+                                <div class="col-sm-5">
+                                    <select class="form-control basic-single" required="" name="department" id="newDepartment">
+                                        <option value="" selected="selected">Please Select One</option>
+                                        @foreach($departments['data'] as $department)
+                                        <option value="{{$department['deptCode'] . '|' . $department['deptName']}}">
+                                            {{$department['deptName']}}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="demo" class="col-sm-3 col-form-label">Employee <i class="text-danger">*</i></label>
+                                <div class="col-sm-5">
+                                    <select name="employee" id="newEmployeeSelect" class="form-control basic-single" required="">
+                                        <option value="">Please Select Employee</option>
+                                        @foreach($employees['data'] as $employee)
+                                        <option value="{{$employee['employeeId'] . '|' . $employee['employeeName']}}">{{$employee['employeeName'] . ' (' . $employee['department'] . ')'}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group text-right">
+                                <button type="reset" id="resetAddAuthorityFormBtn" class="btn btn-primary w-md m-b-5">Reset</button>
+                                <button type="submit" class="btn btn-success w-md m-b-5">Save</button>
+                            </div>
+
+                        </div>
+                    </form>
                 </div>
-            </div>
-            <div class="modal-footer">
+                <div class="modal-footer">
+                </div>
             </div>
         </div>
     </div>
+
     <div class="col-sm-12">
         <div class="card mb-3">
             <div class="card-header p-2">
@@ -226,6 +302,8 @@
     // To save routes and other global variables
     let csrfToken = "{{csrf_token()}}";
     let loadEmployeesURL = "{{route('maintenance-approval-authorities.get-employees')}}";
+    let authorityListURl = "{{route('maintenance-approval-authorities.list')}}";
+    let changeActivationStatusURL = "{{route('maintenance-approval-authorities.change-activation')}}";
 </script>
 <script src="{{asset('dist/js/maintenance/approval_authorities.js')}}">
 </script>
