@@ -1,10 +1,10 @@
 $(document).ready(function () {
-    let maintenAuthoritiesTable = $("#authinfo").DataTable();
+    let refuelApprovalAuthTable = $("#rauthinfo").DataTable();
 
-    populateTable(maintenAuthoritiesTable);
+    populateTable(refuelApprovalAuthTable);
 
-    // Validate and submit Add Maintenance Requisition Authority Form
-    $("#addMaintenAuthorityForm").validate({
+    // Validate and submit Add Refueling Requisition Authority Form
+    $("#addRefuelApprovalAuthorityForm").validate({
         rules: {
             phase: 'required',
             department: 'required',
@@ -25,7 +25,7 @@ $(document).ready(function () {
                 success: function (res) {
                     if (res.successCode == 1) {
                         toastr.success(res.message, '', { closeButton: true });
-                        populateTable(maintenAuthoritiesTable);
+                        populateTable(refuelApprovalAuthTable);
                         $("#add0").modal('hide');
                     } else {
                         toastr.error(res.message, '', { closeButton: true });
@@ -39,10 +39,10 @@ $(document).ready(function () {
     });
 
     $("#add0").on('hidden.bs.modal', function () {
-        $("#addMaintenAuthorityForm").trigger('reset');
-        $("#addMaintenAuthorityForm").data('validator').resetForm();
-        $("#addMaintenAuthorityForm select").removeClass('error');
-        $("#addMaintenAuthorityForm").removeAttr('aria-invalid');
+        $("#addRefuelApprovalAuthorityForm").trigger('reset');
+        $("#addRefuelApprovalAuthorityForm").data('validator').resetForm();
+        $("#addRefuelApprovalAuthorityForm select").removeClass('error');
+        $("#addRefuelApprovalAuthorityForm").removeAttr('aria-invalid');
 
         // To prevent select2 boxes still displaying previously selected value on resetting form
         $('#department').val('').trigger('change');
@@ -63,18 +63,18 @@ $(document).ready(function () {
 
     // On clicking Search (filter) button, filter results
     $("#btn-filter").click(function () {
-        populateTable(maintenAuthoritiesTable);
+        populateTable(refuelApprovalAuthTable);
     });
 
     // On clicking Reset (filter) button, clear all filters and load results
     $("#btn-reset").click(function () {
         $("#filterDept").val("").trigger('change');
         $("#req_phasesr").val("");
-        populateTable(maintenAuthoritiesTable);
+        populateTable(refuelApprovalAuthTable);
     });
 
-    // Validate and submit Edit Maintenance Approval Authority Form
-    $("#editMaintenAuthorityForm").validate({
+    // Validate and submit Edit Refueling Approval Authoritiy Form
+    $("#editRefuelApprovalAuthorityForm").validate({
         rules: {
             phase: 'required',
             department: 'required',
@@ -95,14 +95,14 @@ $(document).ready(function () {
                 success: function (res) {
                     if (res.successCode === 1) {
                         toastr.success(res.message, '', { closeButton: true });
-                        populateTable(maintenAuthoritiesTable);
+                        populateTable(refuelApprovalAuthTable);
                         $("#edit").modal('hide');
                     } else {
                         toastr.error(res.message, '', { closeButton: true });
                     }
                 },
-                error: function (jqXHR, textStatus, err) {
-                    toastr.error("Error updating approval authority. Please try again", '', { closeButton: true });
+                error: function (jqXhr, textStatus, err) {
+                    toastr.error("Error updating. Please try again", '', { closeButton: true });
                 }
             });
         }
@@ -112,13 +112,13 @@ $(document).ready(function () {
     $("#resetEditAuthorityFormBtn").click(function () {
         setTimeout(() => {
             $('#newDepartment').trigger('change');
-            // $("#employeeSelect").html("").append("<option value='' selected>Please Select Employee</option>");
         }, 10);
     });
 
 });
+/* End of document.ready function */
 
-let maintenAuthoritiesTable = $("#authinfo").DataTable();
+let refuelApprovalAuthTable = $("#rauthinfo").DataTable();
 
 function populateTable(table) {
     $.ajax({
@@ -137,13 +137,14 @@ function populateTable(table) {
                     let actionBtns = `<button class="btn btn-info btn-sm mr-1" onclick="editInfo(${data.AUTHORITY_ID}, ${data.REQUISITION_PHASE}, ${data.EMPLOYEE_ID}, '${data.EMPLOYEE_NAME}',
                     '${data.DEPARTMENT_CODE}', '${data.DEPARTMENT_NAME}')" title="Edit">
                     <i class="ti-pencil"></i>
-                    </button> `;
+                    </button>`;
                     if (data.IS_ACTIVE == 'Y')  // Send Status = 0 for deactivating
-                        actionBtns += `<button class="btn btn-danger btn-sm mr-1" onclick="changeActivationStatus(${data.AUTHORITY_ID}, 0)"
-                    title="Deactivate"><i class="ti-close"></i></button> `;
+                        actionBtns += `<button class="btn btn-danger btn-sm mr-1" onclick="changeActivationStatus(${data.AUTHORITY_ID}, 0)" 
+                        title="Deactivate"><i class="ti-close"></i></button> `;
                     else  // Send Status = 1 for activating
-                        actionBtns += `<button class="btn btn-danger btn-sm mr-1" onclick="changeActivationStatus(${data.AUTHORITY_ID}, 1)"
-                    title="Activate"><i class="ti-reload"></i></button> `;
+                        actionBtns += `<button class="btn btn-danger btn-sm mr-1" onclick="changeActivationStatus(${data.AUTHORITY_ID}, 1)" 
+                        title="Activate"><i class="ti-reload"></i></button> `;
+
                     table.row.add([
                         i + 1,
                         data.REQ_TYPE_NAME,
@@ -162,39 +163,9 @@ function populateTable(table) {
     });
 }
 
-function loadEmployees() {
-    if ($("#department").val()) {
-        $.ajax({
-            url: loadEmployeesURL,
-            type: 'post',
-            data: {
-                department: $("#department").val(),
-                _token: csrfToken
-            },
-            success: function (res) {
-                if (res.successCode == 1) {
-                    $("#employeeSelect").html("").append("<option value='' selected>Please Select Employee</option>");
-                    if (res.data.length >= 1) {
-                        $.each(res.data, function (i, data) {
-                            $("#employeeSelect").append('<option value="' + data.employeeId + '|' + data.employeeName + '">' +
-                                data.employeeName + '</option>');
-                        });
-                    }
-                } else {
-                    $("#employeeSelect").html("").append("<option value='' selected>Please Select Employee</option>");
-                    toastr.error("No results found", '', { closeButton: true });
-                }
-            },
-            error: function (jqXHR, textStatus, err) {
-                toastr.error("Error getting details. Please try again", "", { closeButton: true });
-            }
-        });
-    }
-}
-
 function editInfo(reqAuthId, reqPhase, empId, empName, deptId, deptName) {
     // Select the appropriate checkbox based on current value of req. phase
-    $("#editMaintenAuthorityForm input[name='phase']").each(function () {
+    $("#editRefuelApprovalAuthorityForm input[name='phase']").each(function () {
         if ($(this).attr('value') == reqPhase) {
             $(this).prop('checked', true);
             $(this).attr('checked', 'checked');
@@ -205,7 +176,7 @@ function editInfo(reqAuthId, reqPhase, empId, empName, deptId, deptName) {
     });
 
     // Set value of Requistion Authority ID which is to be updated sent to server
-    $("#editMaintenAuthorityForm input[name='auth_id']").val(reqAuthId);
+    $("#editRefuelApprovalAuthorityForm input[name='auth_id']").val(reqAuthId);
 
     let selectedEmployee = empId + '|' + empName;
     let selectedDept = deptId + '|' + deptName;
@@ -220,9 +191,6 @@ function editInfo(reqAuthId, reqPhase, empId, empName, deptId, deptName) {
             $("#newDepartment").append('<option value="' + data.deptCode + '|' + data.deptName + '">' + data.deptName + '</option>');
     });
 
-    // $("#newDepartment").val(selectedDept).trigger('change');
-    // $("#newDepartment").attr('value', selectedDept);
-    // $("#newDepartment option:selected").attr('selected', 'selected');
     $("#newEmployeeSelect").val(selectedEmployee).trigger('change').attr('disabled', 'disabled');
     $("#edit").modal("show");
 }
@@ -241,7 +209,7 @@ function changeActivationStatus(reqAuthId, activeStatus) {
             success: function (res) {
                 if (res.successCode == 1) {
                     toastr.success(res.message, '', { closeButton: true });
-                    populateTable(maintenAuthoritiesTable);
+                    populateTable(refuelApprovalAuthTable);
                 } else {
                     toastr.error(res.message, '', { closeButton: true });
                 }

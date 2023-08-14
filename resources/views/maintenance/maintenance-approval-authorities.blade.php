@@ -28,7 +28,6 @@
 
 @section('content')
 
-
 <div id="add0" class="modal fade bd-example-modal-lg" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -51,7 +50,7 @@
                                     </option>
                                     @endforeach
                                 </select>
-                                {{-- For Sending Requisition Type since select filed above is disabled to make it unchangeable --}}
+                                {{-- For Sending Requisition Type since select field above is disabled to make it unchangeable --}}
                                 <input type="hidden" name="req_type" value="2">
                             </div>
                         </div>
@@ -80,7 +79,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="demo" class="col-sm-3 col-form-label">Employee <i class="text-danger">*</i></label>
+                            <label for="employeeSelect" class="col-sm-3 col-form-label">Employee <i class="text-danger">*</i></label>
                             <div class="col-sm-5">
                                 <select name="employee" id="employeeSelect" class="form-control basic-single" required="">
                                     <option value="" selected>Please Select Employee</option>
@@ -200,7 +199,7 @@
                                         @endforeach
                                     </select>
                                     {{-- For Sending Requisition Type since select field above is disabled to make it unchangeable --}}
-                                    <input type="hidden" name="req_type" value="2">
+                                    <input type="hidden" name="req_type" value="2"> {{-- 2 for Maintenance Requisition --}}
                                     <input type="hidden" name="auth_id" value="">
                                 </div>
                             </div>
@@ -220,7 +219,7 @@
                                 <label for="department" class="col-sm-3 col-form-label">Department <i class="text-danger">*</i></label>
                                 <div class="col-sm-5">
                                     <select class="form-control basic-single" required="" name="department" id="newDepartment">
-                                        <option value="" selected="selected">Please Select One</option>
+                                        <option value="">Please Select One</option>
                                         @foreach($departments['data'] as $department)
                                         <option value="{{$department['deptCode'] . '|' . $department['deptName']}}">
                                             {{$department['deptName']}}
@@ -241,7 +240,7 @@
                                 </div>
                             </div>
                             <div class="form-group text-right">
-                                <button type="reset" id="resetAddAuthorityFormBtn" class="btn btn-primary w-md m-b-5">Reset</button>
+                                <button type="reset" id="resetEditAuthorityFormBtn" class="btn btn-primary w-md m-b-5">Reset</button>
                                 <button type="submit" class="btn btn-success w-md m-b-5">Save</button>
                             </div>
 
@@ -302,8 +301,9 @@
     // To save routes and other global variables
     let csrfToken = "{{csrf_token()}}";
     let loadEmployeesURL = "{{route('maintenance-approval-authorities.get-employees')}}";
-    let authorityListURl = "{{route('maintenance-approval-authorities.list')}}";
+    let authorityListURL = "{{route('maintenance-approval-authorities.list')}}";
     let changeActivationStatusURL = "{{route('maintenance-approval-authorities.change-activation')}}";
+    let depts = JSON.parse(`{!! json_encode($departments['data']) !!}`);
 </script>
 <script src="{{asset('dist/js/maintenance/approval_authorities.js')}}">
 </script>

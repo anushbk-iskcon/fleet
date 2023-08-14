@@ -280,9 +280,16 @@ Route::middleware('auth')->group(function () {
     Route::post('refueling/requisitions/change-status', [RefuelRequisitionController::class, 'changeStatus'])->name('refuel-requisitions.change-status');
     Route::post('refueling/requisitions/get-details', [RefuelRequisitionController::class, 'getDetails'])->name('refuel-requisitions.get-details');
 
-    Route::get('refueling/approval-authorities', function () {
-        return view('refueling.refuel-approval-authorities');
-    })->name('refuel-approval-authorities');
+    // Refuel Requisition Approval Authorities Routes
+    Route::get('refueling/approval-authorities', [RefuelRequisitionController::class, 'approvalAuthorities'])->name('refuel-approval-authorities');
+    Route::post('refueling/approval-authorities', [RefuelRequisitionController::class, 'approvalAuthorities'])
+        ->name('refuel-approval-authorities.list');
+    Route::post('refueling/approval-authorities/add', [RefuelRequisitionController::class, 'addApprovalAuthority'])
+        ->name('refuel-approval-authorities.add');
+    Route::post('refueling/approval-authorities/update', [RefuelRequisitionController::class, 'updateApprovalAuthority'])
+        ->name('refuel-approval-authorities.update');
+    Route::post('refueling/approval-authorities/change-activation', [RefuelRequisitionController::class, 'changeActivationOfApprovalAuthority'])
+        ->name('refuel-approval-authorities.change-activation');
     /*** END Refueling Module ***/
 
     /*** START Reports Module ***/

@@ -460,8 +460,11 @@ class MaintenanceRequisitionController extends Controller
     public function approvalAuthorities(Request $request)
     {
         if (request()->isMethod('post')) {
+            // Return JSON list of all approval authorities
             $filter_dept = $request->dept_sr;
             $filter_status = $request->req_phasesr;
+            $req_typesr = 2; // For Maintenance Requisition
+
             $approvalAuthData = DB::table('mstr_approval_authorities')
                 ->join('mstr_requisition_types', 'mstr_approval_authorities.REQUISITION_TYPE', '=', 'mstr_requisition_types.REQUISITION_TYPE_ID')
                 ->join('mstr_phases', 'mstr_approval_authorities.REQUISITION_PHASE', '=', 'mstr_phases.PHASE_ID')
@@ -470,6 +473,7 @@ class MaintenanceRequisitionController extends Controller
                     'mstr_requisition_types.REQUISITION_TYPE_NAME as REQ_TYPE_NAME',
                     'mstr_phases.PHASE_NAME as PHASE_NAME'
                 )
+                ->where('REQUISITION_TYPE', $req_typesr)
                 ->when($filter_dept, function ($query, $filter_dept) {
                     return $query->where('DEPARTMENT_CODE', '=', $filter_dept);
                 })
@@ -483,7 +487,7 @@ class MaintenanceRequisitionController extends Controller
             $reqTypes = RequisitionType::where('IS_ACTIVE', 'Y')->get();
             $phases = Phase::where('IS_ACTIVE', 'Y')->get();
 
-            // To get departments
+            // To get departments and employees
             $hrApi = new HrApi;
             $departments = $hrApi->getDepartments();
             $employees = $hrApi->getEmployeeList(""); //Dept "" to get all employees
@@ -512,7 +516,7 @@ class MaintenanceRequisitionController extends Controller
     }
 
     /**
-     * Load all emploees data to <select> field when adding/updating approval authority
+     * Load all employees data to <select> field when adding/updating approval authority
      */
     public function getAllEmployeeData(Request $request)
     {
@@ -526,10 +530,10 @@ class MaintenanceRequisitionController extends Controller
      */
     public function addApprovalAuthority(Request $request)
     {
-        // dd($request->req_type);
         $maintenReqApprovalAuthority = new ApprovalAuthority;
 
         // To get Dept and Employee Details which are in form id|value
+        // e.g. Dept option value is in format deptCode|deptName to enable storing both details in DB
         $deptString = $request->department;
         $employeeString = $request->employee;
         $deptData = explode('|', $deptString);
@@ -569,6 +573,8 @@ class MaintenanceRequisitionController extends Controller
         $deptData = explode('|', $deptString);
         $deptCode = $deptData[0];
         $deptName = $deptData[1];
+
+        # Employee (approver) is not currently changeable
 
         $maintenReqApprovalAuthority->DEPARTMENT_CODE = $deptCode;
         $maintenReqApprovalAuthority->DEPARTMENT_NAME = $deptName;
