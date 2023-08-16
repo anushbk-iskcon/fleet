@@ -22,24 +22,16 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="" id="emp_form" class="row" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+                <form action="" id="addRefuelSettingForm" class="row" method="post" accept-charset="utf-8">
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
                             <label for="vehicle_name" class="col-sm-5 col-form-label">Vehicle Name <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <select class="form-control basic-single" required name="vehicle_name" id="vehicle_name">
+                                <select class="form-control basic-single" required name="vehicle" id="vehicle_name">
                                     <option value="" selected="selected">Please Select One</option>
-                                    <option value="Shah Latif Express UP">Shah Latif Express UP </option>
-                                    <option value="Sukkur Express UP">Sukkur Express UP </option>
-                                    <option value="Khyber Express">Khyber Express </option>
-                                    <option value="Fareed Express">Fareed Express </option>
-                                    <option value="d">d </option>
-                                    <option value="AS">AS </option>
-                                    <option value="quad r647">quad r647 </option>
-                                    <option value="Kia Soul">Kia Soul </option>
-                                    <option value="red">red </option>
-                                    <option value="Kia">Kia </option>
-                                    <option value="داف">داف </option>
+                                    @foreach($vehicles as $vehicle)
+                                    <option value="{{$vehicle['VEHICLE_ID']}}">{{$vehicle['VEHICLE_NAME']}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -48,10 +40,9 @@
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required name="fuel_type" id="fuel_type">
                                     <option value="" selected="selected">Please Select One</option>
-                                    <option value="Diesel">
-                                        Diesel</option>
-                                    <option value="SP95">
-                                        SP95</option>
+                                    @foreach($fuelTypes as $fuelType)
+                                    <option value="{{$fuelType['FUEL_ID']}}">{{$fuelType['FUEL_TYPE_NAME']}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -64,18 +55,18 @@
                         <div class="form-group row">
                             <label for="fuel_type" class="col-sm-5 col-form-label">Station Name <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <select class="form-control basic-single" required name="station_name" id="station_name">
+                                <select class="form-control basic-single" required name="fuel_station" id="station_name">
                                     <option value="" selected="selected">Please Select One</option>
-                                    <option value="GM Filling Station">GM Filling Station </option>
-                                    <option value="Khalek filling Station">Khalek filling Station </option>
-                                    <option value=" cvbc"> cvbc </option>
+                                    @foreach($fuelStations as $fuelStation)
+                                    <option value="{{$fuelStation['FUEL_STATION_ID']}}">{{$fuelStation['VENDOR_NAME'] . " " . $fuelStation['FUEL_STATION_NAME']}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="budgetgiven" class="col-sm-5 col-form-label">Budget Given <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="budgetgiven" required class="form-control" type="number" placeholder="Budget Given" id="budgetgiven">
+                                <input name="budget_given" required class="form-control" type="number" placeholder="Budget Given" id="budgetgiven">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -108,15 +99,11 @@
                         <div class="form-group row">
                             <label for="driver_name" class="col-sm-5 col-form-label">Driver Name <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <select class="form-control basic-single" required name="driver_name" id="driver_name" onchange="getdrivermobile()">
+                                <select class="form-control basic-single" required name="driver" id="driver_name">
                                     <option value="" selected="selected">Please Select One</option>
-                                    <option value="2">aman - Shah Latif Express </option>
-                                    <option value="3">Malik - Khyber Express </option>
-                                    <option value="4">Musa Karim - Fareed Express </option>
-                                    <option value="8">Khurram </option>
-                                    <option value="9">Faris Shafi </option>
-                                    <option value="11">driver name </option>
-                                    <option value="12">Demo driver 1 </option>
+                                    @foreach($drivers as $driver)
+                                    <option value="{{$driver['DRIVER_ID']}}">{{$driver['DRIVER_NAME']}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -148,13 +135,13 @@
                         <div class="form-group row">
                             <label for="odometer_km_after_day_end_stop" class="col-sm-5 col-form-label">Odometer KM after day end stop </label>
                             <div class="col-sm-7">
-                                <input name="odometer_km_after_day_end_stop" class="form-control" type="number" placeholder="Odometer KM after day end stop" id="odometer_km_after_day_end_stop">
+                                <input name="odometer_after_day_end" class="form-control" type="number" placeholder="Odometer KM after day end stop" id="odometer_km_after_day_end_stop">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="odometer_at_time_of_refueling" class="col-sm-5 col-form-label">Odometer at time of refueling </label>
                             <div class="col-sm-7">
-                                <input name="odometer_at_time_of_refueling" class="form-control" type="number" placeholder="Odometer at time of refueling" id="odometer_at_time_of_refueling">
+                                <input name="odometer_at_refueling" class="form-control" type="number" placeholder="Odometer at time of refueling" id="odometer_at_time_of_refueling">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -172,7 +159,7 @@
                         <div class="form-group row m-0">
                             <label for="milage_traking" class="col-sm-5 col-form-label">&nbsp; </label>
                             <div class="col-sm-7 checkbox checkbox-primary">
-                                <input id="checkbox2" type="checkbox" name="stict_consump" value="Strict Consumption Apply">
+                                <input id="checkbox2" type="checkbox" name="strict_consumption" value="Strict Consumption Apply">
                                 <label for="checkbox2">Strict Consumption Apply</label>
                             </div>
                         </div>
@@ -211,18 +198,21 @@
     <div class="col-sm-12">
         <div class="card mb-3">
             <div class="card-header p-2">
-                <h4 class="pl-3">Refueling Setting<small class="float-right">
-
-                        <button type="button" class="btn btn-primary btn-md" data-target="#add0" data-toggle="modal"><i class="ti-plus" aria-hidden="true"></i>
-                            Add Refuel Setting</button>
-                    </small></h4>
+                <h4 class="pl-3">Refueling Setting
+                    <small class="float-right">
+                        <button type="button" class="btn btn-primary btn-md" data-target="#add0" data-toggle="modal">
+                            <i class="ti-plus" aria-hidden="true"></i>
+                            Add Refuel Setting
+                        </button>
+                    </small>
+                </h4>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="refule_example" class="table table-striped table-bordered dt-responsive nowrap">
+                    <table id="refuelSettingTable" class="table table-striped table-bordered dt-responsive nowrap">
                         <thead>
                             <tr>
-                                <th>SL</th>
+                                <th>Sl No.</th>
                                 <th>Vehicle Name</th>
                                 <th>Last Reading</th>
                                 <th>Consumption</th>
@@ -230,7 +220,7 @@
                                 <th>Driver Mobile</th>
                                 <th>Fuel Type</th>
                                 <th>Refuel Limit</th>
-                                <th>Action</th>
+                                <th>Action(s)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -262,21 +252,6 @@
                                     <input name="url" type="hidden" id="url_9" value="https://vmsdemo.bdtask-demo.com/refueling/refueling/updaterefuelfrm" />
                                     <a onclick="editinfo(9)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
                                     <a href="https://vmsdemo.bdtask-demo.com/refueling/refueling/delete_refuel/9" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Karachi Express DN</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>No</td>
-                                <td>03097894562</td>
-                                <td>Gas</td>
-                                <td></td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_7" value="https://vmsdemo.bdtask-demo.com/refueling/refueling/updaterefuelfrm" />
-                                    <a onclick="editinfo(7)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/refueling/refueling/delete_refuel/7" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
                                 </td>
                             </tr>
                             <tr>
@@ -317,7 +292,7 @@
                                 <td>Yes</td>
                                 <td>0167576400</td>
                                 <td>Petrol</td>
-                                <td>testt</td>
+                                <td>test</td>
                                 <td>
                                     <input name="url" type="hidden" id="url_2" value="https://vmsdemo.bdtask-demo.com/refueling/refueling/updaterefuelfrm" />
                                     <a onclick="editinfo(2)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
@@ -346,6 +321,12 @@
         </div>
     </div>
 </div>
-<script src="{{asset('dist/js/refuel_setting.js')}}"></script>
-
+@endsection
+@section('js-content')
+<script>
+    // To store global variables, Route URLs, etc.
+    let csrfToken = "{{csrf_token()}}";
+</script>
+<!-- <script src="{{asset('dist/js/refuel_setting.js')}}"></script> -->
+<script src="{{asset('dist/js/refueling/refuel_setting.js')}}"></script>
 @endsection

@@ -526,7 +526,7 @@ class MaintenanceRequisitionController extends Controller
     }
 
     /**
-     * Add Maintenance Requsitioin Approval Authority
+     * Add Maintenance Requsition Approval Authority
      */
     public function addApprovalAuthority(Request $request)
     {
@@ -583,7 +583,7 @@ class MaintenanceRequisitionController extends Controller
         if ($updated) {
             return response()->json(['successCode' => 1, 'message' => 'Approval authority successfully updated']);
         } else {
-            return response()->json(['successCode' => 0, 'message' => 'Failed to update Approval authority']);
+            return response()->json(['successCode' => 0, 'message' => 'Failed to update approval authority']);
         }
     }
 

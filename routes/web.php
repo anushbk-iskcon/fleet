@@ -28,6 +28,7 @@ use App\Http\Controllers\Masters\VehicleDivisionController;
 use App\Http\Controllers\Masters\VehicleTypeController;
 use App\Http\Controllers\Masters\VendorController;
 use App\Http\Controllers\RefuelRequisitionController;
+use App\Http\Controllers\RefuelSettingController;
 use App\Models\Role;
 use Illuminate\Support\Facades\Route;
 
@@ -259,9 +260,7 @@ Route::middleware('auth')->group(function () {
 
 
     /*** BEGIN Refueling Module ***/
-    Route::get('refuel-setting', function () {
-        return view('refueling.refuel-setting');
-    })->name('refuel-setting');
+    Route::get('refuel-setting', [RefuelSettingController::class, 'index'])->name('refuel-setting');
 
     // Fuel Station sub-module Routes
     Route::get('refueling/fuel-stations', [FuelStationController::class, 'index'])->name('fuel-stations');

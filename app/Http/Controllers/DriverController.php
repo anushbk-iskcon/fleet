@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Driver;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DriverController extends Controller
@@ -75,7 +76,7 @@ class DriverController extends Controller
             $driver->PROFILE_PHOTO = $img;
         }
 
-        $driver->CREATED_BY = 'Admin';
+        $driver->CREATED_BY = Auth::id();
 
         $newDriverAdded = $driver->save();
         if ($newDriverAdded) {
@@ -149,7 +150,7 @@ class DriverController extends Controller
             $driver->PROFILE_PHOTO = $img;
         }
 
-        $driver->MODIFIED_BY = 'Admin';
+        $driver->MODIFIED_BY = Auth::id();
         $updated = $driver->save();
         if ($updated) {
             return "Driver details successfully updated";
@@ -177,6 +178,7 @@ class DriverController extends Controller
         $driver_id = $request->driver_id;
         $driver = Driver::find($driver_id);
         $driver->IS_ACTIVE = 'N';
+        $driver->MODIFIED_BY = Auth::id();
         $deactivated = $driver->save();
         if ($deactivated) {
             return "Driver successfully deactivated";
@@ -193,6 +195,7 @@ class DriverController extends Controller
         $driver_id = $request->driver_id;
         $driver = Driver::find($driver_id);
         $driver->IS_ACTIVE = 'Y';
+        $driver->MODIFIED_BY = Auth::id();
         $activated = $driver->save();
         if ($activated) {
             return "Driver successfully activated";

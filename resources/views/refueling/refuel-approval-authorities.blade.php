@@ -254,15 +254,6 @@
                         </thead>
                         <tbody>
 
-                            <!-- <tr role="row" class="odd">
-                                <td class="sorting_1">1</td>
-                                <td>Re-Fueling Requisition </td>
-                                <td>Approved</td>
-                                <td>Human Resource</td>
-                                <td>Rashid,Al Amin,taslimul,demo2,sayed</td>
-                                <td><input name="url" type="hidden" id="url_3" value="https://vmsdemo.bdtask-demo.com/refueling/refueling/updateapprovalfrm"><a onclick="editinfo(3)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/refueling/refueling/delete_approval/3" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr> -->
-
                         </tbody>
                     </table> <!-- /.table-responsive -->
                 </div>

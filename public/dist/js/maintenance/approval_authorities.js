@@ -38,6 +38,19 @@ $(document).ready(function () {
         }
     });
 
+    // On changing select2 options for dept and employee, remove validation if selection made
+    $("#department").on('select2:close', function () {
+        if ($(this).closest('div.col-sm-*').has('.error')) {
+            $(this).valid();
+        }
+    });
+
+    $("#employeeSelect").on('select2:close', function () {
+        if ($(this).closest('div.col-sm-*').has('.error')) {
+            $(this).valid();
+        }
+    });
+
     $("#add0").on('hidden.bs.modal', function () {
         $("#addMaintenAuthorityForm").trigger('reset');
         $("#addMaintenAuthorityForm").data('validator').resetForm();
@@ -114,6 +127,13 @@ $(document).ready(function () {
             $('#newDepartment').trigger('change');
             // $("#employeeSelect").html("").append("<option value='' selected>Please Select Employee</option>");
         }, 10);
+    });
+
+    // On changing select2 options for dept in Edit Approval Authority, remove validation if selection made
+    $("#newDepartment").on('select2:close', function () {
+        if ($(this).closest('div.col-sm-*').has('.error')) {
+            $(this).valid();
+        }
     });
 
 });
@@ -222,6 +242,8 @@ function editInfo(reqAuthId, reqPhase, empId, empName, deptId, deptName) {
 
     // $("#newDepartment").val(selectedDept).trigger('change');
     // $("#newDepartment").attr('value', selectedDept);
+    $("#newDepartment").removeAttr('aria-invalid').removeClass('error'); // To remove any previous validator error message
+    $("#newDepartment").nextAll('div.error').remove();
     // $("#newDepartment option:selected").attr('selected', 'selected');
     $("#newEmployeeSelect").val(selectedEmployee).trigger('change').attr('disabled', 'disabled');
     $("#edit").modal("show");
