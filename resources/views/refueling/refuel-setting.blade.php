@@ -2,6 +2,20 @@
 
 @section('title', 'Refueling Setting')
 
+@section('css-content')
+<style>
+    div.error {
+        font-size: .8em;
+        color: #f66;
+    }
+
+
+    select.error~.select2 .select2-selection {
+        border: 1px solid #f99;
+    }
+</style>
+@endsection
+
 @section('breadcrumb-content')
 <li class="breadcrumb-item"><a href="{{url('home')}}">Home</a></li>
 <li class="breadcrumb-item active" id="moduleName">Refueling</li>
@@ -13,7 +27,6 @@
 @endsection
 
 @section('content')
-
 <div id="add0" class="modal fade bd-example-modal-lg" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -22,7 +35,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="" id="addRefuelSettingForm" class="row" method="post" accept-charset="utf-8">
+                <form action="" id="addRefuelSettingForm" enctype="multipart/form-data" class="row" method="post" accept-charset="utf-8">
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
                             <label for="vehicle_name" class="col-sm-5 col-form-label">Vehicle Name <i class="text-danger">*</i></label>
@@ -53,7 +66,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="fuel_type" class="col-sm-5 col-form-label">Station Name <i class="text-danger">*</i></label>
+                            <label for="station_name" class="col-sm-5 col-form-label">Station Name <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required name="fuel_station" id="station_name">
                                     <option value="" selected="selected">Please Select One</option>
@@ -157,9 +170,9 @@
                             </div>
                         </div>
                         <div class="form-group row m-0">
-                            <label for="milage_traking" class="col-sm-5 col-form-label">&nbsp; </label>
+                            <label for="" class="col-sm-5 col-form-label">&nbsp; </label>
                             <div class="col-sm-7 checkbox checkbox-primary">
-                                <input id="checkbox2" type="checkbox" name="strict_consumption" value="Strict Consumption Apply">
+                                <input id="checkbox2" type="checkbox" name="strict_consumption" value="1">
                                 <label for="checkbox2">Strict Consumption Apply</label>
                             </div>
                         </div>
@@ -198,7 +211,8 @@
     <div class="col-sm-12">
         <div class="card mb-3">
             <div class="card-header p-2">
-                <h4 class="pl-3">Refueling Setting
+                <h4 class="pl-3">
+                    Refueling Setting
                     <small class="float-right">
                         <button type="button" class="btn btn-primary btn-md" data-target="#add0" data-toggle="modal">
                             <i class="ti-plus" aria-hidden="true"></i>
@@ -326,6 +340,8 @@
 <script>
     // To store global variables, Route URLs, etc.
     let csrfToken = "{{csrf_token()}}";
+    let refuelSettingListURL = "";
+    let activationStatusChangeURL = "";
 </script>
 <!-- <script src="{{asset('dist/js/refuel_setting.js')}}"></script> -->
 <script src="{{asset('dist/js/refueling/refuel_setting.js')}}"></script>
