@@ -22,17 +22,12 @@
             </div>
             <div class="modal-body">
                 <form action="" id="emp_form" class="row" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+                    @csrf
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
                             <label for="company_name" class="col-sm-5 col-form-label">Company Name <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <select class="form-control basic-single" required="" name="company_name" id="company_name">
-                                    <option value="" selected="selected">Please Select One</option>
-                                    <option value="MetroWaste Solid Waste Management Corp.">MetroWaste Solid Waste Management Corp. </option>
-                                    <option value="Royal Commission for Jubail & Yanbu">Royal Commission for Jubail & Yanbu </option>
-                                    <option value="Banglalink">Banglalink </option>
-                                    <option value="Grameen">Grameen </option>
-                                </select>
+                                <input type="text" name="company_name" class="form-control" id="company_name" placeholder="Company Name">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -62,7 +57,7 @@
                         <div class="form-group row">
                             <label for="checkbox1" class="col-sm-5 col-form-label">&nbsp;</label>
                             <div class="col-sm-7 checkbox checkbox-primary">
-                                <input id="checkbox1" type="checkbox" name="add_remiender">
+                                <input id="checkbox1" type="checkbox" name="add_reminder">
                                 <label for="checkbox1">Add Reminder</label>
                             </div>
                         </div>
@@ -76,7 +71,7 @@
                         <div class="form-group row">
                             <label for="remarks" class="col-sm-5 col-form-label">Remarks </label>
                             <div class="col-sm-7">
-                                <textarea name="remarks" placeholder="Remarks" cols="30" rows="3"></textarea>
+                                <textarea name="remarks" class="form-control" placeholder="Remarks" cols="30" rows="3"></textarea>
                             </div>
                         </div>
                     </div>
@@ -86,17 +81,9 @@
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="vehicle" id="vehicle">
                                     <option value="" selected="selected">Please Select One</option>
-                                    <option value="داف">داف </option>
-                                    <option value="Kia">Kia </option>
-                                    <option value="red">red </option>
-                                    <option value="Kia Soul">Kia Soul </option>
-                                    <option value="quad r647">quad r647 </option>
-                                    <option value="AS">AS </option>
-                                    <option value="d">d </option>
-                                    <option value="Fareed Express">Fareed Express </option>
-                                    <option value="Khyber Express">Khyber Express </option>
-                                    <option value="Sukkur Express UP">Sukkur Express UP </option>
-                                    <option value="Shah Latif Express UP">Shah Latif Express UP </option>
+                                    @foreach($vehicles as $vehicle)
+                                    <option value="{{$vehicle['VEHICLE_ID']}}">{{$vehicle['VEHICLE_NAME']}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -165,30 +152,26 @@
     <div class="col-sm-12">
         <div class="card mb-3">
             <div class="card-header p-2">
-                <h4 class="pl-3">Search Here <small class="float-right">
-                        <button type="button" class="btn btn-primary btn-md" data-target="#add0" data-toggle="modal"><i class="ti-plus" aria-hidden="true"></i>
-                            Add Insurance</button>
-
-                    </small></h4>
+                <h4 class="pl-3">
+                    Search Here
+                    <small class="float-right">
+                        <button type="button" class="btn btn-primary btn-md" data-target="#add0" data-toggle="modal">
+                            <i class="ti-plus" aria-hidden="true"></i>
+                            Add Insurance
+                        </button>
+                    </small>
+                </h4>
             </div>
             <div class="card-body row">
                 <div class="col-sm-12 col-xl-4">
                     <div class="form-group row mb-1">
-                        <label for="vehiclesr" class="col-sm-5 col-form-label justify-content-start text-left">Vehicle </label>
+                        <label for="vehiclesr" class="col-sm-5 col-form-label justify-content-start text-left">Vehicle <br><br> </label>
                         <div class="col-sm-7">
                             <select class="form-control basic-single" name="vehiclesr" id="vehiclesr">
                                 <option value="" selected="selected">Please Select One</option>
-                                <option value="داف">داف </option>
-                                <option value="Kia">Kia </option>
-                                <option value="red">red </option>
-                                <option value="Kia Soul">Kia Soul </option>
-                                <option value="quad r647">quad r647 </option>
-                                <option value="AS">AS </option>
-                                <option value="d">d </option>
-                                <option value="Fareed Express">Fareed Express </option>
-                                <option value="Khyber Express">Khyber Express </option>
-                                <option value="Sukkur Express UP">Sukkur Express UP </option>
-                                <option value="Shah Latif Express UP">Shah Latif Express UP </option>
+                                @foreach($vehicles as $vehicle)
+                                <option value="{{$vehicle['VEHICLE_ID']}}">{{$vehicle['VEHICLE_NAME']}}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -314,11 +297,12 @@
         </div>
     </div>
 </div>
+@endsection
+@section('js-content')
 <!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/insurance_list.js"></script> -->
 <script>
     $(document).ready(function() {
         $("#insin").DataTable();
     });
 </script>
-
 @endsection

@@ -52,3 +52,9 @@ function populateTable(table) {
         }
     })
 }
+
+// Get Details to Edit Refuel Setting Form
+function editInfo() { }
+
+// Activate / Deactivate Refuel Setting
+function changeActivationstatus(newStatus, id) { }
