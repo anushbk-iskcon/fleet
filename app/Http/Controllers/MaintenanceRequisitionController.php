@@ -26,10 +26,10 @@ class MaintenanceRequisitionController extends Controller
     public function index(Request $request)
     {
         if (request()->isMethod('post')) {
-            // Return list of all maintenance requisitions as JSON to populated Data Table
+            // Return list of all maintenance requisitions as JSON to populate Data Table
             $maintenance_type = $request->mainten_type;
             $status = '';
-            if ($request->status == 1)  //Based on Values in mstr_phases table
+            if ($request->status == 1)  // Based on Values in mstr_phases table
                 $status = 'P';
             else if ($request->status == 2)
                 $status = 'A';

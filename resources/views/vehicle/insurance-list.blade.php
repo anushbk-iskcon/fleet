@@ -231,10 +231,10 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="insin" class="table table-striped table-bordered dt-responsive nowrap">
+                    <table id="insuranceInfoTable" class="table table-striped table-bordered dt-responsive nowrap">
                         <thead>
                             <tr>
-                                <th>SL</th>
+                                <th>Sl No.</th>
                                 <th>Policy Vendor Name</th>
                                 <th>Vehicle Name</th>
                                 <th>Policy Number</th>
@@ -242,7 +242,7 @@
                                 <th>End Date</th>
                                 <th>Recurring Period</th>
                                 <th>Recurring Date</th>
-                                <th>Action</th>
+                                <th>Action(s)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -301,8 +301,12 @@
 @section('js-content')
 <!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/insurance_list.js"></script> -->
 <script>
+    // To save Routes, URLs, etc. for use in external JS
+    let csrfToken = "{{csrf_token()}}";
+</script>
+<script>
     $(document).ready(function() {
-        $("#insin").DataTable();
+        $("#insuranceInfoTable").DataTable();
     });
 </script>
 @endsection

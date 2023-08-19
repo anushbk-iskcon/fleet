@@ -59,7 +59,15 @@ class InsuranceController extends Controller
      */
     public function update(Request $request)
     {
-        //
+        $ins_id = $request->insurance_id;
+        // Update details after fetching the correct model
+
+        $updated = '';
+        if ($updated) {
+            return response()->json(['successCode' => 1, 'message' => 'Updated successfully']);
+        } else {
+            return response()->json(['successCode' => 0, 'message' => 'Could not update insurance details']);
+        }
     }
 
     /**
@@ -74,5 +82,10 @@ class InsuranceController extends Controller
         $insurance->MODIFIED_BY = Auth::id();
 
         // Save changes and return response with message
+        $activationUpdated = '';
+        if ($activationUpdated)
+            return response()->json(['successCode' => 1, 'message' => 'Updated successfully']);
+        else
+            return response()->json(['successCode' => 0, 'message' => 'Failed to update']);
     }
 }

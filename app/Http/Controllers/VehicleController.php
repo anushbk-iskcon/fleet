@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\Driver;
+use App\Models\HrApi;
 use App\Models\Ownership;
 use App\Models\RTACircleOffice;
 use App\Models\Vehicle;
@@ -18,8 +19,12 @@ class VehicleController extends Controller
 {
     public function index()
     {
+        $hrApi = new HrApi;
+        $departments = $hrApi->getDepartments();
+        $deptData = $departments['data'];
+
         return view('vehicle.vehicle-list')
-            ->withDepartments(Department::get())
+            ->with('departments', $deptData)
             ->withOwnerships(Ownership::get())
             ->withVehicleTypes(VehicleType::get())
             ->withDivisions(VehicleDivision::get())
@@ -92,9 +97,12 @@ class VehicleController extends Controller
     public function store(Request $request)
     {
         $vehicle = new Vehicle;
+
         $vehicle->VEHICLE_NAME = $request->vehicle_name;
         $vehicle->VEHICLE_TYPE_ID = $request->vehicle_type;
         $vehicle->DEPARTMENT_ID = $request->department;
+        # Add Dept Name form Request below:
+
         $vehicle->VEHICLE_DIVISION_ID = $request->vehicle_division;
         $vehicle->REGISTRATION_DATE = $request->registration_date;
         $vehicle->RTA_CIRCLE_OFFICE_ID = $request->rta_office;
@@ -149,6 +157,7 @@ class VehicleController extends Controller
         $vehicle->VEHICLE_NAME = $request->vehicle_name;
         $vehicle->VEHICLE_TYPE_ID = $request->vehicle_type;
         $vehicle->DEPARTMENT_ID = $request->department;
+        # update dept Name
         $vehicle->VEHICLE_DIVISION_ID = $request->vehicle_division;
         $vehicle->REGISTRATION_DATE = $request->registration_date;
         $vehicle->RTA_CIRCLE_OFFICE_ID = $request->rta_office;
