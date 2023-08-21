@@ -20,36 +20,36 @@
     </script>
 
     <!-- Datatables bootstrap 4 -->
-    <link href="{{asset('plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
-    <link href="{{asset('plugins/datatables/responsive.bootstrap4.min.css')}}" rel="stylesheet">
+    <link href="{{asset('public/plugins/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+    <link href="{{asset('public/plugins/datatables/responsive.bootstrap4.min.css')}}" rel="stylesheet">
     <!-- Modal component -->
-    <link href="{{asset('plugins/modals/component.css')}}" rel="stylesheet">
+    <link href="{{asset('public/plugins/modals/component.css')}}" rel="stylesheet">
 
     <!-- Date range Picker 3.0.5 -->
-    <link href="{{asset('plugins/daterangepicker/daterangepicker.css')}}" rel="stylesheet">
+    <link href="{{asset('public/plugins/daterangepicker/daterangepicker.css')}}" rel="stylesheet">
     <!-- Select2 4.0.7 -->
-    <link href="{{asset('plugins/select2/dist/css/select2.min.css')}}" rel="stylesheet">
-    <link href="{{asset('plugins/select2-bootstrap4/dist/select2-bootstrap4.min.css')}}" rel="stylesheet">
+    <link href="{{asset('public/plugins/select2/dist/css/select2.min.css')}}" rel="stylesheet">
+    <link href="{{asset('public/plugins/select2-bootstrap4/dist/select2-bootstrap4.min.css')}}" rel="stylesheet">
     <!-- Select -->
     <link href="{{asset('dist/css/select.css')}}" rel="stylesheet">
     <!-- iCheck v1.0.2 -->
-    <link href="{{asset('plugins/icheck/skins/all.css')}}" rel="stylesheet">
+    <link href="{{asset('public/plugins/icheck/skins/all.css')}}" rel="stylesheet">
     <!-- Bootstrap 4 Toggle -->
-    <link href="{{asset('plugins/bootstrap4-toggle/css/bootstrap4-toggle.min.css')}}" rel="stylesheet">
+    <link href="{{asset('public/plugins/bootstrap4-toggle/css/bootstrap4-toggle.min.css')}}" rel="stylesheet">
     <!-- Typeahead -->
-    <link href="{{asset('plugins/typehead/typehead.css')}}" rel="stylesheet">
+    <link href="{{asset('public/plugins/typehead/typehead.css')}}" rel="stylesheet">
 
     <!-- Bootstrap v4.3.1 -->
-    <link href="{{asset('dist/css/app.min.css')}}" rel="stylesheet">
+    <link href="{{asset('public/dist/css/app.min.css')}}" rel="stylesheet">
 
-    <link href="{{asset('dist/css/custom.css')}}" rel="stylesheet">
-    <link href="{{asset('dist/css/create_system_role.css')}}" rel="stylesheet">
+    <link href="{{asset('public/dist/css/custom.css')}}" rel="stylesheet">
+    <link href="{{asset('public/dist/css/create_system_role.css')}}" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{asset('plugins/toastr/toastr.css')}}">
+    <link rel="stylesheet" href="{{asset('public/plugins/toastr/toastr.css')}}">
 
-    <link href="{{asset('dist/css/vehiclereq.css')}}" rel="stylesheet">
+    <link href="{{asset('public/dist/css/vehiclereq.css')}}" rel="stylesheet">
     <!-- Multiselected JS -->
-    <link href="{{asset('plugins/multiselectedjs/jquery.multiselect.css')}}" rel="stylesheet">
+    <link href="{{asset('public/plugins/multiselectedjs/jquery.multiselect.css')}}" rel="stylesheet">
     <style>
         .sidebar-nav ul li a i.fa,
         .sidebar-nav ul li a i.fas,
@@ -61,8 +61,8 @@
 
 
     <!-- jQuery 3.4.1 -->
-    <script src="{{asset('dist/js/app.min.js')}}"></script>
-    <script src="{{asset('plugins/multiselectedjs/jquery.multiselect.js')}}"></script>
+    <script src="{{asset('public/dist/js/app.min.js')}}"></script>
+    <script src="{{asset('public/plugins/multiselectedjs/jquery.multiselect.js')}}"></script>
 
     <!-- jQuery Validation plugin -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
@@ -633,52 +633,52 @@
     <div id="toTop" class="btn-top" style="display: block;"><i class="ti-upload"></i></div>
 
     <!-- ChartJS -->
-    <script src="{{asset('plugins/chartJs/Chart.min.js')}}"></script>
+    <script src="{{asset('public/plugins/chartJs/Chart.min.js')}}"></script>
     <!-- Sparkline -->
-    <script src="{{asset('plugins/sparkline/sparkline.min.js')}}"></script>
+    <script src="{{asset('public/plugins/sparkline/sparkline.min.js')}}"></script>
 
-    <script src="{{asset('dist/js/pages/dashboard.js')}}"></script>
+    <script src="{{asset('public/dist/js/pages/dashboard.js')}}"></script>
 
     <!-- DataTables -->
-    <script src="{{asset('plugins/datatables/dataTables.min.js')}}"></script>
-    <script src="{{asset('plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('plugins/datatables/dataTables.responsive.min.js')}}"></script>
-    <script src="{{asset('plugins/datatables/responsive.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('plugins/datatables/dataTables.buttons.min.js')}}"></script>
-    <script src="{{asset('plugins/datatables/buttons.bootstrap4.min.js')}}"></script>
-    <script src="{{asset('plugins/datatables/jszip.min.js')}}"></script>
-    <script src="{{asset('plugins/datatables/pdfmake.min.js')}}"></script>
-    <script src="{{asset('plugins/datatables/vfs_fonts.js')}}"></script>
-    <script src="{{asset('plugins/datatables/buttons.html5.min.js')}}"></script>
-    <script src="{{asset('plugins/datatables/buttons.print.min.js')}}"></script>
-    <script src="{{asset('plugins/datatables/buttons.colVis.min.js')}}"></script>
-    <script src="{{asset('plugins/datatables/data-bootstrap4.active.js')}}"></script>
+    <script src="{{asset('public/plugins/datatables/dataTables.min.js')}}"></script>
+    <script src="{{asset('public/plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('public/plugins/datatables/dataTables.responsive.min.js')}}"></script>
+    <script src="{{asset('public/plugins/datatables/responsive.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('public/plugins/datatables/dataTables.buttons.min.js')}}"></script>
+    <script src="{{asset('public/plugins/datatables/buttons.bootstrap4.min.js')}}"></script>
+    <script src="{{asset('public/plugins/datatables/jszip.min.js')}}"></script>
+    <script src="{{asset('public/plugins/datatables/pdfmake.min.js')}}"></script>
+    <script src="{{asset('public/plugins/datatables/vfs_fonts.js')}}"></script>
+    <script src="{{asset('public/plugins/datatables/buttons.html5.min.js')}}"></script>
+    <script src="{{asset('public/plugins/datatables/buttons.print.min.js')}}"></script>
+    <script src="{{asset('public/plugins/datatables/buttons.colVis.min.js')}}"></script>
+    <script src="{{asset('public/plugins/datatables/data-bootstrap4.active.js')}}"></script>
 
     <!-- Modal -->
-    <script src="{{asset('plugins/modals/classie.js')}}"></script>
-    <script src="{{asset('plugins/modals/modalEffects.js')}}"></script>
+    <script src="{{asset('public/plugins/modals/classie.js')}}"></script>
+    <script src="{{asset('public/plugins/modals/modalEffects.js')}}"></script>
     <!-- Moment JS -->
-    <script src="{{asset('plugins/moment/moment.js')}}"></script>
+    <script src="{{asset('public/plugins/moment/moment.js')}}"></script>
     <!-- DateRangePicker 3.0.5 -->
-    <script src="{{asset('plugins/daterangepicker/daterangepicker.js')}}"></script>
-    <script src="{{asset('plugins/daterangepicker/daterangepicker.active.js')}}"></script>
+    <script src="{{asset('public/plugins/daterangepicker/daterangepicker.js')}}"></script>
+    <script src="{{asset('public/plugins/daterangepicker/daterangepicker.active.js')}}"></script>
 
     <!-- Select2 -->
-    <script src="{{asset('plugins/select2/dist/js/select2.full.js')}}"></script>
-    <script src="{{asset('dist/js/pages/demo.select2.js')}}"></script>
+    <script src="{{asset('public/plugins/select2/dist/js/select2.full.js')}}"></script>
+    <script src="{{asset('public/dist/js/pages/demo.select2.js')}}"></script>
 
     <!-- iCheck -->
-    <script src="{{asset('plugins/icheck/icheck.min.js')}}"></script>
+    <script src="{{asset('public/plugins/icheck/icheck.min.js')}}"></script>
     <!-- Bootstrap 4 Toggle -->
-    <script src="{{asset('plugins/bootstrap4-toggle/js/bootstrap4-toggle.min.js')}}"></script>
+    <script src="{{asset('public/plugins/bootstrap4-toggle/js/bootstrap4-toggle.min.js')}}"></script>
     <!-- Typeahead -->
-    <script src="{{asset('plugins/typehead/typeahead.js')}}"></script>
+    <script src="{{asset('public/plugins/typehead/typeahead.js')}}"></script>
 
     <!-- Toastr -->
-    <script src="{{asset('plugins/toastr/toastr.min.js')}}"></script>
+    <script src="{{asset('public/plugins/toastr/toastr.min.js')}}"></script>
 
-    <script src="{{asset('dist/js/sidebar.js')}}"></script>
-    <script src="{{asset('dist/js/driver_performance.js')}}"></script>
+    <script src="{{asset('public/dist/js/sidebar.js')}}"></script>
+    <script src="{{asset('public/dist/js/driver_performance.js')}}"></script>
 
     <!-- JS Content on individual pages -->
     @yield('js-content')
