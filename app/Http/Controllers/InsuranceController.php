@@ -32,10 +32,10 @@ class InsuranceController extends Controller
         $insurance->VEHICLE = $request->vehicle;
         $insurance->POLICY_NUMBER = $request->policy_number;
         $insurance->CHARGE_PAYABLE = $request->charge_payable;
-        $insurance->START_DATE = $request->start_date;
-        $insurance->END_DATE = $request->end_date;
+        $insurance->START_DATE = $request->start_date ?? "";
+        $insurance->END_DATE = $request->end_date ?? "";
         $insurance->RECURRING_PERIOD = $request->recurring_period;
-        $insurance->RECURRING_DATE = $request->recurring_date;
+        $insurance->RECURRING_DATE = $request->recurring_date ?? null;
         $insurance->RECURRING_PERIOD_REMINDER = $request->add_reminder == 1 ? 'Y' : 'N';
         $insurance->STATUS = $request->status == 1 ? 'Y' : 'N';
         $insurance->REMARKS = $request->remarks ?? null;
@@ -43,6 +43,11 @@ class InsuranceController extends Controller
 
         // To upload insurance policy document
         if ($request->hasFile('policy_document')) {
+            $file = $request->file('policy_document');
+            $fileName = time() . '-' . date('Y') . $file->getClientOriginalExtension();
+            $uploadDestination = public_path('/upload/documents/insurance/');
+            $file->move($uploadDestination, $fileName);
+            $insurance->POLICY_DOCUMENT = $fileName;
         }
 
         $insurance->CREATED_BY = Auth::user()->USER_ID;

@@ -37,6 +37,7 @@ class LoginController extends Controller
             $userMenu = DB::table('permissions')
                 ->selectRaw('permissions.PARENT_ID, permissions.MENU_TITLE, group_concat(permissions.MENU_SUBTITLE) as subtitles, group_concat(permissions.SLUG) as urls')
                 ->groupBy('permissions.PARENT_ID')->groupBy('permissions.MENU_TITLE')
+                ->where(['permissions.IS_ACTIVE' => 'Y'])
                 ->orderBy('permissions.PARENT_ID')
                 ->get();
 
@@ -46,6 +47,7 @@ class LoginController extends Controller
                         ->where('role_permissions.ROLE_ID', '=', $userRoleId);
                 })
                 ->selectRaw('permissions.PERMISSION_ID as permissionID, permissions.SLUG as url, role_permissions.CAN_CREATE as CAN_CREATE, role_permissions.CAN_READ as CAN_READ, role_permissions.CAN_EDIT as CAN_EDIT, role_permissions.CAN_DELETE as CAN_DELETE')
+                ->where(['permissions.IS_ACTIVE' => 'Y'])
                 ->get();
 
             $userMenuPermissions = array();

@@ -4,6 +4,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\InsuranceController;
+use App\Http\Controllers\LegalDocumentsController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MaintenanceRequisitionController;
 use App\Http\Controllers\MaintenanceServiceController;
@@ -121,13 +122,13 @@ Route::middleware('auth')->group(function () {
     // Activate/de-activate vehicle
     Route::post('vehicles/status-update', [VehicleController::class, 'statusUpdate'])->name('vehicle.status-update');
 
-    Route::get('vehicle/insurance', [InsuranceController::class, 'index'])->name('insurance-list');
+    Route::get('vehicles/insurance', [InsuranceController::class, 'index'])->name('insurance-list');
+    Route::post('vehicles/insurance', [InsuranceController::class, 'index'])->name('insurance-list.list');
 
-    Route::get('vehicle/legal-documents', function () {
-        return view('vehicle.legal-docs');
-    })->name('legal-documents');
+    Route::get('vehicles/legal-documents', [LegalDocumentsController::class, 'index'])->name('legal-documents');
+    Route::post('vehicles/legal-documents', [LegalDocumentsController::class, 'index'])->name('legal-documents.list');
 
-    Route::get('vehicle/reminders', function () {
+    Route::get('vehicles/reminders', function () {
         return view('vehicle.reminder-list');
     })->name('vehicle-reminders');
     /*** END Vehicle Management Routes ***/
