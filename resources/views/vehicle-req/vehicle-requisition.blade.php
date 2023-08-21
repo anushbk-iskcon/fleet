@@ -28,34 +28,9 @@
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="req_for" id="req_for">
                                     <option value="" selected="selected">Select Employee</option>
-                                    <option value="18">
-                                        Jasper Cameron_(Computer_EYELDZTR) </option>
-                                    <option value="17">
-                                        toto_(Technical_EXO9WJ1H) </option>
-                                    <option value="6">
-                                        Kamrul_(ACCOUNTING_ETMYQ36Y) </option>
-                                    <option value="20">
-                                        rohit_(Accounting_EQW70GU6) </option>
-                                    <option value="15">
-                                        sayed_(Human Resource_EQ4QCE9D) </option>
-                                    <option value="16">
-                                        أمير أبو اسنينة_(????? ?????_EPXJHTX3) </option>
-                                    <option value="14">
-                                        Rahim_(Technical_EODSVEIF) </option>
-                                    <option value="19">
-                                        Sandip Sharma_(Marketing & Sales_ELHLYIMC) </option>
-                                    <option value="5">
-                                        Al Amin_(Human Resource_EKDXW58G) </option>
-                                    <option value="8">
-                                        abc_(ACCOUNTING_EJ5MOH4S) </option>
-                                    <option value="7">
-                                        Test Employee_(ACCOUNTING_EDWWDMAV) </option>
-                                    <option value="9">
-                                        taslimul_(Human Resource_ECN3UOZ8) </option>
-                                    <option value="13">
-                                        demo2_(Human Resource_E62WYC4J) </option>
-                                    <option value="4">
-                                        Rashid_(Human Resource_E0CRB403) </option>
+                                    @foreach($empData as $val)
+                                    <option value="{{$val['employeeId']}}">{{$val['employeeName']}} ({{$val['department']}})</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -64,18 +39,9 @@
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="vehicle_type" id="vehicle_type">
                                     <option value="" selected="selected">Please Select One</option>
-                                    <option value="407">
-                                        407</option>
-                                    <option value="honda">
-                                        honda</option>
-                                    <option value="no ac">
-                                        no ac</option>
-                                    <option value="ac">
-                                        ac</option>
-                                    <option value="Pick Up">
-                                        Pick Up</option>
-                                    <option value="Sedanse">
-                                        Sedanse</option>
+                                    @foreach($vehicle_type as $val)
+                                    <option value="{{$val->VEHICLE_TYPE_ID}}">{{$val->VEHICLE_TYPE_NAME}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -100,7 +66,7 @@
                         <div class="form-group row">
                             <label for="req_date" class="col-sm-5 col-form-label">Requisition Date </label>
                             <div class="col-sm-7">
-                                <input name="req_date" class="form-control  vnewdatetimepicker" autocomplete="off" type="text" placeholder="Requisition Date" id="req_date">
+                                <input name="req_date" class="form-control  vnewdatetimepicker" autocomplete="off" type="date" placeholder="Requisition Date" id="req_date">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -130,41 +96,25 @@
                                 <input name="nunpassenger" class="form-control" type="number" placeholder="No of Passenger" id="nunpassenger">
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                             <label for="drivenby" class="col-sm-5 col-form-label">Driven By <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="drivenby" id="drivenby">
                                     <option value="" selected="selected">Please Select One</option>
-                                    <option value="12">
-                                        Demo driver_(8546798512)</option>
-                                    <option value="11">
-                                        driver name_(01313368009)</option>
-                                    <option value="9">
-                                        Faris Shafi_(03012234567)</option>
-                                    <option value="8">
-                                        Khurram_(0301234567)</option>
-                                    <option value="4">
-                                        Musa Karim - Fareed Express_(03011223344)</option>
-                                    <option value="3">
-                                        Malik - Khyber Express_(03091234567)</option>
-                                    <option value="2">
-                                        aman - Shah Latif Express_(03097894562)</option>
+                                    @foreach($driver as $val)
+                                    <option value="{{$val->DRIVER_ID}}">{{$val->DRIVER_NAME}}</option>
+                                    @endforeach
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group row">
                             <label for="purpose" class="col-sm-5 col-form-label">Purpose <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="purpose" id="purpose">
                                     <option value="" selected="selected">Please Select One</option>
-                                    <option value="4">
-                                        site seeing</option>
-                                    <option value="3">
-                                        official</option>
-                                    <option value="2">
-                                        Picnic</option>
-                                    <option value="1">
-                                        Travelee</option>
+                                    @foreach($purpose as $val)
+                                    <option value="{{$val->REQUISITION_PURPOSE_ID}}">{{$val->REQUISITION_PURPOSE_NAME}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>

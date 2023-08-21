@@ -14,25 +14,24 @@ use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\VehicleRequisition;
+use App\Models\RequisitionPurpose;
 
 class VehicleReqController extends Controller
 {
     public function index()
     {
-        // $hrApi = new HrApi;
-        // $departments = $hrApi->getDepartments();
-        // $deptData = $departments['data'];
-
-        // return view('vehicle.vehicle-list')
-        //     ->with('departments', $deptData)
-        //     ->withOwnerships(Ownership::get())
-        //     ->withVehicleTypes(VehicleType::get())
-        //     ->withDivisions(VehicleDivision::get())
-        //     ->withRtaOffices(RTACircleOffice::get())
-        //     ->withVendors(Vendor::get())
-        //     ->withDrivers(Driver::get());
-
-        return view('vehicle-req.vehicle-requisition');
+        $data='';
+        $driver=Driver::where(['IS_ACTIVE'=>'Y'])->get();
+        $vehicle_type=VehicleType::where(['IS_ACTIVE'=>'Y'])->get();
+        $purpose=RequisitionPurpose::where(['IS_ACTIVE'=>'Y'])->get();
+        $hrApi = new HrApi;
+        $employee = $hrApi->getEmployeeList($data);
+        $empData = $employee['data'];
+        // echo "<pre>";
+        // print_r($empData);
+        // exit;
+        return view('vehicle-req.vehicle-requisition',compact('driver','vehicle_type','purpose','empData'));
     }
 
     public function getAllVehicleDetails(Request $request)
