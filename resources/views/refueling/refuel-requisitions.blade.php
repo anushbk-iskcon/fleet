@@ -236,6 +236,6 @@
     let reqActivationUpdateURL = "{{route('refuel-requisitions.change-activation')}}";
     let getReqDetailsURL = "{{route('refuel-requisitions.get-details')}}";
 </script>
-<script src="{{asset('dist/js/refueling/refuel_requisition.js')}}">
+<script src="{{asset('public/dist/js/refueling/refuel_requisition.js')}}">
 </script>
 @endsection

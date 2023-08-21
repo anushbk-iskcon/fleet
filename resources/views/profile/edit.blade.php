@@ -91,13 +91,13 @@
 @section('js-content')
 @if($user['PROFILE_IMAGE'])
 <script>
-    var defaultProfileImg = "{{asset('upload/profile/users/' .$user['PROFILE_IMAGE'] .'')}}"
+    var defaultProfileImg = "{{asset('public/upload/profile/users/' .$user['PROFILE_IMAGE'] .'')}}"
 </script>
 @else
 <script>
-    var defaultProfileImg = "{{asset('img/default.jpeg')}}"
+    var defaultProfileImg = "{{asset('public/img/default.jpeg')}}"
 </script>
 @endif
-<script src="{{asset('dist/js/profile/profile-update.js')}}"></script>
-<script src="{{asset('dist/js/user/user-form.js')}}"></script>
+<script src="{{asset('public/dist/js/profile/profile-update.js')}}"></script>
+<script src="{{asset('public/dist/js/user/user-form.js')}}"></script>
 @endsection

@@ -241,9 +241,9 @@
                                 <td>
                                     <div class="driver-profile-img-container" style="width: 30%;display: inline-block;">
                                         @if($driver['PROFILE_PHOTO'])
-                                        <img src="{{asset('upload/profile/drivers/' .$driver['PROFILE_PHOTO'] .'')}}" alt="{{$driver['DRIVER_NAME']}}" style="width: 45px;height: 45px;border-radius:50%">
+                                        <img src="{{asset('public/upload/profile/drivers/' .$driver['PROFILE_PHOTO'] .'')}}" alt="{{$driver['DRIVER_NAME']}}" style="width: 45px;height: 45px;border-radius:50%">
                                         @else
-                                        <img src="{{asset('img/default.jpeg')}}" alt="Image" style="width: 45px;height: 45px;border-radius:50%">
+                                        <img src="{{asset('public/img/default.jpeg')}}" alt="Image" style="width: 45px;height: 45px;border-radius:50%">
                                         @endif
                                     </div>
                                     <div style="width: 60%;display: inline-block;">
@@ -323,8 +323,8 @@
     let activateDriverURL = "{{url('activate-driver')}}";
     let csrfToken = "{{csrf_token()}}";
 </script>
-<script src="{{asset('dist/js/position_form.js')}}"></script>
-<script src="{{asset('dist/js/drivers/index.js')}}"></script>
+<script src="{{asset('public/dist/js/position_form.js')}}"></script>
+<script src="{{asset('public/dist/js/drivers/index.js')}}"></script>
 <script>
     $(document).ready(function() {
         $("#driverinfo").DataTable();

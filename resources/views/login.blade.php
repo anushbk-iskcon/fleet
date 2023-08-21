@@ -6,12 +6,12 @@
 
 <div class="bg-img-hero position-fixed top-0 right-0 left-0">
     <figure class="position-absolute right-0 bottom-0 left-0 m-0">
-        <img src="{{asset('img/fig.svg')}}" data-pagespeed-url-hash="2593638024">
+        <img src="{{asset('public/img/fig.svg')}}" data-pagespeed-url-hash="2593638024">
     </figure>
 </div>
 <div class="container py-3 py-sm-7">
     <a class="d-flex justify-content-center mb-5 news365-logo" href>
-        <img class="z-index-2" src="{{asset('img/logo1.jpg')}}" alt="Image Description" data-pagespeed-url-hash="799927880">
+        <img class="z-index-2" src="{{asset('public/img/logo1.jpg')}}" alt="Image Description" data-pagespeed-url-hash="799927880">
     </a>
     <div class="row justify-content-center">
         <div class="col-md-7 col-lg-5">

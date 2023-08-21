@@ -516,6 +516,6 @@
 
 @endsection
 @section('js-content')
-<script src="{{asset('dist/js/roles/role.js')}}"></script>
-<script src="{{asset('dist/js/roles/create-role.js')}}"></script>
+<script src="{{asset('public/dist/js/roles/role.js')}}"></script>
+<script src="{{asset('public/dist/js/roles/create-role.js')}}"></script>
 @endsection

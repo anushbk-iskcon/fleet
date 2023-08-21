@@ -34,9 +34,9 @@
                                 <h4 class="m-t-0 text-center">{{$user['FIRST_NAME'] . " " . $user['LAST_NAME']}}</h4>
                                 <p class="text-center">
                                     @if($user['PROFILE_IMAGE'])
-                                    <img src="{{asset('upload/profile/users/' .$user['PROFILE_IMAGE'] .'')}}" alt="User Image" height="150">
+                                    <img src="{{asset('public/upload/profile/users/' .$user['PROFILE_IMAGE'] .'')}}" alt="User Image" height="150">
                                     @else
-                                    <img src="{{asset('img/default.jpeg')}}" alt="User Image" height="150">
+                                    <img src="{{asset('public/img/default.jpeg')}}" alt="User Image" height="150">
                                     @endif
                                 </p>
                                 <p>

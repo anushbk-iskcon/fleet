@@ -67,5 +67,5 @@
 </script>
 @endsection
 @section('js-content')
-<script src="{{asset('dist/js/roles/assign-role.js')}}"></script>
+<script src="{{asset('public/dist/js/roles/assign-role.js')}}"></script>
 @endsection

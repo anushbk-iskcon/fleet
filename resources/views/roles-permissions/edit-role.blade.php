@@ -138,6 +138,6 @@
 </div>
 @endsection
 @section('js-content')
-<script src="{{asset('dist/js/roles/role.js')}}"></script>
-<script src="{{asset('dist/js/roles/edit-role.js')}}"></script>
+<script src="{{asset('public/dist/js/roles/role.js')}}"></script>
+<script src="{{asset('public/dist/js/roles/edit-role.js')}}"></script>
 @endsection

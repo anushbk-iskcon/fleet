@@ -270,7 +270,7 @@
     let changeActivationStatusURL = "{{route('refuel-approval-authorities.change-activation')}}";
     let depts = JSON.parse(`{!! json_encode($departments['data']) !!}`);
 </script>
-<script src="{{asset('dist/js/refueling/approval_authorities.js')}}">
+<script src="{{asset('public/dist/js/refueling/approval_authorities.js')}}">
 </script>
 
 @endsection

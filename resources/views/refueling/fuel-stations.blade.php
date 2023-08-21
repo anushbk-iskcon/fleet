@@ -243,7 +243,7 @@
     let fuelStationsListURL = '{{route("fuel-stations.list")}}';
     let updateActivationStatusURL = "{{ route('fuel-stations.update-status') }}";
 </script>
-<script src="{{asset('dist/js/refueling/fuel_stations.js')}}">
+<script src="{{asset('public/dist/js/refueling/fuel_stations.js')}}">
 </script>
 
 @endsection

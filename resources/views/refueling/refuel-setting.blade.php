@@ -344,5 +344,5 @@
     let activationStatusChangeURL = "";
 </script>
 <!-- <script src="{{asset('dist/js/refuel_setting.js')}}"></script> -->
-<script src="{{asset('dist/js/refueling/refuel_setting.js')}}"></script>
+<script src="{{asset('public/dist/js/refueling/refuel_setting.js')}}"></script>
 @endsection
