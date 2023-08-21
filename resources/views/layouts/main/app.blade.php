@@ -12,13 +12,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
 
     <script>
-    WebFont.load({
-        google: {
-            families: [
-                'Nunito+Sans:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&display=swap'
-            ]
-        }
-    });
+        WebFont.load({
+            google: {
+                families: [
+                    'Nunito+Sans:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&display=swap'
+                ]
+            }
+        });
     </script>
 
     <!-- Datatables bootstrap 4 -->
@@ -53,11 +53,11 @@
     <!-- Multiselected JS -->
     <link href="{{asset('public/plugins/multiselectedjs/jquery.multiselect.css')}}" rel="stylesheet">
     <style>
-    .sidebar-nav ul li a i.fa,
-    .sidebar-nav ul li a i.fas,
-    .sidebar-nav ul li a i.far {
-        font-size: 16px !important;
-    }
+        .sidebar-nav ul li a i.fa,
+        .sidebar-nav ul li a i.fas,
+        .sidebar-nav ul li a i.far {
+            font-size: 16px !important;
+        }
     </style>
     @yield('css-content')
 
@@ -70,7 +70,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 
     <script>
-    var baseurl = "http://localhost/fleet/public/";
+        var baseurl = "http://localhost/fleet/public/";
     </script>
 </head>
 
@@ -551,11 +551,9 @@
                             <li class="nav-item dropdown user-menu">
                                 <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
                                     @if(Auth()->user()->PROFILE_IMAGE)
-                                    <img src="{{asset('public/upload/profile/users/' .auth()->user()->PROFILE_IMAGE .'')}}"
-                                        alt="Profile Picture" class="header-image">
+                                    <img src="{{asset('public/upload/profile/users/' .auth()->user()->PROFILE_IMAGE .'')}}" alt="Profile Picture" class="header-image">
                                     @else
-                                    <img src="{{asset('public/upload/profile/default.png')}}" alt="Profile Picture"
-                                        class="header-image">
+                                    <img src="{{asset('public/upload/profile/default.png')}}" alt="Profile Picture" class="header-image">
                                     @endif
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
@@ -564,21 +562,17 @@
                                     </div>
                                     <div class="user-header">
                                         <div class="img-user">
-                    
+
                                             @if(Auth()->user()->PROFILE_IMAGE)
-                                            <img src="{{asset('public/upload/profile/users/' .auth()->user()->PROFILE_IMAGE .'')}}"
-                                                alt="Profile Picture">
+                                            <img src="{{asset('public/upload/profile/users/' .auth()->user()->PROFILE_IMAGE .'')}}" alt="Profile Picture">
                                             @else
-                                            <img src="{{asset('public/upload/profile/default.png')}}"
-                                                alt="Profile Picture">
+                                            <img src="{{asset('public/upload/profile/default.png')}}" alt="Profile Picture">
                                             @endif
                                         </div>
                                         Super Admin
                                     </div>
-                                    <a href="{{url('profile')}}" class="dropdown-item"><i
-                                            class="typcn typcn-user-outline"></i> My Profile</a>
-                                    <a href="{{route('edit-profile')}}" class="dropdown-item"><i
-                                            class="typcn typcn-edit"></i> Edit Profile</a>
+                                    <a href="{{url('profile')}}" class="dropdown-item"><i class="typcn typcn-user-outline"></i> My Profile</a>
+                                    <a href="{{route('edit-profile')}}" class="dropdown-item"><i class="typcn typcn-edit"></i> Edit Profile</a>
 
                                     <!-- For Logout -->
                                     <form action="{{url('logout')}}" method="post">
