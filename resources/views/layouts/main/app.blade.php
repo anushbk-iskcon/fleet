@@ -91,12 +91,12 @@
 
     <div class="wrapper">
         <nav class="sidebar sidebar-bunker">
-            <div class="sidebar-header">
+            <div class="sidebar-header text-center">
                 <a href="{{url('dashboard')}}" class="logo">
-                    <img src="{{asset('img/logo1.jpg')}}" alt="Home - Fleet">
+                    <img src="{{asset('public/img/header-logo.png')}}" alt="Home - Fleet">
                 </a>
             </div>
-
+<!-- 
             <div class="profile-element d-flex align-items-center flex-shrink-0">
                 <div class="avatar online">
                     <img src="{{asset('upload/profile/users/' .auth()->user()->PROFILE_IMAGE .'')}}" class="img-fluid rounded-circle" alt="">
@@ -104,7 +104,7 @@
                 <div class="profile-text">
                     <h6 class="m-0">Super Admin</h6>
                 </div>
-            </div>
+            </div> -->
 
             <div class="sidebar-body">
                 <nav class="sidebar-nav">

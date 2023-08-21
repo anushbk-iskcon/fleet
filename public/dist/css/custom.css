@@ -1550,9 +1550,8 @@ code {
 .sidebar-header {
     flex-shrink: 0;
     height: 70px;
-    display: flex;
     align-items: center;
-    padding: 0 20px
+    padding: 11px 20px;
 }
 
 .sidebar-header .logo {
