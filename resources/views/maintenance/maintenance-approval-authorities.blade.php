@@ -305,6 +305,6 @@
     let changeActivationStatusURL = "{{route('maintenance-approval-authorities.change-activation')}}";
     let depts = JSON.parse(`{!! json_encode($departments['data']) !!}`);
 </script>
-<script src="{{asset('dist/js/maintenance/approval_authorities.js')}}">
+<script src="{{asset('public/dist/js/maintenance/approval_authorities.js')}}">
 </script>
 @endsection

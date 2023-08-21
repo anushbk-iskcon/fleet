@@ -178,7 +178,7 @@
                         </div>
 
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetAddRefuelSettingForm">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
                         </div>
                     </div>
@@ -238,7 +238,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <!-- <tr>
                                 <td>1</td>
                                 <td>Test Express 1</td>
                                 <td>0</td>
@@ -267,67 +267,8 @@
                                     <a onclick="editinfo(9)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
                                     <a href="https://vmsdemo.bdtask-demo.com/refueling/refueling/delete_refuel/9" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>Toyata</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>No</td>
-                                <td>027856</td>
-                                <td>Octen</td>
-                                <td></td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_5" value="https://vmsdemo.bdtask-demo.com/refueling/refueling/updaterefuelfrm" />
-                                    <a onclick="editinfo(5)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/refueling/refueling/delete_refuel/5" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>Toyata</td>
-                                <td>981002</td>
-                                <td>80</td>
-                                <td>Yes</td>
-                                <td>019213004522</td>
-                                <td>Octen</td>
-                                <td>demo</td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_3" value="https://vmsdemo.bdtask-demo.com/refueling/refueling/updaterefuelfrm" />
-                                    <a onclick="editinfo(3)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/refueling/refueling/delete_refuel/3" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>6</td>
-                                <td>Nissan</td>
-                                <td>21533001</td>
-                                <td>80</td>
-                                <td>Yes</td>
-                                <td>0167576400</td>
-                                <td>Petrol</td>
-                                <td>test</td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_2" value="https://vmsdemo.bdtask-demo.com/refueling/refueling/updaterefuelfrm" />
-                                    <a onclick="editinfo(2)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/refueling/refueling/delete_refuel/2" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>7</td>
-                                <td>Toyata</td>
-                                <td>21531200</td>
-                                <td>80</td>
-                                <td>Yes</td>
-                                <td>0167576453</td>
-                                <td>Gas</td>
-                                <td>tr</td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_1" value="https://vmsdemo.bdtask-demo.com/refueling/refueling/updaterefuelfrm" />
-                                    <a onclick="editinfo(1)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/refueling/refueling/delete_refuel/1" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr>
+                            </tr> -->
+
                         </tbody>
                     </table> <!-- /.table-responsive -->
                 </div>
@@ -340,8 +281,13 @@
 <script>
     // To store global variables, Route URLs, etc.
     let csrfToken = "{{csrf_token()}}";
-    let refuelSettingListURL = "";
-    let activationStatusChangeURL = "";
+    // To load all refuel settings to Data Table:
+    let refuelSettingListURL = "{{route('refuel-setting.list')}}";
+    // To load update form pre-filled with current details of the refuel setting:
+    let refuelSettingEditURL = "{{route('refuel-setting.edit')}}";
+    // To update refuel setting details after form submission:
+    let refuelSettingUpdateURl = "{{route('refuel-setting.update')}}";
+    let activationStatusChangeURL = "{{route('refuel-setting.change-activation')}}";
 </script>
 <!-- <script src="{{asset('dist/js/refuel_setting.js')}}"></script> -->
 <script src="{{asset('public/dist/js/refueling/refuel_setting.js')}}"></script>

@@ -277,6 +277,6 @@
     let getTableDataURL = "{{route('maintenance-service-list.list')}}";
     let editMaintenServiceURL = "{{route('maintenance-service-list.edit')}}";
 </script>
-<script src="{{asset('dist/js/maintenance/maintenance_services.js')}}">
+<script src="{{asset('public/dist/js/maintenance/maintenance_services.js')}}">
 </script>
 @endsection

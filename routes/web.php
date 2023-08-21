@@ -258,7 +258,12 @@ Route::middleware('auth')->group(function () {
 
 
     /*** BEGIN Refueling Module ***/
+    // Refuel Setting sub-module routes
     Route::get('refuel-setting', [RefuelSettingController::class, 'index'])->name('refuel-setting');
+    Route::post('refuel-setting', [RefuelSettingController::class, 'index'])->name('refuel-setting.list');
+    Route::post('refuel-setting/edit', [RefuelSettingController::class, 'edit'])->name('refuel-setting.edit');
+    Route::post('refuel-setting/update', [RefuelSettingController::class, 'update'])->name('refuel-setting.update');
+    Route::post('refuel-setting/change-activation', [RefuelSettingController::class, 'activationStatusChange'])->name('refuel-setting.change-activation');
 
     // Fuel Station sub-module Routes
     Route::get('refueling/fuel-stations', [FuelStationController::class, 'index'])->name('fuel-stations');

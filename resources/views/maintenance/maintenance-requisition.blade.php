@@ -182,6 +182,6 @@
     let csrfToken = "{{csrf_token()}}";
     let updateApprovalStatusURL = "{{route('maintenance-requisitions.change-approval-status')}}";
 </script>
-<script src="{{asset('dist/js/maintenance/mainten_req_list.js')}}">
+<script src="{{asset('public/dist/js/maintenance/mainten_req_list.js')}}">
 </script>
 @endsection

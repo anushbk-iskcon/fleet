@@ -25,12 +25,53 @@ $(document).ready(function () {
         }
     });
 
+    $("#addRefuelSettingForm .basic-single").on('change', function () {
+        $(this).valid(); // To remove validation error messages if select2 selections are made
+    });
+
+    $("#resetAddRefuelSettingForm").click(function () {
+        setTimeout(() => {
+            $("#addRefuelSettingForm .basic-single").each(function () {
+                $(this).trigger('change');
+                // $(this).removeClass('error').removeAttr('aria-invalid');
+                // $(this).next().next('div.error').hide();
+                $("#addRefuelSettingForm").validate().resetForm();
+            });
+        }, 10);
+    });
+
     $("#add0").on('hidden.bs.modal', function () {
         $("#addRefuelSettingForm").trigger('reset');
         $("#addRefuelSettingForm").data('validator').resetForm();
         $("#addRefuelSettingForm .form-control").removeClass('error').removeAttr('aria-invalid');
         $('.basic-single').trigger('change');
     });
+
+    // To validate and submit Edit Refuel Setting form
+    $("#editRefuelSettingForm").validate({
+        rules: {
+            vehicle: 'required',
+            fuel_type: 'required',
+            fuel_station: 'required',
+            budget_given: {
+                required: true,
+                number: true
+            },
+            place: 'required',
+            kilometer_per_unit: 'required',
+            driver: 'required',
+            driver_mobile: 'required',
+            max_unit: 'required'
+        },
+        errorElement: 'div',
+        errorPlacement: function (error, element) {
+            $(element).closest('div[class*=col-sm-]').append(error);
+        },
+        submitHandler: function (form, ev) {
+            ev.preventDefault();
+        }
+    });
+
 });
 
 // To load data into Data Table
@@ -66,7 +107,7 @@ function populateTable(table) {
 }
 
 // Get Details to Edit Refuel Setting Form
-function editInfo() {
+function editInfo(refuelSettingId) {
     // AJAX request to get details
 
     $("#edit .modal-body").clear();
@@ -79,5 +120,27 @@ function editInfo() {
 
 // Activate / Deactivate Refuel Setting
 function changeActivationstatus(newStatus, id) {
-    if (confirm("Are you sure?")) { }
+    // newStatus = 1 to Activate, = 0 to De-activate
+    if (confirm("Are you sure?")) {
+        $.ajax({
+            url: activationStatusChangeURL,
+            type: 'post',
+            data: {
+                refuel_setting_id: id,
+                activation_status: newStatus,
+                _token: csrfToken
+            },
+            dataType: 'json',
+            success: function (res) {
+                if (res.successCode == 1) {
+                    toastr.success(res.message, '', { closeButton: true });
+                } else {
+                    toastr.error(res.message, '', { closeButton: true });
+                }
+            },
+            error: function (jqXHR, textstatus, err) {
+                toastr.error('Error updating. Please try again', '', { closeButton: true });
+            }
+        });
+    }
 }

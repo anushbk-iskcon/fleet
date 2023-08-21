@@ -82,7 +82,7 @@ class RefuelSettingController extends Controller
         $fuelStations = FuelStation::where('IS_ACTIVE', 'Y')->get(['FUEL_STATION_ID', 'VENDOR_NAME', 'FUEL_STATION_NAME']);
         $drivers = Driver::where('IS_ACTIVE', 'Y')->get(['DRIVER_ID', 'DRIVER_NAME']);
 
-        # Get details on the Selected Refuel Setting using find(id)
+        # +ADD CODE TO Get details on the Selected Refuel Setting using find(id)
 
         $editFormContent = '<div class="col-md-12 col-lg-6">
         <div class="form-group row">

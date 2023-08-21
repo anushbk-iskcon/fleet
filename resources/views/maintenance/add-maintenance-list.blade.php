@@ -230,5 +230,5 @@
 <script>
     // Any global variables like routes etc.
 </script>
-<script src="{{asset('dist/js/maintenance/add_mainten_req.js')}}"></script>
+<script src="{{asset('public/dist/js/maintenance/add_mainten_req.js')}}"></script>
 @endsection
