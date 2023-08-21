@@ -111,8 +111,11 @@
             <div class="sidebar-body">
                 <nav class="sidebar-nav">
                     <ul class="metismenu">
-                        @php $userMenuPermissions = session('userMenuPermissions') @endphp
-                        @foreach(session('userMenu') as $menuItem)
+                        @php 
+                        $userMenuPermissions = getMenuPermission();
+                        $userMenu = getuserMenu();
+                        @endphp
+                        @foreach($userMenu as $menuItem)
                         @php
                         $subTitles = explode(',', $menuItem->subtitles);
                         $currentMenuTitle = array_shift($subTitles);
@@ -122,7 +125,7 @@
                         # Collect link text (subtitles) and corresponding URLs into a new array:
                         $menuLinks = array_combine($subTitles, $urls);
                         @endphp
-                        @if(count($menuLinks) > 1)
+                        @if(count($menuLinks) >= 1)
                         @if($userMenuPermissions[$currentMenuLink]['CAN_READ'] == 'Y')
                         <li class="">
                             <a href="#" class="has-arrow material-ripple">
