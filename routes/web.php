@@ -43,6 +43,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+include('requisition.php');
 
 Route::get('/', function () {
     return view('welcome');
@@ -131,10 +132,7 @@ Route::middleware('auth')->group(function () {
     /*** END Vehicle Management Routes ***/
 
     /*** START Vehicle Requisition Routes ***/
-    Route::get('vehicle-requisition', function () {
-        return view('vehicle-req.vehicle-requisition');
-    })->name('vehicle-requisitions');
-
+  
     Route::get('vehicle-requisition/routes', function () {
         return view('vehicle-req.vehicle-routes');
     })->name('vehicle-routes');

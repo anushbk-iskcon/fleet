@@ -20,39 +20,43 @@
     <div class="col-lg-12">
     </div>
 </div>
-<div class="card">
-    <div class="row">
-        <div class="col-sm-12 col-md-12">
-            <div class="panel panel-bd lobidrag">
-                <div class="card-header">
-                    <h4>Profile</h4>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="card-body">
-                            <div class="card-content-summary">
-                                <h4 class="m-t-0 text-center">{{$user['FIRST_NAME'] . " " . $user['LAST_NAME']}}</h4>
-                                <p class="text-center">
-                                    @if($user['PROFILE_IMAGE'])
-                                    <img src="{{asset('public/upload/profile/users/' .$user['PROFILE_IMAGE'] .'')}}" alt="User Image" height="150">
-                                    @else
-                                    <img src="{{asset('public/img/default.jpeg')}}" alt="User Image" height="150">
-                                    @endif
-                                </p>
-                                <p>
-                                    {{$user['ABOUT']}}
-                                </p>
+<div class="card-new">
+    <div class="row justify-content-center">
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="panel panel-bd lobidrag">
+                    <div class="card-header">
+                        <h4>Profile</h4>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-sm-12">
+                            <div class="card-body">
+                                <div class="card-content-summary">
+                                    <p class="text-center">
+                                        @if($user['PROFILE_IMAGE'])
+                                        <img src="{{asset('public/upload/profile/users/' .$user['PROFILE_IMAGE'] .'')}}"
+                                            alt="User Image" height="150">
+                                        @else
+                                        <img src="{{asset('public/img/default.jpeg')}}" alt="User Image" height="150">
+                                        @endif
+                                    </p>
+                                    <h4 class="m-t-0 text-center">{{$user['FIRST_NAME'] . " " . $user['LAST_NAME']}}
+                                    </h4>
+                                    <p>
+                                        {{$user['ABOUT']}}
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="card-body">
-                            <dl class="dl-horizontal">
-                                <dt>Email </dt>
-                                <dd> {{$user['EMAIL']}} </dd>
-                                <dt>Role </dt>
-                                <dd>
-                                    {{session('userRole')}}
-                                </dd>
-                            </dl>
+                            <div class="card-body">
+                                <dl class="dl-horizontal">
+                                    <dt>Email </dt>
+                                    <dd> {{$user['EMAIL']}} </dd>
+                                    <dt>Role </dt>
+                                    <dd>
+                                        {{session('userRole')}}
+                                    </dd>
+                                </dl>
+                            </div>
                         </div>
                     </div>
                 </div>

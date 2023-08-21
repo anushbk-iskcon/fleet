@@ -21,7 +21,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="https://vmsdemo.bdtask-demo.com/vehiclereq/Vehicle_requisition/add_requisition" id="emp_form" class="row" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+                <form action="{{route('add_requisition')}}" id="emp_form" class="row" enctype="multipart/form-data" method="post" accept-charset="utf-8">
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
                             <label for="req_for" class="col-sm-5 col-form-label">Requisition For <i class="text-danger">*</i></label>

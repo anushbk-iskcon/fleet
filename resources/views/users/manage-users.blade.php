@@ -46,9 +46,9 @@
                             <td>
                                 <!-- If profile image is not null -->
                                 @if($user['PROFILE_IMAGE'])
-                                <img src="{{asset('upload/profile/users/' .$user['PROFILE_IMAGE'] .'')}}" alt="{{$user['FIRST_NAME'] . ' ' . $user['LAST_NAME']}}" height="60" style="width:60px;">
+                                <img src="{{asset('public/upload/profile/users/' .$user['PROFILE_IMAGE'] .'')}}" alt="{{$user['FIRST_NAME'] . ' ' . $user['LAST_NAME']}}" height="60" style="width:60px;">
                                 @else
-                                <img src="{{asset('img/default.jpeg')}}" alt="Image" height="60" style="width:60px;">
+                                <img src="{{asset('public/img/default.jpeg')}}" alt="Image" height="60" style="width:60px;">
                                 @endif
                             </td>
                             <td>{{$user['FIRST_NAME'] . " " . $user['LAST_NAME']}}</td>

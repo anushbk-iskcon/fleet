@@ -64,9 +64,9 @@
                         <label for="preview" class="col-sm-3 col-form-label">Preview</label>
                         <div class="col-sm-2">
                             @if($user['PROFILE_IMAGE'])
-                            <img id="user_picture_change" src="{{asset('upload/profile/users/' .$user['PROFILE_IMAGE'] .'')}}" alt="User Profile Picture" class="img-thumbnail" width="125" height="100">
+                            <img id="user_picture_change" src="{{asset('public/upload/profile/users/' .$user['PROFILE_IMAGE'] .'')}}" alt="User Profile Picture" class="img-thumbnail" width="125" height="100">
                             @else
-                            <img id="user_picture_change" src="{{asset('img/default.jpeg')}}" class="img-thumbnail" alt="User Profile Picture" width="125" height="100">
+                            <img id="user_picture_change" src="{{asset('public/img/default.jpeg')}}" class="img-thumbnail" alt="User Profile Picture" width="125" height="100">
                             @endif
                         </div>
                         <div class="col-sm-7">

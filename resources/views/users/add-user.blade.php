@@ -63,7 +63,7 @@
                     <div class="form-group row">
                         <label for="preview" class="col-sm-3 col-form-label">Preview</label>
                         <div class="col-sm-2">
-                            <img id="user_picture_change" src="{{asset('img/default.jpeg')}}" class="img-thumbnail" width="125" height="100">
+                            <img id="user_picture_change" src="{{asset('public/img/default.jpeg')}}" class="img-thumbnail" width="125" height="100">
                         </div>
                         <div class="col-sm-7">
                         </div>

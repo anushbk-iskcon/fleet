@@ -1546,7 +1546,9 @@ code {
         opacity: 1
     }
 }
-
+.header-image{
+    width: 26px;
+}
 .sidebar-header {
     flex-shrink: 0;
     height: 70px;
@@ -7734,4 +7736,13 @@ pre .arg {
 .sidebar-nav ul li.mm-active .nav-second-level li.active a {
     color: #37a000;
     font-weight: 700
+}
+.select2-container--default .select2-selection--single {
+    height: 39px;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 38px!important;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 37px!important;
 }

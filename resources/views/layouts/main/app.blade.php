@@ -8,15 +8,17 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') - Fleet</title>
 
-    <link rel="shortcut icon" href="{{asset('img/icons/m.png')}}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{asset('public/img/icons/favicon.ico')}}" type="image/x-icon">
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
 
     <script>
-        WebFont.load({
-            google: {
-                families: ['Nunito+Sans:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&display=swap']
-            }
-        });
+    WebFont.load({
+        google: {
+            families: [
+                'Nunito+Sans:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&display=swap'
+            ]
+        }
+    });
     </script>
 
     <!-- Datatables bootstrap 4 -->
@@ -31,7 +33,7 @@
     <link href="{{asset('public/plugins/select2/dist/css/select2.min.css')}}" rel="stylesheet">
     <link href="{{asset('public/plugins/select2-bootstrap4/dist/select2-bootstrap4.min.css')}}" rel="stylesheet">
     <!-- Select -->
-    <link href="{{asset('dist/css/select.css')}}" rel="stylesheet">
+    <link href="{{asset('public/dist/css/select.css')}}" rel="stylesheet">
     <!-- iCheck v1.0.2 -->
     <link href="{{asset('public/plugins/icheck/skins/all.css')}}" rel="stylesheet">
     <!-- Bootstrap 4 Toggle -->
@@ -51,11 +53,11 @@
     <!-- Multiselected JS -->
     <link href="{{asset('public/plugins/multiselectedjs/jquery.multiselect.css')}}" rel="stylesheet">
     <style>
-        .sidebar-nav ul li a i.fa,
-        .sidebar-nav ul li a i.fas,
-        .sidebar-nav ul li a i.far {
-            font-size: 16px !important;
-        }
+    .sidebar-nav ul li a i.fa,
+    .sidebar-nav ul li a i.fas,
+    .sidebar-nav ul li a i.far {
+        font-size: 16px !important;
+    }
     </style>
     @yield('css-content')
 
@@ -68,7 +70,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 
     <script>
-        var baseurl = "http://localhost/fleet/public/";
+    var baseurl = "http://localhost/fleet/public/";
     </script>
 </head>
 
@@ -96,7 +98,7 @@
                     <img src="{{asset('public/img/header-logo.png')}}" alt="Home - Fleet">
                 </a>
             </div>
-<!-- 
+            <!-- 
             <div class="profile-element d-flex align-items-center flex-shrink-0">
                 <div class="avatar online">
                     <img src="{{asset('upload/profile/users/' .auth()->user()->PROFILE_IMAGE .'')}}" class="img-fluid rounded-circle" alt="">
@@ -545,7 +547,13 @@
                         <ul class="navbar-nav flex-row align-items-center ml-auto">
                             <li class="nav-item dropdown user-menu">
                                 <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
-                                    <i class="typcn typcn-user-add-outline"></i>
+                                    @if(Auth()->user()->PROFILE_IMAGE)
+                                    <img src="{{asset('public/upload/profile/users/' .auth()->user()->PROFILE_IMAGE .'')}}"
+                                        alt="Profile Picture" class="header-image">
+                                    @else
+                                    <img src="{{asset('public/upload/profile/default.png')}}" alt="Profile Picture"
+                                        class="header-image">
+                                    @endif
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <div class="dropdown-header d-sm-none">
@@ -553,17 +561,27 @@
                                     </div>
                                     <div class="user-header">
                                         <div class="img-user">
-                                            <img src="{{asset('upload/profile/users/' .auth()->user()->PROFILE_IMAGE .'')}}" alt="Profile Picture">
+                    
+                                            @if(Auth()->user()->PROFILE_IMAGE)
+                                            <img src="{{asset('public/upload/profile/users/' .auth()->user()->PROFILE_IMAGE .'')}}"
+                                                alt="Profile Picture">
+                                            @else
+                                            <img src="{{asset('public/upload/profile/default.png')}}"
+                                                alt="Profile Picture">
+                                            @endif
                                         </div>
                                         Super Admin
                                     </div>
-                                    <a href="{{url('profile')}}" class="dropdown-item"><i class="typcn typcn-user-outline"></i> My Profile</a>
-                                    <a href="{{route('edit-profile')}}" class="dropdown-item"><i class="typcn typcn-edit"></i> Edit Profile</a>
+                                    <a href="{{url('profile')}}" class="dropdown-item"><i
+                                            class="typcn typcn-user-outline"></i> My Profile</a>
+                                    <a href="{{route('edit-profile')}}" class="dropdown-item"><i
+                                            class="typcn typcn-edit"></i> Edit Profile</a>
 
                                     <!-- For Logout -->
                                     <form action="{{url('logout')}}" method="post">
                                         @csrf
-                                        <button class="dropdown-item"><i class="typcn typcn-key-outline"></i> Sign Out</button>
+                                        <button class="dropdown-item"><i class="typcn typcn-key-outline"></i> Sign
+                                            Out</button>
                                     </form>
                                 </div>
 
