@@ -4,23 +4,31 @@ use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 use App\Models\Role;
-use DB;
+use App\Models\UserRoles;
+use App\Models\Rolepermissions;
+use App\Models\Permissions;
 
 if (!function_exists('getMenuPermission')) {
 
     function getMenuPermission()
     {
-        $userRoleId = DB::table('user_roles')->where('USER_ID', Auth::user()->USER_ID)->value('ROLE_ID');
+        $userRoleId = UserRoles::where('USER_ID', Auth::user()->USER_ID)->value('ROLE_ID');
         $userRole = Role::find($userRoleId);
         $userRoleName = $userRole->ROLE_NAME;
 
-        $userPermissions = DB::table('role_permissions')->where('ROLE_ID', $userRoleId)->get();
-        $menuPermissions = DB::table('permissions')
+        $userPermissions = Rolepermissions::where('ROLE_ID', $userRoleId)->get();
+        $menuPermissions = Permissions::selectRaw(
+            'permissions.PERMISSION_ID as permissionID, 
+            permissions.SLUG as url, 
+            role_permissions.CAN_CREATE as CAN_CREATE, 
+            role_permissions.CAN_READ as CAN_READ, 
+            role_permissions.CAN_EDIT as CAN_EDIT, 
+            role_permissions.CAN_DELETE as CAN_DELETE'
+        )
             ->join('role_permissions', function ($join) use ($userRoleId) {
                 $join->on('permissions.PERMISSION_ID', '=', 'role_permissions.PERMISSION_ID')
                     ->where('role_permissions.ROLE_ID', '=', $userRoleId);
             })
-            ->selectRaw('permissions.PERMISSION_ID as permissionID, permissions.SLUG as url, role_permissions.CAN_CREATE as CAN_CREATE, role_permissions.CAN_READ as CAN_READ, role_permissions.CAN_EDIT as CAN_EDIT, role_permissions.CAN_DELETE as CAN_DELETE')
             ->where(['permissions.IS_ACTIVE' => 'Y'])
             ->get();
 
@@ -40,8 +48,7 @@ if (!function_exists('getuserMenu')) {
 
     function getuserMenu()
     {
-        $userMenu = DB::table('permissions')
-            ->selectRaw('permissions.PARENT_ID, permissions.MENU_TITLE, group_concat(permissions.MENU_SUBTITLE) as subtitles, group_concat(permissions.SLUG) as urls')
+        $userMenu = Permissions::selectRaw('permissions.PARENT_ID, permissions.MENU_TITLE, group_concat(permissions.MENU_SUBTITLE) as subtitles, group_concat(permissions.SLUG) as urls')
             ->groupBy('permissions.PARENT_ID')->groupBy('permissions.MENU_TITLE')
             ->where(['permissions.IS_ACTIVE' => 'Y'])
             ->orderBy('permissions.PARENT_ID')

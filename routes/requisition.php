@@ -33,6 +33,8 @@
     use App\Models\Role;
     use Illuminate\Support\Facades\Route;
 
-    Route::get('vehicle-requisitions', [VehicleReqController::class, 'index'])->name('vehicle-requisitions');
-    Route::post('add-requisition', [VehicleReqController::class, 'addRequisition'])->name('add_requisition');
+    Route::middleware('auth')->group(function () {
+        Route::get('vehicle-requisitions', [VehicleReqController::class, 'index'])->name('vehicle-requisitions');
+        Route::post('add-requisition', [VehicleReqController::class, 'addRequisition'])->name('add_requisition');
+    });
 ?>
