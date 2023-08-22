@@ -19,6 +19,10 @@ use App\Models\RequisitionPurpose;
 
 class VehicleReqController extends Controller
 {
+    public function __construct()
+    {
+        
+    }
     public function index()
     {
         $data='';
