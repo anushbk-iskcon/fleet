@@ -36,5 +36,10 @@
     Route::middleware('auth')->group(function () {
         Route::get('vehicle-requisitions', [VehicleReqController::class, 'index'])->name('vehicle-requisitions');
         Route::post('add-requisition', [VehicleReqController::class, 'addRequisition'])->name('add_requisition');
+        Route::post('add-driver', [VehicleReqController::class, 'addDriver'])->name('add_driver');
+        Route::post('update-status', [VehicleReqController::class, 'updateStatus'])->name('update_status');
+        Route::post('edit-requisition', [VehicleReqController::class, 'editRequisition'])->name('edit_requisition');
+        Route::get('get-data', [VehicleReqController::class, 'getData'])->name('get.req.data');
+        Route::get('get-vehicle-list', [VehicleReqController::class, 'getVehicleData'])->name('get.vehicle.data');
     });
 ?>

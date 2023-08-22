@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\VehicleRequisition;
 use App\Models\RequisitionPurpose;
+use DataTables;
+use Str;
+use App\Models\User;
 
 class VehicleReqController extends Controller
 {
@@ -23,190 +26,326 @@ class VehicleReqController extends Controller
     {
         
     }
-    public function index()
+    public function index(Request $request)
     {
-        $data='';
+        $emp='';
         $driver=Driver::where(['IS_ACTIVE'=>'Y'])->get();
         $vehicle_type=VehicleType::where(['IS_ACTIVE'=>'Y'])->get();
         $purpose=RequisitionPurpose::where(['IS_ACTIVE'=>'Y'])->get();
         $hrApi = new HrApi;
-        $employee = $hrApi->getEmployeeList($data);
+        $employee = $hrApi->getEmployeeList($emp);
         $empData = $employee['data'];
-        // echo "<pre>";
-        // print_r($empData);
-        // exit;
+
+
+        if ($request->ajax()) {
+
+            $data=VehicleRequisition::orderBy('VEHICLE_REQ_ID','asc')->get();
+    
+            return Datatables::of($data)
+    
+                ->addIndexColumn()
+    
+                ->filter(function ($instance) use ($request) {
+                    if (!empty($request->get('req_forsr'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['REQUISITION_FOR'], $request->get('req_forsr')) ? true : false;
+                        });
+                    }
+                    if (!empty($request->get('vehicle_typesr'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['VEHICLE_TYPE_ID'], $request->get('vehicle_typesr')) ? true : false;
+                        });
+                    }
+                    if (!empty($request->get('from'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        $requestedDate = $request->get('from');
+                        $rowDate = $row['TIME_FROM'];
+                           return strtotime($rowDate) >= strtotime($requestedDate);
+                        });
+                    }
+                    if (!empty($request->get('to'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        $requestedDate = $request->get('to');
+                        $rowDate = $row['TIME_TO'];
+                           return strtotime($rowDate) <= strtotime($requestedDate);
+                        });
+                    }
+                    if (!empty($request->get('status'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['STATUS'], $request->get('status')) ? true : false;
+                        });
+                    }
+                })
+                ->addColumn('req_for', function($row){
+                   $req_for='Test Employee';   
+                   return $req_for;
+    
+                })
+                ->addColumn('req_date', function($row){
+                    $req_for=date('j-F-Y',strtotime($row['REQUISITION_DATE']));   
+                    return $req_for;
+     
+                 })
+                 ->addColumn('driver', function($row){
+                    if($row['DRIVER_ID']){
+                        $drv=Driver::where(['DRIVER_ID'=>$row['DRIVER_ID']])->first();
+                        $driver = ($drv) ? $drv->DRIVER_NAME : '';
+                    }else{
+                        $driver = 'NULL';
+                    }  
+                    return $driver;
+     
+                 })
+                 ->addColumn('create_by', function($row){
+                    $crt_by = User::where(['USER_ID'=>$row['CREATED_BY']])->first();
+                    return ($crt_by) ? $crt_by->FIRST_NAME." ".$crt_by->LAST_NAME : '';
+     
+                 })
+                 ->addColumn('status', function($row){
+                    if($row['STATUS'] == 'P'){
+                        $status = 'Pending';
+                    }elseif($row['STATUS'] == 'A'){
+                        $status = 'Approved';
+                    }else{
+                        $status = 'Cancel';
+                    }  
+                    return $status;
+     
+                 })
+                ->addColumn('action', function($row){
+                    $btn = '<a data-id="'.$row['VEHICLE_REQ_ID'].'" style="cursor:pointer;color:#fff;"  data-toggle="modal" data-target="#edit"
+                    class="btn btn-xs btn-success btn-sm mr-1 editModal" data-toggle="tooltip"
+                    data-placement="left" title="Update"><i class="ti-pencil"></i></a>';
+                    // if($row['DRIVER_ID']){
+                    //     $btn.='<a data-driverid="'.$row['DRIVER_ID'].'" data-id="'.$row['VEHICLE_REQ_ID'].'" data-toggle="modal" data-target="#driverModal" style="cursor:pointer;color:#fff;"
+                    //     class="btn btn-xs btn-success btn-sm mr-1 driver-modal" data-toggle="tooltip"
+                    //     data-placement="left" title="Update"><i class="ti-user"></i></a>';
+                    // }else{
+                    //     $btn.='<a data-driverid="" data-id="'.$row['VEHICLE_REQ_ID'].'" data-toggle="modal" data-target="#driverModal" style="cursor:pointer;color:#fff;"
+                    //     class="btn btn-xs btn-danger btn-sm mr-1 driver-modal" data-toggle="tooltip"
+                    //     data-placement="left" title="Update"><i class="ti-user"></i></a>';
+                    // }
+                    if($row['STATUS'] == 'P'){
+                        $btn.='<div class="text-right" style="display:inline-block;">
+                        <div class="actions" style="display:inline-block;">
+                        <div class="dropdown action-item" data-toggle="dropdown" aria-expanded="false">
+                        <a href="#" data-id="'.$row['VEHICLE_REQ_ID'].'" data-toggle="modal" data-target="#statusModal" class="action-item statusModal"><i class="ti-more-alt"></i></a>
+                        </div>
+                        </div>
+                        </div>';
+                    
+                    }elseif($row['STATUS'] == 'A'){
+                        $btn.='<a data-id="'.$row['VEHICLE_REQ_ID'].'" style="cursor:pointer;color:#fff;"
+                        class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip"
+                        data-placement="left" title="Approved"><i class="ti-check"></i></a>';
+                    }else{
+                        $btn.='<a data-id="'.$row['VEHICLE_REQ_ID'].'" style="cursor:pointer;color:#fff;"
+                        class="btn btn-xs btn-danger btn-sm mr-1" data-toggle="tooltip"
+                        data-placement="left" title="Cancel"><i class="ti-close"></i></a>';
+                    }
+
+                    return $btn;
+    
+                })
+    
+                ->rawColumns(['action','req_for','req_date','driver','create_by','status'])
+    
+                ->make(true);
+    
+        }
         return view('vehicle-req.vehicle-requisition',compact('driver','vehicle_type','purpose','empData'));
     }
-
-    public function getAllVehicleDetails(Request $request)
+    public function addRequisition(Request $request)
     {
-        $dept = $request->search_department;
-        $vehicle_type = $request->vehicle_typesr;
-        $ownership = $request->ownershipsr;
-        $registration_date_from = $request->registration_date_fr;
-        $registration_date_to = $request->registration_date_to;
-        $vendor = $request->vendorsr;
 
-        $vehicles = DB::table('vehicles')
-            ->join('mstr_vehicle_type', 'vehicles.VEHICLE_TYPE_ID', '=', 'mstr_vehicle_type.VEHICLE_TYPE_ID')
-            ->join('mstr_department', 'vehicles.DEPARTMENT_ID', '=', 'mstr_department.DEPARTMENT_ID')
-            ->join('mstr_vehicle_division', 'vehicles.VEHICLE_DIVISION_ID', '=', 'mstr_vehicle_division.VEHICLE_DIVISION_ID')
-            ->join('mstr_rta_circle_office', 'vehicles.RTA_CIRCLE_OFFICE_ID', '=', 'mstr_rta_circle_office.RTA_CIRCLE_OFFICE_ID')
-            ->join('drivers', 'vehicles.DRIVER_ID', '=', 'drivers.DRIVER_ID')
-            ->join('mstr_vendor', 'vehicles.VENDOR_ID', '=', 'mstr_vendor.VENDOR_ID')
-            ->join('mstr_ownership', 'vehicles.OWNERSHIP_ID', '=', 'mstr_ownership.OWNERSHIP_ID')
-            ->select(
-                'vehicles.VEHICLE_ID',
-                'vehicles.VEHICLE_NAME',
-                'mstr_vehicle_type.VEHICLE_TYPE_NAME',
-                'mstr_department.DEPARTMENT_NAME',
-                'vehicles.REGISTRATION_DATE',
-                'mstr_vehicle_division.VEHICLE_DIVISION_NAME',
-                'mstr_rta_circle_office.RTA_CIRCLE_OFFICE_NAME',
-                'drivers.DRIVER_NAME',
-                'mstr_vendor.VENDOR_NAME',
-                'mstr_ownership.OWNERSHIP_NAME',
-                'vehicles.IS_ACTIVE'
-            )
-            // ->where('vehicles.IS_ACTIVE', '=', 'Y')
-            ->when($dept, function ($query, $dept) {
-                return $query->where('vehicles.DEPARTMENT_ID', '=', $dept);
-            })
-            ->when($vehicle_type, function ($query, $vehicle_type) {
-                return $query->where('vehicles.VEHICLE_TYPE_ID', '=', $vehicle_type);
-            })
-            ->when($ownership, function ($query, $ownership) {
-                return $query->where('vehicles.OWNERSHIP_ID', '=', $ownership);
-            })
-            ->when($registration_date_from, function ($query, $registration_date_from) {
-                return $query->where('vehicles.REGISTRATION_DATE', '>', $registration_date_from);
-            })
-            ->when($registration_date_to, function ($query, $registration_date_to) {
-                return $query->where('vehicles.REGISTRATION_DATE', '<', $registration_date_to);
-            })
-            ->when($vendor, function ($query, $vendor) {
-                return $query->where('vehicles.VENDOR_ID', '=', $vendor);
-            })
-            ->get();
+        DB::beginTransaction();
 
-        $testVehicles = $vehicles->toJson();
-        echo $testVehicles;
-    }
+		try{
 
-    /**
-     * Store a newly created Vehicle resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $vehicle = new Vehicle;
-
-        $vehicle->VEHICLE_NAME = $request->vehicle_name;
-        $vehicle->VEHICLE_TYPE_ID = $request->vehicle_type;
-        $vehicle->DEPARTMENT_ID = $request->department;
-        # Add Dept Name form Request below:
-
-        $vehicle->VEHICLE_DIVISION_ID = $request->vehicle_division;
-        $vehicle->REGISTRATION_DATE = $request->registration_date;
-        $vehicle->RTA_CIRCLE_OFFICE_ID = $request->rta_office;
-        $vehicle->LICENSE_PLATE = $request->license_plate;
-        $vehicle->DRIVER_ID = $request->driver;
-        $vehicle->ALERT_CELL_NUMBER = $request->alert_cell_no;
-        $vehicle->VENDOR_ID = $request->vendor;
-        $vehicle->ALERT_EMAIL_ID = $request->alert_email;
-        $vehicle->SEAT_CAPACITY = $request->seat_capacity;
-        $vehicle->OWNERSHIP_ID = $request->ownership;
-        // $vehicle->IS_ACTIVE = 'Y';
-        $vehicle->CREATED_BY = Auth::user()->USER_ID;
-
-        $added = $vehicle->save();
-        if ($added) {
-            return response()->json([
-                'successCode' => 1,
-                'message' => 'Vehicle details added successfully'
+    	    $dataInsert = VehicleRequisition::create([
+                'REQUISITION_FOR'=>$request->req_for,
+                'VEHICLE_TYPE_ID'=>$request->vehicle_type,
+                'WHERE_FROM'=>$request->where_fr,
+                'WHERE_TO'=>$request->where_to,
+                'PICK_UP'=>$request->pickup,
+                'REQUISITION_DATE'=>date('Y-m-d',strtotime($request->req_date)),
+                'TIME_FROM'=>date('H:i',strtotime($request->time_fr)),
+                'TIME_TO'=>date('H:i',strtotime($request->time_to)),
+                'TOLERANCE_DURATION'=>date('H:i',strtotime($request->tolerance)),
+                'NUMBER_OF_PASSENGER'=>$request->nunpassenger,
+                'REQUISITION_PURPOSE_ID'=>$request->purpose,
+                'DETAILS'=>$request->details,
+                'STATUS'=>'P',
+                'CREATED_ON'=>date('Y-m-d H:i:s'),
+                'CREATED_BY'=>Auth::id(),
+              
             ]);
-        } else {
-            return response()->json([
-                'successCode' => 0,
-                'message' => 'Could not add vehicle details'
-            ]);
+            DB::commit();
+            if ($dataInsert) {
+                $arr=[
+                    'error'=>false,
+                    'msg'=>'Booking Details Inserted Successfully',
+                ];
+                return json_encode($arr);
+            }
+            else {
+                $arr=[
+                    'error'=>true,
+                    'msg'=>'Error Adding Booking. Please try again'
+                ];
+                return json_encode($arr);
+            }
+
+        }catch(\Exception $e){
+            DB::rollback();
+            // echo $e->getMessage();
+            // exit;
+            $arr=[
+                'error'=>true,
+                'msg'=>$e->getMessage()
+            ];
+            return json_encode($arr);
         }
+
     }
-
-    /**
-     * Get vehicle details for specified vehicle ID
-     */
-    public function getDetails(Request $request)
+    public function editRequisition(Request $request)
     {
-        $vehicleId = $request->vehicle_id;
-        $vehicle = Vehicle::find($vehicleId);
-        if ($vehicle)
-            return response()->json(['successCode' => 1, 'data' => $vehicle]);
-        else
-            return response()->json(['successCode' => 0]);
-    }
 
+        DB::beginTransaction();
 
-    /**
-     * Update the specified Vehicle resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $vehicle = Vehicle::find($id);
-        $vehicle->VEHICLE_NAME = $request->vehicle_name;
-        $vehicle->VEHICLE_TYPE_ID = $request->vehicle_type;
-        $vehicle->DEPARTMENT_ID = $request->department;
-        # update dept Name
-        $vehicle->VEHICLE_DIVISION_ID = $request->vehicle_division;
-        $vehicle->REGISTRATION_DATE = $request->registration_date;
-        $vehicle->RTA_CIRCLE_OFFICE_ID = $request->rta_office;
-        $vehicle->LICENSE_PLATE = $request->license_plate;
-        $vehicle->DRIVER_ID = $request->driver;
-        $vehicle->ALERT_CELL_NUMBER = $request->alert_cell_no;
-        $vehicle->VENDOR_ID = $request->vendor;
-        $vehicle->ALERT_EMAIL_ID = $request->alert_email;
-        $vehicle->SEAT_CAPACITY = $request->seat_capacity;
-        $vehicle->OWNERSHIP_ID = $request->ownership;
-        // $vehicle->IS_ACTIVE = 'Y';
-        $vehicle->MODIFIED_BY = Auth::user()->USER_ID;
-
-        $updated = $vehicle->save();
-        if ($updated) {
-            return response()->json([
-                'successCode' => 1,
-                'message' => 'Vehicle details updated successfully'
+		try{
+            $data=VehicleRequisition::where(['VEHICLE_REQ_ID'=>$request->id])->first();
+    	    $data->update([
+                'REQUISITION_FOR'=>$request->req_for,
+                'VEHICLE_TYPE_ID'=>$request->vehicle_type,
+                'WHERE_FROM'=>$request->where_fr,
+                'WHERE_TO'=>$request->where_to,
+                'PICK_UP'=>$request->pickup,
+                'REQUISITION_DATE'=>date('Y-m-d',strtotime($request->req_date)),
+                'TIME_FROM'=>date('H:i',strtotime($request->time_fr)),
+                'TIME_TO'=>date('H:i',strtotime($request->time_to)),
+                'TOLERANCE_DURATION'=>date('H:i',strtotime($request->tolerance)),
+                'NUMBER_OF_PASSENGER'=>$request->nunpassenger,
+                'REQUISITION_PURPOSE_ID'=>$request->purpose,
+                'DETAILS'=>$request->details,
+                'MODIFIED_ON'=>date('Y-m-d H:i:s'),
+                'MODIFIED_BY'=>Auth::id(),
             ]);
-        } else {
-            return response()->json([
-                'successCode' => 0,
-                'message' => 'Could not update vehicle details'
-            ]);
+            DB::commit();
+            if ($data->save()) {
+                $arr=[
+                    'error'=>false,
+                    'msg'=>'Booking Details Updated Successfully',
+                ];
+                return json_encode($arr);
+            }
+            else {
+                $arr=[
+                    'error'=>true,
+                    'msg'=>'Error Updating Booking. Please try again'
+                ];
+                return json_encode($arr);
+            }
+
+        }catch(\Exception $e){
+            DB::rollback();
+            // echo $e->getMessage();
+            // exit;
+            $arr=[
+                'error'=>true,
+                'msg'=>$e->getMessage()
+            ];
+            return json_encode($arr);
         }
+
     }
-
-    /**
-     * Activate or Deactivate Vehicle
-     */
-    // Activate/ de-activate vendor in DB
-    public function statusUpdate(Request $request)
+    public function getData(Request $request)
     {
-        $vehicleId = $request->vehicle_id;
-        $vehicle = Vehicle::find($vehicleId);
+        $data=VehicleRequisition::where(['VEHICLE_REQ_ID'=>$request->req_id])->first();
+        return json_encode($data);
+    }
+    public function addDriver(Request $request)
+    {
+        DB::beginTransaction();
+		try{
 
-        if ($vehicle->IS_ACTIVE == 'Y')
-            $vehicle->IS_ACTIVE = 'N';
-        else
-            $vehicle->IS_ACTIVE = 'Y';
+    	    $dataInsert = VehicleRequisition::where(['VEHICLE_REQ_ID'=>$request->req_id])->first();
+            $dataInsert->DRIVER_ID = $request->drivenby;
 
-        $vehicle->MODIFIED_BY = Auth::user()->USER_ID;
-        $vehicle->save();
+            if ($dataInsert->save()) {
+                DB::commit();
+                $arr=[
+                    'error'=>false,
+                    'msg'=>'Driver Assigned Successfully',
+                ];
+                return json_encode($arr);
+            }
+            else {
+                $arr=[
+                    'error'=>true,
+                    'msg'=>'Error Assigned Driver. Please try again'
+                ];
+                return json_encode($arr);
+            }
 
-        return response($vehicle, 200);
+        }catch(\Exception $e){
+            DB::rollback();
+            $arr=[
+                'error'=>true,
+                'msg'=>$e->getMessage()
+            ];
+            return json_encode($arr);
+        }
+
+    }
+    public function updateStatus(Request $request)
+    {
+        DB::beginTransaction();
+		try{
+
+    	    $dataInsert = VehicleRequisition::where(['VEHICLE_REQ_ID'=>$request->req_id])->first();
+            $dataInsert->STATUS = $request->status;
+
+            if ($dataInsert->save()) {
+                DB::commit();
+                $arr=[
+                    'error'=>false,
+                    'msg'=>'Status Change Successfully',
+                ];
+                return json_encode($arr);
+            }
+            else {
+                $arr=[
+                    'error'=>true,
+                    'msg'=>'Error Status Change. Please try again'
+                ];
+                return json_encode($arr);
+            }
+
+        }catch(\Exception $e){
+            DB::rollback();
+            $arr=[
+                'error'=>true,
+                'msg'=>$e->getMessage()
+            ];
+            return json_encode($arr);
+        }
+
+    }
+    public function getVehicleData(Request $request)
+    {
+        $type=$request->type;
+        $rdate=$request->rdate;
+        $frmt=$request->frmt;
+        $tot=$request->tot;
+
+        $getVehicle=Vehicle::where(['VEHICLE_TYPE_ID'=>$type])->get();
+        $html ='<option value="" selected="selected">Please Select Vehicle</option>';
+        foreach($getVehicle as $val)
+        {
+
+        }
+        echo $html;
+
     }
 }

@@ -13,7 +13,122 @@
 @endsection
 
 @section('content')
-<div id="add0" class="modal fade bd-example-modal-lg" role="dialog">
+<div class="row mb-3">
+    <div class="col-sm-12">
+        <div class="card mb-3">
+            <div class="card-header p-2">
+                <h4 class="pl-3">Search Here<small class="float-right">
+
+                        <button type="button" class="btn btn-primary btn-md" data-target="#add" data-toggle="modal"><i
+                                class="ti-plus" aria-hidden="true"></i>
+                            Add Requisition</button>
+                    </small></h4>
+            </div>
+            <form id="searchform" method="get">
+                <div class="card-body row">
+                    <div class="col-sm-12 col-xl-4">
+                        <div class="form-group row mb-1">
+                            <label for="req_forsr"
+                                class="col-sm-5 col-form-label justify-content-start text-left">Requisition For </label>
+                            <div class="col-sm-7">
+                                <select class="form-control basic-single" name="req_forsr" id="req_forsr">
+                                    <option value="" selected="selected">Please Select One</option>
+                                    @foreach($empData as $val)
+                                    <option value="{{$val['employeeId']}}">{{$val['employeeName']}}
+                                        ({{$val['department']}})</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-1">
+                            <label for="vehicle_typesr"
+                                class="col-sm-5 col-form-label justify-content-start text-left">Vehicle Type </label>
+                            <div class="col-sm-7">
+                                <select class="form-control basic-single" name="vehicle_typesr" id="vehicle_typesr">
+                                    <option value="" selected="selected">Please Select One</option>
+                                    @foreach($vehicle_type as $val)
+                                    <option value="{{$val->VEHICLE_TYPE_ID}}">{{$val->VEHICLE_TYPE_NAME}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-xl-4">
+                        <div class="form-group row mb-1">
+                            <label for="from" class="col-sm-5 col-form-label justify-content-start text-left">Time From
+                            </label>
+                            <div class="col-sm-7">
+                                <input name="from" autocomplete="off" class="form-control vnewdatetimepicker w-100"
+                                    type="time" placeholder="From" id="from">
+                            </div>
+
+                        </div>
+                        <div class="form-group row mb-1">
+                            <label for="to" class="col-sm-5 col-form-label justify-content-start text-left">Time To
+                            </label>
+                            <div class="col-sm-7">
+                                <input name="to" autocomplete="off" class="form-control vnewdatetimepicker w-100"
+                                    type="time" placeholder="To" id="to">
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-xl-4">
+                        <div class="form-group row mb-1">
+                            <label for="status" class="col-sm-5 col-form-label justify-content-start text-left">Status
+                                <i class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <select class="form-control basic-single" name="status" id="status">
+                                    <option value="" selected="selected">Please Select One</option>
+                                    <option value="P">Pending</option>
+                                    <option value="A">Approved </option>
+                                    <option value="R">Rejected </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group row  mb-1">
+                            <label for="joining_d_to" class="col-sm-5 col-form-label">&nbsp;</label>
+                            <div class="col-sm-7 text-right">
+                                <button type="button" class="btn btn-success" id="btn-filter">Search</button>&nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="card mb-3">
+            <div class="card-header p-2">
+                <h4 class="pl-3">Requisition List</h4>
+            </div>
+            <div class="card-body pl-3 pr-3">
+                <div class="table-responsive">
+                    <table id="dataTable" class="table display table-bordered table-striped table-hover ">
+                        <thead>
+                            <tr>
+                                <th>SL</th>
+                                <th>Requisition For</th>
+                                <th>Requisition Date</th>
+                                <th>Driver Name</th>
+                                <th>Requested By </th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table_data">
+
+                        </tbody>
+                    </table> <!-- /.table-responsive -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="add" class="modal fade bd-example-modal-lg" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -21,23 +136,29 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="{{route('add_requisition')}}" id="emp_form" class="row" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+                <form id="form" action="{{route('add_requisition')}}" class="row" enctype="multipart/form-data"
+                    method="post" accept-charset="utf-8">
+                    @csrf
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
-                            <label for="req_for" class="col-sm-5 col-form-label">Requisition For <i class="text-danger">*</i></label>
+                            <label for="req_for" class="col-sm-5 col-form-label">Requisition For <i
+                                    class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="req_for" id="req_for">
                                     <option value="" selected="selected">Select Employee</option>
                                     @foreach($empData as $val)
-                                    <option value="{{$val['employeeId']}}">{{$val['employeeName']}} ({{$val['department']}})</option>
+                                    <option value="{{$val['employeeId']}}">{{$val['employeeName']}}
+                                        ({{$val['department']}})</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="vehicle_type" class="col-sm-5 col-form-label">Vehicle Type <i class="text-danger">*</i></label>
+                            <label for="vehicle_type" class="col-sm-5 col-form-label">Vehicle Type <i
+                                    class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <select class="form-control basic-single" required="" name="vehicle_type" id="vehicle_type">
+                                <select class="form-control basic-single" required="" name="vehicle_type"
+                                    id="vehicle_type">
                                     <option value="" selected="selected">Please Select One</option>
                                     @foreach($vehicle_type as $val)
                                     <option value="{{$val->VEHICLE_TYPE_ID}}">{{$val->VEHICLE_TYPE_NAME}}</option>
@@ -46,82 +167,100 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="where_fr" class="col-sm-5 col-form-label">Where From <i class="text-danger">*</i></label>
+                            <label for="where_fr" class="col-sm-5 col-form-label">Where From <i
+                                    class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="where_fr" required="" class="form-control" type="text" placeholder="Where From" id="where_fr">
+                                <input name="where_fr" required="" class="form-control" type="text"
+                                    placeholder="Where From" id="where_fr">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="where_to" required="" class="col-sm-5 col-form-label">Where To <i class="text-danger">*</i></label>
+                            <label for="where_to" required="" class="col-sm-5 col-form-label">Where To <i
+                                    class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="where_to" required="" class="form-control" type="text" placeholder="Where To" id="where_to">
+                                <input name="where_to" required="" class="form-control" type="text"
+                                    placeholder="Where To" id="where_to">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="pickup" class="col-sm-5 col-form-label">Pick Up </label>
+                            <label for="pickup" class="col-sm-5 col-form-label">Pick Up <i
+                                    class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="pickup" class="form-control" type="text" placeholder="Pick Up" id="pickup">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="req_date" class="col-sm-5 col-form-label">Requisition Date </label>
+                            <label for="req_date" class="col-sm-5 col-form-label">Requisition Date <i
+                                    class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="req_date" class="form-control  vnewdatetimepicker" autocomplete="off" type="date" placeholder="Requisition Date" id="req_date">
+                                <input name="req_date" class="form-control  vnewdatetimepicker" autocomplete="off"
+                                    type="date" placeholder="Requisition Date" id="req_date">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="time_fr" class="col-sm-5 col-form-label">Time From </label>
+                            <label for="time_fr" class="col-sm-5 col-form-label">Time From <i
+                                    class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="time_fr" class="form-control ttimepicker" type="text" placeholder="Time From" id="time_fr">
+                                <input name="time_fr" class="form-control ttimepicker" type="time"
+                                    placeholder="Time From" id="time_fr">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
-                            <label for="time_to" class="col-sm-5 col-form-label">Time To </label>
+                            <label for="time_to" class="col-sm-5 col-form-label">Time To <i
+                                    class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="time_to" class="form-control ttimepicker" type="text" placeholder="Time To" id="time_to">
+                                <input name="time_to" class="form-control ttimepicker" type="time" placeholder="Time To"
+                                    id="time_to">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="tolerance" class="col-sm-5 col-form-label">Tolerance Duration <i class="text-danger">*</i></label>
+                            <label for="tolerance" class="col-sm-5 col-form-label">Tolerance Duration <i
+                                    class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="tolerance" required="" class="form-control" type="text" placeholder="Tolerance Duration" id="tolerance">
+                                <input name="tolerance" required="" class="form-control" type="time"
+                                    placeholder="Tolerance Duration" id="tolerance">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="nunpassenger" class="col-sm-5 col-form-label">No of Passenger </label>
+                            <label for="purpose" class="col-sm-5 col-form-label">Vehicle <i
+                                    class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="nunpassenger" class="form-control" type="number" placeholder="No of Passenger" id="nunpassenger">
-                            </div>
-                        </div>
-                        <!-- <div class="form-group row">
-                            <label for="drivenby" class="col-sm-5 col-form-label">Driven By <i class="text-danger">*</i></label>
-                            <div class="col-sm-7">
-                                <select class="form-control basic-single" required="" name="drivenby" id="drivenby">
+                                <select class="form-control basic-single" required="" name="vehicle" id="vehicle">
                                     <option value="" selected="selected">Please Select One</option>
-                                    @foreach($driver as $val)
-                                    <option value="{{$val->DRIVER_ID}}">{{$val->DRIVER_NAME}}</option>
-                                    @endforeach
+                                    
                                 </select>
                             </div>
-                        </div> -->
+                        </div>
                         <div class="form-group row">
-                            <label for="purpose" class="col-sm-5 col-form-label">Purpose <i class="text-danger">*</i></label>
+                            <label for="nunpassenger" class="col-sm-5 col-form-label">No of Passenger <i
+                                    class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <input name="nunpassenger" class="form-control" type="number"
+                                    placeholder="No of Passenger" id="nunpassenger">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="purpose" class="col-sm-5 col-form-label">Purpose <i
+                                    class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="purpose" id="purpose">
                                     <option value="" selected="selected">Please Select One</option>
                                     @foreach($purpose as $val)
-                                    <option value="{{$val->REQUISITION_PURPOSE_ID}}">{{$val->REQUISITION_PURPOSE_NAME}}</option>
+                                    <option value="{{$val->REQUISITION_PURPOSE_ID}}">{{$val->REQUISITION_PURPOSE_NAME}}
+                                    </option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="details" class="col-sm-5 col-form-label">Details <i class="text-danger">*</i></label>
+                            <label for="details" class="col-sm-5 col-form-label">Details <i
+                                    class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="details" required="" class="form-control" type="text" placeholder="Details" id="details">
+                                <input name="details" required="" class="form-control" type="text" placeholder="Details"
+                                    id="details">
                             </div>
                         </div>
 
@@ -136,379 +275,553 @@
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-sm-12">
-        <div class="card mb-3">
-            <div class="card-header p-2">
-                <h4 class="pl-3">Search Here<small class="float-right">
-
-                        <button type="button" class="btn btn-primary btn-md" data-target="#add0" data-toggle="modal"><i class="ti-plus" aria-hidden="true"></i>
-                            Add Requisition</button>
-                    </small></h4>
+<div id="edit" class="modal fade bd-example-modal-lg" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>Update Requisition</strong>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-            <div class="card-body row">
-                <div class="col-sm-12 col-xl-4">
-                    <div class="form-group row mb-1">
-                        <label for="req_forsr" class="col-sm-5 col-form-label justify-content-start text-left">Requisition For </label>
-                        <div class="col-sm-7">
-                            <select class="form-control basic-single" name="req_forsr" id="req_forsr">
-                                <option value="" selected="selected">Please Select One</option>
-                                <option value="Jasper Cameron">
-                                    Jasper Cameron_(Computer_EYELDZTR) </option>
-                                <option value="toto">
-                                    toto_(Technical_EXO9WJ1H) </option>
-                                <option value="Kamrul">
-                                    Kamrul_(ACCOUNTING_ETMYQ36Y) </option>
-                                <option value="rohit">
-                                    rohit_(Accounting_EQW70GU6) </option>
-                                <option value="sayed">
-                                    sayed_(Human Resource_EQ4QCE9D) </option>
-                                <option value="أمير أبو اسنينة">
-                                    أمير أبو اسنينة_(????? ?????_EPXJHTX3) </option>
-                                <option value="Rahim">
-                                    Rahim_(Technical_EODSVEIF) </option>
-                                <option value="Sandip Sharma">
-                                    Sandip Sharma_(Marketing & Sales_ELHLYIMC) </option>
-                                <option value="Al Amin">
-                                    Al Amin_(Human Resource_EKDXW58G) </option>
-                                <option value="abc">
-                                    abc_(ACCOUNTING_EJ5MOH4S) </option>
-                                <option value="Test Employee">
-                                    Test Employee_(ACCOUNTING_EDWWDMAV) </option>
-                                <option value="taslimul">
-                                    taslimul_(Human Resource_ECN3UOZ8) </option>
-                                <option value="demo2">
-                                    demo2_(Human Resource_E62WYC4J) </option>
-                                <option value="Rashid">
-                                    Rashid_(Human Resource_E0CRB403) </option>
-                            </select>
+            <div class="modal-body">
+                <form id="form2" action="{{route('edit_requisition')}}" class="row" enctype="multipart/form-data"
+                    method="post" accept-charset="utf-8">
+                    @csrf
+                    <input type="hidden" name="id" id="requsition_id" value="">
+                    <div class="col-md-12 col-lg-6">
+                        <div class="form-group row">
+                            <label for="req_for" class="col-sm-5 col-form-label">Requisition For <i
+                                    class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <select class="form-control basic-single" required="" name="req_for" id="req_for2">
+                                    <option value="" selected="selected">Select Employee</option>
+                                    @foreach($empData as $val)
+                                    <option value="{{$val['employeeId']}}">{{$val['employeeName']}}
+                                        ({{$val['department']}})</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="vehicle_type" class="col-sm-5 col-form-label">Vehicle Type <i
+                                    class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <select class="form-control basic-single" required="" name="vehicle_type"
+                                    id="vehicle_type2">
+                                    <option value="" selected="selected">Please Select One</option>
+                                    @foreach($vehicle_type as $val)
+                                    <option value="{{$val->VEHICLE_TYPE_ID}}">{{$val->VEHICLE_TYPE_NAME}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="where_fr" class="col-sm-5 col-form-label">Where From <i
+                                    class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <input name="where_fr" required="" class="form-control" type="text"
+                                    placeholder="Where From" id="where_fr2">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="where_to" required="" class="col-sm-5 col-form-label">Where To <i
+                                    class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <input name="where_to" required="" class="form-control" type="text"
+                                    placeholder="Where To" id="where_to2">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="pickup" class="col-sm-5 col-form-label">Pick Up <i
+                                    class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <input name="pickup" class="form-control" type="text" placeholder="Pick Up"
+                                    id="pickup2">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="req_date" class="col-sm-5 col-form-label">Requisition Date <i
+                                    class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <input name="req_date" class="form-control  vnewdatetimepicker" autocomplete="off"
+                                    type="date" placeholder="Requisition Date" id="req_date2">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="time_fr" class="col-sm-5 col-form-label">Time From <i
+                                    class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <input name="time_fr" class="form-control ttimepicker" type="time"
+                                    placeholder="Time From" id="time_fr2">
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group row mb-1">
-                        <label for="vehicle_typesr" class="col-sm-5 col-form-label justify-content-start text-left">Vehicle Type </label>
-                        <div class="col-sm-7">
-                            <select class="form-control basic-single" name="vehicle_typesr" id="vehicle_typesr">
-                                <option value="" selected="selected">Please Select One</option>
-                                <option value="407">
-                                    407</option>
-                                <option value="honda">
-                                    honda</option>
-                                <option value="no ac">
-                                    no ac</option>
-                                <option value="ac">
-                                    ac</option>
-                                <option value="Pick Up">
-                                    Pick Up</option>
-                                <option value="Sedanse">
-                                    Sedanse</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-12 col-xl-4">
-                    <div class="form-group row mb-1">
-                        <label for="from" class="col-sm-5 col-form-label justify-content-start text-left">From </label>
-                        <div class="col-sm-7">
-                            <input name="from" autocomplete="off" class="form-control vnewdatetimepicker w-100" type="text" placeholder="From" id="from">
+                    <div class="col-md-12 col-lg-6">
+                        <div class="form-group row">
+                            <label for="time_to" class="col-sm-5 col-form-label">Time To <i
+                                    class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <input name="time_to" class="form-control ttimepicker" type="time" placeholder="Time To"
+                                    id="time_to2">
+                            </div>
                         </div>
 
-                    </div>
-                    <div class="form-group row mb-1">
-                        <label for="to" class="col-sm-5 col-form-label justify-content-start text-left">To </label>
-                        <div class="col-sm-7">
-                            <input name="to" autocomplete="off" class="form-control vnewdatetimepicker w-100" type="text" placeholder="To" id="to">
+                        <div class="form-group row">
+                            <label for="tolerance" class="col-sm-5 col-form-label">Tolerance Duration <i
+                                    class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <input name="tolerance" required="" class="form-control" type="time"
+                                    placeholder="Tolerance Duration" id="tolerance2">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="nunpassenger" class="col-sm-5 col-form-label">No of Passenger <i
+                                    class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <input name="nunpassenger" class="form-control" type="number"
+                                    placeholder="No of Passenger" id="nunpassenger2">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="purpose" class="col-sm-5 col-form-label">Purpose <i
+                                    class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <select class="form-control basic-single" required="" name="purpose" id="purpose2">
+                                    <option value="" selected="selected">Please Select One</option>
+                                    @foreach($purpose as $val)
+                                    <option value="{{$val->REQUISITION_PURPOSE_ID}}">{{$val->REQUISITION_PURPOSE_NAME}}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="details" class="col-sm-5 col-form-label">Details <i
+                                    class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <input name="details" required="" class="form-control" type="text" placeholder="Details"
+                                    id="details2">
+                            </div>
                         </div>
 
-                    </div>
-                </div>
-                <div class="col-sm-12 col-xl-4">
-                    <div class="form-group row mb-1">
-                        <label for="status" class="col-sm-5 col-form-label justify-content-start text-left">Status <i class="text-danger">*</i></label>
-                        <div class="col-sm-7">
-                            <select class="form-control basic-single" name="status" id="status">
-                                <option value="" selected="selected">Please Select One</option>
-                                <option value="pending">Pending</option>
-                                <option value="released">Release </option>
-                            </select>
+                        <div class="form-group text-right">
+                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="submit" class="btn btn-success w-md m-b-5">Update</button>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-12">
-                    <div class="form-group row  mb-1">
-                        <label for="joining_d_to" class="col-sm-5 col-form-label">&nbsp;</label>
-                        <div class="col-sm-7 text-right">
-                            <button type="button" class="btn btn-success" id="btn-filter">Search</button>&nbsp;
-                            <button type="button" class="btn btn-inverse" id="btn-reset">Reset</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="edit" class="modal fade bd-example-modal-lg" role="dialog">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <strong>Update Requisition</strong>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <div class="modal-body editinfo">
-
-                </div>
-
-            </div>
-            <div class="modal-footer">
-
-            </div>
-
-        </div>
-
-    </div>
-    <div class="col-sm-12">
-        <div class="card mb-3">
-            <div class="card-header p-2">
-                <h4 class="pl-3">Requisition List</h4>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table id="reqlist" class="table display table-bordered table-striped table-hover ">
-                        <thead>
-                            <tr>
-                                <th>SL</th>
-                                <th>Requisition For</th>
-                                <th>Requisition Date</th>
-                                <th>Driver Name</th>
-                                <th>Requested By </th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-
-                            <tr role="row" class="odd">
-                                <td class="sorting_1">1</td>
-                                <td>Kamrul</td>
-                                <td>2023-02-15</td>
-                                <td>aman - Shah Latif Express</td>
-                                <td>aman - Shah Latif Express</td>
-                                <td>Release</td>
-                                <td><input name="url" type="hidden" id="url_8" value="https://vmsdemo.bdtask-demo.com/vehiclereq/Vehicle_requisition/updatereqfrm"><a onclick="editinfo(8)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/vehiclereq/Vehicle_requisition/delete_requisition/8" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                    <div class="text-right" style="display:inline-block;">
-                                        <div class="actions" style="display:inline-block;">
-                                            <div class="dropdown action-item" data-toggle="dropdown" aria-expanded="false">
-                                                <a href="#" class="action-item"><i class="ti-more-alt"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(30px, 37px, 0px);">
-                                                    <a onclick="changestatus2(0,'tbl_requisition',8,'requisitionId')" class="dropdown-item">Pending</a>
-                                                    <a onclick="changestatus2(1,'tbl_requisition',8,'requisitionId')" class="dropdown-item">Release</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr role="row" class="even">
-                                <td class="sorting_1">2</td>
-                                <td></td>
-                                <td>2021-02-11</td>
-                                <td>Malik - Khyber Express</td>
-                                <td>Malik - Khyber Express</td>
-                                <td>Release</td>
-                                <td><input name="url" type="hidden" id="url_3" value="https://vmsdemo.bdtask-demo.com/vehiclereq/Vehicle_requisition/updatereqfrm"><a onclick="editinfo(3)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/vehiclereq/Vehicle_requisition/delete_requisition/3" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                    <div class="text-right" style="display:inline-block;">
-                                        <div class="actions" style="display:inline-block;">
-                                            <div class="dropdown action-item" data-toggle="dropdown">
-                                                <a href="#" class="action-item"><i class="ti-more-alt"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a onclick="changestatus2(0,'tbl_requisition',3,'requisitionId')" class="dropdown-item">Pending</a>
-                                                    <a onclick="changestatus2(1,'tbl_requisition',3,'requisitionId')" class="dropdown-item">Release</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="sorting_1">3</td>
-                                <td>Kamrul</td>
-                                <td>2021-02-25</td>
-                                <td>Malik - Khyber Express</td>
-                                <td>Malik - Khyber Express</td>
-                                <td>Release</td>
-                                <td><input name="url" type="hidden" id="url_5" value="https://vmsdemo.bdtask-demo.com/vehiclereq/Vehicle_requisition/updatereqfrm"><a onclick="editinfo(5)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/vehiclereq/Vehicle_requisition/delete_requisition/5" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                    <div class="text-right" style="display:inline-block;">
-                                        <div class="actions" style="display:inline-block;">
-                                            <div class="dropdown action-item" data-toggle="dropdown">
-                                                <a href="#" class="action-item"><i class="ti-more-alt"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a onclick="changestatus2(0,'tbl_requisition',5,'requisitionId')" class="dropdown-item">Pending</a>
-                                                    <a onclick="changestatus2(1,'tbl_requisition',5,'requisitionId')" class="dropdown-item">Release</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr role="row" class="even">
-                                <td class="sorting_1">4</td>
-                                <td>Kamrul</td>
-                                <td>2021-03-02</td>
-                                <td>Musa Karim - Fareed Express</td>
-                                <td>Musa Karim - Fareed Express</td>
-                                <td>Release</td>
-                                <td><input name="url" type="hidden" id="url_6" value="https://vmsdemo.bdtask-demo.com/vehiclereq/Vehicle_requisition/updatereqfrm"><a onclick="editinfo(6)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/vehiclereq/Vehicle_requisition/delete_requisition/6" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                    <div class="text-right" style="display:inline-block;">
-                                        <div class="actions" style="display:inline-block;">
-                                            <div class="dropdown action-item" data-toggle="dropdown">
-                                                <a href="#" class="action-item"><i class="ti-more-alt"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a onclick="changestatus2(0,'tbl_requisition',6,'requisitionId')" class="dropdown-item">Pending</a>
-                                                    <a onclick="changestatus2(1,'tbl_requisition',6,'requisitionId')" class="dropdown-item">Release</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="sorting_1">5</td>
-                                <td>Kamrul</td>
-                                <td>2023-03-07</td>
-                                <td>Khurram</td>
-                                <td>Khurram</td>
-                                <td>Release</td>
-                                <td><input name="url" type="hidden" id="url_12" value="https://vmsdemo.bdtask-demo.com/vehiclereq/Vehicle_requisition/updatereqfrm"><a onclick="editinfo(12)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/vehiclereq/Vehicle_requisition/delete_requisition/12" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                    <div class="text-right" style="display:inline-block;">
-                                        <div class="actions" style="display:inline-block;">
-                                            <div class="dropdown action-item" data-toggle="dropdown">
-                                                <a href="#" class="action-item"><i class="ti-more-alt"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a onclick="changestatus2(0,'tbl_requisition',12,'requisitionId')" class="dropdown-item">Pending</a>
-                                                    <a onclick="changestatus2(1,'tbl_requisition',12,'requisitionId')" class="dropdown-item">Release</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr role="row" class="even">
-                                <td class="sorting_1">6</td>
-                                <td>Kamrul</td>
-                                <td>2023-03-16</td>
-                                <td>Faris Shafi</td>
-                                <td>Faris Shafi</td>
-                                <td>Pending</td>
-                                <td><input name="url" type="hidden" id="url_15" value="https://vmsdemo.bdtask-demo.com/vehiclereq/Vehicle_requisition/updatereqfrm"><a onclick="editinfo(15)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/vehiclereq/Vehicle_requisition/delete_requisition/15" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                    <div class="text-right" style="display:inline-block;">
-                                        <div class="actions" style="display:inline-block;">
-                                            <div class="dropdown action-item" data-toggle="dropdown">
-                                                <a href="#" class="action-item"><i class="ti-more-alt"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a onclick="changestatus2(0,'tbl_requisition',15,'requisitionId')" class="dropdown-item">Pending</a>
-                                                    <a onclick="changestatus2(1,'tbl_requisition',15,'requisitionId')" class="dropdown-item">Release</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="sorting_1">7</td>
-                                <td>Kamrul</td>
-                                <td>2023-03-17</td>
-                                <td>Faris Shafi</td>
-                                <td>Faris Shafi</td>
-                                <td>Pending</td>
-                                <td><input name="url" type="hidden" id="url_16" value="https://vmsdemo.bdtask-demo.com/vehiclereq/Vehicle_requisition/updatereqfrm"><a onclick="editinfo(16)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/vehiclereq/Vehicle_requisition/delete_requisition/16" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                    <div class="text-right" style="display:inline-block;">
-                                        <div class="actions" style="display:inline-block;">
-                                            <div class="dropdown action-item" data-toggle="dropdown">
-                                                <a href="#" class="action-item"><i class="ti-more-alt"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a onclick="changestatus2(0,'tbl_requisition',16,'requisitionId')" class="dropdown-item">Pending</a>
-                                                    <a onclick="changestatus2(1,'tbl_requisition',16,'requisitionId')" class="dropdown-item">Release</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr role="row" class="even">
-                                <td class="sorting_1">8</td>
-                                <td>Kamrul</td>
-                                <td>2023-03-24</td>
-                                <td>Faris Shafi</td>
-                                <td>Faris Shafi</td>
-                                <td>Release</td>
-                                <td><input name="url" type="hidden" id="url_18" value="https://vmsdemo.bdtask-demo.com/vehiclereq/Vehicle_requisition/updatereqfrm"><a onclick="editinfo(18)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/vehiclereq/Vehicle_requisition/delete_requisition/18" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                    <div class="text-right" style="display:inline-block;">
-                                        <div class="actions" style="display:inline-block;">
-                                            <div class="dropdown action-item" data-toggle="dropdown">
-                                                <a href="#" class="action-item"><i class="ti-more-alt"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a onclick="changestatus2(0,'tbl_requisition',18,'requisitionId')" class="dropdown-item">Pending</a>
-                                                    <a onclick="changestatus2(1,'tbl_requisition',18,'requisitionId')" class="dropdown-item">Release</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="sorting_1">9</td>
-                                <td>Jasper Cameron</td>
-                                <td>2023-04-07</td>
-                                <td>Faris Shafi</td>
-                                <td>Faris Shafi</td>
-                                <td>Pending</td>
-                                <td><input name="url" type="hidden" id="url_20" value="https://vmsdemo.bdtask-demo.com/vehiclereq/Vehicle_requisition/updatereqfrm"><a onclick="editinfo(20)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/vehiclereq/Vehicle_requisition/delete_requisition/20" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                    <div class="text-right" style="display:inline-block;">
-                                        <div class="actions" style="display:inline-block;">
-                                            <div class="dropdown action-item" data-toggle="dropdown">
-                                                <a href="#" class="action-item"><i class="ti-more-alt"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a onclick="changestatus2(0,'tbl_requisition',20,'requisitionId')" class="dropdown-item">Pending</a>
-                                                    <a onclick="changestatus2(1,'tbl_requisition',20,'requisitionId')" class="dropdown-item">Release</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr role="row" class="even">
-                                <td class="sorting_1">10</td>
-                                <td>Jasper Cameron</td>
-                                <td>0000-00-00</td>
-                                <td>driver name</td>
-                                <td>driver name</td>
-                                <td>Pending</td>
-                                <td><input name="url" type="hidden" id="url_22" value="https://vmsdemo.bdtask-demo.com/vehiclereq/Vehicle_requisition/updatereqfrm"><a onclick="editinfo(22)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/vehiclereq/Vehicle_requisition/delete_requisition/22" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                    <div class="text-right" style="display:inline-block;">
-                                        <div class="actions" style="display:inline-block;">
-                                            <div class="dropdown action-item" data-toggle="dropdown">
-                                                <a href="#" class="action-item"><i class="ti-more-alt"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a onclick="changestatus2(0,'tbl_requisition',22,'requisitionId')" class="dropdown-item">Pending</a>
-                                                    <a onclick="changestatus2(1,'tbl_requisition',22,'requisitionId')" class="dropdown-item">Release</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-
-                    </table> <!-- /.table-responsive -->
-                </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
+<div id="driverModal" class="modal fade bd-example-modal-lg" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>Update Driver</strong>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="driverform" action="{{route('add_driver')}}" class="" enctype="multipart/form-data"
+                    method="post" accept-charset="utf-8">
+                    @csrf
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="drivenby" class="form-label">Driven By <i class="text-danger">*</i></label>
+                            <input type="hidden" name="req_id" value="" id="req_id">
+                            <select class="form-control basic-single" required="" name="drivenby" id="drivenby">
+                                <option value="" selected="selected">Please Select One</option>
+                                @foreach($driver as $val)
+                                <option value="{{$val->DRIVER_ID}}">{{$val->DRIVER_NAME}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-12 text-right mt-3">
+                            <button type="submit" class="btn btn-success w-md m-b-5">Update</button>
+                        </div>
+                    </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="statusModal" class="modal fade bd-example-modal-lg" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>Update Status</strong>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="statusform" action="{{route('update_status')}}" class="" enctype="multipart/form-data"
+                    method="post" accept-charset="utf-8">
+                    @csrf
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="drivenby" class="form-label">Status <i class="text-danger">*</i></label>
+                            <input type="hidden" name="req_id" value="" id="st_req_id">
+                            <select class="form-control" required="" name="status" id="status">
+                                <option value="" selected="selected">Please Select One</option>
+                                <option value="A">Approve</option>
+                                <option value="R">Reject</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12 text-right mt-3">
+                            <button type="submit" class="btn btn-success w-md m-b-5">Update</button>
+                        </div>
+                    </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 <!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/vehiclereq_requisition_list.js"></script> -->
+<style>
+    #dataTable{
+        width:100%!important;
+    }
+</style>
 <script>
-    $(document).ready(function() {
-        $("#reqlist").DataTable();
+$(document).ready(function() {
+    var table = $("#dataTable");
+    getdata();
+    $(document).on('click', '#btn-filter', function(e) {
+        $('#dataTable').DataTable().ajax.reload(null, false);
     });
+    
+    function getdata() {
+
+        $("#dataTable").DataTable({
+            processing: true,
+            serverSide: false,
+            ajax: {
+                url: "{{route('vehicle-requisitions')}}",
+                data: function(d) {
+                    d.req_forsr = $('#req_forsr').val();
+                    d.vehicle_typesr = $('#vehicle_typesr').val();
+                    d.from = $('#from').val();
+                    d.to = $('#to').val();
+                    d.status = $('#status').val();
+                }
+            },
+            columns: [{
+                    data: 'VEHICLE_REQ_ID',
+                    name: 'VEHICLE_REQ_ID',
+                },
+                {
+                    data: 'req_for',
+                    name: 'req_for'
+                },
+                {
+                    data: 'req_date',
+                    name: 'req_date'
+                },
+                {
+                    data: 'driver',
+                    name: 'driver'
+                },
+                {
+                    data: 'create_by',
+                    name: 'create_by'
+                },
+                {
+                    data: 'status',
+                    name: 'status'
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: true,
+                    searchable: true
+                },
+            ],
+
+        });
+    }
+  
+    $('body').on('click', '.driver-modal', function() {
+        var val = $(this).data('driverid');
+        var id = $(this).data('id');
+        $('#drivenby').val(val).trigger('change');
+        $('#req_id').val(id);
+    });
+
+    $("#driverform").validate({
+        rules: {
+            drivenby: {
+                required: true,
+            },
+        },
+        submitHandler: function(form, ev) {
+            ev.preventDefault();
+            $.ajax({
+                url: form.action,
+                method: form.method,
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                data: $(form).serialize(),
+                success: function(data) {
+                    if (data.error == false) {
+                        $('#driverform').find('select').val('');
+                        $('.basic-single').val('').trigger('change');
+                        toastr.success(data.msg);
+                        $('#driverModal').modal('hide');
+                        $('#dataTable').DataTable().ajax.reload(null, false);
+                        // location.reload();
+                    } else {
+                        toastr.error(data.msg);
+                    }
+                },
+                error: function(jqXHR, textStatus, err) {
+                    toastr.error("Error Updating Driver. Please try again", '', {
+                        closeButton: true
+                    });
+                }
+            });
+        }
+    });
+    $('body').on('click', '.statusModal', function() {
+        var id = $(this).data('id');
+        $('#st_req_id').val(id);
+    });
+    $("#statusform").validate({
+        rules: {
+            status: {
+                required: true,
+            },
+        },
+        submitHandler: function(form, ev) {
+            ev.preventDefault();
+            $.ajax({
+                url: form.action,
+                method: form.method,
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                data: $(form).serialize(),
+                success: function(data) {
+                    if (data.error == false) {
+                        $('#statusform').find('select').val('');
+                        toastr.success(data.msg);
+                        $('#statusModal').modal('hide');
+                        $('#dataTable').DataTable().ajax.reload(null, false);
+                        // location.reload();
+                    } else {
+                        toastr.error(data.msg);
+                    }
+                },
+                error: function(jqXHR, textStatus, err) {
+                    toastr.error("Error Updating Status. Please try again", '', {
+                        closeButton: true
+                    });
+                }
+            });
+        }
+    });
+    $("#form").validate({
+        rules: {
+            req_for: {
+                required: true,
+            },
+            vehicle_type: {
+                required: true,
+            },
+            vehicle: {
+                required: true,
+            },
+            where_fr: {
+                required: true,
+            },
+            where_to: {
+                required: true,
+            },
+            pickup: {
+                required: true,
+            },
+            req_date: {
+                required: true,
+            },
+            time_fr: {
+                required: true,
+            },
+            time_to: {
+                required: true,
+            },
+            tolerance: {
+                required: true,
+            },
+            nunpassenger: {
+                required: true,
+            },
+            purpose: {
+                required: true,
+            },
+            details: {
+                required: true,
+            }
+        },
+        submitHandler: function(form, ev) {
+            ev.preventDefault();
+            $.ajax({
+                url: form.action,
+                method: form.method,
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                data: $(form).serialize(),
+                success: function(data) {
+                    if (data.error == false) {
+                        $('#form').find('input').val('');
+                        $('#form').find('select').val('');
+                        $('.basic-single').val('').trigger('change');
+
+                        toastr.success(data.msg);
+                        $('#add').modal('hide');
+                        $('#dataTable').DataTable().ajax.reload(null, false);
+                    } else {
+                        toastr.error(data.msg);
+                    }
+                },
+                error: function(jqXHR, textStatus, err) {
+                    toastr.error("Error Adding Booking. Please try again", '', {
+                        closeButton: true
+                    });
+                }
+            });
+        }
+    });
+
+    $("#form2").validate({
+        rules: {
+            req_for: {
+                required: true,
+            },
+            vehicle_type: {
+                required: true,
+            },
+            where_fr: {
+                required: true,
+            },
+            where_to: {
+                required: true,
+            },
+            pickup: {
+                required: true,
+            },
+            req_date: {
+                required: true,
+            },
+            time_fr: {
+                required: true,
+            },
+            time_to: {
+                required: true,
+            },
+            tolerance: {
+                required: true,
+            },
+            nunpassenger: {
+                required: true,
+            },
+            purpose: {
+                required: true,
+            },
+            details: {
+                required: true,
+            }
+        },
+        submitHandler: function(form, ev) {
+            ev.preventDefault();
+            $.ajax({
+                url: form.action,
+                method: form.method,
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                data: $(form).serialize(),
+                success: function(data) {
+                    if (data.error == false) {
+                        $('#form2').find('input').val('');
+                        toastr.success(data.msg);
+                        $('#edit').modal('hide');
+                        $('#dataTable').DataTable().ajax.reload(null, false);
+                    } else {
+                        toastr.error(data.msg);
+                    }
+                },
+                error: function(jqXHR, textStatus, err) {
+                    toastr.error("Error updating. Please try again", '', {
+                        closeButton: true
+                    });
+                }
+            });
+        }
+    });
+    $('body').on('click', '.editModal', function() {
+        var id = $(this).data('id');
+        $('#edit').modal('show');
+        $.ajax({
+            url: '{{route("get.req.data")}}',
+            type: 'get',
+            dataType: 'json',
+            data: {
+                req_id: id,
+            },
+            success: function(res) {
+                $('#requsition_id').val(res.VEHICLE_REQ_ID);
+                $('#req_for2').val(res.REQUISITION_FOR).trigger('change');
+                $('#vehicle_type2').val(res.VEHICLE_TYPE_ID).trigger('change');
+                $('#where_fr2').val(res.WHERE_FROM);
+                $('#where_to2').val(res.WHERE_TO);
+                $('#pickup2').val(res.PICK_UP);
+                $('#req_date2').val(res.REQUISITION_DATE);
+                $('#time_fr2').val(res.TIME_FROM);
+                $('#time_to2').val(res.TIME_TO);
+                $('#tolerance2').val(res.TOLERANCE_DURATION);
+                $('#nunpassenger2').val(res.NUMBER_OF_PASSENGER);
+                $('#purpose2').val(res.REQUISITION_PURPOSE_ID).trigger('change');
+                $('#details2').val(res.DETAILS);
+            }
+        });
+    });
+    $('body').on('change', '#vehicle_type', function() {
+        var type = $('#vehicle_type').val();
+        var rdate = $('#req_date').val();
+        var frmt = $('#time_fr').val();
+        var tot = $('#time_to').val();
+        $.ajax({
+            url: '{{route("get.vehicle.data")}}',
+            type: 'get',
+            dataType: 'html',
+            data: {
+                type: type,
+                rdate: rdate,
+                frmt: frmt,
+                tot: tot,
+            },
+            success: function(res) {
+              $('#vehicle').html(res);
+            }
+        });
+    });
+    // Remove validations, errors and reset add vehicle type form on closing modal
+    $("#add").on('hidden.bs.modal', function(ev) {
+        $("#form").trigger('reset');
+        $("#form").validate().resetForm();
+    });
+
+    // Remove validations, errors and reset add vehicle type form on closing modal
+    $("#edit").on('hidden.bs.modal', function(ev) {
+        $("#form2").trigger('reset');
+        $("#form2").validate().resetForm();
+    });
+
+
+});
 </script>
 @endsection

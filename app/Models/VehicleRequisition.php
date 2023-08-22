@@ -9,7 +9,7 @@ class VehicleRequisition extends Model
 {
    
     protected $table = 'vehicle_requisition';
-    protected $primaryKey = 'VHI_REQ_ID';
+    protected $primaryKey = 'VEHICLE_REQ_ID';
 
     // Timestamps
     const CREATED_AT = 'CREATED_ON';
