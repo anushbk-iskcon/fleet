@@ -8,10 +8,10 @@ use App\Models\UserRoles;
 use App\Models\Rolepermissions;
 use App\Models\Permissions;
 
-if(!function_exists('getMenuPermission')) {
+if (!function_exists('getMenuPermission')) {
 
-    function getMenuPermission() 
-    { 
+    function getMenuPermission()
+    {
         $userRoleId = UserRoles::where('USER_ID', Auth::user()->USER_ID)->value('ROLE_ID');
         $userRole = Role::find($userRoleId);
         $userRoleName = $userRole->ROLE_NAME;
@@ -25,12 +25,12 @@ if(!function_exists('getMenuPermission')) {
             role_permissions.CAN_EDIT as CAN_EDIT, 
             role_permissions.CAN_DELETE as CAN_DELETE'
         )
-        ->join('role_permissions', function ($join) use ($userRoleId) {
-            $join->on('permissions.PERMISSION_ID', '=', 'role_permissions.PERMISSION_ID')
-                ->where('role_permissions.ROLE_ID', '=', $userRoleId);
-        })
-        ->where(['permissions.IS_ACTIVE' => 'Y'])
-        ->get();
+            ->join('role_permissions', function ($join) use ($userRoleId) {
+                $join->on('permissions.PERMISSION_ID', '=', 'role_permissions.PERMISSION_ID')
+                    ->where('role_permissions.ROLE_ID', '=', $userRoleId);
+            })
+            ->where(['permissions.IS_ACTIVE' => 'Y'])
+            ->get();
 
         $userMenuPermissions = array();
         foreach ($menuPermissions as $menuPermission) {
@@ -42,42 +42,36 @@ if(!function_exists('getMenuPermission')) {
         }
 
         return $userMenuPermissions;
-    } 
-
+    }
 }
-if(!function_exists('getuserMenu')) {
+if (!function_exists('getuserMenu')) {
 
-    function getuserMenu() 
-    { 
-        $userMenu = Permissions::
-        selectRaw('permissions.PARENT_ID, permissions.MENU_TITLE, group_concat(permissions.MENU_SUBTITLE) as subtitles, group_concat(permissions.SLUG) as urls')
-        ->groupBy('permissions.PARENT_ID')->groupBy('permissions.MENU_TITLE')
-        ->where(['permissions.IS_ACTIVE' => 'Y'])
-        ->orderBy('permissions.PARENT_ID')
-        ->get();
-        
+    function getuserMenu()
+    {
+        $userMenu = Permissions::selectRaw('permissions.PARENT_ID, permissions.MENU_TITLE, group_concat(permissions.MENU_SUBTITLE) as subtitles, group_concat(permissions.SLUG) as urls')
+            ->groupBy('permissions.PARENT_ID')->groupBy('permissions.MENU_TITLE')
+            ->where(['permissions.IS_ACTIVE' => 'Y'])
+            ->orderBy('permissions.PARENT_ID')
+            ->get();
+
         return $userMenu;
-
-    } 
-
+    }
 }
 
 
 
-if(!function_exists('getErrors')) {
+if (!function_exists('getErrors')) {
 
-    function getErrors($validator){
+    function getErrors($validator)
+    {
 
         $errors = [];
 
-        foreach($validator->errors()->getMessages() as $key => $msg){
+        foreach ($validator->errors()->getMessages() as $key => $msg) {
 
             $errors[$key] = $msg[0];
-
         }
 
         return $errors;
-
     }
-
 }
