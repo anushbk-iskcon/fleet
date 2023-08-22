@@ -100,26 +100,16 @@
                     <div class="form-group row mb-1">
                         <label for="station_namesr" class="col-sm-4 col-form-label justify-content-start text-left">Station Name </label>
                         <div class="col-sm-8">
-                            <select class="form-control basic-single" name="station_namesr" id="station_namesr">
-                                <option value="" selected="selected">Please Select One</option>
-                                <!-- <option value="GM Filling Station">GM Filling Station </option>
-                                <option value="Khalek filling Station">Khalek filling Station </option>
-                                <option value="cvbc"> cvbc </option> -->
-                            </select>
+                            <input class="form-control" name="station_namesr" id="station_namesr" placeholder="Fuel Station">
                         </div>
                     </div>
 
                 </div>
                 <div class="col-sm-12 col-xl-4">
                     <div class="form-group row mb-1">
-                        <label for="vendorsr" class="col-sm-4 col-form-label justify-content-start text-left">Vendor <i class="text-danger">*</i></label>
+                        <label for="vendorsr" class="col-sm-3 col-form-label justify-content-start text-left">Vendor</label>
                         <div class="col-sm-8">
-                            <select class="form-control basic-single" name="vendorsr" id="vendorsr">
-                                <option value="" selected="selected">Please Select One</option>
-                                <!-- <option value="Auto Parts">Auto Parts </option>
-                                <option value="honda">honda </option>
-                                <option value="asdfas">asdfas </option> -->
-                            </select>
+                            <input class="form-control" name="vendorsr" id="vendorsr" placeholder="Vendor Name">
                         </div>
                     </div>
                 </div>

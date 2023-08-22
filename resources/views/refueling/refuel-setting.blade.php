@@ -35,7 +35,8 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="" id="addRefuelSettingForm" enctype="multipart/form-data" class="row" method="post" accept-charset="utf-8">
+                <form action="{{route('refuel-setting.add')}}" id="addRefuelSettingForm" enctype="multipart/form-data" class="row" method="post" accept-charset="utf-8">
+                    @csrf
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
                             <label for="vehicle_name" class="col-sm-5 col-form-label">Vehicle Name <i class="text-danger">*</i></label>
@@ -60,7 +61,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="dateofrefuel" class="col-sm-5 col-form-label">Refueled Date </label>
+                            <label for="dateofrefuel" class="col-sm-5 col-form-label">Refueled Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="refueling_date" autocomplete="off" class="form-control newdatetimepicker" type="text" placeholder="Refueled Date" id="dateofrefuel">
                             </div>
@@ -158,7 +159,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="unit_taken" class="col-sm-5 col-form-label">Unit Taken </label>
+                            <label for="unit_taken" class="col-sm-5 col-form-label">Unit Taken <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="unit_taken" class="form-control" type="number" placeholder="Unit Taken" id="unit_taken">
                             </div>
@@ -166,7 +167,7 @@
                         <div class="form-group row">
                             <label for="picture" class="col-sm-5 col-form-label">Fuel Slip Scan Copy </label>
                             <div class="col-sm-7">
-                                <input type="file" accept="image/*" name="picture" onchange="loadFile(event)">
+                                <input type="file" accept="image/*" name="picture">
                             </div>
                         </div>
                         <div class="form-group row m-0">
@@ -283,10 +284,12 @@
     let csrfToken = "{{csrf_token()}}";
     // To load all refuel settings to Data Table:
     let refuelSettingListURL = "{{route('refuel-setting.list')}}";
+    // To add a new refuel setting to the DB
+    let addRefuelSettingURL = "{{route('refuel-setting.add')}}";
     // To load update form pre-filled with current details of the refuel setting:
     let refuelSettingEditURL = "{{route('refuel-setting.edit')}}";
     // To update refuel setting details after form submission:
-    let refuelSettingUpdateURl = "{{route('refuel-setting.update')}}";
+    let refuelSettingUpdateURL = "{{route('refuel-setting.update')}}";
     let activationStatusChangeURL = "{{route('refuel-setting.change-activation')}}";
 </script>
 <!-- <script src="{{asset('dist/js/refuel_setting.js')}}"></script> -->

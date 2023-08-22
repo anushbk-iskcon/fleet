@@ -14,6 +14,7 @@ class LegalDocumentsController extends Controller
     {
         if (request()->isMethod('post')) {
         } else {
+            return view('vehicle.legal-docs');
         }
     }
 }

@@ -39,16 +39,12 @@ $(document).ready(function () {
     });
 
     // On changing select2 options for dept and employee, remove validation if selection made
-    $("#department").on('select2:close', function () {
-        if ($(this).closest('div.col-sm-*').has('.error')) {
-            $(this).valid();
-        }
+    $("#department").on('change', function () {
+        $(this).valid();
     });
 
-    $("#employeeSelect").on('select2:close', function () {
-        if ($(this).closest('div.col-sm-*').has('.error')) {
-            $(this).valid();
-        }
+    $("#employeeSelect").on('change', function () {
+        $(this).valid();
     });
 
     $("#add0").on('hidden.bs.modal', function () {
@@ -71,6 +67,7 @@ $(document).ready(function () {
             $('#department').val('').trigger('change');
             $("#employeeSelect").val("").trigger('change');
             // $("#employeeSelect").html("").append("<option value='' selected>Please Select Employee</option>");
+            $("#addRefuelApprovalAuthorityForm").data('validator').resetForm();
         }, 10);
     });
 
@@ -125,6 +122,7 @@ $(document).ready(function () {
     $("#resetEditAuthorityFormBtn").click(function () {
         setTimeout(() => {
             $('#newDepartment').trigger('change');
+            $("#newDepartment").valid();
         }, 10);
     });
 

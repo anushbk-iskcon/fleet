@@ -22,7 +22,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="" id="emp_form" class="row" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+                <form action="" id="emp_form" class="row" method="post" accept-charset="utf-8">
                     <div class="col-md-12">
                         <div class="form-group row">
                             <label for="license_name" class="col-sm-5 col-form-label">License Name <i class="text-danger">*</i></label>
@@ -188,7 +188,8 @@
         </div>
     </div>
 </div>
-<!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/license_list.js"></script> -->
+@endsection
+@section('js-content')
 <script>
     $(document).ready(function() {
         $("#license_list").DataTable();

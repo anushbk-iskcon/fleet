@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Masters;
 
 use App\Http\Controllers\Controller;
 use App\Models\FuelStation;
+use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,15 +27,16 @@ class FuelStationController extends Controller
     {
         $vendor = $request->vendorsr;
         $station = $request->station_namesr;
+        // dd($station, $vendor);
 
-        // Filtred data if request does not have empty values above
-        $fuelStations = FuelStation::all()
+        // Filtered data if request does not have empty values above
+        $fuelStations = FuelStation::query()
             ->when($vendor, function ($query) use ($vendor) {
-                $query->where('VENDOR_NAME', $vendor);
+                $query->where('VENDOR_NAME', 'LIKE', '%' . $vendor . '%');
             })
             ->when($station, function ($query) use ($station) {
-                $query->where('FUEL_STATION_NAME', $station);
-            });
+                $query->where('FUEL_STATION_NAME', 'LIKE', '%' . $station . '%');
+            })->get();
         return json_encode($fuelStations);
     }
 

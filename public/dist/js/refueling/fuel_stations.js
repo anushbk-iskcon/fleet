@@ -134,6 +134,17 @@ $(document).ready(function () {
         // Change ID of 'Is Authorized' checkbox to initial ID (checkbox2)
         $("#editFuelStationForm input[name=is_authorized]").attr('id', 'checkbox2');
     });
+
+    // For Filtering and Seacching
+    $("#btn-filter").click(function () {
+        populateTable(fuelStationsTable);
+    });
+
+    $("#btn-reset").click(function () {
+        $("#station_namesr").val("");
+        $("#vendorsr").val("");
+        populateTable(fuelStationsTable);
+    });
 });
 
 function populateTable(table) {
@@ -142,8 +153,8 @@ function populateTable(table) {
         type: 'post',
         data: {
             _token: csrfToken,
-            vendorsr: $("#station_namesr").val(),
-            station_namesr: $("#vendorsr").val()
+            vendorsr: $("#vendorsr").val(),
+            station_namesr: $("#station_namesr").val()
         },
         dataType: 'json',
         success: function (res) {
