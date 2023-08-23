@@ -2,6 +2,24 @@
 
 @section('title', 'Insurance')
 
+@section('css-content')
+<style>
+    div.error {
+        font-size: .8em;
+        color: #f66;
+    }
+
+    select.error~.select2 .select2-selection {
+        border: 1px solid #f99;
+    }
+
+    div.file-upload-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+</style>
+@endsection
+
 @section('breadcrumb-content')
 <li class="breadcrumb-item"><a href="{{url('home')}}">Home</a></li>
 <li class="breadcrumb-item active" id="moduleName">Vehicle Management</li>
@@ -21,7 +39,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="" id="emp_form" class="row" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+                <form action="{{route('insurance.add')}}" id="addInsuranceDetailsForm" class="row" enctype="multipart/form-data" method="post" accept-charset="utf-8">
                     @csrf
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
@@ -37,7 +55,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="start_date" class="col-sm-5 col-form-label">Start Date </label>
+                            <label for="start_date" class="col-sm-5 col-form-label">Start Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="start_date" class="form-control newdatetimepicker" type="text" placeholder="Start Date" id="start_date">
                             </div>
@@ -47,31 +65,30 @@
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="recurring_period" id="recurring_period">
                                     <option value="" selected="selected">Please Select One</option>
-                                    <option value="11">11 </option>
-                                    <option value="1 Year">1 Year </option>
-                                    <option value="1 Month">1 Month </option>
-                                    <option value="10 Days">10 Days </option>
+                                    @foreach($recurringPeriods as $recurringPeriod)
+                                    <option value="{{$recurringPeriod['RECURRING_PERIOD_ID']}}">{{$recurringPeriod['RECURRING_PERIOD_NAME']}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="checkbox1" class="col-sm-5 col-form-label">&nbsp;</label>
                             <div class="col-sm-7 checkbox checkbox-primary">
-                                <input id="checkbox1" type="checkbox" name="add_reminder">
+                                <input id="checkbox1" type="checkbox" name="add_reminder" value="1">
                                 <label for="checkbox1">Add Reminder</label>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="checkbox2" class="col-sm-5 col-form-label">&nbsp;</label>
                             <div class="col-sm-7 checkbox checkbox-primary">
-                                <input id="checkbox2" type="checkbox" name="status">
+                                <input id="checkbox2" type="checkbox" name="status" value="1">
                                 <label for="checkbox2">Status</label>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="remarks" class="col-sm-5 col-form-label">Remarks </label>
                             <div class="col-sm-7">
-                                <textarea name="remarks" class="form-control" placeholder="Remarks" cols="30" rows="3"></textarea>
+                                <textarea name="remarks" id="remarks" class="form-control" placeholder="Remarks" cols="30" rows="3"></textarea>
                             </div>
                         </div>
                     </div>
@@ -94,7 +111,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="end_date" class="col-sm-5 col-form-label">End Date </label>
+                            <label for="end_date" class="col-sm-5 col-form-label">End Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="end_date" class="form-control newdatetimepicker" type="text" placeholder="End Date" id="end_date">
                             </div>
@@ -113,8 +130,8 @@
                         </div>
                         <div class="form-group row">
                             <label for="policy_document" class="col-sm-5 col-form-label">Policy Document <i class="text-danger">*</i></label>
-                            <div class="col-sm-7">
-                                <input name="policy_document" type="file" required="" />
+                            <div class="col-sm-7 file-upload-container">
+                                <input name="policy_document" type="file" accept="image/*,application/pdf,.doc,.docx" required="" />
                             </div>
                         </div>
 
@@ -185,15 +202,9 @@
                 </div>
                 <div class="col-sm-12 col-xl-4">
                     <div class="form-group row mb-1">
-                        <label for="insurance_company" class="col-sm-5 col-form-label justify-content-start text-left">Insurance Company <i class="text-danger">*</i></label>
+                        <label for="insurance_company" class="col-sm-5 col-form-label justify-content-start text-left">Insurance Company</label>
                         <div class="col-sm-7">
-                            <select class="form-control basic-single" name="insurance_company" id="insurance_company">
-                                <option value="" selected="selected">Please Select One</option>
-                                <option value="MetroWaste Solid Waste Management Corp.">MetroWaste Solid Waste Management Corp. </option>
-                                <option value="Royal Commission for Jubail & Yanbu">Royal Commission for Jubail & Yanbu </option>
-                                <option value="Banglalink">Banglalink </option>
-                                <option value="Grameen">Grameen </option>
-                            </select>
+                            <input class="form-control" name="insurance_company" id="insurance_company" type="text" placeholder="Company Name">
                         </div>
                     </div>
                     <div class="form-group row mb-1">
@@ -205,7 +216,7 @@
                 </div>
                 <div class="col-sm-12 col-xl-4">
                     <div class="form-group row mb-1">
-                        <label for="policy_numbersr" class="col-sm-5 col-form-label justify-content-start text-left">Policy Number </label>
+                        <label for="policy_numbersr" class="col-sm-5 col-form-label justify-content-start text- left">Policy Number </label>
                         <div class="col-sm-7">
                             <input name="policy_numbersr" class="form-control" type="text" placeholder="Policy Number" id="policy_numbersr">
                         </div>
@@ -246,50 +257,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr role="row" class="odd">
-                                <td class="sorting_1" tabindex="0">1</td>
-                                <td>Banglalink</td>
-                                <td>Kia</td>
-                                <td>5464645654</td>
-                                <td>2021-02-17</td>
-                                <td>2022-03-17</td>
-                                <td>1 Year</td>
-                                <td>2021-02-17</td>
-                                <td><a onclick="editinfo(4)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
-                            <tr role="row" class="even">
-                                <td class="sorting_1" tabindex="0">2</td>
-                                <td>Grameenphone</td>
-                                <td>Fareed Express</td>
-                                <td>5464645654</td>
-                                <td>2021-03-01</td>
-                                <td>2022-02-28</td>
-                                <td>1 Year</td>
-                                <td>2021-02-28</td>
-                                <td><input name="url" type="hidden" id="url_5" value=""><a onclick="editinfo(5)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="sorting_1" tabindex="0">3</td>
-                                <td>Banglalink</td>
-                                <td>Fareed Express</td>
-                                <td>5464645654</td>
-                                <td>2021-02-28</td>
-                                <td>2021-02-28</td>
-                                <td>1 Month</td>
-                                <td>2021-02-28</td>
-                                <td><input name="url" type="hidden" id="url_6" value=""><a onclick="editinfo(6)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
-                            <tr role="row" class="even">
-                                <td class="sorting_1" tabindex="0">4</td>
-                                <td>Banglalink</td>
-                                <td>Demo</td>
-                                <td>5445</td>
-                                <td>0000-00-00</td>
-                                <td>0000-00-00</td>
-                                <td>1 Year</td>
-                                <td>0000-00-00</td>
-                                <td><input name="url" type="hidden" id="url_8" value=""><a onclick="editinfo(8)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
+
                         </tbody>
                     </table> <!-- /.table-responsive -->
                 </div>
@@ -303,10 +271,9 @@
 <script>
     // To save Routes, URLs, etc. for use in external JS
     let csrfToken = "{{csrf_token()}}";
+    let insuranceInfoListURL = "{{route('insurance-list.list')}}";
+    let activationStatusChangeURL = "{{route('insurance.change-active-status')}}";
 </script>
-<script>
-    $(document).ready(function() {
-        $("#insuranceInfoTable").DataTable();
-    });
+<script src="{{asset('public/dist/js/vehicles/insurance.js')}}">
 </script>
 @endsection

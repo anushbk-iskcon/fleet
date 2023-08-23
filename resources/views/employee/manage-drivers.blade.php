@@ -173,8 +173,9 @@
     </div>
 
 </div>
+
 <!-- Add License Type: -->
-<!-- <div id="add3" class="modal fade" role="dialog">
+<div id="add3" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -182,12 +183,13 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="" id="add_license_form" class="row" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+                <form action="{{route('add-license-type')}}" id="add_license_form" class="row" method="post" accept-charset="utf-8">
+                    @csrf
                     <div class="col-md-12">
                         <div class="form-group row">
                             <label for="license_name" class="col-sm-5 col-form-label">License Name <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="license_name" class="form-control" type="text" placeholder="License Name" id="license_name">
+                                <input name="license_name" class="form-control" type="text" placeholder="License Name" id="license_name" required maxlength="50">
                             </div>
                         </div>
                         <div class="form-group text-right">
@@ -200,7 +202,7 @@
             </div>
         </div>
     </div>
-</div> -->
+</div>
 
 <div class="row">
     <div class="col-sm-12">
@@ -212,10 +214,10 @@
                             <i class="ti-plus" aria-hidden="true"></i>
                             Add Driver
                         </button>&nbsp;
-                        <!-- <button type="button" class="btn btn-primary btn-md" data-target="#add3" data-toggle="modal">
+                        <button type="button" class="btn btn-primary btn-md" data-target="#add3" data-toggle="modal">
                             <i class="ti-plus" aria-hidden="true"></i>
                             Add License Type
-                        </button> -->
+                        </button>
                     </small>
                 </h4>
             </div>
@@ -283,26 +285,9 @@
                                 <td><input name="url" type="hidden" id="url_2" value="https://vmsdemo.bdtask-demo.com/empmgt/Driver_controller/updateintfrm">
                                     <a onclick="editinfo('2')" class="btn btn-xs btn-success btn-sm mr-1" style="cursor:pointer;color:#fff;" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/empmgt/Driver_controller/delete_driver/2" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
                                 </td>
-                            </tr>
-                            
-                            <tr role="row" class="odd">
-                                <td>7</td>
-                                <td>Demo driver 1</td>
-                                <td>8546798512</td>
-                                <td>8491678457</td>
-                                <td>95689889</td>
-                                <td>24/7</td>
-                                <td>Inactive</td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_12" value="https://vmsdemo.bdtask-demo.com/empmgt/Driver_controller/updateintfrm">
-                                    <a onclick="editinfo('12')" class="btn btn-xs btn-success btn-sm mr-1" style="cursor:pointer;color:#fff;" data-toggle="tooltip" data-placement="left" title="Update">
-                                        <i class="ti-pencil"></i>
-                                    </a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/empmgt/Driver_controller/delete_driver/12" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1">
-                                            <i class="ti-trash"></i>
-                                    </a>
-                                </td>
                             </tr> -->
+
+
                         </tbody>
 
                     </table> <!-- /.table-responsive -->

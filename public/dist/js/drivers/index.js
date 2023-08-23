@@ -134,6 +134,7 @@ $(document).ready(function () {
         $('.form-control').each(function () {
             $(this).removeClass('error');
         });
+        $("#add_driver_form input[name='picture']").removeClass('error');
     });
 
 });

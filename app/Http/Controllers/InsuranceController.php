@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Insurance;
+use App\Models\RecurringPeriod;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use stdClass;
 
 class InsuranceController extends Controller
@@ -16,9 +19,17 @@ class InsuranceController extends Controller
     public function index(Request $request)
     {
         if (request()->isMethod('post')) {
+            $insuranceList = DB::table('vehicle_insurance')
+                ->join('vehicles', 'vehicle_insurance.VEHICLE', '=', 'vehicles.VEHICLE_ID')
+                ->join('mstr_recurring_periods', 'vehicle_insurance.RECURRING_PERIOD', '=', 'mstr_recurring_periods.RECURRING_PERIOD_ID')
+                ->select('vehicle_insurance.*', 'vehicles.VEHICLE_NAME', 'mstr_recurring_periods.RECURRING_PERIOD_NAME')
+                ->get();
+
+            return $insuranceList->toJson();
         } else {
             $vehicles = Vehicle::select('VEHICLE_ID', 'VEHICLE_NAME')->where('IS_ACTIVE', 'Y')->get();
-            return view('vehicle.insurance-list', compact('vehicles'));
+            $recurringPeriods = RecurringPeriod::select('RECURRING_PERIOD_ID', 'RECURRING_PERIOD_NAME')->where('IS_ACTIVE', 'Y')->get();
+            return view('vehicle.insurance-list', compact('vehicles', 'recurringPeriods'));
         }
     }
 
@@ -27,13 +38,13 @@ class InsuranceController extends Controller
      */
     public function store(Request $request)
     {
-        $insurance = new stdClass;
+        $insurance = new Insurance;
         $insurance->COMPANY_NAME = $request->company_name;
         $insurance->VEHICLE = $request->vehicle;
         $insurance->POLICY_NUMBER = $request->policy_number;
         $insurance->CHARGE_PAYABLE = $request->charge_payable;
-        $insurance->START_DATE = $request->start_date ?? "";
-        $insurance->END_DATE = $request->end_date ?? "";
+        $insurance->START_DATE = $request->start_date;
+        $insurance->END_DATE = $request->end_date;
         $insurance->RECURRING_PERIOD = $request->recurring_period;
         $insurance->RECURRING_DATE = $request->recurring_date ?? null;
         $insurance->RECURRING_PERIOD_REMINDER = $request->add_reminder == 1 ? 'Y' : 'N';
@@ -51,7 +62,7 @@ class InsuranceController extends Controller
         }
 
         $insurance->CREATED_BY = Auth::user()->USER_ID;
-        $added = '';
+        $added = $insurance->save();
         if ($added) {
             return response()->json(['successCode' => 1, 'message' => 'Added successfully']);
         } else {

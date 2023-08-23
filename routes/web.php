@@ -15,6 +15,7 @@ use App\Http\Controllers\Masters\DepartmentController;
 use App\Http\Controllers\Masters\DocumentTypeController;
 use App\Http\Controllers\Masters\FuelController;
 use App\Http\Controllers\Masters\FuelStationController;
+use App\Http\Controllers\Masters\LicenseTypeController;
 use App\Http\Controllers\Masters\MaintenanceTypeController;
 use App\Http\Controllers\Masters\NotificationTypeController;
 use App\Http\Controllers\Masters\OwnershipController;
@@ -97,9 +98,10 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('drivers', DriverController::class)->except(['destroy']);
 
-    Route::get('employee/manage-licenses', function () {
-        return view('employee.manage-license');
-    })->name('manage-licenses');
+    Route::get('manage-licenses', [LicenseTypeController::class, 'index'])->name('manage-licenses');
+    Route::post('licenses/add', [LicenseTypeController::class, 'store'])->name('add-license-type');
+    Route::post('licenses/update', [LicenseTypeController::class, 'update'])->name('update-license-type');
+    Route::post('licenses/change-active-status', [LicenseTypeController::class, 'activationStatusChange'])->name('license.change-active-status');
 
     Route::get('driver-performance', function () {
         return view('employee.driver-performance');
@@ -124,6 +126,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('vehicles/insurance', [InsuranceController::class, 'index'])->name('insurance-list');
     Route::post('vehicles/insurance', [InsuranceController::class, 'index'])->name('insurance-list.list');
+    Route::post('vehicles/insurance/add', [InsuranceController::class, 'store'])->name('insurance.add');
+    Route::post('vehicles/insurance/update', [InsuranceController::class, 'update'])->name('insurance.update');
+    Route::post('vehicles/insurance/change-active-status', [InsuranceController::class, 'activationStatusChange'])->name('insurance.change-active-status');
 
     Route::get('vehicles/legal-documents', [LegalDocumentsController::class, 'index'])->name('legal-documents');
     Route::post('vehicles/legal-documents', [LegalDocumentsController::class, 'index'])->name('legal-documents.list');

@@ -22,7 +22,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="" id="emp_form" class="row" method="post" accept-charset="utf-8">
+                <form action="" id="addLicenseTypeForm" class="row" method="post" accept-charset="utf-8">
                     <div class="col-md-12">
                         <div class="form-group row">
                             <label for="license_name" class="col-sm-5 col-form-label">License Name <i class="text-danger">*</i></label>
@@ -77,9 +77,9 @@
                     <table id="license_list" class="table display table-bordered table-striped table-hover ">
                         <thead>
                             <tr>
-                                <th>SL</th>
+                                <th>Sl No.</th>
                                 <th>License Name</th>
-                                <th>Action</th>
+                                <th>Action(s)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -190,6 +190,20 @@
 </div>
 @endsection
 @section('js-content')
+@if(Session::has('success'))
+<script>
+    toastr.success('{{session("success")}}', '', {
+        closeButton: true
+    });
+</script>
+@endif
+@if(Session::has('failure'))
+<script>
+    toastr.error('{{session("failure")}}', '', {
+        closeButton: true
+    });
+</script>
+@endif
 <script>
     $(document).ready(function() {
         $("#license_list").DataTable();
