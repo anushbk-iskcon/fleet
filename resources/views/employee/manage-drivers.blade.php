@@ -52,11 +52,11 @@
                         <div class="form-group row">
                             <label for="timeslot" required="" class="col-sm-5 col-form-label">Working Time Slot <i class="text-danger">*</i></label>
                             <div class="col-sm-3 pr-0">
-                                <input name="timeslot_start" required="" class="form-control timepicker" type="text" placeholder="09:00 AM" id="timeslotStart">
+                                <input name="timeslot_start" required="" class="form-control timepicker" type="text" placeholder="09:00 AM" id="timeslotStart" value="" autocomplete="off">
                             </div>
                             <div class="col-sm-1"><sub>&ndash;</sub></div>
                             <div class="col-sm-3 pl-0">
-                                <input name="timeslot_end" required="" class="form-control timepicker" type="text" placeholder="05:00 PM" id="timeslotEnd">
+                                <input name="timeslot_end" required="" class="form-control timepicker" type="text" placeholder="05:00 PM" id="timeslotEnd" value="" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -103,14 +103,14 @@
                         <div class="form-group row">
                             <label for="license_issue_date" class="col-sm-5 col-form-label">License Issue Date </label>
                             <div class="col-sm-7">
-                                <input name="license_issue_date" autocomplete="off" class="form-control date-picker" type="text" placeholder="License Issue Date" id="license_issue_date">
+                                <input name="license_issue_date" class="form-control date-picker" type="text" placeholder="License Issue Date" id="license_issue_date">
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label for="join_date" class="col-sm-5 col-form-label">Join Date </label>
                             <div class="col-sm-7">
-                                <input name="join_date" autocomplete="off" class="form-control date-picker" type="text" placeholder="Join Date" id="join_date">
+                                <input name="join_date" class="form-control date-picker" type="text" placeholder="Join Date" id="join_date">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -308,7 +308,7 @@
     let activateDriverURL = "{{url('activate-driver')}}";
     let csrfToken = "{{csrf_token()}}";
 </script>
-<script src="{{asset('public/dist/js/position_form.js')}}"></script>
+<!-- <script src="{{asset('public/dist/js/position_form.js')}}"></script> -->
 <script src="{{asset('public/dist/js/drivers/index.js')}}"></script>
 <script>
     $(document).ready(function() {
@@ -321,7 +321,7 @@
         autoUpdateInput: false,
         minYear: 1901,
         maxDate: moment().format('YYYY-MM-DD'),
-        "drops": "down",
+        drops: "down",
         locale: {
             format: 'YYYY-MM-DD'
         },

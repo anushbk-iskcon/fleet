@@ -12,7 +12,8 @@ class LicenseTypeController extends Controller
     //
     public function index(Request $request)
     {
-        return view('employee.manage-license');
+        $licenseTypes = DB::table('mstr_license')->get();
+        return view('employee.manage-license', compact('licenseTypes'));
     }
 
     public function store(Request $request)

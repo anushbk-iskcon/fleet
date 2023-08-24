@@ -118,7 +118,7 @@ function populateTable(table) {
             }
         },
         error: function (jqXHR, status, err) {
-            toastr.error("Error fecthing data. Please try again", '', { closeButton: true });
+            toastr.error("Error fetching data. Please try again", '', { closeButton: true });
         }
     });
 }

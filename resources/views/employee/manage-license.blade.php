@@ -22,12 +22,13 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="" id="addLicenseTypeForm" class="row" method="post" accept-charset="utf-8">
+                <form action="{{route('add-license-type')}}" id="addLicenseTypeForm" class="row" method="post" accept-charset="utf-8">
+                    @csrf
                     <div class="col-md-12">
                         <div class="form-group row">
                             <label for="license_name" class="col-sm-5 col-form-label">License Name <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="license_name" required class="form-control" type="text" placeholder="License Name" id="license_name">
+                                <input name="license_name" required class="form-control" type="text" placeholder="License Name" id="license_name" maxlength="100">
                             </div>
                         </div>
                         <div class="form-group text-right">
@@ -69,6 +70,10 @@
                         <a href="{{route('drivers.index')}}" class="btn btn-primary btn-md">
                             Manage Drivers
                         </a>&nbsp;
+                        <button type="button" class="btn btn-primary btn-md" data-target="#add3" data-toggle="modal">
+                            <i class="ti-plus" aria-hidden="true"></i>
+                            Add License Type
+                        </button>
                     </small>
                 </h4>
             </div>
@@ -83,7 +88,22 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach($licenseTypes as $licenseType)
+                            {{-- $licenseType is a collection, not array --}}
                             <tr>
+                                <td>{{$loop->iteration}}</td>
+                                <td> {{$licenseType->LICENSE_NAME}} </td>
+                                <td>
+                                    <a onclick="editInfo({{$licenseType->LICENSE_ID}}, '{{$licenseType->LICENSE_NAME}}')" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
+                                    @if($licenseType->IS_ACTIVE == 'Y')
+                                    <a onclick="changeActivation({{$licenseType->LICENSE_ID}}, 0)" class="btn btn-xs btn-danger btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Deactivate"><i class="ti-close"></i></a>
+                                    @else
+                                    <a onclick="changeActivation({{$licenseType->LICENSE_ID}}, 1)" class="btn btn-xs btn-danger btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Activate"><i class="ti-reload"></i></a>
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                            <!-- <tr>
                                 <td>1</td>
                                 <td>3</td>
                                 <td><input name="url" type="hidden" id="url_14" value="https://vmsdemo.bdtask-demo.com/empmgt/Driver_controller/updateltyfrm" />
@@ -180,7 +200,7 @@
                                 <td><input name="url" type="hidden" id="url_1" value="https://vmsdemo.bdtask-demo.com/empmgt/Driver_controller/updateltyfrm" />
                                     <a onclick="editinfo(1)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
                                 </td>
-                            </tr>
+                            </tr> -->
                         </tbody>
                     </table> <!-- /.table-responsive -->
                 </div>
@@ -208,5 +228,71 @@
     $(document).ready(function() {
         $("#license_list").DataTable();
     });
+
+    function editInfo(id, licenseTypeName) {
+        $("#edit .editinfo").empty();
+        let editFormContent = `<form action="{{route('update-license-type')}}" id="addLicenseTypeForm" class="row" method="post" accept-charset="utf-8">
+        <input type="hidden" name="_token" value="{{csrf_token()}}">
+        <input type="hidden" name="license_id" value="${id}">
+        <div class="col-md-12">
+            <div class="form-group row">
+                <label for="updated_license_name" class="col-sm-5 col-form-label">License Name <i class="text-danger">*</i></label>
+                    <div class="col-sm-7">
+                            <input name="license_name" required class="form-control" type="text" placeholder="License Name" id="updated_license_name"
+                            value="${licenseTypeName}" maxlength="100">
+                    </div>
+            </div>
+            <div class="form-group text-right">
+                <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                <button type="submit" class="btn btn-success w-md m-b-5">Save</button>
+            </div>
+        </div>
+        </form>`;
+
+        $("#edit .editinfo").html(editFormContent);
+        $("#edit").modal('show');
+    }
+
+    function changeActivation(id, activationStatus) {
+        toastr.warning("<button type='button' class='btn btn-sm btn-primary' value='Y'>Yes</button>&nbsp;<button type='button' class='btn btn-sm btn-secondary' value='N' >No</button>", 'Are you sure?', {
+            allowHtml: true,
+            onclick: function(toast) {
+                value = toast.target.value
+                if (value == 'Y') {
+                    toastr.remove();
+                    let form = document.createElement('form');
+                    form.setAttribute('action', "{{route('license.change-active-status')}}");
+                    form.setAttribute('method', 'POST');
+
+                    let token = document.createElement('input');
+                    let license_id = document.createElement('input');
+                    let active_status = document.createElement('input');
+
+                    token.value = "{{csrf_token()}}";
+                    token.setAttribute('type', 'hidden');
+                    token.setAttribute('name', '_token');
+
+                    license_id.setAttribute('type', 'hidden');
+                    license_id.value = id;
+                    license_id.setAttribute('name', 'license_id');
+
+                    active_status.setAttribute('type', 'hidden');
+                    active_status.value = activationStatus;
+                    active_status.setAttribute('name', 'activation_status');
+
+                    form.appendChild(token);
+                    form.appendChild(license_id);
+                    form.appendChild(active_status);
+
+                    console.log(form);
+                    document.body.appendChild(form);
+                    form.submit();
+                } else {
+                    toastr.remove();
+                }
+            }
+
+        })
+    }
 </script>
 @endsection

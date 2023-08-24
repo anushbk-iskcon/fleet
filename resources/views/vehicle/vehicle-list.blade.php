@@ -322,8 +322,8 @@
                 <form id="filterVehiclesForm" action="" method="post" class="row">
                     <div class="col-sm-12 col-xl-4">
                         <div class="form-group row mb-1">
-                            <label for="search_department" class="col-sm-5 col-form-label justify-content-start text-left">Department </label>
-                            <div class="col-sm-7">
+                            <label for="search_department" class="col-sm-4 col-form-label justify-content-start text-left">Department </label>
+                            <div class="col-sm-8">
                                 <select class="form-control basic-single" name="search_department" id="search_department">
                                     <option value="" selected="selected">Please Select One</option>
                                     @foreach($departments as $department)
@@ -333,8 +333,8 @@
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label for="vehicle_typesr" class="col-sm-5 col-form-label justify-content-start text-left">Vehicle Type </label>
-                            <div class="col-sm-7">
+                            <label for="vehicle_typesr" class="col-sm-4 col-form-label justify-content-start text-left">Vehicle Type </label>
+                            <div class="col-sm-8">
                                 <select class="form-control" name="vehicle_typesr" id="vehicle_typesr">
                                     <option value="" selected="selected">Please Select One</option>
                                     @foreach($vehicleTypes as $vehicleType)
@@ -344,8 +344,8 @@
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label for="ownershipsr" class="col-sm-5 col-form-label justify-content-start text-left">Ownership </label>
-                            <div class="col-sm-7">
+                            <label for="ownershipsr" class="col-sm-4 col-form-label justify-content-start text-left">Ownership </label>
+                            <div class="col-sm-8">
                                 <select class="form-control" name="ownershipsr" id="ownershipsr">
                                     <option value="" selected="selected">Please Select One</option>
                                     @foreach($ownerships as $ownership)
@@ -358,19 +358,19 @@
                     <div class="col-sm-12 col-xl-5">
                         <div class="form-group row mb-1">
                             <label for="registration_date_fr" class="col-sm-5 col-form-label justify-content-start text-left">Registration Date From </label>
-                            <div class="col-sm-7">
+                            <div class="col-sm-6">
                                 <input name="registration_date_fr" autocomplete="off" class="form-control newdatetimepicker" type="text" placeholder="Registration Date From" id="registration_date_fr">
                             </div>
                         </div>
                         <div class="form-group row mb-1">
                             <label for="registration_date_to" class="col-sm-5 col-form-label justify-content-start text-left">Registration Date To </label>
-                            <div class="col-sm-7">
+                            <div class="col-sm-6">
                                 <input name="registration_date_to" autocomplete="off" class="form-control newdatetimepicker" type="text" placeholder="Registration Date To" id="registration_date_to">
                             </div>
                         </div>
                         <div class="form-group row mb-1">
                             <label for="vendorsr" class="col-sm-5 col-form-label justify-content-start text-left">Vendor </label>
-                            <div class="col-sm-7">
+                            <div class="col-sm-6">
                                 <select class="form-control" name="vendorsr" id="vendorsr">
                                     <option value="" selected="selected">Please Select One</option>
                                     @foreach($vendors as $vendor)
@@ -436,11 +436,11 @@
         populateVehiclesTable(vehiclesTable);
 
         // To allow validation of select2 selections
-        $('#add0 select.basic-single').on('select2:close', function(e) {
+        $('#add0 select.basic-single').on('change', function(e) {
             $(this).valid();
         });
         // To allow validation of select2 selections
-        $('#edit select.basic-single').on('select2:close', function(e) {
+        $('#edit select.basic-single').on('change', function(e) {
             $(this).valid();
         });
 

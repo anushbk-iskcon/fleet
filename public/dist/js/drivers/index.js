@@ -186,17 +186,17 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
     <div class="form-group row">
         <label for="timeslot" required="" class="col-sm-5 col-form-label">Working Time Slot <i class="text-danger">*</i></label>
         <div class="col-sm-3 pr-0">
-            <input name="timeslot_start" required="" class="form-control timepicker" type="text" placeholder="09:00 AM" id="newTimeslotStart" value="${work_start_time}">
+            <input name="timeslot_start" required="" class="form-control edit-time-picker" type="text" placeholder="09:00 AM" id="newTimeslotStart" value="${work_start_time}">
         </div>
         <div class="col-sm-1"><sub>&ndash;</sub></div>
         <div class="col-sm-3 pl-0">
-            <input name="timeslot_end" required="" class="form-control timepicker" type="text" placeholder="05:00 PM" id="newTimeslotEnd" value="${work_end_time}">
+            <input name="timeslot_end" required="" class="form-control edit-time-picker" type="text" placeholder="05:00 PM" id="newTimeslotEnd" value="${work_end_time}">
         </div>
     </div>
     <div class="form-group row">
         <label for="update_dob" class="col-sm-5 col-form-label">Date of Birth </label>
         <div class="col-sm-7">
-            <input name="dob" autocomplete="off" class="form-control date-picker" type="text" placeholder="Date of Birth" id="update_dob" value="${dob}">
+            <input name="dob" autocomplete="off" class="form-control edit-date-picker" type="text" placeholder="Date of Birth" id="update_dob" value="${dob}">
         </div>
     </div>
     <div class="form-group row">
@@ -234,14 +234,14 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
     <div class="form-group row">
         <label for="update_license_issue_date" class="col-sm-5 col-form-label">License Issue Date </label>
         <div class="col-sm-7">
-            <input name="license_issue_date" autocomplete="off" class="form-control date-picker" type="text" placeholder="License Issue Date" id="update_license_issue_date" value="${license_issue_date}">
+            <input name="license_issue_date" autocomplete="off" class="form-control edit-date-picker" type="text" placeholder="License Issue Date" id="update_license_issue_date" value="${license_issue_date}">
         </div>
     </div>
 
     <div class="form-group row">
         <label for="update_join_date" class="col-sm-5 col-form-label">Join Date </label>
         <div class="col-sm-7">
-            <input name="join_date" autocomplete="off" class="form-control date-picker" type="text" placeholder="Join Date" id="update_join_date" value="${join_date}">
+            <input name="join_date" autocomplete="off" class="form-control edit-date-picker" type="text" placeholder="Join Date" id="update_join_date" value="${join_date}">
         </div>
     </div>
     <div class="form-group row">
@@ -278,10 +278,11 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
     updateForm.append(formContent);
     $("#update_license_type").val(license_type);
 
-    $('.date-picker').daterangepicker({
+    // For Showing Date Pickers on Date Inputs
+    $('#updateDriverDetailsForm .edit-date-picker').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
-        autoUpdateInput: false,
+        // autoUpdateInput: false,
         minYear: 1901,
         maxDate: '2100',
         "drops": "down",
@@ -292,12 +293,32 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
     }, function (start, end, label) {
         var years = moment().diff(start, 'years');
     });
-    $('.date-picker').on('apply.daterangepicker', function (ev, picker) {
+    $('#updateDriverDetailsForm .edit-date-picker').on('apply.daterangepicker', function (ev, picker) {
         $(this).val(picker.startDate.format('YYYY-MM-DD'));
     });
-    $('.date-picker').on('cancel.daterangepicker', function (ev, picker) {
+    $('#updateDriverDetailsForm .edit-date-picker').on('cancel.daterangepicker', function (ev, picker) {
         $(this).val('');
     });
+
+    // For time pickers on time inputs
+    $('#updateDriverDetailsForm .edit-time-picker').daterangepicker({
+        singleDatePicker: true,
+        timePicker: true,
+        timePicker24Hour: false,
+        "locale": {
+            "format": "hh:mm A"
+        }
+    }).on('show.daterangepicker', function (ev, picker) {
+        picker.container.find(".calendar-table").hide();
+        picker.container.find('.calendar-time').css('margin-right', '15px')
+    });
+
+    // $('.timepicker').on('apply.daterangepicker', function (ev, picker) {
+    //     $(this).val(picker.startDate.format('hh:mm A'));
+    // });
+    // $('.timepicker').on('cancel.daterangepicker', function (ev, picker) {
+    //     $(this).val('');
+    // });
 
     $("#editDriverDetailsModal").modal('show');
 }
