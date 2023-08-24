@@ -338,12 +338,18 @@ class VehicleReqController extends Controller
         $rdate=$request->rdate;
         $frmt=$request->frmt;
         $tot=$request->tot;
-
-        $getVehicle=Vehicle::where(['VEHICLE_TYPE_ID'=>$type])->get();
+        $checked = $request->checked;
+        if($checked == 'true')
+        {
+            $getVehicle=Vehicle::where(['VEHICLE_TYPE_ID'=>$type])->get();
+        }else{
+            $getVehicle=[];
+        }
+        
         $html ='<option value="" selected="selected">Please Select Vehicle</option>';
         foreach($getVehicle as $val)
         {
-
+            $html.='<option value="'.$val->VEHICLE_ID.'" data-limit="'.$val->SEAT_CAPACITY.'">'.$val->VEHICLE_NAME.'</option>';
         }
         echo $html;
 

@@ -224,14 +224,17 @@
                                     placeholder="Tolerance Duration" id="tolerance">
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group row justify-content-end">
                             <label for="purpose" class="col-sm-5 col-form-label">Vehicle <i
                                     class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="vehicle" id="vehicle">
                                     <option value="" selected="selected">Please Select One</option>
-                                    
+
                                 </select>
+                            </div>
+                            <div class="col-sm-12 text-right mt-2">
+                                <span class="mt-2"><input type="checkbox" id="aloc_checkbox"> &nbsp;Add Allocated Vehicles</span>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -477,9 +480,9 @@
 </div>
 <!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/vehiclereq_requisition_list.js"></script> -->
 <style>
-    #dataTable{
-        width:100%!important;
-    }
+#dataTable {
+    width: 100% !important;
+}
 </style>
 <script>
 $(document).ready(function() {
@@ -488,7 +491,7 @@ $(document).ready(function() {
     $(document).on('click', '#btn-filter', function(e) {
         $('#dataTable').DataTable().ajax.reload(null, false);
     });
-    
+
     function getdata() {
 
         $("#dataTable").DataTable({
@@ -538,7 +541,7 @@ $(document).ready(function() {
 
         });
     }
-  
+
     $('body').on('click', '.driver-modal', function() {
         var val = $(this).data('driverid');
         var id = $(this).data('id');
@@ -790,24 +793,46 @@ $(document).ready(function() {
         });
     });
     $('body').on('change', '#vehicle_type', function() {
-        var type = $('#vehicle_type').val();
-        var rdate = $('#req_date').val();
-        var frmt = $('#time_fr').val();
-        var tot = $('#time_to').val();
-        $.ajax({
-            url: '{{route("get.vehicle.data")}}',
-            type: 'get',
-            dataType: 'html',
-            data: {
-                type: type,
-                rdate: rdate,
-                frmt: frmt,
-                tot: tot,
-            },
-            success: function(res) {
-              $('#vehicle').html(res);
-            }
-        });
+        getVehicle();
+    });
+    $('body').on('change', '#req_date', function() {
+        getVehicle();
+    });
+    $('body').on('change', '#vehicle_type', function() {
+        getVehicle();
+    });
+    $('body').on('change', '#vehicle_type', function() {
+        getVehicle();
+    });
+    $('body').on('click', '#aloc_checkbox', function() {
+        getVehicle();
+    });
+    function getVehicle(){
+       var chk = $('#aloc_checkbox').is(':checked'); 
+       var type = $('#vehicle_type').val();
+       var rdate = $('#req_date').val();
+       var frmt = $('#time_fr').val();
+       var tot = $('#time_to').val();
+       $.ajax({
+           url: '{{route("get.vehicle.data")}}',
+           type: 'get',
+           dataType: 'html',
+           data: {
+               type: type,
+               rdate: rdate,
+               frmt: frmt,
+               tot: tot,
+               checked:chk
+           },
+           success: function(res) {
+               $('#vehicle').html(res);
+           }
+       });
+    }
+    $('body').on('change', '#vehicle', function() {
+        var selectedOption = $(this).find('option:selected');
+        var newLimit = parseInt(selectedOption.attr('data-limit'));
+        $('#nunpassenger').attr('max', newLimit);
     });
     // Remove validations, errors and reset add vehicle type form on closing modal
     $("#add").on('hidden.bs.modal', function(ev) {
