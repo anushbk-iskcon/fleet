@@ -795,13 +795,13 @@ $(document).ready(function() {
     $('body').on('change', '#vehicle_type', function() {
         getVehicle();
     });
-    $('body').on('change', '#req_date', function() {
+    $('body').on('click', '#req_date', function() {
         getVehicle();
     });
-    $('body').on('change', '#vehicle_type', function() {
+    $('body').on('click', '#time_fr', function() {
         getVehicle();
     });
-    $('body').on('change', '#vehicle_type', function() {
+    $('body').on('click', '#time_to', function() {
         getVehicle();
     });
     $('body').on('click', '#aloc_checkbox', function() {

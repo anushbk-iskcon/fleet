@@ -343,6 +343,11 @@ class VehicleReqController extends Controller
         {
             $getVehicle=Vehicle::where(['VEHICLE_TYPE_ID'=>$type])->get();
         }else{
+            $allVehicleList=Vehicle::where(['VEHICLE_TYPE_ID'=>$type])->get();
+            $reqList=VehicleRequisition::where(['VEHICLE_TYPE_ID'=>$type])
+            ->whereDate('REQUISITION_DATE', '=', date('Y-m-d',strtotime($rdate)))
+            ->whereBetween('reservation_from', [$from, $to])
+            ->get();
             $getVehicle=[];
         }
         
