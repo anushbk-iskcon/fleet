@@ -234,6 +234,7 @@
                                 </select>
                             </div>
                             <div class="col-sm-12 text-right mt-2">
+                                <input type="hidden" name="checkValue" id="checkValue" value="0">
                                 <span class="mt-2"><input type="checkbox" id="aloc_checkbox"> &nbsp;Add Allocated Vehicles</span>
                             </div>
                         </div>
@@ -376,6 +377,20 @@
                                     placeholder="Tolerance Duration" id="tolerance2">
                             </div>
                         </div>
+                        <div class="form-group row justify-content-end">
+                            <label for="purpose" class="col-sm-5 col-form-label">Vehicle <i
+                                    class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <select class="form-control basic-single" required="" name="vehicle" id="vehicle2">
+                                    <option value="" selected="selected">Please Select One</option>
+
+                                </select>
+                            </div>
+                            <div class="col-sm-12 text-right mt-2">
+                                <input type="hidden" name="checkValue" id="checkValue2" value="0">
+                                <span class="mt-2"><input type="checkbox" id="aloc_checkbox2"> &nbsp;Add Allocated Vehicles</span>
+                            </div>
+                        </div>
                         <div class="form-group row">
                             <label for="nunpassenger" class="col-sm-5 col-form-label">No of Passenger <i
                                     class="text-danger">*</i></label>
@@ -507,7 +522,9 @@ $(document).ready(function() {
                     d.status = $('#status').val();
                 }
             },
-            columns: [{
+            order: [[0, 'desc']],
+            columns: [
+                {
                     data: 'VEHICLE_REQ_ID',
                     name: 'VEHICLE_REQ_ID',
                 },
@@ -681,7 +698,7 @@ $(document).ready(function() {
                         $('#form').find('input').val('');
                         $('#form').find('select').val('');
                         $('.basic-single').val('').trigger('change');
-
+                        $('#checkValue').val('0');
                         toastr.success(data.msg);
                         $('#add').modal('hide');
                         $('#dataTable').DataTable().ajax.reload(null, false);
@@ -778,7 +795,6 @@ $(document).ready(function() {
             success: function(res) {
                 $('#requsition_id').val(res.VEHICLE_REQ_ID);
                 $('#req_for2').val(res.REQUISITION_FOR).trigger('change');
-                $('#vehicle_type2').val(res.VEHICLE_TYPE_ID).trigger('change');
                 $('#where_fr2').val(res.WHERE_FROM);
                 $('#where_to2').val(res.WHERE_TO);
                 $('#pickup2').val(res.PICK_UP);
@@ -789,6 +805,16 @@ $(document).ready(function() {
                 $('#nunpassenger2').val(res.NUMBER_OF_PASSENGER);
                 $('#purpose2').val(res.REQUISITION_PURPOSE_ID).trigger('change');
                 $('#details2').val(res.DETAILS);
+                $('#checkValue2').val(res.IS_CHECK);
+                if(res.IS_CHECK == '1')
+                {
+                  $('#aloc_checkbox2').prop('checked',true);
+                }else{
+                  $('#aloc_checkbox2').prop('checked',false);
+                }
+                $('#vehicle_type2').val(res.VEHICLE_TYPE_ID).trigger('change');
+                $('#vehicle2').val(res.VEHICLE_ID).trigger('change');
+                $('#nunpassenger2').attr('max', res.max_num);
             }
         });
     });
@@ -805,7 +831,34 @@ $(document).ready(function() {
         getVehicle();
     });
     $('body').on('click', '#aloc_checkbox', function() {
+        if($('#aloc_checkbox').is(':checked') == true)
+        {
+            $('#checkValue').val('1');
+        }else{
+            $('#checkValue').val('0');
+        }
         getVehicle();
+    });
+    $('body').on('click', '#aloc_checkbox2', function() {
+        if($('#aloc_checkbox2').is(':checked') == true)
+        {
+            $('#checkValue2').val('1');
+        }else{
+            $('#checkValue2').val('0');
+        }
+        geteditVehicle();
+    });
+    $('body').on('change', '#vehicle_type2', function() {
+        geteditVehicle();
+    });
+    $('body').on('click', '#req_date2', function() {
+        geteditVehicle();
+    });
+    $('body').on('click', '#time_fr2', function() {
+        geteditVehicle();
+    });
+    $('body').on('click', '#time_to2', function() {
+        geteditVehicle();
     });
     function getVehicle(){
        var chk = $('#aloc_checkbox').is(':checked'); 
@@ -829,10 +882,39 @@ $(document).ready(function() {
            }
        });
     }
+    function geteditVehicle(){
+       var chk = $('#aloc_checkbox2').is(':checked'); 
+       var type = $('#vehicle_type2').val();
+       var rdate = $('#req_date2').val();
+       var frmt = $('#time_fr2').val();
+       var tot = $('#time_to2').val();
+       var id = $('#requsition_id').val();
+       $.ajax({
+           url: '{{route("get.editvehicle.data")}}',
+           type: 'get',
+           dataType: 'html',
+           data: {
+               type: type,
+               rdate: rdate,
+               frmt: frmt,
+               tot: tot,
+               id: id,
+               checked:chk
+           },
+           success: function(res) {
+               $('#vehicle2').html(res);
+           }
+       });
+    }
     $('body').on('change', '#vehicle', function() {
         var selectedOption = $(this).find('option:selected');
         var newLimit = parseInt(selectedOption.attr('data-limit'));
         $('#nunpassenger').attr('max', newLimit);
+    });
+    $('body').on('change', '#vehicle2', function() {
+        var selectedOption = $(this).find('option:selected');
+        var newLimit = parseInt(selectedOption.attr('data-limit'));
+        $('#nunpassenger2').attr('max', newLimit);
     });
     // Remove validations, errors and reset add vehicle type form on closing modal
     $("#add").on('hidden.bs.modal', function(ev) {

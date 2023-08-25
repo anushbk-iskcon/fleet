@@ -39,7 +39,7 @@ class VehicleReqController extends Controller
 
         if ($request->ajax()) {
 
-            $data=VehicleRequisition::orderBy('VEHICLE_REQ_ID','asc')->get();
+            $data=VehicleRequisition::orderBy('VEHICLE_REQ_ID','desc')->get();
     
             return Datatables::of($data)
     
@@ -77,7 +77,7 @@ class VehicleReqController extends Controller
                     }
                 })
                 ->addColumn('req_for', function($row){
-                   $req_for='Test Employee';   
+                   $req_for=getEmployeename($row['REQUISITION_FOR']);   
                    return $req_for;
     
                 })
@@ -114,21 +114,21 @@ class VehicleReqController extends Controller
                  })
                 ->addColumn('action', function($row){
                     $btn = '<a data-id="'.$row['VEHICLE_REQ_ID'].'" style="cursor:pointer;color:#fff;"  data-toggle="modal" data-target="#edit"
-                    class="btn btn-xs btn-success btn-sm mr-1 editModal" data-toggle="tooltip"
+                    class="btn btn-primary btn-sm mr-1 editModal" data-toggle="tooltip"
                     data-placement="left" title="Update"><i class="ti-pencil"></i></a>';
-                    // if($row['DRIVER_ID']){
-                    //     $btn.='<a data-driverid="'.$row['DRIVER_ID'].'" data-id="'.$row['VEHICLE_REQ_ID'].'" data-toggle="modal" data-target="#driverModal" style="cursor:pointer;color:#fff;"
-                    //     class="btn btn-xs btn-success btn-sm mr-1 driver-modal" data-toggle="tooltip"
-                    //     data-placement="left" title="Update"><i class="ti-user"></i></a>';
-                    // }else{
-                    //     $btn.='<a data-driverid="" data-id="'.$row['VEHICLE_REQ_ID'].'" data-toggle="modal" data-target="#driverModal" style="cursor:pointer;color:#fff;"
-                    //     class="btn btn-xs btn-danger btn-sm mr-1 driver-modal" data-toggle="tooltip"
-                    //     data-placement="left" title="Update"><i class="ti-user"></i></a>';
-                    // }
+                    if($row['DRIVER_ID']){
+                        $btn.='<a data-driverid="'.$row['DRIVER_ID'].'" data-id="'.$row['VEHICLE_REQ_ID'].'" data-toggle="modal" data-target="#driverModal" style="cursor:pointer;color:#fff;"
+                        class="btn btn-success btn-sm mr-1 driver-modal" data-toggle="tooltip"
+                        data-placement="left" title="Update"><i class="ti-user"></i></a>';
+                    }else{
+                        $btn.='<a data-driverid="" data-id="'.$row['VEHICLE_REQ_ID'].'" data-toggle="modal" data-target="#driverModal" style="cursor:pointer;color:#fff;"
+                        class="btn  btn-danger btn-sm mr-1 driver-modal" data-toggle="tooltip"
+                        data-placement="left" title="Update"><i class="ti-user"></i></a>';
+                    }
                     if($row['STATUS'] == 'P'){
                         $btn.='<div class="text-right" style="display:inline-block;">
                         <div class="actions" style="display:inline-block;">
-                        <div class="dropdown action-item" data-toggle="dropdown" aria-expanded="false">
+                        <div class="dropdown action-item" aria-expanded="false">
                         <a href="#" data-id="'.$row['VEHICLE_REQ_ID'].'" data-toggle="modal" data-target="#statusModal" class="action-item statusModal"><i class="ti-more-alt"></i></a>
                         </div>
                         </div>
@@ -136,12 +136,20 @@ class VehicleReqController extends Controller
                     
                     }elseif($row['STATUS'] == 'A'){
                         $btn.='<a data-id="'.$row['VEHICLE_REQ_ID'].'" style="cursor:pointer;color:#fff;"
-                        class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip"
+                        class="btn btn-success btn-sm mr-1" data-toggle="tooltip"
                         data-placement="left" title="Approved"><i class="ti-check"></i></a>';
+                        $btn.='<div class="text-right" style="display:inline-block;">
+                        <div class="actions" style="display:inline-block;">
+                        <div class="dropdown action-item" aria-expanded="false">
+                        <a href="#" data-id="'.$row['VEHICLE_REQ_ID'].'" data-toggle="modal" data-target="#statusModal" class="action-item statusModal"><i class="ti-more-alt"></i></a>
+                        </div>
+                        </div>
+                        </div>';
                     }else{
                         $btn.='<a data-id="'.$row['VEHICLE_REQ_ID'].'" style="cursor:pointer;color:#fff;"
-                        class="btn btn-xs btn-danger btn-sm mr-1" data-toggle="tooltip"
+                        class="btn btn-danger btn-sm mr-1" data-toggle="tooltip"
                         data-placement="left" title="Cancel"><i class="ti-close"></i></a>';
+                       
                     }
 
                     return $btn;
@@ -161,7 +169,7 @@ class VehicleReqController extends Controller
         DB::beginTransaction();
 
 		try{
-
+            $getVehicle = Vehicle::where(['VEHICLE_ID'=>$request->vehicle])->first();
     	    $dataInsert = VehicleRequisition::create([
                 'REQUISITION_FOR'=>$request->req_for,
                 'VEHICLE_TYPE_ID'=>$request->vehicle_type,
@@ -176,6 +184,9 @@ class VehicleReqController extends Controller
                 'REQUISITION_PURPOSE_ID'=>$request->purpose,
                 'DETAILS'=>$request->details,
                 'STATUS'=>'P',
+                'DRIVER_ID'=>($getVehicle->DRIVER_ID) ? $getVehicle->DRIVER_ID : '',
+                'VEHICLE_ID'=>$request->vehicle,
+                'IS_CHECK'=>$request->checkValue,
                 'CREATED_ON'=>date('Y-m-d H:i:s'),
                 'CREATED_BY'=>Auth::id(),
               
@@ -228,6 +239,9 @@ class VehicleReqController extends Controller
                 'NUMBER_OF_PASSENGER'=>$request->nunpassenger,
                 'REQUISITION_PURPOSE_ID'=>$request->purpose,
                 'DETAILS'=>$request->details,
+                'DRIVER_ID'=>($getVehicle->DRIVER_ID) ? $getVehicle->DRIVER_ID : '',
+                'VEHICLE_ID'=>$request->vehicle,
+                'IS_CHECK'=>$request->checkValue,
                 'MODIFIED_ON'=>date('Y-m-d H:i:s'),
                 'MODIFIED_BY'=>Auth::id(),
             ]);
@@ -262,6 +276,41 @@ class VehicleReqController extends Controller
     public function getData(Request $request)
     {
         $data=VehicleRequisition::where(['VEHICLE_REQ_ID'=>$request->req_id])->first();
+        // $type=($data->VEHICLE_TYPE_ID) ? $data->VEHICLE_TYPE_ID : '';
+        // $rdate=($data->REQUISITION_DATE) ? $data->REQUISITION_DATE : '';
+        // $frmt=($data->TIME_FROM) ? $data->TIME_FROM : '';
+        // $tot=($data->TIME_TO) ? $data->TIME_TO : '';
+        // $checked = ($data->IS_CHECK=='1') ? 'true' : 'false';
+        // if($checked == 'true')
+        // {
+        //     $getVehicle=Vehicle::where(['VEHICLE_TYPE_ID'=>$type])->get();
+        // }else{
+        //     $existingVehicleIds = VehicleRequisition::where('VEHICLE_TYPE_ID', $type)
+        //     ->when($rdate, function ($query, $rdate) {
+        //         $query->where('REQUISITION_DATE', date('Y-m-d', strtotime($rdate)));
+        //     })
+        //     ->when($frmt, function ($query, $frmt) {
+        //         $query->where(function ($subQuery) use ($frmt) {
+        //             $subQuery->whereTime('TIME_FROM', '>=', $frmt);
+        //         });
+        //     })
+        //     ->when($tot, function ($query, $tot) {
+        //         $query->orWhere(function ($subQuery) use ($tot) {
+        //             $subQuery->whereTime('TIME_TO', '<=', $tot);
+        //         });
+        //     })
+
+        //     ->where('STATUS','!=','R')
+        //     ->pluck('VEHICLE_ID')
+        //     ->toArray();
+        //     $getVehicle = Vehicle::where('VEHICLE_TYPE_ID', $type)
+        //         ->whereNotIn('VEHICLE_ID', $existingVehicleIds)
+        //         ->get();
+        //     }
+        // $data['vehicle_lis'] = $getVehicle;
+        $getVehicle = Vehicle::where('VEHICLE_ID', $data->VEHICLE_ID)
+        ->first();
+        $data['max_num'] = $getVehicle->SEAT_CAPACITY;
         return json_encode($data);
     }
     public function addDriver(Request $request)
@@ -334,23 +383,85 @@ class VehicleReqController extends Controller
     }
     public function getVehicleData(Request $request)
     {
-        $type=$request->type;
-        $rdate=$request->rdate;
-        $frmt=$request->frmt;
-        $tot=$request->tot;
+        $type=($request->type) ? $request->type : '';
+        $rdate=($request->rdate) ? $request->rdate : '';
+        $frmt=($request->frmt) ? $request->frmt : '';
+        $tot=($request->tot) ? $request->tot : '';
         $checked = $request->checked;
         if($checked == 'true')
         {
             $getVehicle=Vehicle::where(['VEHICLE_TYPE_ID'=>$type])->get();
         }else{
-            $allVehicleList=Vehicle::where(['VEHICLE_TYPE_ID'=>$type])->get();
-            $reqList=VehicleRequisition::where(['VEHICLE_TYPE_ID'=>$type])
-            ->whereDate('REQUISITION_DATE', '=', date('Y-m-d',strtotime($rdate)))
-            ->whereBetween('reservation_from', [$from, $to])
-            ->get();
-            $getVehicle=[];
-        }
+            $existingVehicleIds = VehicleRequisition::where('VEHICLE_TYPE_ID', $type)
+            ->when($rdate, function ($query, $rdate) {
+                $query->where('REQUISITION_DATE', date('Y-m-d', strtotime($rdate)));
+            })
+            ->when($frmt, function ($query, $frmt) {
+                $query->where(function ($subQuery) use ($frmt) {
+                    $subQuery->whereTime('TIME_FROM', '>=', $frmt);
+                });
+            })
+            ->when($tot, function ($query, $tot) {
+                $query->orWhere(function ($subQuery) use ($tot) {
+                    $subQuery->whereTime('TIME_TO', '<=', $tot);
+                });
+            })
+
+            ->where('STATUS','!=','R')
+            ->pluck('VEHICLE_ID')
+            ->toArray();
+            $getVehicle = Vehicle::where('VEHICLE_TYPE_ID', $type)
+                ->whereNotIn('VEHICLE_ID', $existingVehicleIds)
+                ->get();
+            }
         
+        $html ='<option value="" selected="selected">Please Select Vehicle</option>';
+        foreach($getVehicle as $val)
+        {
+            $html.='<option value="'.$val->VEHICLE_ID.'" data-limit="'.$val->SEAT_CAPACITY.'">'.$val->VEHICLE_NAME.'</option>';
+        }
+        echo $html;
+
+    }
+    public function getEditVehicleData(Request $request)
+    {
+        DB::enableQueryLog();
+        $type=($request->type) ? $request->type : '';
+        $rdate=($request->rdate) ? $request->rdate : '';
+        $frmt=($request->frmt) ? $request->frmt : '';
+        $tot=($request->tot) ? $request->tot : '';
+        $checked = $request->checked;
+        if($checked == 'true')
+        {
+            $getVehicle=Vehicle::where(['VEHICLE_TYPE_ID'=>$type])->get();
+        }else{
+            $existingVehicleIds = VehicleRequisition::where('VEHICLE_TYPE_ID', $type)
+            ->when($rdate, function ($query, $rdate) {
+                $query->where('REQUISITION_DATE', date('Y-m-d', strtotime($rdate)));
+            })
+            ->when($frmt, function ($query, $frmt) {
+                $query->where(function ($subQuery) use ($frmt) {
+                    $subQuery->whereTime('TIME_FROM', '>=', $frmt);
+                });
+            })
+            ->when($tot, function ($query, $tot) {
+                $query->orWhere(function ($subQuery) use ($tot) {
+                    $subQuery->whereTime('TIME_TO', '<=', $tot);
+                });
+            })
+
+            ->whereIn('VEHICLE_REQ_ID',[$request->id])
+            ->where('STATUS','!=','R')
+            ->pluck('VEHICLE_ID')
+            ->toArray();
+            // print_r(DB::getQueryLog());
+            // print_r($existingVehicleIds);
+            // exit;
+            $getVehicle = Vehicle::where('VEHICLE_TYPE_ID', $type)
+                ->whereNotIn('VEHICLE_ID', $existingVehicleIds)
+                ->get();
+            }
+       
         $html ='<option value="" selected="selected">Please Select Vehicle</option>';
         foreach($getVehicle as $val)
         {

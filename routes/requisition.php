@@ -41,5 +41,6 @@
         Route::post('edit-requisition', [VehicleReqController::class, 'editRequisition'])->name('edit_requisition');
         Route::get('get-data', [VehicleReqController::class, 'getData'])->name('get.req.data');
         Route::get('get-vehicle-list', [VehicleReqController::class, 'getVehicleData'])->name('get.vehicle.data');
+        Route::get('get-edit-vehicle-list', [VehicleReqController::class, 'getEditVehicleData'])->name('get.editvehicle.data');
     });
 ?>

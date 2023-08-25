@@ -7,6 +7,8 @@ use App\Models\Role;
 use App\Models\UserRoles;
 use App\Models\Rolepermissions;
 use App\Models\Permissions;
+use App\Models\HrApi;
+use GuzzleHttp\Client;
 
 if (!function_exists('getMenuPermission')) {
 
@@ -58,6 +60,29 @@ if (!function_exists('getuserMenu')) {
     }
 }
 
+if (!function_exists('getEmployeename')) {
+
+    function getEmployeename($id)
+    {
+        $accessKey = '729!#kc@nHKRKkbngsppnsg@491';
+        $apiBaseURl = 'https://hr.iskconbangalore.net/v1/api';
+        $client = new Client();
+        // Get Employee Names by Department
+        $url = $apiBaseURl . '/admin/view-employee-detail';
+        $request = $client->post($url, [
+            'json' => [
+                'accessKey' => $accessKey,
+                'employeeId' => $id
+            ],
+            'http_errors' => false
+        ]);
+
+        $response = $request->getBody();
+        $responseData = json_decode($response, true);
+        return ($responseData['data']) ? $responseData['data'][0]['employeeName'] : '';
+
+    }
+}
 
 
 if (!function_exists('getErrors')) {
