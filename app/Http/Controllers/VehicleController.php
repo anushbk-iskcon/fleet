@@ -21,10 +21,13 @@ class VehicleController extends Controller
     {
         $hrApi = new HrApi;
         $departments = $hrApi->getDepartments();
+        $trusts = $hrApi->getTrusts();
         $deptData = $departments['data'];
+        $trustData = $trusts['data'];
 
         return view('vehicle.vehicle-list')
             ->with('departments', $deptData)
+            ->with('trusts', $trustData)
             ->withOwnerships(Ownership::get())
             ->withVehicleTypes(VehicleType::get())
             ->withDivisions(VehicleDivision::get())
@@ -101,7 +104,7 @@ class VehicleController extends Controller
         $vehicle->VEHICLE_NAME = $request->vehicle_name;
         $vehicle->VEHICLE_TYPE_ID = $request->vehicle_type;
         $vehicle->DEPARTMENT_ID = $request->department;
-        # Add Dept Name form Request below:
+        # Add Dept Name from Request below:
 
         $vehicle->VEHICLE_DIVISION_ID = $request->vehicle_division;
         $vehicle->REGISTRATION_DATE = $request->registration_date;

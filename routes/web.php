@@ -139,7 +139,6 @@ Route::middleware('auth')->group(function () {
     /*** END Vehicle Management Routes ***/
 
     /*** START Vehicle Requisition Routes ***/
-
     Route::get('vehicle-requisition/routes', function () {
         return view('vehicle-req.vehicle-routes');
     })->name('vehicle-routes');

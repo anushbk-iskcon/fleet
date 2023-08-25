@@ -137,6 +137,39 @@ $(document).ready(function () {
         $("#add_driver_form input[name='picture']").removeClass('error');
     });
 
+    // Enable timepickers on showing modal
+    $("#add0").on('shown.bs.modal', function () {
+        $("#add_driver_form .time-picker").daterangepicker({
+            singleDatePicker: true,
+            timePicker: true,
+            timePicker24Hour: false,
+            autoUpdateInput: false,
+            timePickerIncrement: 15,
+            "locale": {
+                "format": "hh:mm A"
+            }
+        }).on('show.daterangepicker', function (ev, picker) {
+            picker.container.find(".calendar-table").hide();
+            picker.container.find('.calendar-time').css('margin-right', '15px')
+        });
+
+        $("#add_driver_form .time-picker").on('apply.daterangepicker', function (ev, picker) {
+            $(this).val(picker.startDate.format('hh:mm A'));
+        });
+
+        $("#add_driver_form .time-picker").on('cancel.daterangepicker', function (ev, picker) {
+            $(this).val('');
+        });
+    });
+
+    // $("#add_driver_form .time-picker").on('apply.daterangepicker', function (ev, picker) {
+    //     $(this).val(picker.startDate.format('hh:mm A'));
+    // });
+
+    // $("#add_driver_form .time-picker").on('cancel.daterangepicker', function (ev, picker) {
+    //     $(this).val('');
+    // });
+
 });
 
 function loadFile(ev) {
@@ -305,6 +338,7 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
         singleDatePicker: true,
         timePicker: true,
         timePicker24Hour: false,
+        timePickerIncrement: 15,
         "locale": {
             "format": "hh:mm A"
         }

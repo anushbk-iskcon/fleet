@@ -11,12 +11,31 @@ class HrApi extends Model
     use HasFactory;
 
     private $accessKey;
-    private $apiBaseURl;
+    private $apiBaseURL;
 
     public function __construct()
     {
         $this->accessKey = '729!#kc@nHKRKkbngsppnsg@491';
-        $this->apiBaseURl = 'https://hr.iskconbangalore.net/v1/api';
+        $this->apiBaseURL = 'https://hr.iskconbangalore.net/v1/api';
+    }
+
+    /**
+     * Get Trust List
+     */
+    public function getTrusts()
+    {
+        $client = new Client();
+        // Get list of all trusts
+        $url = $this->apiBaseURL . '/admin/get-trust-list';
+        $request = $client->post($url, [
+            'json' => [
+                'accessKey' => $this->accessKey
+            ],
+            'http_errors' => false
+        ]);
+        $response = $request->getBody();
+        $responseData = json_decode($response, true);
+        return $responseData;
     }
 
     /**
@@ -26,7 +45,7 @@ class HrApi extends Model
     {
         $client = new Client();
         // Get List of All Departments
-        $url = $this->apiBaseURl . '/admin/get-dept-list';
+        $url = $this->apiBaseURL . '/admin/get-dept-list';
         $request = $client->post($url, [
             'json' => [
                 'accessKey' => $this->accessKey
@@ -47,7 +66,7 @@ class HrApi extends Model
 
         $client = new Client();
         // Get Employee Names by Department
-        $url = $this->apiBaseURl . '/admin/get-employee-info';
+        $url = $this->apiBaseURL . '/admin/get-employee-info';
         $request = $client->post($url, [
             'json' => [
                 'accessKey' => $this->accessKey,

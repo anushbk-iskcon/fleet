@@ -52,11 +52,11 @@
                         <div class="form-group row">
                             <label for="timeslot" required="" class="col-sm-5 col-form-label">Working Time Slot <i class="text-danger">*</i></label>
                             <div class="col-sm-3 pr-0">
-                                <input name="timeslot_start" required="" class="form-control timepicker" type="text" placeholder="09:00 AM" id="timeslotStart" value="" autocomplete="off">
+                                <input name="timeslot_start" required="" class="form-control time-picker" type="text" placeholder="09:00 AM" id="timeslotStart" value="" autocomplete="off">
                             </div>
                             <div class="col-sm-1"><sub>&ndash;</sub></div>
                             <div class="col-sm-3 pl-0">
-                                <input name="timeslot_end" required="" class="form-control timepicker" type="text" placeholder="05:00 PM" id="timeslotEnd" value="" autocomplete="off">
+                                <input name="timeslot_end" required="" class="form-control time-picker" type="text" placeholder="05:00 PM" id="timeslotEnd" value="" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -95,8 +95,6 @@
                                     @foreach($licenseTypes as $licenseType)
                                     <option value="{{$licenseType->LICENSE_ID}}">{{$licenseType->LICENSE_NAME}}</option>
                                     @endforeach
-                                    <!-- <option value="1">LMV</option>
-                                    <option value="2">HMV</option> -->
                                 </select>
                             </div>
                         </div>
@@ -273,21 +271,6 @@
                                 </td>
                             </tr>
                             @endforeach
-
-                            <!-- <tr role="row" class="odd">
-                                <td>1</td>
-                                <td>aman - Shah Latif Express</td>
-                                <td>03097894562</td>
-                                <td>29853908634</td>
-                                <td>2147483647</td>
-                                <td>9:00AM - 5:00PM</td>
-                                <td>Active</td>
-                                <td><input name="url" type="hidden" id="url_2" value="https://vmsdemo.bdtask-demo.com/empmgt/Driver_controller/updateintfrm">
-                                    <a onclick="editinfo('2')" class="btn btn-xs btn-success btn-sm mr-1" style="cursor:pointer;color:#fff;" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/empmgt/Driver_controller/delete_driver/2" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr> -->
-
-
                         </tbody>
 
                     </table> <!-- /.table-responsive -->

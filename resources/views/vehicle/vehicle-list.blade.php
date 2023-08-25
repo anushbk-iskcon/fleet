@@ -305,8 +305,53 @@
         </div>
 
     </div>
+</div> <!-- End modal for editing vehcile details-->
 
+<!-- Modal for assigning driver the selected vehicle -->
+<div id="assignVehicleToDriverModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>Assign Driver</strong>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form action="" id="assignVehicleToDriverForm" class="row" method="post" accept-charset="utf-8">
+                    @csrf
+                    <input type="hidden" name="vehicle_id" id="driverAllocationVehicleId" value="">
+                    <div class="col-md-12 col-lg-10">
+                        <div class="form-group row">
+                            <label for="driverAssignedVehicle" class="col-sm-12 col-lg-4 col-form-label">Vehicle <i class="text-danger">*</i></label>
+                            <div class="col-sm-12 col-lg-8">
+                                <input class="form-control" id="driverAssignedVehicle" type="text" name="" value="Test Cab" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-10">
+                        <div class="form-group row">
+                            <label for="vehicleDriver" class="col-sm-12 col-lg-4 col-form-label">Driver <i class="text-danger">*</i></label>
+                            <div class="col-sm-12 col-lg-8">
+                                <select name="vehicle_driver" id="vehicleDriver" class="form-control basic-single">
+                                    <option value="" selected>Please Select</option>
+                                    @foreach($drivers as $driver)
+                                    <option value="{{$driver['DRIVER_ID']}}">{{$driver['DRIVER_NAME']}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group text-right">
+                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="submit" class="btn btn-success w-md m-b-5">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
 <div class="row">
     <div class="col-sm-12">
         <div class="card mb-3">
@@ -646,6 +691,11 @@
                         buttons += '<button class="btn btn-sm btn-danger mr-1" data-id="' + data.VEHICLE_ID + '" onclick="updateStatus(this)" title="Deactivate"><i class="ti-close"></i></button>';
                     else
                         buttons += '<button class="btn btn-sm btn-success mr-1" data-id="' + data.VEHICLE_ID + '" onclick="updateStatus(this)" title="Activate"><i class="ti-reload"></i></button>';
+
+                    if (data.DRIVER_ID == 0)
+                        buttons += '<button class="btn btn-sm btn-success mr-1" data-id="' + data.VEHICLE_ID + '" onclick="assignToDriver(this)" title="Assign to Driver"><i class="fas fa-user-plus"></i></button>';
+                    else
+                        buttons += '<button class="btn btn-sm btn-danger mr-1" data-id="' + data.VEHICLE_ID + '" onclick="assignToDriver(this)" title="Assign to Driver"><i class="fas fa-user-plus"></i></button>';
                     table.row.add(
                         [i + 1,
                             data.VEHICLE_NAME,
@@ -715,6 +765,15 @@
         $("#edit").modal('show');
     }
 
+    function assignToDriver(el) {
+        $("#driverAllocationVehicleId").val($(el).data('id'));
+        $("#assignVehicleToDriverModal").modal('show');
+    }
+
+    function allocateVehicle(el) {
+
+    }
+
     function updateStatus(el) {
         let vehicleId = $(el).attr('data-id');
 
@@ -723,7 +782,6 @@
             onclick: function(toast) {
                 value = toast.target.value
                 if (value == 'yes') {
-
                     var url = "{{ route('vehicle.status-update') }}";
 
                     $.ajax({
