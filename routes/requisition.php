@@ -30,6 +30,7 @@
     use App\Http\Controllers\RefuelRequisitionController;
     use App\Http\Controllers\RefuelSettingController;
     use App\Http\Controllers\VehicleReqController;
+    use App\Http\Controllers\ReportController;
     use App\Models\Role;
     use Illuminate\Support\Facades\Route;
 
@@ -44,6 +45,25 @@
         Route::get('get-edit-vehicle-list', [VehicleReqController::class, 'getEditVehicleData'])->name('get.editvehicle.data');
 
         // ///////////Approval List///////////
-        Route::get('vehicle-requisition/approval-authorities', [VehicleReqController::class, 'approvalList'])->name('approval.authority');
+    
+        Route::get('vehicle-requisition/approval-authorities', [VehicleReqController::class, 'approvalAuthorities'])
+            ->name('vehicle-req-approval-auth');
+        // Get list of all maintenance appoval authorities
+        Route::post('vehicle-requisition/approval-authorities', [VehicleReqController::class, 'approvalAuthorities'])
+            ->name('vehicle-req-approval-auth.list');
+        // Load Employee Names to Approval Authority Form
+        Route::post('vehicle-requisition/approval-authorities/get-employees', [VehicleReqController::class, 'getEmployeeData'])
+            ->name('vehicle-req-approval-auth.get-employees');
+        // Add Maintenance Approval Authority to DB
+        Route::post('vehicle-requisition/approval-authorities/add', [VehicleReqController::class, 'addApprovalAuthority'])
+            ->name('vehicle-req-approval-auth.add');
+        // Update Maintenance Approval Authority details in DB
+        Route::post('vehicle-requisition/approval-authorities/update', [VehicleReqController::class, 'updateApprovalAuthority'])
+            ->name('vehicle-req-approval-auth.update');
+        // Activate/de-activate Maintenance approval Authority
+        Route::post('vehicle-requisition/approval-authorities/change-activation', [VehicleReqController::class, 'changeActivationOfApprovalAuthority'])
+            ->name('vehicle-req-approval-auth.change-activation');
+        
+        Route::get('reports/generate-pdf', [ReportController::class, 'generatePDF'])->name('generate.pdf');
     });
 ?>

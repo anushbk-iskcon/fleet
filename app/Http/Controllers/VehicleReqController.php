@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\VehicleRequisition;
 use App\Models\RequisitionPurpose;
+use App\Models\RequisitionType;
+use App\Models\Phase;
+use App\Models\ApprovalAuthority;
 use DataTables;
 use Str;
 use App\Models\User;
@@ -164,145 +167,6 @@ class VehicleReqController extends Controller
         }
         return view('vehicle-req.vehicle-requisition',compact('driver','vehicle_type','purpose','empData'));
     }
-    // ////Approval List////////////////////
-    public function approvalList(Request $request)
-    {
-        $emp='';
-        $driver=Driver::where(['IS_ACTIVE'=>'Y'])->get();
-        $vehicle_type=VehicleType::where(['IS_ACTIVE'=>'Y'])->get();
-        $purpose=RequisitionPurpose::where(['IS_ACTIVE'=>'Y'])->get();
-        $hrApi = new HrApi;
-        $employee = $hrApi->getEmployeeList($emp);
-        $empData = $employee['data'];
-
-
-        if ($request->ajax()) {
-
-            $data=VehicleRequisition::orderBy('VEHICLE_REQ_ID','desc')->get();
-    
-            return Datatables::of($data)
-    
-                ->addIndexColumn()
-    
-                ->filter(function ($instance) use ($request) {
-                    if (!empty($request->get('req_forsr'))) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['REQUISITION_FOR'], $request->get('req_forsr')) ? true : false;
-                        });
-                    }
-                    if (!empty($request->get('vehicle_typesr'))) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['VEHICLE_TYPE_ID'], $request->get('vehicle_typesr')) ? true : false;
-                        });
-                    }
-                    if (!empty($request->get('from'))) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        $requestedDate = $request->get('from');
-                        $rowDate = $row['TIME_FROM'];
-                           return strtotime($rowDate) >= strtotime($requestedDate);
-                        });
-                    }
-                    if (!empty($request->get('to'))) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        $requestedDate = $request->get('to');
-                        $rowDate = $row['TIME_TO'];
-                           return strtotime($rowDate) <= strtotime($requestedDate);
-                        });
-                    }
-                    if (!empty($request->get('status'))) {
-                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                            return Str::contains($row['STATUS'], $request->get('status')) ? true : false;
-                        });
-                    }
-                })
-                ->addColumn('req_for', function($row){
-                   $req_for=getEmployeename($row['REQUISITION_FOR']);   
-                   return $req_for;
-    
-                })
-                ->addColumn('req_date', function($row){
-                    $req_for=date('j-F-Y',strtotime($row['REQUISITION_DATE']));   
-                    return $req_for;
-     
-                 })
-                 ->addColumn('driver', function($row){
-                    if($row['DRIVER_ID']){
-                        $drv=Driver::where(['DRIVER_ID'=>$row['DRIVER_ID']])->first();
-                        $driver = ($drv) ? $drv->DRIVER_NAME : '';
-                    }else{
-                        $driver = 'NULL';
-                    }  
-                    return $driver;
-     
-                 })
-                 ->addColumn('create_by', function($row){
-                    $crt_by = User::where(['USER_ID'=>$row['CREATED_BY']])->first();
-                    return ($crt_by) ? $crt_by->FIRST_NAME." ".$crt_by->LAST_NAME : '';
-     
-                 })
-                 ->addColumn('status', function($row){
-                    if($row['STATUS'] == 'P'){
-                        $status = 'Pending';
-                    }elseif($row['STATUS'] == 'A'){
-                        $status = 'Approved';
-                    }else{
-                        $status = 'Cancel';
-                    }  
-                    return $status;
-     
-                 })
-                ->addColumn('action', function($row){
-                    $btn = '<a data-id="'.$row['VEHICLE_REQ_ID'].'" style="cursor:pointer;color:#fff;"  data-toggle="modal" data-target="#edit"
-                    class="btn btn-primary btn-sm mr-1 editModal" data-toggle="tooltip"
-                    data-placement="left" title="Update"><i class="ti-pencil"></i></a>';
-                    if($row['DRIVER_ID']){
-                        $btn.='<a data-driverid="'.$row['DRIVER_ID'].'" data-id="'.$row['VEHICLE_REQ_ID'].'" data-toggle="modal" data-target="#driverModal" style="cursor:pointer;color:#fff;"
-                        class="btn btn-success btn-sm mr-1 driver-modal" data-toggle="tooltip"
-                        data-placement="left" title="Update"><i class="ti-user"></i></a>';
-                    }else{
-                        $btn.='<a data-driverid="" data-id="'.$row['VEHICLE_REQ_ID'].'" data-toggle="modal" data-target="#driverModal" style="cursor:pointer;color:#fff;"
-                        class="btn  btn-danger btn-sm mr-1 driver-modal" data-toggle="tooltip"
-                        data-placement="left" title="Update"><i class="ti-user"></i></a>';
-                    }
-                    if($row['STATUS'] == 'P'){
-                        $btn.='<div class="text-right" style="display:inline-block;">
-                        <div class="actions" style="display:inline-block;">
-                        <div class="dropdown action-item" aria-expanded="false">
-                        <a href="#" data-id="'.$row['VEHICLE_REQ_ID'].'" data-toggle="modal" data-target="#statusModal" class="action-item statusModal"><i class="ti-more-alt"></i></a>
-                        </div>
-                        </div>
-                        </div>';
-                    
-                    }elseif($row['STATUS'] == 'A'){
-                        $btn.='<a data-id="'.$row['VEHICLE_REQ_ID'].'" style="cursor:pointer;color:#fff;"
-                        class="btn btn-success btn-sm mr-1" data-toggle="tooltip"
-                        data-placement="left" title="Approved"><i class="ti-check"></i></a>';
-                        $btn.='<div class="text-right" style="display:inline-block;">
-                        <div class="actions" style="display:inline-block;">
-                        <div class="dropdown action-item" aria-expanded="false">
-                        <a href="#" data-id="'.$row['VEHICLE_REQ_ID'].'" data-toggle="modal" data-target="#statusModal" class="action-item statusModal"><i class="ti-more-alt"></i></a>
-                        </div>
-                        </div>
-                        </div>';
-                    }else{
-                        $btn.='<a data-id="'.$row['VEHICLE_REQ_ID'].'" style="cursor:pointer;color:#fff;"
-                        class="btn btn-danger btn-sm mr-1" data-toggle="tooltip"
-                        data-placement="left" title="Cancel"><i class="ti-close"></i></a>';
-                       
-                    }
-
-                    return $btn;
-    
-                })
-    
-                ->rawColumns(['action','req_for','req_date','driver','create_by','status'])
-    
-                ->make(true);
-    
-        }
-        return view('vehicle-req.vehicle-requisition',compact('driver','vehicle_type','purpose','empData'));
-    }
-    // //////////////////////////
     public function addRequisition(Request $request)
     {
 
@@ -531,7 +395,7 @@ class VehicleReqController extends Controller
         $checked = $request->checked;
         if($checked == 'true')
         {
-            $getVehicle=Vehicle::where(['VEHICLE_TYPE_ID'=>$type])->get();
+            $getVehicle=Vehicle::where(['VEHICLE_TYPE_ID'=>$type,'IS_ACTIVE'=>'Y'])->get();
         }else{
             $existingVehicleIds = VehicleRequisition::where('VEHICLE_TYPE_ID', $type)
             ->when($rdate, function ($query, $rdate) {
@@ -552,6 +416,7 @@ class VehicleReqController extends Controller
             ->pluck('VEHICLE_ID')
             ->toArray();
             $getVehicle = Vehicle::where('VEHICLE_TYPE_ID', $type)
+                ->where(['IS_ACTIVE'=>'Y'])
                 ->whereNotIn('VEHICLE_ID', $existingVehicleIds)
                 ->get();
             }
@@ -605,5 +470,142 @@ class VehicleReqController extends Controller
         }
         echo $html;
 
+    }
+
+    // ///////////Approval List/////////////////
+    public function approvalAuthorities(Request $request)
+    {
+        if (request()->isMethod('post')) {
+            // Return JSON list of all approval authorities
+            $filter_dept = $request->dept_sr;
+            $filter_status = $request->req_phasesr;
+            $req_typesr = 1; // For Maintenance Requisition
+
+            $approvalAuthData = DB::table('mstr_approval_authorities')
+                ->join('mstr_requisition_types', 'mstr_approval_authorities.REQUISITION_TYPE', '=', 'mstr_requisition_types.REQUISITION_TYPE_ID')
+                ->join('mstr_phases', 'mstr_approval_authorities.REQUISITION_PHASE', '=', 'mstr_phases.PHASE_ID')
+                ->select(
+                    'mstr_approval_authorities.*',
+                    'mstr_requisition_types.REQUISITION_TYPE_NAME as REQ_TYPE_NAME',
+                    'mstr_phases.PHASE_NAME as PHASE_NAME'
+                )
+                ->where('REQUISITION_TYPE', $req_typesr)
+                ->when($filter_dept, function ($query, $filter_dept) {
+                    return $query->where('DEPARTMENT_CODE', '=', $filter_dept);
+                })
+                ->when($filter_status, function ($query, $filter_status) {
+                    return $query->where('REQUISITION_PHASE', '=', $filter_status);
+                })
+                ->get();
+
+            return $approvalAuthData->toJson();
+        } else {
+            $reqTypes = RequisitionType::where('IS_ACTIVE', 'Y')->get();
+            $phases = Phase::where('IS_ACTIVE', 'Y')->get();
+
+            // To get departments and employees
+            $hrApi = new HrApi;
+            $departments = $hrApi->getDepartments();
+            $employees = $hrApi->getEmployeeList(""); //Dept "" to get all employees
+
+            return view('vehicle-req.approval-authorities', compact('reqTypes', 'departments', 'employees', 'phases'));
+        }
+    }
+
+    /**
+     * Load Employees to Add/Edit Approval Authority when department is selected/changed
+     */
+    public function getEmployeeData(Request $request)
+    {
+        $dept = $request->department;
+
+        if ($dept == "" || $dept == null)
+            return;
+        $deptArray = explode('|', $dept); # Since option values are in form: deptCode|deptName
+        // dd($deptArray);
+        $data = new stdClass;
+        $data->department = $deptArray[1]; # Send deptName to API method to get employee list
+        $hrApi = new HrApi;
+
+        $employeeData = $hrApi->getEmployeeList($data);
+        return $employeeData;
+    }
+    public function addApprovalAuthority(Request $request)
+    {
+        $maintenReqApprovalAuthority = new ApprovalAuthority;
+
+        // To get Dept and Employee Details which are in form id|value
+        // e.g. Dept option value is in format deptCode|deptName to enable storing both details in DB
+        $deptString = $request->department;
+        $employeeString = $request->employee;
+        $deptData = explode('|', $deptString);
+        $deptCode = $deptData[0];
+        $deptName = $deptData[1];
+        $employeeData = explode('|', $employeeString);
+        $employeeId = $employeeData[0];
+        $employeeName = $employeeData[1];
+
+        // Add Details
+        $maintenReqApprovalAuthority->REQUISITION_TYPE = $request->req_type;
+        $maintenReqApprovalAuthority->REQUISITION_PHASE = $request->phase;
+        $maintenReqApprovalAuthority->DEPARTMENT_CODE = $deptCode;
+        $maintenReqApprovalAuthority->DEPARTMENT_NAME = $deptName;
+        $maintenReqApprovalAuthority->EMPLOYEE_ID = $employeeId;
+        $maintenReqApprovalAuthority->EMPLOYEE_NAME = $employeeName;
+        $maintenReqApprovalAuthority->CREATED_BY = Auth::id();
+        $added = $maintenReqApprovalAuthority->save();
+
+        if ($added) {
+            return response()->json(['successCode' => 1, 'message' => 'Approval authority successfully added']);
+        } else {
+            return response()->json(['successCode' => 0, 'message' => 'Could not add approval authority']);
+        }
+    }
+
+    /**
+     * Update Maintenance Approval Authority Details
+     */
+    public function updateApprovalAuthority(Request $request)
+    {
+        $authority_id = $request->auth_id;
+        $maintenReqApprovalAuthority = ApprovalAuthority::find($authority_id);
+        $maintenReqApprovalAuthority->REQUISITION_PHASE = $request->phase;
+
+        $deptString = $request->department;
+        $deptData = explode('|', $deptString);
+        $deptCode = $deptData[0];
+        $deptName = $deptData[1];
+
+        # Employee (approver) is not currently changeable
+
+        $maintenReqApprovalAuthority->DEPARTMENT_CODE = $deptCode;
+        $maintenReqApprovalAuthority->DEPARTMENT_NAME = $deptName;
+        $maintenReqApprovalAuthority->MODIFIED_BY = Auth::id();
+        $updated = $maintenReqApprovalAuthority->save();
+        if ($updated) {
+            return response()->json(['successCode' => 1, 'message' => 'Approval authority successfully updated']);
+        } else {
+            return response()->json(['successCode' => 0, 'message' => 'Failed to update approval authority']);
+        }
+    }
+
+    /**
+     * Activate / De-activate Approval Authority
+     */
+    public function changeActivationOfApprovalAuthority(Request $request)
+    {
+        $authority_id = $request->req_auth_id;
+        $status = $request->req_status == 1 ? 'Y' : 'N';
+
+        $maintenReqApprovalAuthority = ApprovalAuthority::find($authority_id);
+        $maintenReqApprovalAuthority->IS_ACTIVE = $status;
+        $maintenReqApprovalAuthority->MODIFIED_BY = Auth::id();
+        $activationUpdated = $maintenReqApprovalAuthority->save();
+
+        if ($activationUpdated) {
+            return response()->json(['successCode' => 1, 'message' => 'Successfully updated']);
+        } else {
+            return response()->json(['successCode' => 0, 'message' => 'Failed to update']);
+        }
     }
 }
