@@ -225,6 +225,7 @@ class VehicleReqController extends Controller
         DB::beginTransaction();
 
 		try{
+            $getVehicle = Vehicle::where(['VEHICLE_ID'=>$request->vehicle])->first();
             $data=VehicleRequisition::where(['VEHICLE_REQ_ID'=>$request->id])->first();
     	    $data->update([
                 'REQUISITION_FOR'=>$request->req_for,
@@ -436,22 +437,17 @@ class VehicleReqController extends Controller
             $getVehicle=Vehicle::where(['VEHICLE_TYPE_ID'=>$type])->get();
         }else{
             $existingVehicleIds = VehicleRequisition::where('VEHICLE_TYPE_ID', $type)
+            ->where('VEHICLE_REQ_ID',"!=",$request->id)
+            ->where('STATUS','!=','R')
             ->when($rdate, function ($query, $rdate) {
                 $query->where('REQUISITION_DATE', date('Y-m-d', strtotime($rdate)));
             })
             ->when($frmt, function ($query, $frmt) {
-                $query->where(function ($subQuery) use ($frmt) {
-                    $subQuery->whereTime('TIME_FROM', '>=', $frmt);
-                });
+                $query->whereTime('TIME_FROM', '>=', $frmt);
             })
             ->when($tot, function ($query, $tot) {
-                $query->orWhere(function ($subQuery) use ($tot) {
-                    $subQuery->whereTime('TIME_TO', '<=', $tot);
-                });
+                $query->whereTime('TIME_TO', '<=', $tot);
             })
-
-            ->whereIn('VEHICLE_REQ_ID',[$request->id])
-            ->where('STATUS','!=','R')
             ->pluck('VEHICLE_ID')
             ->toArray();
             // print_r(DB::getQueryLog());

@@ -493,10 +493,29 @@
         </div>
     </div>
 </div>
+<div class="customloader"></div>
 <!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/vehiclereq_requisition_list.js"></script> -->
 <style>
 #dataTable {
     width: 100% !important;
+}
+.customloader{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    border: 3px solid #ddd;
+    border-top-color: #28a745;
+    animation: rotate 1s infinite;
+    position: absolute;
+    top: 33%;
+    right: 56%;
+    display:none;
+    z-index:9999;
+}
+@keyframes rotate{
+  100%{
+    rotate:360deg;
+  }
 }
 </style>
 <script>
@@ -783,6 +802,7 @@ $(document).ready(function() {
         }
     });
     $('body').on('click', '.editModal', function() {
+        $('.customloader').show();
         var id = $(this).data('id');
         $('#edit').modal('show');
         $.ajax({
@@ -815,6 +835,7 @@ $(document).ready(function() {
                 $('#vehicle_type2').val(res.VEHICLE_TYPE_ID).trigger('change');
                 $('#vehicle2').val(res.VEHICLE_ID).trigger('change');
                 $('#nunpassenger2').attr('max', res.max_num);
+                
             }
         });
     });
@@ -889,6 +910,7 @@ $(document).ready(function() {
        var frmt = $('#time_fr2').val();
        var tot = $('#time_to2').val();
        var id = $('#requsition_id').val();
+       
        $.ajax({
            url: '{{route("get.editvehicle.data")}}',
            type: 'get',
@@ -903,6 +925,18 @@ $(document).ready(function() {
            },
            success: function(res) {
                $('#vehicle2').html(res);
+               $.ajax({
+                    url: '{{route("get.req.data")}}',
+                    type: 'get',
+                    dataType: 'json',
+                    data: {
+                        req_id: id,
+                    },
+                    success: function(res) {
+                        $('#vehicle2').val(res.VEHICLE_ID).trigger('change');
+                        $('.customloader').hide();
+                    }
+        });
            }
        });
     }
