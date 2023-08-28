@@ -26,6 +26,7 @@ class VehicleReqController extends Controller
     {
         
     }
+    /////////Requisition List//////////////
     public function index(Request $request)
     {
         $emp='';
@@ -163,6 +164,145 @@ class VehicleReqController extends Controller
         }
         return view('vehicle-req.vehicle-requisition',compact('driver','vehicle_type','purpose','empData'));
     }
+    // ////Approval List////////////////////
+    public function approvalList(Request $request)
+    {
+        $emp='';
+        $driver=Driver::where(['IS_ACTIVE'=>'Y'])->get();
+        $vehicle_type=VehicleType::where(['IS_ACTIVE'=>'Y'])->get();
+        $purpose=RequisitionPurpose::where(['IS_ACTIVE'=>'Y'])->get();
+        $hrApi = new HrApi;
+        $employee = $hrApi->getEmployeeList($emp);
+        $empData = $employee['data'];
+
+
+        if ($request->ajax()) {
+
+            $data=VehicleRequisition::orderBy('VEHICLE_REQ_ID','desc')->get();
+    
+            return Datatables::of($data)
+    
+                ->addIndexColumn()
+    
+                ->filter(function ($instance) use ($request) {
+                    if (!empty($request->get('req_forsr'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['REQUISITION_FOR'], $request->get('req_forsr')) ? true : false;
+                        });
+                    }
+                    if (!empty($request->get('vehicle_typesr'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['VEHICLE_TYPE_ID'], $request->get('vehicle_typesr')) ? true : false;
+                        });
+                    }
+                    if (!empty($request->get('from'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        $requestedDate = $request->get('from');
+                        $rowDate = $row['TIME_FROM'];
+                           return strtotime($rowDate) >= strtotime($requestedDate);
+                        });
+                    }
+                    if (!empty($request->get('to'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        $requestedDate = $request->get('to');
+                        $rowDate = $row['TIME_TO'];
+                           return strtotime($rowDate) <= strtotime($requestedDate);
+                        });
+                    }
+                    if (!empty($request->get('status'))) {
+                        $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                            return Str::contains($row['STATUS'], $request->get('status')) ? true : false;
+                        });
+                    }
+                })
+                ->addColumn('req_for', function($row){
+                   $req_for=getEmployeename($row['REQUISITION_FOR']);   
+                   return $req_for;
+    
+                })
+                ->addColumn('req_date', function($row){
+                    $req_for=date('j-F-Y',strtotime($row['REQUISITION_DATE']));   
+                    return $req_for;
+     
+                 })
+                 ->addColumn('driver', function($row){
+                    if($row['DRIVER_ID']){
+                        $drv=Driver::where(['DRIVER_ID'=>$row['DRIVER_ID']])->first();
+                        $driver = ($drv) ? $drv->DRIVER_NAME : '';
+                    }else{
+                        $driver = 'NULL';
+                    }  
+                    return $driver;
+     
+                 })
+                 ->addColumn('create_by', function($row){
+                    $crt_by = User::where(['USER_ID'=>$row['CREATED_BY']])->first();
+                    return ($crt_by) ? $crt_by->FIRST_NAME." ".$crt_by->LAST_NAME : '';
+     
+                 })
+                 ->addColumn('status', function($row){
+                    if($row['STATUS'] == 'P'){
+                        $status = 'Pending';
+                    }elseif($row['STATUS'] == 'A'){
+                        $status = 'Approved';
+                    }else{
+                        $status = 'Cancel';
+                    }  
+                    return $status;
+     
+                 })
+                ->addColumn('action', function($row){
+                    $btn = '<a data-id="'.$row['VEHICLE_REQ_ID'].'" style="cursor:pointer;color:#fff;"  data-toggle="modal" data-target="#edit"
+                    class="btn btn-primary btn-sm mr-1 editModal" data-toggle="tooltip"
+                    data-placement="left" title="Update"><i class="ti-pencil"></i></a>';
+                    if($row['DRIVER_ID']){
+                        $btn.='<a data-driverid="'.$row['DRIVER_ID'].'" data-id="'.$row['VEHICLE_REQ_ID'].'" data-toggle="modal" data-target="#driverModal" style="cursor:pointer;color:#fff;"
+                        class="btn btn-success btn-sm mr-1 driver-modal" data-toggle="tooltip"
+                        data-placement="left" title="Update"><i class="ti-user"></i></a>';
+                    }else{
+                        $btn.='<a data-driverid="" data-id="'.$row['VEHICLE_REQ_ID'].'" data-toggle="modal" data-target="#driverModal" style="cursor:pointer;color:#fff;"
+                        class="btn  btn-danger btn-sm mr-1 driver-modal" data-toggle="tooltip"
+                        data-placement="left" title="Update"><i class="ti-user"></i></a>';
+                    }
+                    if($row['STATUS'] == 'P'){
+                        $btn.='<div class="text-right" style="display:inline-block;">
+                        <div class="actions" style="display:inline-block;">
+                        <div class="dropdown action-item" aria-expanded="false">
+                        <a href="#" data-id="'.$row['VEHICLE_REQ_ID'].'" data-toggle="modal" data-target="#statusModal" class="action-item statusModal"><i class="ti-more-alt"></i></a>
+                        </div>
+                        </div>
+                        </div>';
+                    
+                    }elseif($row['STATUS'] == 'A'){
+                        $btn.='<a data-id="'.$row['VEHICLE_REQ_ID'].'" style="cursor:pointer;color:#fff;"
+                        class="btn btn-success btn-sm mr-1" data-toggle="tooltip"
+                        data-placement="left" title="Approved"><i class="ti-check"></i></a>';
+                        $btn.='<div class="text-right" style="display:inline-block;">
+                        <div class="actions" style="display:inline-block;">
+                        <div class="dropdown action-item" aria-expanded="false">
+                        <a href="#" data-id="'.$row['VEHICLE_REQ_ID'].'" data-toggle="modal" data-target="#statusModal" class="action-item statusModal"><i class="ti-more-alt"></i></a>
+                        </div>
+                        </div>
+                        </div>';
+                    }else{
+                        $btn.='<a data-id="'.$row['VEHICLE_REQ_ID'].'" style="cursor:pointer;color:#fff;"
+                        class="btn btn-danger btn-sm mr-1" data-toggle="tooltip"
+                        data-placement="left" title="Cancel"><i class="ti-close"></i></a>';
+                       
+                    }
+
+                    return $btn;
+    
+                })
+    
+                ->rawColumns(['action','req_for','req_date','driver','create_by','status'])
+    
+                ->make(true);
+    
+        }
+        return view('vehicle-req.vehicle-requisition',compact('driver','vehicle_type','purpose','empData'));
+    }
+    // //////////////////////////
     public function addRequisition(Request $request)
     {
 

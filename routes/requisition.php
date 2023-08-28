@@ -42,5 +42,8 @@
         Route::get('get-data', [VehicleReqController::class, 'getData'])->name('get.req.data');
         Route::get('get-vehicle-list', [VehicleReqController::class, 'getVehicleData'])->name('get.vehicle.data');
         Route::get('get-edit-vehicle-list', [VehicleReqController::class, 'getEditVehicleData'])->name('get.editvehicle.data');
+
+        // ///////////Approval List///////////
+        Route::get('vehicle-requisition/approval-authorities', [VehicleReqController::class, 'approvalList'])->name('approval.authority');
     });
 ?>

@@ -143,9 +143,9 @@ Route::middleware('auth')->group(function () {
         return view('vehicle-req.vehicle-routes');
     })->name('vehicle-routes');
 
-    Route::get('vehicle-requisition/approval-authorities', function () {
-        return view('vehicle-req.approval-authorities');
-    })->name('vehicle-req-approval-auth');
+    // Route::get('vehicle-requisition/approval-authorities', function () {
+    //     return view('vehicle-req.approval-authorities');
+    // })->name('vehicle-req-approval-auth');
 
     Route::get('vehicle-requistion/pick-drop', function () {
         return view('vehicle-req.pick-drop-requisition');
