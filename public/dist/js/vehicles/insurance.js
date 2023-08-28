@@ -95,12 +95,6 @@ function populateTable(table) {
                 table.clear();
                 $.each(res, function (i, data) {
                     let actionBtns = `<button class="btn btn-sm btn-info mr-1" onclick="editInfo(${data.INSURANCE_ID})" title="Edit"><i class="ti-pencil"></i></button>`;
-                    if (data.IS_ACTIVE == 'Y')
-                        actionBtns += `<button class="btn btn-sm btn-danger mr-1" onclick="changeActivationstatus(0, ${data.INSURANCE_ID})" title="Deactivate">
-                    <i class="ti-close"></i></button>`;
-                    else
-                        actionBtns += `<button class="btn btn-sm btn-danger mr-1" onclick="changeActivationstatus(1, ${data.INSURANCE_ID})" title="Activate">
-                    <i class="ti-reload"></i></button>`;
 
                     table.row.add([
                         i + 1,
@@ -123,4 +117,17 @@ function populateTable(table) {
     });
 }
 
-function editInfo(id) { }
+function editInfo(id) {
+    $.ajax({
+        url: getDetailsURL,
+        type: 'post',
+        data: {
+            _token: csrfToken,
+            insurance_id: id
+        },
+        success: function (res) {
+            console.log(res);
+        },
+        error: function () { }
+    });
+}

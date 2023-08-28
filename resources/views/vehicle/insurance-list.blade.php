@@ -272,6 +272,7 @@
     // To save Routes, URLs, etc. for use in external JS
     let csrfToken = "{{csrf_token()}}";
     let insuranceInfoListURL = "{{route('insurance-list.list')}}";
+    let getDetailsURL = "{{route('insurance.details')}}";
     let activationStatusChangeURL = "{{route('insurance.change-active-status')}}";
 </script>
 <script src="{{asset('public/dist/js/vehicles/insurance.js')}}">

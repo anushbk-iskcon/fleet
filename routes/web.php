@@ -33,6 +33,7 @@ use App\Http\Controllers\Masters\VendorController;
 use App\Http\Controllers\RefuelRequisitionController;
 use App\Http\Controllers\RefuelSettingController;
 use App\Models\Role;
+use App\Models\Vehicle;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -123,10 +124,17 @@ Route::middleware('auth')->group(function () {
     Route::post('vehicles/update/{vehicle}', [VehicleController::class, 'update'])->name('vehicle.update');
     // Activate/de-activate vehicle
     Route::post('vehicles/status-update', [VehicleController::class, 'statusUpdate'])->name('vehicle.status-update');
+    // Assign driver a vehicle
+    Route::post('vehicles/assign-to-driver', [VehicleController::class, 'assignVehicleToDriver'])->name('vehicle.assign-to-driver');
+    // Get employees based on selected department
+    Route::post('vehicles/get-employees', [VehicleController::class, 'getEmployees'])->name('vehicle.get-employees');
+    // Allocate Vehicle to Employee / Division Head / Manager / Lead / SPOC etc.
+    Route::post('vehicles/allocate', [VehicleController::class, 'allocateVehicle'])->name('vehicle.allocate');
 
     Route::get('vehicles/insurance', [InsuranceController::class, 'index'])->name('insurance-list');
     Route::post('vehicles/insurance', [InsuranceController::class, 'index'])->name('insurance-list.list');
     Route::post('vehicles/insurance/add', [InsuranceController::class, 'store'])->name('insurance.add');
+    Route::post('insurance/details', [InsuranceController::class, 'getDetails'])->name('insurance.details');
     Route::post('vehicles/insurance/update', [InsuranceController::class, 'update'])->name('insurance.update');
     Route::post('vehicles/insurance/change-active-status', [InsuranceController::class, 'activationStatusChange'])->name('insurance.change-active-status');
 

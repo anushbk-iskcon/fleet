@@ -31,7 +31,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <strong>Vehicle List</strong>
+                <strong>Add Vehicle</strong>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
@@ -85,8 +85,8 @@
                             <div class="col-sm-7">
                                 <select required="" class="form-control basic-single" name="ownership" id="ownership">
                                     <option value="" selected="selected">Please Select One</option>
-                                    @foreach($ownerships as $ownership)
-                                    <option value="{{$ownership['OWNERSHIP_ID']}}">{{$ownership['OWNERSHIP_NAME']}}</option>
+                                    @foreach($trusts as $ownership)
+                                    <option value="{{$ownership['trustCode'] . '|' . $ownership['trustName']}}">{{$ownership['trustName']}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -126,7 +126,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                             <label for="driver" class="col-sm-5 col-form-label">Driver <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="driver" id="driver">
@@ -137,7 +137,7 @@
                                 </select>
 
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group row">
                             <label for="vendor" class="col-sm-5 col-form-label">Vendor <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
@@ -225,8 +225,8 @@
                             <div class="col-sm-7">
                                 <select required="" class="form-control basic-single" name="ownership" id="new_ownership">
                                     <option value="" selected="selected">Please Select One</option>
-                                    @foreach($ownerships as $ownership)
-                                    <option value="{{$ownership['OWNERSHIP_ID']}}">{{$ownership['OWNERSHIP_NAME']}}</option>
+                                    @foreach($trusts as $ownership)
+                                    <option value="{{$ownership['trustCode'] . '|' . $ownership['trustName']}}">{{$ownership['trustName']}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -305,7 +305,7 @@
         </div>
 
     </div>
-</div> <!-- End modal for editing vehcile details-->
+</div> <!-- End modal for editing vehicle details-->
 
 <!-- Modal for assigning driver the selected vehicle -->
 <div id="assignVehicleToDriverModal" class="modal fade" role="dialog">
@@ -316,14 +316,15 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="" id="assignVehicleToDriverForm" class="row" method="post" accept-charset="utf-8">
+                <form action="{{route('vehicle.assign-to-driver')}}" id="assignVehicleToDriverForm" class="row" method="post" accept-charset="utf-8">
                     @csrf
+                    {{-- To send Vehicle ID for vehicle assigned to driver --}}
                     <input type="hidden" name="vehicle_id" id="driverAllocationVehicleId" value="">
                     <div class="col-md-12 col-lg-10">
                         <div class="form-group row">
                             <label for="driverAssignedVehicle" class="col-sm-12 col-lg-4 col-form-label">Vehicle <i class="text-danger">*</i></label>
                             <div class="col-sm-12 col-lg-8">
-                                <input class="form-control" id="driverAssignedVehicle" type="text" name="" value="Test Cab" disabled>
+                                <input class="form-control" id="driverAssignedVehicle" type="text" name="vehicle" value="" disabled>
                             </div>
                         </div>
                     </div>
@@ -331,7 +332,7 @@
                         <div class="form-group row">
                             <label for="vehicleDriver" class="col-sm-12 col-lg-4 col-form-label">Driver <i class="text-danger">*</i></label>
                             <div class="col-sm-12 col-lg-8">
-                                <select name="vehicle_driver" id="vehicleDriver" class="form-control basic-single">
+                                <select name="vehicle_driver" id="vehicleDriver" class="form-control basic-single" data-init-driver-value="" required>
                                     <option value="" selected>Please Select</option>
                                     @foreach($drivers as $driver)
                                     <option value="{{$driver['DRIVER_ID']}}">{{$driver['DRIVER_NAME']}}</option>
@@ -342,7 +343,66 @@
                     </div>
                     <div class="col-md-12">
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" id="resetAssignVehicleToDriverFormBtn" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="submit" class="btn btn-success w-md m-b-5">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> <!-- End modal to assign a driver the vehicle -->
+
+<!-- Begin Modal to allocate the vehicle to an employee -->
+<div id="allocateVehicleModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>Allocate Vehicle to Employee</strong>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form action="{{route('vehicle.allocate')}}" id="allocateVehicleForm" method="post" class="row" accept-charset="utf-8">
+                    @csrf
+                    {{-- To send Vehicle ID for vehicle assigned to driver --}}
+                    <input type="hidden" name="vehicle_id" id="allocatedVehicleId" value="">
+                    <div class="col-md-12 col-lg-10">
+                        <div class="form-group row">
+                            <label for="allocatedVehicle" class="col-sm-12 col-lg-4 col-form-label">Vehicle <i class="text-danger">*</i></label>
+                            <div class="col-sm-12 col-lg-8">
+                                <input class="form-control" id="allocatedVehicle" type="text" name="vehicle" value="" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-10">
+                        <div class="form-group row">
+                            <label for="vehicleAllocatedDept" class="col-sm-12 col-lg-4 col-form-label">Department <i class="text-danger">*</i></label>
+                            <div class="col-sm-12 col-lg-8">
+                                <select name="vehicle_dept" id="vehicleAllocatedDept" class="form-control basic-single" required onchange="getEmployeesByDept(this)">
+                                    <option value="" selected>Select Department</option>
+                                    @foreach($departments as $dept)
+                                    <option value="{{$dept['deptCode'] . '|' . $dept['deptName']}}">{{$dept['deptName']}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-10">
+                        <div class="form-group row">
+                            <label for="vehicleOwner" class="col-sm-12 col-lg-4 col-form-label">Allocate To <i class="text-danger">*</i></label>
+                            <div class="col-sm-12 col-lg-8">
+                                <select name="vehicle_owner" id="vehicleOwner" class="form-control basic-single" data-init-owner-value="" required>
+                                    <option value="" selected>Please Select Owner</option>
+                                    <!-- @foreach($drivers as $driver)
+                                    <option value="{{$driver['DRIVER_ID']}}">{{$driver['DRIVER_NAME']}}</option>
+                                    @endforeach -->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group text-right">
+                            <button type="reset" id="resetAssignVehicleFormBtn" class="btn btn-primary w-md m-b-5">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Save</button>
                         </div>
                     </div>
@@ -351,6 +411,8 @@
         </div>
     </div>
 </div>
+<!-- End Modal to allocate the vehicle to an employee -->
+
 
 <div class="row">
     <div class="col-sm-12">
@@ -393,8 +455,8 @@
                             <div class="col-sm-8">
                                 <select class="form-control" name="ownershipsr" id="ownershipsr">
                                     <option value="" selected="selected">Please Select One</option>
-                                    @foreach($ownerships as $ownership)
-                                    <option value="{{$ownership['OWNERSHIP_ID']}}">{{$ownership['OWNERSHIP_NAME']}}</option>
+                                    @foreach($trusts as $ownership)
+                                    <option value="{{$ownership['trustCode']}}">{{$ownership['trustName']}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -659,9 +721,119 @@
         $("#filterVehiclesForm").submit(function(ev) {
             ev.preventDefault();
             populateVehiclesTable(vehiclesTable);
-        })
+        });
+
+        $("#resetAssignVehicleToDriverFormBtn").click(function() {
+            setTimeout(() => {
+                let initVal = '' + $("#vehicleDriver").attr('data-init-driver-value');
+                $("#vehicleDriver").val(initVal).change();
+                $("#vehicleDriver").removeClass('error').removeAttr('aria-invalid');
+                $("#vehicleDriver").closest('div.form-group').find('div.error').remove();
+            }, 10);
+        });
+
+        $("#assignVehicleToDriverModal").on('hidden.bs.modal', function() {
+            $("#vehicleDriver").removeClass('error').removeAttr('aria-invalid');
+            $("#vehicleDriver").closest('div.form-group').find('div.error').remove();
+        });
+
+        $("#assignVehicleToDriverForm").validate({
+            rules: {
+                vehicle_driver: 'required'
+            },
+            errorElement: 'div',
+            errorPlacement: function(error, elem) {
+                $(elem).closest('div[class^=col-sm-]').append(error);
+            },
+            submitHandler: function(form, ev) {
+                ev.preventDefault();
+                $.ajax({
+                    url: form.action,
+                    type: 'post',
+                    data: $(form).serialize(),
+                    success: function(res) {
+                        if (res.successCode == 1) {
+                            toastr.success(res.message, '', {
+                                closeButton: true
+                            });
+                            $("#assignVehicleToDriverModal").modal('hide');
+                        } else {
+                            toastr.error(res.message, '', {
+                                closeButton: true
+                            });
+                        }
+                    },
+                    error: function() {
+                        toastr.error('Error assigning vehicle to driver. Please try again', '', {
+                            closeButton: true
+                        });
+                    }
+                });
+            }
+        });
+
+        $("#resetAssignVehicleFormBtn").click(function() {
+            setTimeout(() => {
+                let initDeptVal = '' + $("#vehicleAllocatedDept").attr('data-initial-value');
+                let initOwnerVal = '' + $("#vehicleAllocatedDept").attr('data-initial-value');
+
+                $("#vehicleAllocatedDept").val(initDeptVal).change();
+                $("#vehicleAllocatedDept").removeClass('error').removeAttr('aria-invalid');
+                $("#vehicleAllocatedDept").closest('div.form-group').find('div.error').remove();
+
+                $("#vehicleOwner").val(initOwnerVal).change();
+                $("#vehicleOwner").removeClass('error').removeAttr('aria-invalid');
+                $("#vehicleOwner").closest('div.form-group').find('div.error').remove();
+            }, 10);
+        });
+
+        $("#allocateVehicleModal").on('hidden.bs.modal', function() {
+            $("#vehicleAllocatedDept").removeClass('error').removeAttr('aria-invalid');
+            $("#vehicleAllocatedDept").closest('div.form-group').find('div.error').remove();
+            $("#vehicleOwner").removeClass('error').removeAttr('aria-invalid');
+            $("#vehicleOwner").closest('div.form-group').find('div.error').remove();
+        });
+
+        $("#allocateVehicleForm").validate({
+            rules: {
+                vehicle_dept: 'required',
+                vehicle_owner: 'required'
+            },
+            errorElement: 'div',
+            errorPlacement: function(error, elem) {
+                $(elem).closest('div[class^=col-sm-]').append(error);
+            },
+            submitHandler: function(form, ev) {
+                ev.preventDefault();
+
+                $.ajax({
+                    url: form.action,
+                    type: form.method,
+                    data: $(form).serialize(),
+                    success: function(res) {
+                        if (res.successCode === 1) {
+                            toastr.success(res.message, '', {
+                                closeButton: true
+                            });
+                            $("#allocateVehicleModal").modal('hide');
+                            populateVehiclesTable(vehiclesTable);
+                        } else {
+                            toastr.error(res.message, '', {
+                                closeButton: true
+                            });
+                        }
+                    },
+                    error: function() {
+                        toastr.error('Error adding details. Please try again', '', {
+                            closeButton: true
+                        });
+                    }
+                });
+            }
+        });
 
     });
+    // End of document.ready function
 
     // To prevent select2 boxes still displaying previously selected value on resetting form
     $('#filterVehiclesForm .basic-single').val('').trigger('change');
@@ -696,6 +868,11 @@
                         buttons += '<button class="btn btn-sm btn-success mr-1" data-id="' + data.VEHICLE_ID + '" onclick="assignToDriver(this)" title="Assign to Driver"><i class="fas fa-user-plus"></i></button>';
                     else
                         buttons += '<button class="btn btn-sm btn-danger mr-1" data-id="' + data.VEHICLE_ID + '" onclick="assignToDriver(this)" title="Assign to Driver"><i class="fas fa-user-plus"></i></button>';
+
+                    if (data.DEPARTMENT_ID == 0)
+                        buttons += '<button class="btn btn-sm btn-success mr-1" data-id="' + data.VEHICLE_ID + '" onclick="allocateVehicle(this)" title="Allocate Vehicle"><i class="fas fa-user-check"></i></button>';
+                    else
+                        buttons += '<button class="btn btn-sm btn-danger mr-1" data-id="' + data.VEHICLE_ID + '" onclick="allocateVehicle(this)" title="Allocate Vehicle"><i class="fas fa-user-check"></i></button>';
                     table.row.add(
                         [i + 1,
                             data.VEHICLE_NAME,
@@ -767,11 +944,131 @@
 
     function assignToDriver(el) {
         $("#driverAllocationVehicleId").val($(el).data('id'));
-        $("#assignVehicleToDriverModal").modal('show');
+        $.ajax({
+            url: "{{route('vehicle.get-details')}}",
+            type: 'post',
+            data: {
+                _token: "{{csrf_token()}}",
+                vehicle_id: $(el).data('id')
+            },
+            dataType: 'json',
+            success: function(res) {
+                console.log(res);
+                if (res.successCode === 1) {
+                    $("#driverAssignedVehicle").attr('value', res.data.VEHICLE_NAME);
+                    if (res.data.DRIVER_ID !== 0) {
+                        $("#vehicleDriver").val(res.data.DRIVER_ID).trigger('change');
+                        $("#vehicleDriver").attr('data-init-driver-value', res.data.DRIVER_ID); // For storing value in case of form reset
+                    } else {
+                        $("#vehicleDriver").val("").trigger('change');
+                        $("#vehicleDriver").attr('data-init-driver-value', "");
+                    }
+
+                    $("#assignVehicleToDriverModal").modal('show');
+                } else {
+                    toastr.error("Could not get details", "", {
+                        closeButton: true
+                    });
+                }
+            },
+            error: function(jqXHR, textStartus, err) {
+                toastr.error("Error getting details. Please try again", "", {
+                    closeButton: true
+                });
+            }
+        });
     }
 
     function allocateVehicle(el) {
+        $("#allocatedVehicleId").val($(el).data('id'));
+        $.ajax({
+            url: "{{route('vehicle.get-details')}}",
+            type: 'post',
+            data: {
+                _token: "{{csrf_token()}}",
+                vehicle_id: $(el).data('id')
+            },
+            dataType: 'json',
+            success: function(res) {
+                if (res.successCode == 1) {
+                    $("#allocatedVehicle").attr('value', res.data.VEHICLE_NAME);
+                    if (res.data.DEPARTMENT_ID.trim() !== '' && res.data.DEPARTMENT_ID != null && res.data.DEPARTMENT_ID != 0) {
+                        let deptVal = res.data.DEPARTMENT_ID + '|' + res.data.DEPARTMENT_NAME;
+                        $("#vehicleAllocatedDept").val(deptVal).trigger('change');
+                        $("#vehicleAllocatedDept").attr('data-initial-value', deptVal);
+                    } else {
+                        $("#vehicleAllocatedDept").val("").change();
+                        $("#vehicleAllocatedDept").attr('data-initial-value', "");
+                    }
 
+                    if (res.data.EMPLOYEE_ID.trim() != '' && res.data.EMPLOYEE_ID != null && res.data.EMPLOYEE_ID != 0) {
+                        let empVal = res.data.EMPLOYEE_ID + '|' + res.data.EMPLOYEE_NAME;
+                        $("#vehicleOwner").val(empVal).trigger('change');
+                        $("#vehicleOwner").attr('data-initial-value', empVal);
+                    } else {
+                        $("#vehicleOwner").val("").trigger('change');
+                        $("#vehicleOwner").attr('data-initial-value', "");
+                    }
+
+                    $("#allocateVehicleModal").modal('show');
+
+                } else {
+                    toastr.error("Error getting details. Please try again", "", {
+                        closeButton: true
+                    });
+                }
+            }
+        });
+    }
+
+    function getEmployeesByDept(el) {
+        let dept = $(el).val();
+        console.log($(el));
+        console.log(dept);
+        $.ajax({
+            url: "{{route('vehicle.get-employees')}}",
+            type: 'post',
+            data: {
+                _token: "{{csrf_token()}}",
+                department: dept
+            },
+            success: function(res) {
+                console.log(res);
+                if (res.successCode == 1) {
+                    if (res.data.length >= 1) {
+                        $("#vehicleOwner").empty();
+                        $("#vehicleOwner").append('<option value="">Please Select Owner</option>');
+                        $.each(res.data, function(i, data) {
+                            let isSelected = $("#vehicleOwner").attr('data-initial-value');
+                            let currentVal = data.hrEmployeeId + '|' + data.employeeName;
+                            if (isSelected == currentVal)
+                                $("#vehicleOwner").append('<option value="' + currentVal + '" selected>' + data.employeeName + '</option>');
+                            else
+                                $("#vehicleOwner").append('<option value="' + currentVal + '">' + data.employeeName + '</option>');
+                        });
+
+                    } else {
+                        $("#vehicleOwner").empty();
+                        $("#vehicleOwner").append('<option value="">Please Select Owner</option>');
+                    }
+                } else {
+                    $("#vehicleOwner").empty();
+                    $("#vehicleOwner").append('<option value="">Please Select Owner</option>');
+                }
+            },
+            error: function() {
+                toastr.error("Error loading employees. Please try again", "", {
+                    closeButton: true
+                });
+            }
+        });
+    }
+
+    function setEmployeeVal() {
+        // In assign vehicle to employee form, on loading employees, value gets over-ridden to ""
+        // To change it back
+        let setValue = $("#vehicleOwner").attr('data-initial-value');
+        $("#vehicleOwner").val(setValue).change();
     }
 
     function updateStatus(el) {

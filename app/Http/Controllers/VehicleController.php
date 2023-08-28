@@ -14,6 +14,7 @@ use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use stdClass;
 
 class VehicleController extends Controller
 {
@@ -47,20 +48,22 @@ class VehicleController extends Controller
 
         $vehicles = DB::table('vehicles')
             ->join('mstr_vehicle_type', 'vehicles.VEHICLE_TYPE_ID', '=', 'mstr_vehicle_type.VEHICLE_TYPE_ID')
-            ->join('mstr_department', 'vehicles.DEPARTMENT_ID', '=', 'mstr_department.DEPARTMENT_ID')
+            // ->join('mstr_department', 'vehicles.DEPARTMENT_ID', '=', 'mstr_department.DEPARTMENT_ID')
             ->join('mstr_vehicle_division', 'vehicles.VEHICLE_DIVISION_ID', '=', 'mstr_vehicle_division.VEHICLE_DIVISION_ID')
             ->join('mstr_rta_circle_office', 'vehicles.RTA_CIRCLE_OFFICE_ID', '=', 'mstr_rta_circle_office.RTA_CIRCLE_OFFICE_ID')
-            ->join('drivers', 'vehicles.DRIVER_ID', '=', 'drivers.DRIVER_ID')
+            ->leftJoin('drivers', 'vehicles.DRIVER_ID', '=', 'drivers.DRIVER_ID')
             ->join('mstr_vendor', 'vehicles.VENDOR_ID', '=', 'mstr_vendor.VENDOR_ID')
             ->join('mstr_ownership', 'vehicles.OWNERSHIP_ID', '=', 'mstr_ownership.OWNERSHIP_ID')
             ->select(
                 'vehicles.VEHICLE_ID',
                 'vehicles.VEHICLE_NAME',
                 'mstr_vehicle_type.VEHICLE_TYPE_NAME',
-                'mstr_department.DEPARTMENT_NAME',
+                'vehicles.DEPARTMENT_ID',
+                'vehicles.DEPARTMENT_NAME',
                 'vehicles.REGISTRATION_DATE',
                 'mstr_vehicle_division.VEHICLE_DIVISION_NAME',
                 'mstr_rta_circle_office.RTA_CIRCLE_OFFICE_NAME',
+                'vehicles.DRIVER_ID',
                 'drivers.DRIVER_NAME',
                 'mstr_vendor.VENDOR_NAME',
                 'mstr_ownership.OWNERSHIP_NAME',
@@ -103,20 +106,27 @@ class VehicleController extends Controller
 
         $vehicle->VEHICLE_NAME = $request->vehicle_name;
         $vehicle->VEHICLE_TYPE_ID = $request->vehicle_type;
-        $vehicle->DEPARTMENT_ID = $request->department;
-        # Add Dept Name from Request below:
+
+        $department = $request->department;
+        # Input 'department' is in form: deptCode|deptName as option value in select
+        $deptArray = explode('|', $department);
+        $vehicle->DEPARTMENT_ID = $deptArray[0];  #deptCode
+        $vehicle->DEPARTMENT_NAME = $deptArray[1]; #deptName
 
         $vehicle->VEHICLE_DIVISION_ID = $request->vehicle_division;
         $vehicle->REGISTRATION_DATE = $request->registration_date;
         $vehicle->RTA_CIRCLE_OFFICE_ID = $request->rta_office;
         $vehicle->LICENSE_PLATE = $request->license_plate;
-        $vehicle->DRIVER_ID = $request->driver;
+        $vehicle->DRIVER_ID = $request->driver ?? 0;
         $vehicle->ALERT_CELL_NUMBER = $request->alert_cell_no;
         $vehicle->VENDOR_ID = $request->vendor;
         $vehicle->ALERT_EMAIL_ID = $request->alert_email;
         $vehicle->SEAT_CAPACITY = $request->seat_capacity;
-        $vehicle->OWNERSHIP_ID = $request->ownership;
-        // $vehicle->IS_ACTIVE = 'Y';
+
+        $ownership = $request->ownership;
+        $ownershipArray = explode('|', $ownership);
+        $vehicle->OWNERSHIP_ID = $ownershipArray[0];
+        $vehicle->OWNERSHIP_NAME = $ownershipArray[1];
         $vehicle->CREATED_BY = Auth::user()->USER_ID;
 
         $added = $vehicle->save();
@@ -159,18 +169,28 @@ class VehicleController extends Controller
         $vehicle = Vehicle::find($id);
         $vehicle->VEHICLE_NAME = $request->vehicle_name;
         $vehicle->VEHICLE_TYPE_ID = $request->vehicle_type;
-        $vehicle->DEPARTMENT_ID = $request->department;
-        # update dept Name
+
+        $department = $request->department;
+        # Input 'department' is in form: deptCode|deptName as option value in select
+        $deptArray = explode('|', $department);
+        $vehicle->DEPARTMENT_ID = $deptArray[0];  #deptCode
+        $vehicle->DEPARTMENT_NAME = $deptArray[1]; #deptName
+
         $vehicle->VEHICLE_DIVISION_ID = $request->vehicle_division;
         $vehicle->REGISTRATION_DATE = $request->registration_date;
         $vehicle->RTA_CIRCLE_OFFICE_ID = $request->rta_office;
         $vehicle->LICENSE_PLATE = $request->license_plate;
-        $vehicle->DRIVER_ID = $request->driver;
+        // $vehicle->DRIVER_ID = $request->driver;
         $vehicle->ALERT_CELL_NUMBER = $request->alert_cell_no;
         $vehicle->VENDOR_ID = $request->vendor;
         $vehicle->ALERT_EMAIL_ID = $request->alert_email;
         $vehicle->SEAT_CAPACITY = $request->seat_capacity;
-        $vehicle->OWNERSHIP_ID = $request->ownership;
+
+        $ownership = $request->ownership;
+        $ownershipArray = explode('|', $ownership);
+        $vehicle->OWNERSHIP_ID = $ownershipArray[0];  # Trust Code
+        $vehicle->OWNERSHIP_NAME = $ownershipArray[1]; # Name of the Trust
+
         // $vehicle->IS_ACTIVE = 'Y';
         $vehicle->MODIFIED_BY = Auth::user()->USER_ID;
 
@@ -206,5 +226,72 @@ class VehicleController extends Controller
         $vehicle->save();
 
         return response($vehicle, 200);
+    }
+
+    /**
+     * Assign the vehicle to a specified driver
+     */
+    public function assignVehicleToDriver(Request $request)
+    {
+        $driver_id = $request->vehicle_driver;
+        $vehicle_id = $request->vehicle_id;
+
+        $vehicle = Vehicle::find($vehicle_id);
+        $vehicle->DRIVER_ID = $driver_id;
+        $vehicle->MODIFIED_BY = Auth::id();
+        $driverAssigned = $vehicle->save();
+        if ($driverAssigned) {
+            return response()->json(['successCode' => 1, 'message' => "Vehicle successfully allocated to driver"]);
+        } else {
+            return response()->json(['successCode' => 0, 'message' => "Failed to assign driver"]);
+        }
+    }
+
+    /**
+     * Get Employees to Allocate Vehicle Form when Department is selected / changed
+     */
+    public function getEmployees(Request $request)
+    {
+        $dept = $request->department;
+
+        if ($dept == "")
+            return [];
+        else {
+            $data = new stdClass;
+            $deptArray = explode('|', $dept); # Since option values are in form: deptCode|deptName
+            $data->department = $deptArray[1];
+            $hrApi = new HrApi;
+            $employeeData = $hrApi->getEmployeeList($data);
+            return $employeeData;
+        }
+    }
+
+
+    /**
+     * Allocate vehicle to Employee
+     */
+    public function allocateVehicle(Request $request)
+    {
+        $vehicle_id = $request->vehicle_id;
+
+        $dept = $request->vehicle_dept;
+        $owner = $request->vehicle_owner;
+
+        $departmentArray = explode('|', $dept);
+        $ownerArray = explode('|', $owner);
+
+        $vehicle = Vehicle::find($vehicle_id);
+        $vehicle->DEPARTMENT_ID = $departmentArray[0];
+        $vehicle->DEPARTMENT_NAME = $departmentArray[1];
+        $vehicle->EMPLOYEE_ID = $ownerArray[0];
+        $vehicle->EMPLOYEE_NAME = $ownerArray[1];
+
+        $vehicle->MODIFIED_BY = Auth::id();
+
+        $vehicleAllocated = $vehicle->save();
+        if ($vehicleAllocated)
+            return response()->json(['successCode' => 1, 'message' => 'Successfully allocated vehicle to employee']);
+        else
+            return response()->json(['successCode' => 0, 'message' => 'Failed to allocate vehicle to employee']);
     }
 }

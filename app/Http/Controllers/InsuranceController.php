@@ -55,7 +55,7 @@ class InsuranceController extends Controller
         // To upload insurance policy document
         if ($request->hasFile('policy_document')) {
             $file = $request->file('policy_document');
-            $fileName = time() . '-' . date('Y') . $file->getClientOriginalExtension();
+            $fileName = time() . '-' . date('Y') . '.' . $file->getClientOriginalExtension();
             $uploadDestination = public_path('/upload/documents/insurance/');
             $file->move($uploadDestination, $fileName);
             $insurance->POLICY_DOCUMENT = $fileName;
@@ -68,6 +68,17 @@ class InsuranceController extends Controller
         } else {
             return response()->json(['successCode' => 0, 'message' => 'Could not add insurance details']);
         }
+    }
+
+    /**
+     * Get details of the selected insurance
+     */
+    public function getDetails(Request $request)
+    {
+        $insurance_id = $request->insurance_id;
+
+        $insurance = Insurance::find($insurance_id);
+        return $insurance;
     }
 
     /**

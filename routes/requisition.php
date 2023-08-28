@@ -45,6 +45,7 @@
         Route::get('get-edit-vehicle-list', [VehicleReqController::class, 'getEditVehicleData'])->name('get.editvehicle.data');
 
         // ///////////Approval List///////////
+<<<<<<< Updated upstream
     
         Route::get('vehicle-requisition/approval-authorities', [VehicleReqController::class, 'approvalAuthorities'])
             ->name('vehicle-req-approval-auth');
@@ -65,5 +66,7 @@
             ->name('vehicle-req-approval-auth.change-activation');
         
         Route::get('reports/generate-pdf', [ReportController::class, 'generatePDF'])->name('generate.pdf');
+=======
+        Route::get('vehicle-requisition/approval-authorities', [VehicleReqController::class, 'approvalList'])->name('vehicle-req-approval-auth');
+>>>>>>> Stashed changes
     });
-?>
