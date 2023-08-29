@@ -48,12 +48,11 @@ class VehicleController extends Controller
 
         $vehicles = DB::table('vehicles')
             ->join('mstr_vehicle_type', 'vehicles.VEHICLE_TYPE_ID', '=', 'mstr_vehicle_type.VEHICLE_TYPE_ID')
-            // ->join('mstr_department', 'vehicles.DEPARTMENT_ID', '=', 'mstr_department.DEPARTMENT_ID')
             ->join('mstr_vehicle_division', 'vehicles.VEHICLE_DIVISION_ID', '=', 'mstr_vehicle_division.VEHICLE_DIVISION_ID')
             ->join('mstr_rta_circle_office', 'vehicles.RTA_CIRCLE_OFFICE_ID', '=', 'mstr_rta_circle_office.RTA_CIRCLE_OFFICE_ID')
             ->leftJoin('drivers', 'vehicles.DRIVER_ID', '=', 'drivers.DRIVER_ID')
             ->join('mstr_vendor', 'vehicles.VENDOR_ID', '=', 'mstr_vendor.VENDOR_ID')
-            ->join('mstr_ownership', 'vehicles.OWNERSHIP_ID', '=', 'mstr_ownership.OWNERSHIP_ID')
+            // ->join('mstr_ownership', 'vehicles.OWNERSHIP_ID', '=', 'mstr_ownership.OWNERSHIP_ID')
             ->select(
                 'vehicles.VEHICLE_ID',
                 'vehicles.VEHICLE_NAME',
@@ -64,9 +63,11 @@ class VehicleController extends Controller
                 'mstr_vehicle_division.VEHICLE_DIVISION_NAME',
                 'mstr_rta_circle_office.RTA_CIRCLE_OFFICE_NAME',
                 'vehicles.DRIVER_ID',
+                'vehicles.OWNERSHIP_ID',
+                'vehicles.OWNERSHIP_NAME',
                 'drivers.DRIVER_NAME',
                 'mstr_vendor.VENDOR_NAME',
-                'mstr_ownership.OWNERSHIP_NAME',
+                // 'mstr_ownership.OWNERSHIP_NAME',
                 'vehicles.IS_ACTIVE'
             )
             // ->where('vehicles.IS_ACTIVE', '=', 'Y')
@@ -127,6 +128,8 @@ class VehicleController extends Controller
         $ownershipArray = explode('|', $ownership);
         $vehicle->OWNERSHIP_ID = $ownershipArray[0];
         $vehicle->OWNERSHIP_NAME = $ownershipArray[1];
+        $vehicle->EMPLOYEE_ID = '';
+        $vehicle->EMPLOYEE_NAME = '';
         $vehicle->CREATED_BY = Auth::user()->USER_ID;
 
         $added = $vehicle->save();

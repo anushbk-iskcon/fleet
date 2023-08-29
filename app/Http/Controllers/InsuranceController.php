@@ -89,6 +89,9 @@ class InsuranceController extends Controller
         $ins_id = $request->insurance_id;
         // Update details after fetching the correct model
 
+        $insurance = Insurance::find($ins_id);
+        $insurance->COMPANY_NAME = $request->company_name;
+
         $updated = '';
         if ($updated) {
             return response()->json(['successCode' => 1, 'message' => 'Updated successfully']);

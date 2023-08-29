@@ -128,6 +128,8 @@ function editInfo(id) {
         success: function (res) {
             console.log(res);
         },
-        error: function () { }
+        error: function () {
+            console.log("Error getting details");
+        }
     });
 }

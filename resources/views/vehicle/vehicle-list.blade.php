@@ -51,7 +51,7 @@
                                 <select class="form-control basic-single" required="" name="department" id="vehicleDept">
                                     <option value="" selected="selected">Please Select One</option>
                                     @foreach($departments as $department)
-                                    <option value="{{ $department['deptCode'] }}">{{ $department['deptName'] }}</option>
+                                    <option value="{{ $department['deptCode'] . '|' . $department['deptName'] }}">{{ $department['deptName'] }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -191,7 +191,7 @@
                                 <select class="form-control basic-single" required="" name="department" id="newVehicleDept">
                                     <option value="" selected="selected">Please Select One</option>
                                     @foreach($departments as $department)
-                                    <option value="{{ $department['deptCode'] }}">{{ $department['deptName'] }}</option>
+                                    <option value="{{ $department['deptCode'] . '|' . $department['deptName'] }}">{{ $department['deptName'] }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -262,17 +262,6 @@
                                     <option value="" selected="selected">Please Select One</option>
                                     @foreach($rtaOffices as $RTAOffice)
                                     <option value="{{$RTAOffice['RTA_CIRCLE_OFFICE_ID']}}">{{$RTAOffice['RTA_CIRCLE_OFFICE_NAME']}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="new_driver" class="col-sm-5 col-form-label">Driver <i class="text-danger">*</i></label>
-                            <div class="col-sm-7">
-                                <select class="form-control basic-single" required="" name="driver" id="new_driver">
-                                    <option value="" selected="selected">Please Select One</option>
-                                    @foreach($drivers as $driver)
-                                    <option value="{{$driver['DRIVER_ID']}}"> {{$driver['DRIVER_NAME']}} </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -908,18 +897,23 @@
                     console.log(res.data);
                     $("#new_vehicle_name").val(res.data.VEHICLE_NAME);
                     $("#new_vehicle_type").val(res.data.VEHICLE_TYPE_ID);
-                    $("#newVehicleDept").val(res.data.DEPARTMENT_ID);
+
+                    let deptValue = res.data.DEPARTMENT_ID + '|' + res.data.DEPARTMENT_NAME;
+                    $("#newVehicleDept").val(deptValue);
                     $("#newVehicleDept").select2().trigger('change');
+
                     $("#new_vehicle_division").val(res.data.VEHICLE_DIVISION_ID).trigger('change');
                     $("#new_registration_date").val(res.data.REGISTRATION_DATE);
                     $("#new_rta_office").val(res.data.RTA_CIRCLE_OFFICE_ID);
                     $("#new_license_plate").val(res.data.LICENSE_PLATE);
-                    $("#new_driver").val(res.data.DRIVER_ID).trigger('change');
+
                     $("#new_al_cell_no").val(res.data.ALERT_CELL_NUMBER);
                     $("#new_vendor").val(res.data.VENDOR_ID);
                     $("#new_al_email").val(res.data.ALERT_EMAIL_ID);
                     $("#new_seat_capacity").val(res.data.SEAT_CAPACITY);
-                    $("#new_ownership").val(res.data.OWNERSHIP_ID).trigger('change');
+
+                    let ownershipVal = res.data.OWNERSHIP_ID + '|' + res.data.OWNERSHIP_NAME;
+                    $("#new_ownership").val(ownershipVal).trigger('change');
                 } else {
                     console.log("Could not fetch details");
                     $("#edit").modal('hide');
