@@ -99,23 +99,4 @@ class InsuranceController extends Controller
             return response()->json(['successCode' => 0, 'message' => 'Could not update insurance details']);
         }
     }
-
-    /**
-     * Activate / Deactivate Insurance Details in DB
-     */
-    public function activationStatusChange(Request $request)
-    {
-        $insurance = new stdClass;
-        $activation_status = $request->activation_status;
-
-        $insurance->IS_ACTIVE = $activation_status;
-        $insurance->MODIFIED_BY = Auth::id();
-
-        // Save changes and return response with message
-        $activationUpdated = '';
-        if ($activationUpdated)
-            return response()->json(['successCode' => 1, 'message' => 'Updated successfully']);
-        else
-            return response()->json(['successCode' => 0, 'message' => 'Failed to update']);
-    }
 }
