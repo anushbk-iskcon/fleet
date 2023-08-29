@@ -45,7 +45,6 @@
         Route::get('get-edit-vehicle-list', [VehicleReqController::class, 'getEditVehicleData'])->name('get.editvehicle.data');
 
         // ///////////Approval List///////////
-<<<<<<< Updated upstream
     
         Route::get('vehicle-requisition/approval-authorities', [VehicleReqController::class, 'approvalAuthorities'])
             ->name('vehicle-req-approval-auth');
@@ -64,9 +63,7 @@
         // Activate/de-activate Maintenance approval Authority
         Route::post('vehicle-requisition/approval-authorities/change-activation', [VehicleReqController::class, 'changeActivationOfApprovalAuthority'])
             ->name('vehicle-req-approval-auth.change-activation');
-        
+        // /////////////////////Debit Notes Report//////////////
+        Route::get('reports/debit-note', [ReportController::class, 'debitNote'])->name('debit.note');
         Route::get('reports/generate-pdf', [ReportController::class, 'generatePDF'])->name('generate.pdf');
-=======
-        Route::get('vehicle-requisition/approval-authorities', [VehicleReqController::class, 'approvalList'])->name('vehicle-req-approval-auth');
->>>>>>> Stashed changes
     });

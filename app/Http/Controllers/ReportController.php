@@ -30,7 +30,12 @@ class ReportController extends Controller
     {
         
     }
-    
+    public function debitNote(Request $request)
+    {
+        $hrApi = new HrApi;
+        $departments = $hrApi->getDepartments();
+        return view('reports.debit-notes',compact('departments'));
+    }
     public function generatePDF()
     {
         $data = [

@@ -141,6 +141,21 @@
                     @csrf
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
+                            <label for="department" class="col-sm-5 col-form-label">Department <i
+                                    class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <select class="form-control basic-single" required="" name="department"
+                                    id="newDepartment">
+                                    <option value="">Please Select One</option>
+                                    @foreach($departments['data'] as $department)
+                                    <option value="{{$department['deptCode']}}">
+                                        {{$department['deptName']}}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label for="req_for" class="col-sm-5 col-form-label">Requisition For <i
                                     class="text-danger">*</i></label>
                             <div class="col-sm-7">
@@ -235,7 +250,8 @@
                             </div>
                             <div class="col-sm-12 text-right mt-2">
                                 <input type="hidden" name="checkValue" id="checkValue" value="0">
-                                <span class="mt-2"><input type="checkbox" id="aloc_checkbox"> &nbsp;Add Allocated Vehicles</span>
+                                <span class="mt-2"><input type="checkbox" id="aloc_checkbox"> &nbsp;Add Allocated
+                                    Vehicles</span>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -292,6 +308,21 @@
                     @csrf
                     <input type="hidden" name="id" id="requsition_id" value="">
                     <div class="col-md-12 col-lg-6">
+                        <div class="form-group row">
+                            <label for="department" class="col-sm-5 col-form-label">Department <i
+                                    class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <select class="form-control basic-single" required="" name="department"
+                                    id="editDepartment">
+                                    <option value="">Please Select One</option>
+                                    @foreach($departments['data'] as $department)
+                                    <option value="{{$department['deptCode']}}">
+                                        {{$department['deptName']}}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group row">
                             <label for="req_for" class="col-sm-5 col-form-label">Requisition For <i
                                     class="text-danger">*</i></label>
@@ -388,7 +419,8 @@
                             </div>
                             <div class="col-sm-12 text-right mt-2">
                                 <input type="hidden" name="checkValue" id="checkValue2" value="0">
-                                <span class="mt-2"><input type="checkbox" id="aloc_checkbox2"> &nbsp;Add Allocated Vehicles</span>
+                                <span class="mt-2"><input type="checkbox" id="aloc_checkbox2"> &nbsp;Add Allocated
+                                    Vehicles</span>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -499,7 +531,8 @@
 #dataTable {
     width: 100% !important;
 }
-.customloader{
+
+.customloader {
     height: 50px;
     width: 50px;
     border-radius: 50%;
@@ -509,13 +542,14 @@
     position: absolute;
     top: 33%;
     right: 56%;
-    display:none;
-    z-index:9999;
+    display: none;
+    z-index: 9999;
 }
-@keyframes rotate{
-  100%{
-    rotate:360deg;
-  }
+
+@keyframes rotate {
+    100% {
+        rotate: 360deg;
+    }
 }
 </style>
 <script>
@@ -541,9 +575,10 @@ $(document).ready(function() {
                     d.status = $('#status').val();
                 }
             },
-            order: [[0, 'desc']],
-            columns: [
-                {
+            order: [
+                [0, 'desc']
+            ],
+            columns: [{
                     data: 'VEHICLE_REQ_ID',
                     name: 'VEHICLE_REQ_ID',
                 },
@@ -662,6 +697,9 @@ $(document).ready(function() {
     });
     $("#form").validate({
         rules: {
+            department:{
+                required: true,
+            },
             req_for: {
                 required: true,
             },
@@ -736,6 +774,9 @@ $(document).ready(function() {
 
     $("#form2").validate({
         rules: {
+            department:{
+                required: true,
+            },
             req_for: {
                 required: true,
             },
@@ -814,6 +855,7 @@ $(document).ready(function() {
             },
             success: function(res) {
                 $('#requsition_id').val(res.VEHICLE_REQ_ID);
+                $('#editDepartment').val(res.DEPT_ID).trigger('change');
                 $('#req_for2').val(res.REQUISITION_FOR).trigger('change');
                 $('#where_fr2').val(res.WHERE_FROM);
                 $('#where_to2').val(res.WHERE_TO);
@@ -826,16 +868,15 @@ $(document).ready(function() {
                 $('#purpose2').val(res.REQUISITION_PURPOSE_ID).trigger('change');
                 $('#details2').val(res.DETAILS);
                 $('#checkValue2').val(res.IS_CHECK);
-                if(res.IS_CHECK == '1')
-                {
-                  $('#aloc_checkbox2').prop('checked',true);
-                }else{
-                  $('#aloc_checkbox2').prop('checked',false);
+                if (res.IS_CHECK == '1') {
+                    $('#aloc_checkbox2').prop('checked', true);
+                } else {
+                    $('#aloc_checkbox2').prop('checked', false);
                 }
                 $('#vehicle_type2').val(res.VEHICLE_TYPE_ID).trigger('change');
                 $('#vehicle2').val(res.VEHICLE_ID).trigger('change');
                 $('#nunpassenger2').attr('max', res.max_num);
-                
+
             }
         });
     });
@@ -852,19 +893,17 @@ $(document).ready(function() {
         getVehicle();
     });
     $('body').on('click', '#aloc_checkbox', function() {
-        if($('#aloc_checkbox').is(':checked') == true)
-        {
+        if ($('#aloc_checkbox').is(':checked') == true) {
             $('#checkValue').val('1');
-        }else{
+        } else {
             $('#checkValue').val('0');
         }
         getVehicle();
     });
     $('body').on('click', '#aloc_checkbox2', function() {
-        if($('#aloc_checkbox2').is(':checked') == true)
-        {
+        if ($('#aloc_checkbox2').is(':checked') == true) {
             $('#checkValue2').val('1');
-        }else{
+        } else {
             $('#checkValue2').val('0');
         }
         geteditVehicle();
@@ -881,51 +920,53 @@ $(document).ready(function() {
     $('body').on('click', '#time_to2', function() {
         geteditVehicle();
     });
-    function getVehicle(){
-       var chk = $('#aloc_checkbox').is(':checked'); 
-       var type = $('#vehicle_type').val();
-       var rdate = $('#req_date').val();
-       var frmt = $('#time_fr').val();
-       var tot = $('#time_to').val();
-       $.ajax({
-           url: '{{route("get.vehicle.data")}}',
-           type: 'get',
-           dataType: 'html',
-           data: {
-               type: type,
-               rdate: rdate,
-               frmt: frmt,
-               tot: tot,
-               checked:chk
-           },
-           success: function(res) {
-               $('#vehicle').html(res);
-           }
-       });
+
+    function getVehicle() {
+        var chk = $('#aloc_checkbox').is(':checked');
+        var type = $('#vehicle_type').val();
+        var rdate = $('#req_date').val();
+        var frmt = $('#time_fr').val();
+        var tot = $('#time_to').val();
+        $.ajax({
+            url: '{{route("get.vehicle.data")}}',
+            type: 'get',
+            dataType: 'html',
+            data: {
+                type: type,
+                rdate: rdate,
+                frmt: frmt,
+                tot: tot,
+                checked: chk
+            },
+            success: function(res) {
+                $('#vehicle').html(res);
+            }
+        });
     }
-    function geteditVehicle(){
-       var chk = $('#aloc_checkbox2').is(':checked'); 
-       var type = $('#vehicle_type2').val();
-       var rdate = $('#req_date2').val();
-       var frmt = $('#time_fr2').val();
-       var tot = $('#time_to2').val();
-       var id = $('#requsition_id').val();
-       
-       $.ajax({
-           url: '{{route("get.editvehicle.data")}}',
-           type: 'get',
-           dataType: 'html',
-           data: {
-               type: type,
-               rdate: rdate,
-               frmt: frmt,
-               tot: tot,
-               id: id,
-               checked:chk
-           },
-           success: function(res) {
-               $('#vehicle2').html(res);
-               $.ajax({
+
+    function geteditVehicle() {
+        var chk = $('#aloc_checkbox2').is(':checked');
+        var type = $('#vehicle_type2').val();
+        var rdate = $('#req_date2').val();
+        var frmt = $('#time_fr2').val();
+        var tot = $('#time_to2').val();
+        var id = $('#requsition_id').val();
+
+        $.ajax({
+            url: '{{route("get.editvehicle.data")}}',
+            type: 'get',
+            dataType: 'html',
+            data: {
+                type: type,
+                rdate: rdate,
+                frmt: frmt,
+                tot: tot,
+                id: id,
+                checked: chk
+            },
+            success: function(res) {
+                $('#vehicle2').html(res);
+                $.ajax({
                     url: '{{route("get.req.data")}}',
                     type: 'get',
                     dataType: 'json',
@@ -936,9 +977,9 @@ $(document).ready(function() {
                         $('#vehicle2').val(res.VEHICLE_ID).trigger('change');
                         $('.customloader').hide();
                     }
+                });
+            }
         });
-           }
-       });
     }
     $('body').on('change', '#vehicle', function() {
         var selectedOption = $(this).find('option:selected');

@@ -21,17 +21,17 @@ body {
                     <p
                         style="display: inline-block;border-bottom: 2px solid black;font-weight: 700;font-size:25px!important;margin-bottom: 0!important;">
                         International Society for Krishna Consciousness</p>
-                    <p style="margin-bottom: 0;margin-top: 1px;font-weight: 500;font-size:15px!important;">Hare Krishna
+                    <p style="margin-bottom: 0;margin-top: 1px;font-size:13px!important;">Hare Krishna
                         Hill, Chord Road, Rajaji Nagar, Bangalore
                         -10</p>
-                    <span style="border-bottom: 1px solid black;font-weight: 700;font-size:16px!important;">Supplier
+                    <span style="border-bottom: 1px solid black;font-weight: 700;font-size:14px!important;">Supplier
                         Entity code:- FM 00</span>
                 </div>
                 <div class="col-md-6" style="width:100%;display:inline-block;">
                     <p style="font-size:14px;">Date:- 05 May 2024</p>
                 </div>
                 <div class="col-md-6 text-right"
-                    style="width:100%;display:inline-block;margin-top:-42px;text-align:right;">
+                    style="width:100%;display:inline-block;margin-top:-48px;text-align:right;">
                     <p style="font-size:14px;">Interunit transfer No:- T pt/Apr 2024</p>
                 </div>
                 <div class="col-md-6" style="width:100%;display:inline-block;">
@@ -49,51 +49,51 @@ body {
                     <table style="width: 100%; border-collapse: collapse;">
                         <thead>
                             <tr style="background-color: #f2f2f2;">
-                                <th style="border: 1px solid #ddd; padding: 4px;">Sl No</th>
-                                <th style="border: 1px solid #ddd; padding: 4px;">Details</th>
-                                <th style="border: 1px solid #ddd; padding: 4px;">UoM</th>
-                                <th style="border: 1px solid #ddd; padding: 4px;">Qty</th>
-                                <th style="border: 1px solid #ddd; padding: 4px;">Rate</th>
-                                <th style="border: 1px solid #ddd; padding: 4px;">Cost</th>
+                                <th style="border: 1px solid #ddd; padding: 4px;font-size:15px;text-align:center;">Sl No</th>
+                                <th style="border: 1px solid #ddd; padding: 4px;font-size:15px;text-align:left;">Details</th>
+                                <th style="border: 1px solid #ddd; padding: 4px;font-size:15px;text-align:left;">UOM</th>
+                                <th style="border: 1px solid #ddd; padding: 4px;font-size:15px;text-align:right;">Qty</th>
+                                <th style="border: 1px solid #ddd; padding: 4px;font-size:15px;text-align:right;">Rate</th>
+                                <th style="border: 1px solid #ddd; padding: 4px;font-size:15px;text-align:right;">Cost</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td style="border: 1px solid #ddd; padding: 4px;text-align:center;">1</td>
-                                <td style="border: 1px solid #ddd; padding: 4px;text-align:center;">Gas</td>
-                                <td style="border: 1px solid #ddd; padding: 4px;text-align:center;">Kg</td>
-                                <td style="border: 1px solid #ddd; padding: 4px;text-align:center;">-</td>
-                                <td style="border: 1px solid #ddd; padding: 4px;text-align:center;">68.65</td>
-                                <td style="border: 1px solid #ddd; padding: 4px;text-align:center;">0</td>
+                                <td style="border: 1px solid #ddd; padding: 4px;text-align:center;font-size:14px;">1</td>
+                                <td style="border: 1px solid #ddd; padding: 4px;text-align:left;font-size:14px;">Gas</td>
+                                <td style="border: 1px solid #ddd; padding: 4px;text-align:left;font-size:14px;">Kg</td>
+                                <td style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">-</td>
+                                <td style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">68.65</td>
+                                <td style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">0</td>
                             </tr>
                             <tr>
-                                <td style="border: 1px solid #ddd; padding: 4px;text-align:center;">2</td>
-                                <td style="border: 1px solid #ddd; padding: 4px;text-align:center;">Petrol</td>
-                                <td style="border: 1px solid #ddd; padding: 4px;text-align:center;">Ltr</td>
-                                <td style="border: 1px solid #ddd; padding: 4px;text-align:center;">-</td>
-                                <td style="border: 1px solid #ddd; padding: 4px;text-align:center;">102.65</td>
-                                <td style="border: 1px solid #ddd; padding: 4px;text-align:center;">0</td>
+                                <td style="border: 1px solid #ddd; padding: 4px;text-align:center;font-size:14px;">2</td>
+                                <td style="border: 1px solid #ddd; padding: 4px;text-align:left;font-size:14px;">Petrol</td>
+                                <td style="border: 1px solid #ddd; padding: 4px;text-align:left;font-size:14px;">Ltr</td>
+                                <td style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">-</td>
+                                <td style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">102.65</td>
+                                <td style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">0</td>
                             </tr>
                             <tr>
-                                <td style="border: 1px solid #ddd; padding: 4px;text-align:center;">3</td>
-                                <td style="border: 1px solid #ddd; padding: 4px;text-align:center;">Diesel</td>
-                                <td style="border: 1px solid #ddd; padding: 4px;text-align:center;">Ltr</td>
-                                <td style="border: 1px solid #ddd; padding: 4px;text-align:center;">200.53</td>
-                                <td style="border: 1px solid #ddd; padding: 4px;text-align:center;">87.65</td>
-                                <td style="border: 1px solid #ddd; padding: 4px;text-align:center;">17623.25</td>
+                                <td style="border: 1px solid #ddd; padding: 4px;text-align:center;font-size:14px;">3</td>
+                                <td style="border: 1px solid #ddd; padding: 4px;text-align:left;font-size:14px;">Diesel</td>
+                                <td style="border: 1px solid #ddd; padding: 4px;text-align:left;font-size:14px;">Ltr</td>
+                                <td style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">200.53</td>
+                                <td style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">87.65</td>
+                                <td style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">17623.25</td>
                             </tr>
                             <tr>
                                 <td style="border: 1px solid #ddd; padding: 4px;text-align:center;"></td>
                                 <td style="border: 1px solid #ddd; padding: 4px;text-align:center;"></td>
                                 <td style="border: 1px solid #ddd; padding: 4px;text-align:center;"></td>
-                                <td style="border: 1px solid #ddd; padding: 4px;text-align:center;" colspan="2"><b>Amount Debitable</b></td>
-                                <td style="border: 1px solid #ddd; padding: 4px;text-align:center;"><b>3245,00</b></td>
+                                <td style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;" colspan="2"><b>Amount Debitable</b></td>
+                                <td style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;"><b>3245,00</b></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="col-md-6" style="width:100%;display:inline-block;">
-                    <p style="font-size:14px;border-left:2px solid black;">
+                    <p style="font-size:14px;">
                         Division Head<br>
                         Supplier Dept
                     </p>
@@ -101,7 +101,7 @@ body {
                 <div class="col-md-6" style="width:100%;display:inline-block;text-align:right;margin-top:-62px;">
                     <p style="font-size:14px;">
                         Division Head<br>
-                        Supplier Dept
+                        User Dept
                     </p>
                 </div>
                 <div class="col-md-12 text-center mb-5"

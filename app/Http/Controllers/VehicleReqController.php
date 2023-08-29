@@ -39,7 +39,7 @@ class VehicleReqController extends Controller
         $hrApi = new HrApi;
         $employee = $hrApi->getEmployeeList($emp);
         $empData = $employee['data'];
-
+        $departments = $hrApi->getDepartments();
 
         if ($request->ajax()) {
 
@@ -165,7 +165,7 @@ class VehicleReqController extends Controller
                 ->make(true);
     
         }
-        return view('vehicle-req.vehicle-requisition',compact('driver','vehicle_type','purpose','empData'));
+        return view('vehicle-req.vehicle-requisition',compact('driver','vehicle_type','purpose','empData','departments'));
     }
     public function addRequisition(Request $request)
     {
@@ -175,6 +175,7 @@ class VehicleReqController extends Controller
 		try{
             $getVehicle = Vehicle::where(['VEHICLE_ID'=>$request->vehicle])->first();
     	    $dataInsert = VehicleRequisition::create([
+                'DEPT_ID'=>$request->department,
                 'REQUISITION_FOR'=>$request->req_for,
                 'VEHICLE_TYPE_ID'=>$request->vehicle_type,
                 'WHERE_FROM'=>$request->where_fr,
@@ -232,6 +233,7 @@ class VehicleReqController extends Controller
             $getVehicle = Vehicle::where(['VEHICLE_ID'=>$request->vehicle])->first();
             $data=VehicleRequisition::where(['VEHICLE_REQ_ID'=>$request->id])->first();
     	    $data->update([
+                'DEPT_ID'=>$request->department,
                 'REQUISITION_FOR'=>$request->req_for,
                 'VEHICLE_TYPE_ID'=>$request->vehicle_type,
                 'WHERE_FROM'=>$request->where_fr,
