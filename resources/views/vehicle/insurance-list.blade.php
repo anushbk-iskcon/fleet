@@ -158,9 +158,6 @@
             </div>
 
         </div>
-        <div class="modal-footer">
-
-        </div>
 
     </div>
 
@@ -274,12 +271,15 @@
     let insuranceInfoListURL = "{{route('insurance-list.list')}}";
     let getDetailsURL = "{{route('insurance.details')}}";
     let updateDetailsURL = "{{route('insurance.update')}}";
-    let activationStatusChangeURL = "{{route('insurance.change-active-status')}}";
 
     let recurringPeriods = JSON.parse(`{!! json_encode($recurringPeriods) !!}`);
     // console.log(recurringPeriods);
     let vehicles = JSON.parse(`{!! json_encode($vehicles) !!}`);
     // console.log(vehicles);
+
+    let documentsPath = "{{asset('public/upload/documents/insurance/')}}";
+    // console.log(documentsPath);
+    // final / not included in asset URL output above
 </script>
 <script src="{{asset('public/dist/js/vehicles/insurance.js')}}">
 </script>

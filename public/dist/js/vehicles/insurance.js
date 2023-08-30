@@ -75,7 +75,7 @@ $(document).ready(function () {
         }, 10);
     });
 
-    $("document.body #editInsuranceDetailsForm").validate({
+    $("#editInsuranceDetailsForm").validate({
         rules: {
             company_name: {
                 required: true,
@@ -106,6 +106,7 @@ $(document).ready(function () {
             ev.preventDefault();
         }
     });
+
 }); // End of document.ready
 
 function populateTable(table) {
@@ -157,12 +158,14 @@ function editInfo(id) {
             _token: csrfToken,
             insurance_id: id
         },
+        dataType: 'json',
         success: function (res) {
             console.log(res);
 
             $("#edit .modal-body").html('');
             let editFormContent = `<form action="${updateURL}" method="post" enctype="multipart/form-data" class="row" id="editInsuranceDetailsForm" accept-charset="utf-8">
             <input type="hidden" name="_token" value="${csrfToken}">
+            <input type="hidden" name="insurance_id" value="${res.INSURANCE_ID}">
             <div class="col-md-12 col-lg-6">
                 <div class="form-group row">
                     <label for="edit_company_name" class="col-sm-5 col-form-label">Company Name <i class="text-danger">*</i></label>
@@ -195,8 +198,7 @@ function editInfo(id) {
                     editFormContent += '<option value="' + data.RECURRING_PERIOD_ID + '">' + data.RECURRING_PERIOD_NAME + '</option>';
             });
 
-            editFormContent += `</select></div>
-                </div>
+            editFormContent += `</select></div></div>
                 <div class="form-group row">
                     <label for="checkbox_reminder${res.INSURANCE_ID}" class="col-sm-5 col-form-label">&nbsp;</label>
                     <div class="col-sm-7 checkbox checkbox-primary">
@@ -262,20 +264,22 @@ function editInfo(id) {
                     </div>
                 </div>
                 <div class="form-group row">
-                    
-                    <div class="col-sm-12 file-upload-container">
-                        Currently Uploaded Document: ${res.POLICY_DOCUMENT}
+                    <label class="col-sm-5 col-form-label">Uploaded Document</label>
+                    <div class="col-sm-7">
+                        <a href="${documentsPath + '/' + res.POLICY_DOCUMENT}" target="_blank" class="btn btn-info">
+                        <i class="fas fa-eye"></i> View Current Document
+                        </a>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="policy_document" class="col-sm-5 col-form-label">Upload New Policy Document</label>
                     <div class="col-sm-7 file-upload-container">
-                        <input name="policy_document" type="file" accept="image/*,application/pdf,.doc,.docx" required="" />
+                        <input name="policy_document" type="file" accept="image/*,application/pdf,.doc,.docx" />
                     </div>
                 </div>
 
                 <div class="form-group text-right">
-                    <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                    <button type="reset" class="btn btn-primary w-md m-b-5" id="resetEditInsFormBtn">Reset</button>
                     <button type="submit" class="btn btn-success w-md m-b-5">Save</button>
                 </div>
             </div>
@@ -291,10 +295,78 @@ function editInfo(id) {
                 },
                 maxYear: parseInt(moment().format('YYYY'), 10)
             });
+
+            $("#resetEditInsFormBtn").click(function () {
+                setTimeout(() => {
+                    $("#editInsuranceDetailsForm .basic-single").trigger('change');
+                    $("#editInsuranceDetailsForm").validate().resetForm();
+                }, 10);
+            });
+
             $("#edit").modal('show');
+            reinitValidationForEditForm();
         },
         error: function () {
             console.log("Error getting details");
+        }
+    });
+}
+
+// Re-initilaize validation for dynamically-generated Edit Insurance details Form
+function reinitValidationForEditForm() {
+    let validator = $("#editInsuranceDetailsForm").validate();
+    validator.destroy();
+    $("#editInsuranceDetailsForm").validate({
+        rules: {
+            company_name: {
+                required: true,
+                maxlength: 100
+            },
+            vehicle: 'required',
+            policy_number: {
+                required: true,
+                maxlength: 10
+            },
+            charge_payable: {
+                required: true,
+                min: 0
+            },
+            start_date: 'required',
+            end_date: 'required',
+            recurring_period: 'required',
+            deductible: 'required',
+            remarks: {
+                maxlength: 200
+            }
+        },
+        errorElement: 'div',
+        errorPlacement: function (error, element) {
+            $(element).closest('div[class*=col-sm-]').append(error);
+        },
+        submitHandler: function (form, ev) {
+            ev.preventDefault();
+            let updatedInsuranceDetails = new FormData($(form)[0]);
+
+            $.ajax({
+                url: form.action,
+                type: form.method,
+                data: updatedInsuranceDetails,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                success: function (res) {
+                    if (res.successCode === 1) {
+                        toastr.success(res.message, '', { closeButton: true });
+                        populateTable($("#insuranceInfoTable").DataTable());
+                        $("#edit").modal('hide');
+                    } else {
+                        toastr.error(res.message, '', { closeButton: true });
+                    }
+                },
+                error: function () {
+                    toastr.error('Error updating. Please try again', '', { closeButton: true });
+                }
+            });
         }
     });
 }

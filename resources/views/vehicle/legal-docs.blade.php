@@ -2,6 +2,10 @@
 
 @section('title', 'Legal Documents')
 
+@section('css-content')
+
+@endsection
+
 @section('breadcrumb-content')
 <li class="breadcrumb-item"><a href="{{url('home')}}">Home</a></li>
 <li class="breadcrumb-item active" id="moduleName">Vehicle Management</li>
@@ -29,34 +33,21 @@
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" name="document_type" id="document_type">
                                     <option value="" selected="selected">Please Select One</option>
-                                    <option value="Vehicle">
-                                        Vehicle</option>
-                                    <option value="NID">
-                                        NID</option>
-                                    <option value="Driving License">
-                                        Driving License</option>
-                                    <option value="Trade License">
-                                        Trade License</option>
+                                    @foreach($documentTypes as $documentType)
+                                    <option value="{{$documentType['DOCUMENT_TYPE_ID']}}">{{$documentType['DOCUMENT_TYPE_NAME']}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="vehicle" class="col-sm-5 col-form-label">Vehicles <i class="text-danger">*</i></label>
+                            <label for="vehicle" class="col-sm-5 col-form-label">Vehicle <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="vehicle" id="vehicle">
                                     <option value="" selected="selected">Please Select One</option>
-                                    <option value="داف">داف </option>
-                                    <option value="Kia">Kia </option>
-                                    <option value="red">red </option>
-                                    <option value="Kia Soul">Kia Soul </option>
-                                    <option value="quad r647">quad r647 </option>
-                                    <option value="AS">AS </option>
-                                    <option value="d">d </option>
-                                    <option value="Fareed Express">Fareed Express </option>
-                                    <option value="Khyber Express">Khyber Express </option>
-                                    <option value="Sukkur Express UP">Sukkur Express UP </option>
-                                    <option value="Shah Latif Express UP">Shah Latif Express UP </option>
+                                    @foreach($vehicles as $vehicle)
+                                    <option value="{{$vehicle['VEHICLE_ID']}}">{{$vehicle['VEHICLE_NAME']}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -197,17 +188,9 @@
                         <div class="col-sm-7">
                             <select class="form-control basic-single" name="vehiclesr" id="vehiclesr">
                                 <option value="" selected="selected">Please Select One</option>
-                                <option value="داف">داف </option>
-                                <option value="Kia">Kia </option>
-                                <option value="red">red </option>
-                                <option value="Kia Soul">Kia Soul </option>
-                                <option value="quad r647">quad r647 </option>
-                                <option value="AS">AS </option>
-                                <option value="d">d </option>
-                                <option value="Fareed Express">Fareed Express </option>
-                                <option value="Khyber Express">Khyber Express </option>
-                                <option value="Sukkur Express UP">Sukkur Express UP </option>
-                                <option value="Shah Latif Express UP">Shah Latif Express UP </option>
+                                @foreach($vehicles as $vehicle)
+                                <option value="{{$vehicle['VEHICLE_ID']}}">{{$vehicle['VEHICLE_NAME']}}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -216,14 +199,9 @@
                         <div class="col-sm-7">
                             <select class="form-control basic-single" name="document_typesr" id="document_typesr">
                                 <option value="" selected="selected">Please Select One</option>
-                                <option value="Vehicle">
-                                    Vehicle</option>
-                                <option value="NID">
-                                    NID</option>
-                                <option value="Driving License">
-                                    Driving License</option>
-                                <option value="Trade License">
-                                    Trade License</option>
+                                @foreach($documentTypes as $documentType)
+                                <option value="{{$documentType['DOCUMENT_TYPE_ID']}}">{{$documentType['DOCUMENT_TYPE_NAME']}}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -260,10 +238,10 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="docinfo" class="table table-striped table-bordered dt-responsive nowrap">
+                    <table id="legalDocumentsTable" class="table table-striped table-bordered dt-responsive nowrap">
                         <thead>
                             <tr>
-                                <th>SL</th>
+                                <th>Sl No.</th>
                                 <th>Document Type</th>
                                 <th>Vehicle</th>
                                 <th>Last Issue Date</th>
@@ -271,7 +249,7 @@
                                 <th>Vendor</th>
                                 <th>Commission</th>
                                 <th>Notification Before</th>
-                                <th>Action</th>
+                                <th>Action(s)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -395,10 +373,12 @@
         </div>
     </div>
 </div>
+@endsection
+@section('js-content')
 <!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/documentation_list.js"></script> -->
 <script>
     $(document).ready(function() {
-        $("#docinfo").DataTable();
+        $("#legalDocumentsTable").DataTable();
     });
 </script>
 @endsection

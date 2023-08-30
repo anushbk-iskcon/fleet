@@ -136,10 +136,12 @@ Route::middleware('auth')->group(function () {
     Route::post('vehicles/insurance/add', [InsuranceController::class, 'store'])->name('insurance.add');
     Route::post('insurance/details', [InsuranceController::class, 'getDetails'])->name('insurance.details');
     Route::post('vehicles/insurance/update', [InsuranceController::class, 'update'])->name('insurance.update');
-    Route::post('vehicles/insurance/change-active-status', [InsuranceController::class, 'activationStatusChange'])->name('insurance.change-active-status');
 
     Route::get('vehicles/legal-documents', [LegalDocumentsController::class, 'index'])->name('legal-documents');
     Route::post('vehicles/legal-documents', [LegalDocumentsController::class, 'index'])->name('legal-documents.list');
+    Route::post('vehicles/legal-documents/add', [LegalDocumentsController::class, 'store'])->name('legal-documents.add');
+    Route::post('vehicles/legal-documents/details', [LegalDocumentsController::class, 'getDetails'])->name('legal-documents.details');
+    Route::post('vehicles/legal-documents/update', [LegalDocumentsController::class, 'update'])->name('legal-documents.update');
 
     Route::get('vehicles/reminders', function () {
         return view('vehicle.reminder-list');

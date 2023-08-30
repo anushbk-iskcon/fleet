@@ -78,7 +78,7 @@ class InsuranceController extends Controller
         $insurance_id = $request->insurance_id;
 
         $insurance = Insurance::find($insurance_id);
-        return $insurance;
+        return $insurance->toJSON();
     }
 
     /**
@@ -91,8 +91,32 @@ class InsuranceController extends Controller
 
         $insurance = Insurance::find($ins_id);
         $insurance->COMPANY_NAME = $request->company_name;
+        $insurance->VEHICLE = $request->vehicle;
+        $insurance->POLICY_NUMBER = $request->policy_number;
+        $insurance->CHARGE_PAYABLE = $request->charge_payable;
+        $insurance->START_DATE = $request->start_date;
+        $insurance->END_DATE = $request->end_date;
+        $insurance->RECURRING_PERIOD = $request->recurring_period;
 
-        $updated = '';
+        if ($request->has('recurring_date'))
+            $insurance->RECURRING_DATE = $request->recurring_date;
+        $insurance->RECURRING_PERIOD_REMINDER = $request->add_reminder == 1 ? 'Y' : 'N';
+        $insurance->STATUS = $request->status == 1 ? 'Y' : 'N';
+
+        if ($request->has('remarks'))
+            $insurance->REMARKS = $request->remarks;
+        $insurance->DEDUCTIBLE = $request->deductible;
+
+        // To upload insurance policy document if new document is attached
+        if ($request->hasFile('policy_document')) {
+            $file = $request->file('policy_document');
+            $fileName = time() . '-' . date('Y') . '.' . $file->getClientOriginalExtension();
+            $uploadDestination = public_path('/upload/documents/insurance/');
+            $file->move($uploadDestination, $fileName);
+            $insurance->POLICY_DOCUMENT = $fileName;
+        }
+
+        $updated = $insurance->save();
         if ($updated) {
             return response()->json(['successCode' => 1, 'message' => 'Updated successfully']);
         } else {
