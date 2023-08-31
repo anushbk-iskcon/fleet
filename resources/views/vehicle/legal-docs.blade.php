@@ -3,7 +3,21 @@
 @section('title', 'Legal Documents')
 
 @section('css-content')
+<style>
+    div.error {
+        font-size: .8em;
+        color: #f66;
+    }
 
+    select.error~.select2 .select2-selection {
+        border: 1px solid #f99;
+    }
+
+    div.file-upload-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+</style>
 @endsection
 
 @section('breadcrumb-content')
@@ -26,7 +40,8 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="" id="emp_form" class="row" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+                <form action="{{route('legal-documents.add')}}" id="addLegalDocumentForm" class="row" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+                    @csrf
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
                             <label for="document_type" class="col-sm-5 col-form-label">Document Type </label>
@@ -74,9 +89,9 @@
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="vendor" id="vendor">
                                     <option value="" selected="selected">Please Select One</option>
-                                    <option value="asdfas">asdfas </option>
-                                    <option value="honda">honda </option>
-                                    <option value="Auto Parts">Auto Parts </option>
+                                    @foreach($vendors as $vendor)
+                                    <option value="{{$vendor['VENDOR_ID']}}">{{$vendor['VENDOR_NAME']}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -93,20 +108,9 @@
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="notification_before" id="notification_before">
                                     <option value="" selected="selected">Please Select One</option>
-                                    <option value="7 days">
-                                        7 days</option>
-                                    <option value="hello">
-                                        hello</option>
-                                    <option value="2 Month">
-                                        2 Month</option>
-                                    <option value="1 Month">
-                                        1 Month</option>
-                                    <option value="10 days">
-                                        10 days</option>
-                                    <option value="15 days">
-                                        15 days</option>
-                                    <option value="5 days">
-                                        5 days</option>
+                                    @foreach($notifTypes as $notifType)
+                                    <option value="{{$notifType['NOTIFICATION_TYPE_ID']}}">{{$notifType['NOTIFICATION_TYPE_NAME']}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -115,8 +119,8 @@
                             <label for="email" class="col-sm-5 col-form-label">Email </label>
                             <div class="col-sm-2">
                                 <div class="form-check form-check-inline">
-                                    <input id="inlineCheckbox1" class="form-check-input" name="isemail" type="checkbox" data-toggle="toggle" data-style="mr-1">
-                                    <label for="inlineCheckbox1" class="form-check-label">&nbsp;</label>
+                                    <input id="emailCheckbox" class="form-check-input" name="is_email" type="checkbox" data-toggle="toggle" data-style="mr-1">
+                                    <label for="emailCheckbox" class="form-check-label">&nbsp;</label>
                                 </div>
                             </div>
                             <div class="col-sm-5">
@@ -127,8 +131,8 @@
                             <label for="email" class="col-sm-5 col-form-label">SMS </label>
                             <div class="col-sm-2">
                                 <div class="form-check form-check-inline">
-                                    <input id="inlineCheckbox2" class="form-check-input" type="checkbox" name="issms" data-toggle="toggle" data-style="mr-1">
-                                    <label for="inlineCheckbox2" class="form-check-label">&nbsp;</label>
+                                    <input id="smsCheckbox" class="form-check-input" type="checkbox" name="is_sms" data-toggle="toggle" data-style="mr-1">
+                                    <label for="smsCheckbox" class="form-check-label">&nbsp;</label>
                                 </div>
                             </div>
                             <div class="col-sm-5">
@@ -138,13 +142,13 @@
 
                         <div class="form-group row">
                             <label for="document_attachment" class="col-sm-5 col-form-label">Document Attachment</label>
-                            <div class="col-sm-7">
-                                <input name="document_attachment" type="file" />
+                            <div class="col-sm-7 file-upload-container">
+                                <input name="document_attachment" type="file" accept="image/*, application/pdf" />
                             </div>
                         </div>
 
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetAddFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
                         </div>
                     </div>
@@ -154,6 +158,7 @@
         </div>
     </div>
 </div>
+
 <div id="edit" class="modal fade bd-example-modal-lg" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -166,20 +171,23 @@
             </div>
 
         </div>
-        <div class="modal-footer">
-        </div>
     </div>
 
 </div>
+
 <div class="row">
     <div class="col-sm-12">
         <div class="card mb-3">
             <div class="card-header p-2">
-                <h4 class="pl-3">Search Here <small class="float-right">
-                        <button type="button" class="btn btn-primary btn-md" data-target="#add0" data-toggle="modal"><i class="ti-plus" aria-hidden="true"></i>
-                            Add Legal Documentation</button>
-
-                    </small></h4>
+                <h4 class="pl-3">
+                    Search Here
+                    <small class="float-right">
+                        <button type="button" class="btn btn-primary btn-md" data-target="#add0" data-toggle="modal">
+                            <i class="ti-plus" aria-hidden="true"></i>
+                            Add Legal Documentation
+                        </button>
+                    </small>
+                </h4>
             </div>
             <div class="card-body row">
                 <div class="col-sm-12 col-xl-4">
@@ -254,118 +262,19 @@
                         </thead>
                         <tbody>
 
-                            <tr role="row" class="odd">
+                            <!-- <tr role="row" class="odd">
                                 <td class="sorting_1" tabindex="0">1</td>
                                 <td>NID</td>
                                 <td>Nissan</td>
                                 <td>2021-02-01</td>
                                 <td>2021-02-24</td>
-                                <td>Rahim Afroz</td>
+                                <td>Abc</td>
                                 <td>6787</td>
                                 <td>1 Month</td>
                                 <td style="display: none;"><input name="url" type="hidden" id="url_3" value="https://vmsdemo.bdtask-demo.com/vehiclemgt/Vehicle_management/updatedocumentfrm"><a onclick="editinfo(3)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/vehiclemgt/Vehicle_management/delete_documentation/3" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
-                            <tr role="row" class="even">
-                                <td class="sorting_1" tabindex="0">2</td>
-                                <td>Trade License</td>
-                                <td>Navana</td>
-                                <td>2020-02-11</td>
-                                <td>2021-02-11</td>
-                                <td>Rahim Afroz</td>
-                                <td>6787</td>
-                                <td>2 Month</td>
-                                <td style="display: none;"><input name="url" type="hidden" id="url_4" value="https://vmsdemo.bdtask-demo.com/vehiclemgt/Vehicle_management/updatedocumentfrm"><a onclick="editinfo(4)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/vehiclemgt/Vehicle_management/delete_documentation/4" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="sorting_1" tabindex="0">3</td>
-                                <td>NID</td>
-                                <td>BMW</td>
-                                <td>2021-02-17</td>
-                                <td>2021-02-17</td>
-                                <td>Rahim Afroz</td>
-                                <td>uyuyt</td>
-                                <td>2 Month</td>
-                                <td style="display: none;"><input name="url" type="hidden" id="url_5" value="https://vmsdemo.bdtask-demo.com/vehiclemgt/Vehicle_management/updatedocumentfrm"><a onclick="editinfo(5)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/vehiclemgt/Vehicle_management/delete_documentation/5" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
-                            <tr role="row" class="even">
-                                <td class="sorting_1" tabindex="0">4</td>
-                                <td>NID</td>
-                                <td>balaka</td>
-                                <td>2021-02-25</td>
-                                <td>2021-02-25</td>
-                                <td>Rahim Afroz</td>
-                                <td>400</td>
-                                <td>1 Month</td>
-                                <td style="display: none;"><input name="url" type="hidden" id="url_6" value="https://vmsdemo.bdtask-demo.com/vehiclemgt/Vehicle_management/updatedocumentfrm"><a onclick="editinfo(6)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/vehiclemgt/Vehicle_management/delete_documentation/6" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="sorting_1" tabindex="0">5</td>
-                                <td>Driving License</td>
-                                <td>DEMO2</td>
-                                <td>2021-03-02</td>
-                                <td>2021-03-02</td>
-                                <td>Rahim Afroz</td>
-                                <td>43</td>
-                                <td>1 Month</td>
-                                <td style="display: none;"><input name="url" type="hidden" id="url_7" value="https://vmsdemo.bdtask-demo.com/vehiclemgt/Vehicle_management/updatedocumentfrm"><a onclick="editinfo(7)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/vehiclemgt/Vehicle_management/delete_documentation/7" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
-                            <tr role="row" class="even">
-                                <td class="sorting_1" tabindex="0">6</td>
-                                <td>Trade License</td>
-                                <td>DEMO3</td>
-                                <td>2021-03-02</td>
-                                <td>2021-03-02</td>
-                                <td>vandor</td>
-                                <td>65</td>
-                                <td>2 Month</td>
-                                <td style="display: none;"><input name="url" type="hidden" id="url_8" value="https://vmsdemo.bdtask-demo.com/vehiclemgt/Vehicle_management/updatedocumentfrm"><a onclick="editinfo(8)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/vehiclemgt/Vehicle_management/delete_documentation/8" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="sorting_1" tabindex="0">7</td>
-                                <td>Driving License</td>
-                                <td>DEMO3</td>
-                                <td>2021-03-02</td>
-                                <td>2021-03-02</td>
-                                <td>Rahim Afroz</td>
-                                <td>56</td>
-                                <td>1 Month</td>
-                                <td style="display: none;"><input name="url" type="hidden" id="url_9" value="https://vmsdemo.bdtask-demo.com/vehiclemgt/Vehicle_management/updatedocumentfrm"><a onclick="editinfo(9)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/vehiclemgt/Vehicle_management/delete_documentation/9" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
-                            <tr role="row" class="even">
-                                <td class="sorting_1" tabindex="0">8</td>
-                                <td>Driving License</td>
-                                <td>DEMO3</td>
-                                <td>2021-03-02</td>
-                                <td>2021-03-02</td>
-                                <td>vandor</td>
-                                <td>656</td>
-                                <td>10 days</td>
-                                <td style="display: none;"><input name="url" type="hidden" id="url_10" value="https://vmsdemo.bdtask-demo.com/vehiclemgt/Vehicle_management/updatedocumentfrm"><a onclick="editinfo(10)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/vehiclemgt/Vehicle_management/delete_documentation/10" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
-                            <tr role="row" class="odd">
-                                <td class="sorting_1" tabindex="0">9</td>
-                                <td>NID</td>
-                                <td>AS</td>
-                                <td>2021-03-02</td>
-                                <td>2021-03-02</td>
-                                <td>Auto Parts</td>
-                                <td>56</td>
-                                <td>2 Month</td>
-                                <td style="display: none;"><input name="url" type="hidden" id="url_11" value="https://vmsdemo.bdtask-demo.com/vehiclemgt/Vehicle_management/updatedocumentfrm"><a onclick="editinfo(11)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/vehiclemgt/Vehicle_management/delete_documentation/11" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
-                            <tr role="row" class="even">
-                                <td class="sorting_1" tabindex="0">10</td>
-                                <td>Driving License</td>
-                                <td>Kia Soul</td>
-                                <td>2023-04-15</td>
-                                <td>2023-04-29</td>
-                                <td>honda</td>
-                                <td>2</td>
-                                <td>5 days</td>
-                                <td style="display: none;"><input name="url" type="hidden" id="url_12" value="https://vmsdemo.bdtask-demo.com/vehiclemgt/Vehicle_management/updatedocumentfrm"><a onclick="editinfo(12)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/vehiclemgt/Vehicle_management/delete_documentation/12" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr>
-                        </tbody>
+                            </tr> -->
 
+                        </tbody>
 
                     </table> <!-- /.table-responsive -->
                 </div>
@@ -377,8 +286,21 @@
 @section('js-content')
 <!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/documentation_list.js"></script> -->
 <script>
-    $(document).ready(function() {
-        $("#legalDocumentsTable").DataTable();
-    });
+    // Routes and other information
+    let csrfToken = $('meta[name="csrf-token"]').attr('content');
+    let documentsListURL = "{{route('legal-documents.list')}}";
+    let getDetailsURL = "{{route('legal-documents.details')}}";
+
+    let updateDetailsURL = "{{route('legal-documents.update')}}";
+
+    // Converting JSON returned from Laravel controller for use in External JS
+    let vehicles = JSON.parse(`{!! json_encode($vehicles) !!}`);
+    let documentTypes = JSON.parse(`{!! json_encode($documentTypes) !!}`);
+    let vendors = JSON.parse(`{!! json_encode($vendors) !!}`);
+    let notificationTypes = JSON.parse(`{!! json_encode($notifTypes) !!}`);
+
+    let documentsPath = "{{asset('public/upload/documents/legal/')}}";
+</script>
+<script src="{{asset('public/dist/js/vehicles/legal_documents.js')}}">
 </script>
 @endsection

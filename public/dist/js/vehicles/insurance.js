@@ -160,7 +160,7 @@ function editInfo(id) {
         },
         dataType: 'json',
         success: function (res) {
-            console.log(res);
+            // console.log(res);
 
             $("#edit .modal-body").html('');
             let editFormContent = `<form action="${updateURL}" method="post" enctype="multipart/form-data" class="row" id="editInsuranceDetailsForm" accept-charset="utf-8">

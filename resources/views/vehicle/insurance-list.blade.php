@@ -279,7 +279,7 @@
 
     let documentsPath = "{{asset('public/upload/documents/insurance/')}}";
     // console.log(documentsPath);
-    // final / not included in asset URL output above
+    // final '/' not included in asset URL output above - to be added when using the URL
 </script>
 <script src="{{asset('public/dist/js/vehicles/insurance.js')}}">
 </script>
