@@ -142,6 +142,7 @@ Route::middleware('auth')->group(function () {
     Route::post('vehicles/legal-documents/add', [LegalDocumentsController::class, 'store'])->name('legal-documents.add');
     Route::post('vehicles/legal-documents/details', [LegalDocumentsController::class, 'getDetails'])->name('legal-documents.details');
     Route::post('vehicles/legal-documents/update', [LegalDocumentsController::class, 'update'])->name('legal-documents.update');
+    Route::post('vehicles/legal-documents/change-activation', [LegalDocumentsController::class, 'changeActivationStatus'])->name('legal-documents.change-activation');
 
     Route::get('vehicles/reminders', function () {
         return view('vehicle.reminder-list');

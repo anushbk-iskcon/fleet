@@ -124,7 +124,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-5">
-                                <input name="email" class="form-control" type="email" placeholder="Email" id="email">
+                                <input name="email" class="form-control" type="email" placeholder="Email" id="email" disabled>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -136,7 +136,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-5">
-                                <input name="sms" class="form-control" type="text" placeholder="SMS" id="sms">
+                                <input name="sms" class="form-control" type="text" placeholder="SMS" id="sms" disabled>
                             </div>
                         </div>
 
@@ -290,7 +290,7 @@
     let csrfToken = $('meta[name="csrf-token"]').attr('content');
     let documentsListURL = "{{route('legal-documents.list')}}";
     let getDetailsURL = "{{route('legal-documents.details')}}";
-
+    let changeActivationURL = "{{route('legal-documents.change-activation')}}";
     let updateDetailsURL = "{{route('legal-documents.update')}}";
 
     // Converting JSON returned from Laravel controller for use in External JS

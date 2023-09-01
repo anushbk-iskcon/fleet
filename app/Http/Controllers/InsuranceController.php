@@ -19,10 +19,31 @@ class InsuranceController extends Controller
     public function index(Request $request)
     {
         if (request()->isMethod('post')) {
+            $vehicle = $request->vehiclesr;
+            $insuranceCompany = $request->insurance_company;
+            $policyNumber = $request->policy_numbersr;
+            $startDate = $request->date_fr;
+            $endDate = $request->date_to;
+
             $insuranceList = DB::table('vehicle_insurance')
                 ->join('vehicles', 'vehicle_insurance.VEHICLE', '=', 'vehicles.VEHICLE_ID')
                 ->join('mstr_recurring_periods', 'vehicle_insurance.RECURRING_PERIOD', '=', 'mstr_recurring_periods.RECURRING_PERIOD_ID')
                 ->select('vehicle_insurance.*', 'vehicles.VEHICLE_NAME', 'mstr_recurring_periods.RECURRING_PERIOD_NAME')
+                ->when($vehicle, function ($query, $vehicle) {
+                    return $query->where('vehicle_insurance.VEHICLE', '=', $vehicle);
+                })
+                ->when($insuranceCompany, function ($query, $insuranceCompany) {
+                    return $query->where('vehicle_insurance.COMPANY_NAME', '=', $insuranceCompany);
+                })
+                ->when($policyNumber, function ($query, $policyNumber) {
+                    return $query->where('vehicle_insurance.POLICY_NUMBER', '=', $policyNumber);
+                })
+                ->when($startDate, function ($query, $startDate) {
+                    return $query->where('vehicle_insurance.START_DATE', '>=', $startDate);
+                })
+                ->when($endDate, function ($query, $endDate) {
+                    return $query->where('vehicle_insurance.END_DATE', '<=', $endDate);
+                })
                 ->get();
 
             return $insuranceList->toJson();

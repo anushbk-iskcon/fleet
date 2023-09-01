@@ -2,6 +2,9 @@
 
 @section('title', 'Reminders')
 
+@section('css-content')
+@endsection
+
 @section('breadcrumb-content')
 <li class="breadcrumb-item"><a href="{{url('home')}}">Home</a></li>
 <li class="breadcrumb-item active" id="moduleName">Vehicle Management</li>
@@ -14,7 +17,6 @@
 
 @section('content')
 
-
 <div id="add0" class="modal fade bd-example-modal-lg" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -23,7 +25,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="https://vmsdemo.bdtask-demo.com/vehiclemgt/Vehicle_management/add_reminder" id="emp_form" class="row" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+                <form action="" id="addReminderForm" class="row" method="post" accept-charset="utf-8">
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
                             <label for="vehicle" class="col-sm-5 col-form-label">Vehicle <i class="text-danger">*</i></label>
@@ -132,9 +134,6 @@
             </div>
 
         </div>
-        <div class="modal-footer">
-
-        </div>
 
     </div>
 
@@ -143,11 +142,15 @@
     <div class="col-sm-12">
         <div class="card mb-3">
             <div class="card-header p-2">
-                <h4 class="pl-3">Search Here <small class="float-right">
-                        <button type="button" class="btn btn-primary btn-md" data-target="#add0" data-toggle="modal"><i class="ti-plus" aria-hidden="true"></i>
-                            Add Reminder</button>
-
-                    </small></h4>
+                <h4 class="pl-3">
+                    Search Here
+                    <small class="float-right">
+                        <button type="button" class="btn btn-primary btn-md" data-target="#add0" data-toggle="modal">
+                            <i class="ti-plus" aria-hidden="true"></i>
+                            Add Reminder
+                        </button>
+                    </small>
+                </h4>
             </div>
             <div class="card-body row">
                 <div class="col-sm-12 col-xl-4">
@@ -212,7 +215,7 @@
                     <table id="remind" class="table table-striped table-bordered dt-responsive nowrap">
                         <thead>
                             <tr>
-                                <th>SL</th>
+                                <th>Sl No.</th>
                                 <th>Vehicle</th>
                                 <th>Document Type</th>
                                 <th>Alert Type</th>
@@ -220,7 +223,7 @@
                                 <th>Mobile</th>
                                 <th>Email</th>
                                 <th>Remaining Days</th>
-                                <th>Action</th>
+                                <th>Action(s)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -276,7 +279,14 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('js-content')
 <!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/reminder_list.js"></script> -->
+<script>
+    // For Storing routes and other global varaibles
+    let csrfToken = $('meta[name="csf-token"]').attr('content');
+</script>
 <script>
     $(document).ready(function() {
         $("#remind").DataTable();
