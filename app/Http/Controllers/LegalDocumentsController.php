@@ -127,9 +127,10 @@ class LegalDocumentsController extends Controller
         $legalDocument->SMS_NOTIFICATIONS = ($request->is_sms == 'on' ? 'Y' : 'N');
         if (($request->is_email == 'on') && ($request->has('email')))
             $legalDocument->EMAIL = $request->email;
+        // else
         if (($request->is_sms == 'on') && ($request->has('sms')))
             $legalDocument->MOBILE = $request->sms;
-
+        // else
         // Upload document if new one provided while submitting form
         if ($request->hasFile('document_attachment')) {
             $file = $request->file('document_attachment');

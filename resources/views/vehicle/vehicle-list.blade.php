@@ -156,7 +156,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" id="resetAddVehicleBtn" class="btn btn-primary w-md m-b-5">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
                         </div>
                     </div>
@@ -619,6 +619,20 @@
             $('#add0 .basic-single').val('').trigger('change');
         });
 
+        // To remove validation errors on resetting Add Vehicle Form
+        $("#resetAddVehicleBtn").click(function() {
+            $("#addVehicleForm").trigger('reset');
+
+            // To prevent select2 boxes still displaying previously selected value on resetting form
+            $('#add0 .basic-single').val('').trigger('change');
+            $("#addVehicleForm").data('validator').resetForm();
+            $('#addVehicleForm .form-control').each(function() {
+                $(this).removeClass('error');
+                $(this).removeAttr('aria-invalid');
+            });
+
+        });
+
         // Validate and submit Edit Vehicle Form for Updating Details
         $("#editVehicleForm").validate({
             rules: {
@@ -709,6 +723,12 @@
 
         $("#filterVehiclesForm").submit(function(ev) {
             ev.preventDefault();
+            populateVehiclesTable(vehiclesTable);
+        });
+
+        $("#btn-reset").click(function() {
+            // To prevent select2 boxes still displaying previously selected value on resetting form
+            $('#filterVehiclesForm .basic-single').val('').trigger('change');
             populateVehiclesTable(vehiclesTable);
         });
 
@@ -823,9 +843,6 @@
 
     });
     // End of document.ready function
-
-    // To prevent select2 boxes still displaying previously selected value on resetting form
-    $('#filterVehiclesForm .basic-single').val('').trigger('change');
 </script>
 
 <script>
@@ -882,7 +899,7 @@
         });
     }
 
-    // Load data to Edit Vehicle From
+    // Load data to Edit Vehicle Form
     function loadVehicleDetails(vehicleId) {
         $.ajax({
             url: "{{route('vehicle.get-details')}}",
@@ -965,7 +982,7 @@
                     });
                 }
             },
-            error: function(jqXHR, textStartus, err) {
+            error: function(jqXHR, textStatus, err) {
                 toastr.error("Error getting details. Please try again", "", {
                     closeButton: true
                 });

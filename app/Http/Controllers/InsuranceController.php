@@ -121,6 +121,7 @@ class InsuranceController extends Controller
 
         if ($request->has('recurring_date'))
             $insurance->RECURRING_DATE = $request->recurring_date;
+
         $insurance->RECURRING_PERIOD_REMINDER = $request->add_reminder == 1 ? 'Y' : 'N';
         $insurance->STATUS = $request->status == 1 ? 'Y' : 'N';
 
