@@ -31,8 +31,8 @@ $(document).ready(function () {
             license_issue_date: {
                 required: true
             },
-            timeslot_start: 'required',
-            timeslot_end: 'required',
+            // timeslot_start: 'required',
+            // timeslot_end: 'required',
             join_date: 'required',
             dob: 'required',
             permanent_address: {
@@ -90,8 +90,8 @@ $(document).ready(function () {
             license_issue_date: {
                 required: true
             },
-            timeslot_start: 'required',
-            timeslot_end: 'required',
+            // timeslot_start: 'required',
+            // timeslot_end: 'required',
             join_date: 'required',
             dob: 'required',
             permanent_address: {
@@ -129,6 +129,15 @@ $(document).ready(function () {
 
     // Clear and reset form and validatons on closing modal
     $("#add0").on('hidden.bs.modal', function () {
+        $("#add_driver_form").trigger('reset');
+        $("#add_driver_form").data('validator').resetForm();
+        $('.form-control').each(function () {
+            $(this).removeClass('error');
+        });
+        $("#add_driver_form input[name='picture']").removeClass('error');
+    });
+
+    $("#resetAddDriverForm").click(function () {
         $("#add_driver_form").trigger('reset');
         $("#add_driver_form").data('validator').resetForm();
         $('.form-control').each(function () {
@@ -192,7 +201,8 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
     formAction = formAction.replace(currentId, driver_id);
     updateForm.attr('action', formAction);
 
-    console.log(license_type);
+    let workStartTime = work_start_time ? work_start_time : '';
+    let workEndTime = work_end_time ? work_end_time : '';
 
     updateForm.empty().append('<input type="hidden" name="_method" value="PUT">');
     updateForm.append('<input type="hidden" name="_token" value="' + $('meta[name="csrf-token"]').attr('content') + '">');
@@ -219,11 +229,11 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
     <div class="form-group row">
         <label for="timeslot" required="" class="col-sm-5 col-form-label">Working Time Slot <i class="text-danger">*</i></label>
         <div class="col-sm-3 pr-0">
-            <input name="timeslot_start" required="" class="form-control edit-time-picker" type="text" placeholder="09:00 AM" id="newTimeslotStart" value="${work_start_time}">
+            <input name="timeslot_start" required="" class="form-control edit-time-picker" type="text" placeholder="09:00 AM" id="newTimeslotStart" value="${workStartTime}">
         </div>
         <div class="col-sm-1"><sub>&ndash;</sub></div>
         <div class="col-sm-3 pl-0">
-            <input name="timeslot_end" required="" class="form-control edit-time-picker" type="text" placeholder="05:00 PM" id="newTimeslotEnd" value="${work_end_time}">
+            <input name="timeslot_end" required="" class="form-control edit-time-picker" type="text" placeholder="05:00 PM" id="newTimeslotEnd" value="${workEndTime}">
         </div>
     </div>
     <div class="form-group row">
@@ -258,10 +268,15 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
         <label for="update_license_type" class="col-sm-5 col-form-label">License Type <i class="text-danger">*</i></label>
         <div class="col-sm-7">
             <select class="form-control" required="" name="license_type" id="update_license_type">
-                <option value="">Please Select One</option>
-                <option value="1">LMV</option>
-                <option value="2">HMV</option>
-            </select>
+                <option value="">Please Select One</option>`;
+
+    $.each(licenseTypes, function (i, licenseType) {
+        if (license_type == licenseType['LICENSE_ID'])
+            formContent += `<option value="${licenseType['LICENSE_ID']}" selected>${licenseType['LICENSE_NAME']}</option>`;
+        else
+            formContent += `<option value="${licenseType['LICENSE_ID']}">${licenseType['LICENSE_NAME']}</option>`;
+    });
+    formContent += `</select>
         </div>
     </div>
     <div class="form-group row">
@@ -339,20 +354,22 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
         timePicker: true,
         timePicker24Hour: false,
         timePickerIncrement: 15,
+        autoUpdateInput: false,
         "locale": {
-            "format": "hh:mm A"
+            "format": "hh:mm A",
+            cancelLabel: 'Clear'
         }
     }).on('show.daterangepicker', function (ev, picker) {
         picker.container.find(".calendar-table").hide();
         picker.container.find('.calendar-time').css('margin-right', '15px')
     });
 
-    // $('.timepicker').on('apply.daterangepicker', function (ev, picker) {
-    //     $(this).val(picker.startDate.format('hh:mm A'));
-    // });
-    // $('.timepicker').on('cancel.daterangepicker', function (ev, picker) {
-    //     $(this).val('');
-    // });
+    $('.edit-time-picker').on('apply.daterangepicker', function (ev, picker) {
+        $(this).val(picker.startDate.format('hh:mm A'));
+    });
+    $('.edit-time-picker').on('cancel.daterangepicker', function (ev, picker) {
+        $(this).val('');
+    });
 
     $("#editDriverDetailsModal").modal('show');
 }
@@ -360,7 +377,6 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
 function deactivateDriver(el) {
     let driver_id = $(el).attr('data-driverid');
 
-    console.log(driver_id);
     if (confirm("Are you sure you want to deactivate this driver?")) {
         //
         $.ajax({
@@ -371,7 +387,6 @@ function deactivateDriver(el) {
                 driver_id: driver_id
             },
             success: function (res) {
-                console.log(res);
                 toastr.success(res, '', {
                     closeButton: true
                 });
@@ -382,7 +397,6 @@ function deactivateDriver(el) {
                 $(el).closest('td').prev().html("Inactive");
             },
             error: function (jqXHR, textstatus, errorThrown) {
-                console.log("Could not deactivate driver");
                 toastr.error("Could not deactivate driver", "", {
                     closeButton: true
                 });
@@ -394,7 +408,6 @@ function deactivateDriver(el) {
 function activateDriver(el) {
     let driver_id = $(el).attr('data-driverid');
 
-    console.log(driver_id);
     if (confirm("Are you sure you want to activate this driver?")) {
         //
         $.ajax({
@@ -405,7 +418,6 @@ function activateDriver(el) {
                 driver_id: driver_id
             },
             success: function (res) {
-                console.log(res);
                 toastr.success(res, '', {
                     closeButton: true
                 });
@@ -416,7 +428,6 @@ function activateDriver(el) {
                 $(el).closest('td').prev().html("Active");
             },
             error: function (jqXHR, textstatus, errorThrown) {
-                console.log("Could not activate driver");
                 toastr.error("Could not activate driver", "", {
                     closeButton: true
                 });

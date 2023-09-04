@@ -52,11 +52,11 @@
                         <div class="form-group row">
                             <label for="timeslot" required="" class="col-sm-5 col-form-label">Working Time Slot <i class="text-danger">*</i></label>
                             <div class="col-sm-3 pr-0">
-                                <input name="timeslot_start" required="" class="form-control time-picker" type="text" placeholder="09:00 AM" id="timeslotStart" value="" autocomplete="off">
+                                <input name="timeslot_start" class="form-control time-picker" type="text" placeholder="09:00 AM" id="timeslotStart" value="" autocomplete="off">
                             </div>
                             <div class="col-sm-1"><sub>&ndash;</sub></div>
                             <div class="col-sm-3 pl-0">
-                                <input name="timeslot_end" required="" class="form-control time-picker" type="text" placeholder="05:00 PM" id="timeslotEnd" value="" autocomplete="off">
+                                <input name="timeslot_end" class="form-control time-picker" type="text" placeholder="05:00 PM" id="timeslotEnd" value="" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -139,7 +139,7 @@
                         </div>
 
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" id="resetAddDriverForm" class="btn btn-primary w-md m-b-5">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
                         </div>
                     </div>
@@ -224,7 +224,7 @@
                     <table id="driverinfo" class="table display table-bordered table-striped table-hover ">
                         <thead>
                             <tr>
-                                <th>SL</th>
+                                <th>Sl No.</th>
                                 <th>Driver Name</th>
                                 <th>Mobile</th>
                                 <th>License Number</th>
@@ -256,7 +256,7 @@
                                 <!-- <td> {{$driver['WORKING_TIME_START'] . ' - ' . $driver['WORKING_TIME_END'] }} </td> -->
                                 <td> @if($driver['IS_ACTIVE'] == 'Y') {{"Active"}} @else {{"Inactive"}} @endif </td>
                                 <td>
-                                    <button class=" btn btn-success mr-1" onclick="updateDriverDetails('{{$driver->DRIVER_ID}}','{{$driver->DRIVER_NAME}}', '{{$driver->MOBILE_NUMBER}}','{{$driver->LICENSE_NUMBER}}','{{$driver->LICENSE_TYPE}}','{{$driver->NATIONAL_ID}}','{{$driver->LICENSE_ISSUE_DATE}}','{{$driver->WORKING_TIME_START}}','{{$driver->WORKING_TIME_END}}','{{$driver->JOIN_DATE}}','{{$driver->DATE_OF_BIRTH}}','{{$driver->PERMANENT_ADDRESS}}','{{$driver->PRESENT_ADDRESS}}','{{$driver->LEAVE_STATUS}}','{{$driver->IS_ACTIVE}}','{{$driver->PROFILE_PHOTO}}')" data-toggle="tooltip" data-placement="right" title="Update">
+                                    <button class="btn btn-success mr-1" onclick="updateDriverDetails('{{$driver->DRIVER_ID}}','{{$driver->DRIVER_NAME}}', '{{$driver->MOBILE_NUMBER}}','{{$driver->LICENSE_NUMBER}}','{{$driver->LICENSE_TYPE}}','{{$driver->NATIONAL_ID}}','{{$driver->LICENSE_ISSUE_DATE}}','{{$driver->WORKING_TIME_START}}','{{$driver->WORKING_TIME_END}}','{{$driver->JOIN_DATE}}','{{$driver->DATE_OF_BIRTH}}','{{$driver->PERMANENT_ADDRESS}}','{{$driver->PRESENT_ADDRESS}}','{{$driver->LEAVE_STATUS}}','{{$driver->IS_ACTIVE}}','{{$driver->PROFILE_PHOTO}}')" data-toggle="tooltip" data-placement="right" title="Update">
                                         <i class="fa fa-edit"></i>
                                     </button>
                                     @if($driver['IS_ACTIVE'] == 'Y')
@@ -290,6 +290,8 @@
     let deactivateDriverURL = "{{url('deactivate-driver')}}";
     let activateDriverURL = "{{url('activate-driver')}}";
     let csrfToken = "{{csrf_token()}}";
+
+    let licenseTypes = JSON.parse(`{!! json_encode($licenseTypes) !!}`);
 </script>
 <!-- <script src="{{asset('public/dist/js/position_form.js')}}"></script> -->
 <script src="{{asset('public/dist/js/drivers/index.js')}}"></script>

@@ -126,18 +126,6 @@
                                 </select>
                             </div>
                         </div>
-                        <!-- <div class="form-group row">
-                            <label for="driver" class="col-sm-5 col-form-label">Driver <i class="text-danger">*</i></label>
-                            <div class="col-sm-7">
-                                <select class="form-control basic-single" required="" name="driver" id="driver">
-                                    <option value="" selected="selected">Please Select One</option>
-                                    @foreach($drivers as $driver)
-                                    <option value="{{$driver['DRIVER_ID']}}"> {{$driver['DRIVER_NAME']}} </option>
-                                    @endforeach
-                                </select>
-
-                            </div>
-                        </div> -->
                         <div class="form-group row">
                             <label for="vendor" class="col-sm-5 col-form-label">Vendor <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
@@ -726,10 +714,12 @@
             populateVehiclesTable(vehiclesTable);
         });
 
-        $("#btn-reset").click(function() {
+        $("#btn-reset").click(function(ev) {
             // To prevent select2 boxes still displaying previously selected value on resetting form
-            $('#filterVehiclesForm .basic-single').val('').trigger('change');
-            populateVehiclesTable(vehiclesTable);
+            setTimeout(() => {
+                $('#filterVehiclesForm .basic-single').val('').trigger('change');
+                populateVehiclesTable(vehiclesTable);
+            });
         });
 
         $("#resetAssignVehicleToDriverFormBtn").click(function() {
@@ -1085,6 +1075,7 @@
     function updateStatus(el) {
         let vehicleId = $(el).attr('data-id');
 
+        toastr.remove();
         toastr.warning("<br /><button type='button' class='btn btn-success mr-2' value='yes'>Yes</button><button class='btn btn-danger' type='button' value='no' >No</button>", 'Are you sure?', {
             allowHtml: true,
             onclick: function(toast) {

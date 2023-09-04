@@ -40,7 +40,7 @@ class DriverController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Add New Driver Details
         $driver = new Driver;
         $driver->DRIVER_NAME = $request->driver_name;
         $driver->MOBILE_NUMBER = $request->mobile;
@@ -48,8 +48,8 @@ class DriverController extends Controller
         $driver->LICENSE_TYPE = $request->license_type;
         $driver->NATIONAL_ID = $request->national_id;
         $driver->LICENSE_ISSUE_DATE = $request->license_issue_date;
-        $driver->WORKING_TIME_START = $request->timeslot_start ?? "09:00 AM";
-        $driver->WORKING_TIME_END = $request->timeslot_end ?? "05:00 PM";
+        $driver->WORKING_TIME_START = $request->timeslot_start ?? "";
+        $driver->WORKING_TIME_END = $request->timeslot_end ?? "";
         $driver->JOIN_DATE = $request->join_date;
         $driver->DATE_OF_BIRTH = $request->dob ?? null;
         if ($request->permanent_address) {
@@ -65,7 +65,7 @@ class DriverController extends Controller
         }
         if ($request->is_active) {
             $driver->IS_ACTIVE = ($request->is_active == 1 ? 'Y' : 'N');
-        };
+        }
 
         //To upload profile image
         if ($request->hasFile('picture')) {
@@ -125,8 +125,8 @@ class DriverController extends Controller
         $driver->LICENSE_TYPE = $request->license_type;
         $driver->NATIONAL_ID = $request->national_id;
         $driver->LICENSE_ISSUE_DATE = $request->license_issue_date;
-        $driver->WORKING_TIME_START = $request->timeslot_start ?? "09:00 AM";
-        $driver->WORKING_TIME_END = $request->timeslot_end ?? "05:00 PM";
+        $driver->WORKING_TIME_START = $request->timeslot_start ?? "";
+        $driver->WORKING_TIME_END = $request->timeslot_end ?? "";
         $driver->JOIN_DATE = $request->join_date;
 
         if ($request->dob) $driver->DATE_OF_BIRTH = $request->dob;
@@ -139,7 +139,7 @@ class DriverController extends Controller
         }
         if ($request->is_active) {
             $driver->IS_ACTIVE = ($request->is_active == 1 ? 'Y' : 'N');
-        };
+        }
 
         // To update profile photo
         if ($request->hasFile('picture')) {
