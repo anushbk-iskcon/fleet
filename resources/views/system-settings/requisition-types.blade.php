@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetAddFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetEditFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Save</button>
                         </div>
                     </div>
@@ -132,15 +132,6 @@
                                     <input name="url" type="hidden" id="url_2" value="https://vmsdemo.bdtask-demo.com/setting/Setting/updatereqtypefrm" />
                                     <a onclick="editinfo(2)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
                                     <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_reqtype/2" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Re-Fueling Requisition </td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_3" value="https://vmsdemo.bdtask-demo.com/setting/Setting/updatereqtypefrm" />
-                                    <a onclick="editinfo(3)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_reqtype/3" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
                                 </td>
                             </tr> -->
                         </tbody>
@@ -217,6 +208,14 @@
             $("#req_type_name").removeAttr('aria-invalid');
         });
 
+        // On resetting add form
+        $("#resetAddFormBtn").click(function() {
+            $("#addReqTypeForm").trigger('reset');
+            $("#addReqTypeForm").validate().resetForm();
+            $("#req_type_name").removeClass('error');
+            $("#req_type_name").removeAttr('aria-invalid');
+        });
+
         // Validate and submit Edit Requisition Type Form
         $("#editReqTypeForm").validate({
             rules: {
@@ -267,6 +266,13 @@
             $("#new_req_type_name").removeAttr('aria-invalid');
         });
 
+        // On resetting Edit Form
+        $("#resetEditFormBtn").click(function() {
+            setTimeout(() => {
+                $("#new_req_type_name").valid();
+            }, 10);
+        });
+
     });
 </script>
 <script>
@@ -274,7 +280,7 @@
         // el has been passed 'this' to get data-* attributes of clicked button
         // Set initial form details using button's data attributes set while loading/reloading table
         $("#reqTypeId").val($(el).data('id'));
-        $("#new_req_type_name").val($(el).data('name'));
+        $("#new_req_type_name").attr('value', $(el).data('name'));
         $("#edit").modal('show');
     }
 
@@ -285,7 +291,7 @@
         toastr.warning("<br /><button type='button' class='btn btn-success mr-2' value='yes'>Yes</button><button class='btn btn-danger' type='button' value='no' >No</button>", 'Are you sure?', {
             allowHtml: true,
             onclick: function(toast) {
-                value = toast.target.value
+                value = toast.target.value;
                 if (value == 'yes') {
                     var url = "{{ route('requisition-types.update-status') }}";
 

@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetAddForm">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetEditForm">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Update</button>
                         </div>
                     </div>
@@ -119,42 +119,7 @@
                                 </td>
                             </tr>
                             @endforeach
-                            <!-- <tr>
-                                <td>1</td>
-                                <td>ABC</td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_1" value="https://vmsdemo.bdtask-demo.com/setting/Setting/updatecompanyfrm" />
-                                    <a onclick="editinfo(1)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_company/1" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Netlink</td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_2" value="https://vmsdemo.bdtask-demo.com/setting/Setting/updatecompanyfrm" />
-                                    <a onclick="editinfo(2)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_company/2" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>DEF</td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_3" value="https://vmsdemo.bdtask-demo.com/setting/Setting/updatecompanyfrm" />
-                                    <a onclick="editinfo(3)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_company/3" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>Metro</td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_4" value="https://vmsdemo.bdtask-demo.com/setting/Setting/updatecompanyfrm" />
-                                    <a onclick="editinfo(4)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_company/4" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr> -->
+
                         </tbody>
                     </table> <!-- /.table-responsive -->
                 </div>
@@ -231,6 +196,12 @@
             $("#companyName").removeClass('error').removeAttr('aria-invalid');
         });
 
+        $("#resetAddForm").click(function() {
+            $("#addCompanyForm").trigger('reset');
+            $("#addCompanyForm").data('validator').resetForm();
+            $("#companyName").removeClass('error').removeAttr('aria-invalid');
+        });
+
         // Validate and submit Edit Company Form
         $("#editCompanyForm").validate({
             rules: {
@@ -281,13 +252,20 @@
             $("#newCompanyName").removeClass('error').removeAttr('aria-invalid');
         });
 
+        // On clicking reset button in EditCompany Form
+        $("#resetEditForm").click(function() {
+            setTimeout(() => {
+                $("#newCompanyName").valid();
+            }, 10);
+        });
+
     });
 
     function editInfo(el) {
         // el has been passed 'this' to get data-* attributes of clicked button
         // Set initial form details using button's data attributes set while loading/reloading table
         $("#editCompanyId").val($(el).data('id'));
-        $("#newCompanyName").val($(el).data('name'));
+        $("#newCompanyName").attr('value', $(el).data('name'));
         $("#edit").modal('show');
     }
 
@@ -295,10 +273,10 @@
         // el has been passed this (clicked button)
         let companyId = $(el).data('id');
 
-        toastr.warning("<br /><button type='button' class='btn btn-success mr-2' value='yes'>Yes</button><button class='btn btn-danger' type='button' value='no' >No</button>", 'Are you sure?', {
+        toastr.warning("<br /><button type='button' class='btn btn-success mr-2' value='yes'>Yes</button><button class='btn btn-danger' type='button' value='no'>No</button>", 'Are you sure?', {
             allowHtml: true,
             onclick: function(toast) {
-                value = toast.target.value
+                value = toast.target.value;
                 if (value == 'yes') {
                     var url = "{{ route('manage-companies.update-status') }}";
 

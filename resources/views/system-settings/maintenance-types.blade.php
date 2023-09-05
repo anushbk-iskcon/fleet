@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetAddFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetEditFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Save</button>
                         </div>
                     </div>
@@ -127,15 +127,6 @@
                                     <input name="url" type="hidden" id="url_1" value="https://vmsdemo.bdtask-demo.com/setting/Setting/updatemtypefrm" />
                                     <a onclick="editinfo(1)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
                                     <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_mtype/1" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Servicing</td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_1" value="https://vmsdemo.bdtask-demo.com/setting/Setting/updatemtypefrm" />
-                                    <a onclick="editinfo(1)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_mtype/2" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
                                 </td>
                             </tr> -->
                         </tbody>
@@ -212,6 +203,13 @@
             $("#mainten_name").removeAttr('aria-invalid');
         });
 
+        // On resetting Add Maintenance Form
+        $("#resetAddFormBtn").click(function() {
+            $("#addMaintenanceTypeForm").trigger('reset');
+            $("#addMaintenanceTypeForm").validate().resetForm();
+            $("#mainten_name").removeClass('error').removeAttr('aria-invalid');
+        });
+
         // Validate and Submit Edit Maintenance Type Form
         $("#editMaintenanceTypeForm").validate({
             rules: {
@@ -263,6 +261,13 @@
             $("#new_mainten_name").removeAttr('aria-invalid');
         });
 
+        // On resetting Edit Maintenance Form
+        $("#resetEditFormBtn").click(function() {
+            setTimeout(() => {
+                $("#new_mainten_name").valid();
+            }, 10);
+        });
+
     });
 </script>
 
@@ -271,7 +276,7 @@
         // el has been passed 'this' to get data-* attributes of clicked button
         // Set initial form details using button's data attributes set while loading/reloading table
         $("#maintenanceTypeId").val($(el).data('id'));
-        $("#new_mainten_name").val($(el).data('name'));
+        $("#new_mainten_name").attr('value', $(el).data('name'));
         $("#edit").modal('show');
     }
 
@@ -282,7 +287,7 @@
         toastr.warning("<br /><button type='button' class='btn btn-success mr-2' value='yes'>Yes</button><button class='btn btn-danger' type='button' value='no' >No</button>", 'Are you sure?', {
             allowHtml: true,
             onclick: function(toast) {
-                value = toast.target.value
+                value = toast.target.value;
                 if (value == 'yes') {
                     var url = "{{ route('maintenance-types.update-status') }}";
 

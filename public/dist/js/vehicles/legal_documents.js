@@ -275,7 +275,7 @@ function editInfo(id) {
             <label for="edit_notification_before" class="col-sm-5 col-form-label">Notification Before <i class="text-danger">*</i></label>
             <div class="col-sm-7">
                 <select class="form-control basic-single" required="" name="notification_before" id="edit_notification_before">
-                    <option value="" >Please Select One</option>`;
+                    <option value="">Please Select One</option>`;
 
             $.each(notificationTypes, function (i, notificationType) {
                 if (notificationType.NOTIFICATION_TYPE_ID == res.NOTIFICATION_BEFORE)

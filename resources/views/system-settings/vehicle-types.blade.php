@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetAddFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Clear</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetEditFormBtn">Clear</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Update</button>
                         </div>
                     </div>
@@ -229,8 +229,14 @@
         $("#add0").on('hidden.bs.modal', function(ev) {
             $("#addVehicleTypeForm").trigger('reset');
             $("#addVehicleTypeForm").validate().resetForm();
-            $("#vehicletype_name").removeClass('error');
-            $("#vehicletype_name").removeAttr('aria-invalid');
+            $("#vehicletype_name").removeClass('error').removeAttr('aria-invalid');
+        });
+
+        // On resetting add vehice type form
+        $("#resetAddFormBtn").click(function() {
+            $("#addVehicleTypeForm").trigger('reset');
+            $("#addVehicleTypeForm").validate().resetForm();
+            $("#vehicletype_name").removeClass('error').removeAttr('aria-invalid');
         });
 
         // Remove validations, errors and reset add vehicle type form on closing modal
@@ -241,6 +247,12 @@
             $("#newVehicleTypeName").removeAttr('aria-invalid');
         });
 
+        // On resetting Edit Vehicle Type Modal
+        $("#resetEditFromBtn").click(function() {
+            setTimeout(() => {
+                $("#newVehicleTypeName").valid();
+            }, 10);
+        });
 
     });
 </script>
@@ -248,7 +260,7 @@
 <script>
     function editInfo(el) {
         $("#updateVehicleTypeId").val($(el).data('id'));
-        $("#newVehicleTypeName").val($(el).data('name'));
+        $("#newVehicleTypeName").attr('value', $(el).data('name'));
         $("#edit").modal('show');
     }
 
@@ -260,7 +272,6 @@
             onclick: function(toast) {
                 value = toast.target.value
                 if (value == 'yes') {
-
                     var url = "{{ route('vehicle-type.status-update') }}";
 
                     $.ajax({
@@ -271,7 +282,6 @@
                             vehicle_type_id: vehicleTypeId
                         },
                         success: function(response) {
-
                             toastr.remove();
 
                             if (response['IS_ACTIVE'] == 'Y') {

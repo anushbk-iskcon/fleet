@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetAddFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetEditFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Save</button>
                         </div>
                     </div>
@@ -229,7 +229,7 @@
             }
         });
 
-        // Remove validations, errors and reset add vehicle type form on closing modal
+        // Remove validations, errors and reset add vehicle divison form on closing modal
         $("#add0").on('hidden.bs.modal', function(ev) {
             $("#addDivisionForm").trigger('reset');
             $("#addDivisionForm").validate().resetForm();
@@ -237,7 +237,15 @@
             $("#division_name").removeAttr('aria-invalid');
         });
 
-        // Remove validations, errors and reset add vehicle type form on closing modal
+        // Remove vlaidation mesages on resetting add vehcile division form
+        $("#resetAddFormBtn").click(function() {
+            $("#addDivisionForm").trigger('reset');
+            $("#addDivisionForm").validate().resetForm();
+            $("#division_name").removeClass('error');
+            $("#division_name").removeAttr('aria-invalid');
+        })
+
+        // Remove validations, errors and reset add vehicle division form on closing modal
         $("#edit").on('hidden.bs.modal', function(ev) {
             $("#editDivisionForm").trigger('reset');
             $("#editDivisionForm").validate().resetForm();
@@ -245,6 +253,12 @@
             $("#new_division_name").removeAttr('aria-invalid');
         });
 
+        // On resetting Edit Vehcile Divison form
+        $("#resetEditFormBtn").click(function() {
+            setTimeout(() => {
+                $("#new_division_name").valid();
+            }, 10);
+        })
 
     });
 </script>
@@ -252,7 +266,7 @@
 <script>
     function editInfo(el) {
         $("#divisionId").val($(el).data('id'));
-        $("#new_division_name").val($(el).data('name'));
+        $("#new_division_name").attr('value', $(el).data('name'));
         $("#edit").modal('show');
     }
 
@@ -262,9 +276,8 @@
         toastr.warning("<br /><button type='button' class='btn btn-success mr-2' value='yes'>Yes</button><button class='btn btn-danger' type='button' value='no' >No</button>", 'Are you sure?', {
             allowHtml: true,
             onclick: function(toast) {
-                value = toast.target.value
+                value = toast.target.value;
                 if (value == 'yes') {
-
                     var url = "{{ route('divisions.status-update') }}";
 
                     $.ajax({
@@ -275,7 +288,6 @@
                             division_id: divisionId
                         },
                         success: function(response) {
-
                             toastr.remove();
 
                             if (response['IS_ACTIVE'] == 'Y') {

@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetAddFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetEditFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Update</button>
                         </div>
                     </div>
@@ -189,8 +189,14 @@
         $("#add0").on('hidden.bs.modal', function(ev) {
             $("#addServiceTypeForm").trigger('reset');
             $("#addServiceTypeForm").validate().resetForm();
-            $("#service_type_name").removeClass('error');
-            $("#service_type_name").removeAttr('aria-invalid');
+            $("#service_type_name").removeClass('error').removeAttr('aria-invalid');
+        });
+
+        // On resetting add Service Type form
+        $("#resetAddFormBtn").click(function() {
+            $("#addServiceTypeForm").trigger('reset');
+            $("#addServiceTypeForm").validate().resetForm();
+            $("#service_type_name").removeClass('error').removeAttr('aria-invalid');
         });
 
         // Validate and submit Edit Service Type Form
@@ -241,8 +247,14 @@
         $("#edit").on('hidden.bs.modal', function(ev) {
             $("#editServiceTypeForm").trigger('reset');
             $("#editServiceTypeForm").validate().resetForm();
-            $("#new_service_type_name").removeClass('error');
-            $("#new_service_type_name").removeAttr('aria-invalid');
+            $("#new_service_type_name").removeClass('error').removeAttr('aria-invalid');
+        });
+
+        // On resetting edit service form
+        $("#resetEditFormBtn").click(function() {
+            setTimeout(() => {
+                $("#new_service_type_name").valid();
+            }, 10);
         });
 
     });
@@ -252,7 +264,7 @@
     function editInfo(el) {
         // Set Initial Form Details using el button's data attributes
         $("#serviceTypeId").val($(el).data('id'));
-        $("#new_service_type_name").val($(el).data('name'));
+        $("#new_service_type_name").attr('value', $(el).data('name'));
         $("#edit").modal('show');
     }
 
@@ -262,7 +274,7 @@
         toastr.warning("<br /><button type='button' class='btn btn-success mr-2' value='yes'>Yes</button><button class='btn btn-danger' type='button' value='no' >No</button>", 'Are you sure?', {
             allowHtml: true,
             onclick: function(toast) {
-                value = toast.target.value
+                value = toast.target.value;
                 if (value == 'yes') {
                     var url = "{{ route('service-types.update-status') }}";
 
@@ -274,7 +286,6 @@
                             service_id: serviceId
                         },
                         success: function(response) {
-
                             toastr.remove();
 
                             if (response['IS_ACTIVE'] == 'Y') {

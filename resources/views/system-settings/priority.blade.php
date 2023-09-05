@@ -31,7 +31,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetAddFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetEditFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Save</button>
                         </div>
                     </div>
@@ -124,24 +124,7 @@
                                     <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_priority/1" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Medium</td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_2" value="https://vmsdemo.bdtask-demo.com/setting/Setting/updatepriorityfrm" />
-                                    <a onclick="editinfo(2)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_priority/2" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>High</td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_3" value="https://vmsdemo.bdtask-demo.com/setting/Setting/updatepriorityfrm" />
-                                    <a onclick="editinfo(3)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_priority/3" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr> -->
+                             -->
                         </tbody>
                     </table> <!-- /.table-responsive -->
                 </div>
@@ -214,8 +197,14 @@
         $("#add0").on('hidden.bs.modal', function(ev) {
             $("#addPriorityForm").trigger('reset');
             $("#addPriorityForm").validate().resetForm();
-            $("#priority_name").removeClass('error');
-            $("#priority_name").removeAttr('aria-invalid');
+            $("#priority_name").removeClass('error').removeAttr('aria-invalid');
+        });
+
+        // On resetting Add Priority form
+        $("#resetAddFormBtn").click(function() {
+            $("#addPriorityForm").trigger('reset');
+            $("#addPriorityForm").validate().resetForm();
+            $("#priority_name").removeClass('error').removeAttr('aria-invalid');
         });
 
         // Validate and submit Edit Priority Form
@@ -264,8 +253,14 @@
         $("#edit").on('hidden.bs.modal', function(ev) {
             $("#editPriorityForm").trigger('reset');
             $("#editPriorityForm").validate().resetForm();
-            $("#new_priority_name").removeClass('error');
-            $("#new_priority_name").removeAttr('aria-invalid');
+            $("#new_priority_name").removeClass('error').removeAttr('aria-invalid');
+        });
+
+        // On resetting Edit Priority Form
+        $("#resetEditFormBtn").click(function() {
+            setTimeout(() => {
+                $("#new_priority_name").valid();
+            }, 10);
         });
 
     });
@@ -275,7 +270,7 @@
         // el has been passed 'this' to get data-* attributes of clicked button
         // Set initial form details using button's data attributes set while loading/reloading table
         $("#newPriorityId").val($(el).data('id'));
-        $("#new_priority_name").val($(el).data('name'));
+        $("#new_priority_name").attr('value', $(el).data('name'));
         $("#edit").modal('show');
     }
 
@@ -286,7 +281,7 @@
         toastr.warning("<br /><button type='button' class='btn btn-success mr-2' value='yes'>Yes</button><button class='btn btn-danger' type='button' value='no' >No</button>", 'Are you sure?', {
             allowHtml: true,
             onclick: function(toast) {
-                value = toast.target.value
+                value = toast.target.value;
                 if (value == 'yes') {
                     var url = "{{ route('priority.update-status') }}";
 

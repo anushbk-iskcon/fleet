@@ -1079,7 +1079,7 @@
         toastr.warning("<br /><button type='button' class='btn btn-success mr-2' value='yes'>Yes</button><button class='btn btn-danger' type='button' value='no' >No</button>", 'Are you sure?', {
             allowHtml: true,
             onclick: function(toast) {
-                value = toast.target.value
+                value = toast.target.value;
                 if (value == 'yes') {
                     var url = "{{ route('vehicle.status-update') }}";
 
@@ -1091,7 +1091,6 @@
                             vehicle_id: vehicleId
                         },
                         success: function(response) {
-
                             toastr.remove();
 
                             if (response['IS_ACTIVE'] == 'Y') {

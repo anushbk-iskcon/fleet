@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetAddFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetEditFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Update</button>
                         </div>
                     </div>
@@ -242,8 +242,14 @@
         $("#add0").on('hidden.bs.modal', function(ev) {
             $("#addTripTypeForm").trigger('reset');
             $("#addTripTypeForm").validate().resetForm();
-            $("#trip_type_name").removeClass('error');
-            $("#trip_type_name").removeAttr('aria-invalid');
+            $("#trip_type_name").removeClass('error').removeAttr('aria-invalid');
+        });
+
+        // On resetting Add Trip Type Form
+        $("#resetAddFormBtn").click(function() {
+            $("#addTripTypeForm").trigger('reset');
+            $("#addTripTypeForm").validate().resetForm();
+            $("#trip_type_name").removeClass('error').removeAttr('aria-invalid');
         });
 
         // Validate and submit Edit Trip Type Form
@@ -298,6 +304,12 @@
             $("#new_trip_type_name").removeAttr('aria-invalid');
         });
 
+        $("#resetEditFormBtn").click(function() {
+            setTimeout(() => {
+                $("#new_trip_type_name").valid();
+            }, 10);
+        });
+
 
     });
 </script>
@@ -306,7 +318,7 @@
     function editInfo(el) {
         // Set Initial Form Details using el button's data attributes
         $("#tripTypeId").val($(el).data('id'));
-        $("#new_trip_type_name").val($(el).data('name'));
+        $("#new_trip_type_name").attr('value', $(el).data('name'));
         $("#edit").modal('show');
     }
 
@@ -316,7 +328,7 @@
         toastr.warning("<br /><button type='button' class='btn btn-success mr-2' value='yes'>Yes</button><button class='btn btn-danger' type='button' value='no' >No</button>", 'Are you sure?', {
             allowHtml: true,
             onclick: function(toast) {
-                value = toast.target.value
+                value = toast.target.value;
                 if (value == 'yes') {
                     var url = "{{ route('trip-types.update-status') }}";
 

@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetAddFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetEditFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Save</button>
                         </div>
                     </div>
@@ -115,69 +115,7 @@
                                 </td>
                             </tr>
                             @endforeach
-                            <!-- <tr>
-                                <td>1</td>
-                                <td>5 days</td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_1" value="https://vmsdemo.bdtask-demo.com/setting/Setting/updatenotifyfrm" />
-                                    <a onclick="editinfo(1)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_notification/1" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>15 days</td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_2" value="https://vmsdemo.bdtask-demo.com/setting/Setting/updatenotifyfrm" />
-                                    <a onclick="editinfo(2)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_notification/2" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>10 days</td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_3" value="https://vmsdemo.bdtask-demo.com/setting/Setting/updatenotifyfrm" />
-                                    <a onclick="editinfo(3)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_notification/3" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>1 Month</td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_4" value="https://vmsdemo.bdtask-demo.com/setting/Setting/updatenotifyfrm" />
-                                    <a onclick="editinfo(4)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_notification/4" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>2 Month</td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_5" value="https://vmsdemo.bdtask-demo.com/setting/Setting/updatenotifyfrm" />
-                                    <a onclick="editinfo(5)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_notification/5" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>6</td>
-                                <td>7 days</td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_7" value="https://vmsdemo.bdtask-demo.com/setting/Setting/updatenotifyfrm" />
-                                    <a onclick="editinfo(7)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_notification/7" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>7</td>
-                                <td>test notification </td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_8" value="https://vmsdemo.bdtask-demo.com/setting/Setting/updatenotifyfrm" />
-                                    <a onclick="editinfo(8)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_notification/8" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr> -->
+
                         </tbody>
                     </table> <!-- /.table-responsive -->
                 </div>
@@ -251,6 +189,14 @@
             $("#notification_name").removeAttr('aria-invalid');
         });
 
+        // On resetting add new recurring period form
+        $("#resetAddFormBtn").click(function() {
+            $("#addNotificationTypeForm").trigger('reset');
+            $("#addNotificationTypeForm").validate().resetForm();
+            $("#notification_name").removeClass('error');
+            $("#notification_name").removeAttr('aria-invalid');
+        });
+
         // Validate and Submit Edit Notification Type Form
         $("#editNotificationTypeForm").validate({
             rules: {
@@ -302,6 +248,12 @@
             $("#new_notification_name").removeAttr('aria-invalid');
         });
 
+        $("#resetEditFormBtn").click(function() {
+            setTimeout(() => {
+                $("#new_notification_name").valid();
+            }, 10);
+        });
+
     });
 </script>
 
@@ -310,7 +262,7 @@
         // el has been passed 'this' to get data-* attributes of clicked button
         // Set initial form details using button's data attributes set while loading/reloading table
         $("#notificationTypeId").val($(el).data('id'));
-        $("#new_notification_name").val($(el).data('name'));
+        $("#new_notification_name").attr('value', $(el).data('name'));
         $("#edit").modal('show');
     }
 
@@ -321,7 +273,7 @@
         toastr.warning("<br /><button type='button' class='btn btn-success mr-2' value='yes'>Yes</button><button class='btn btn-danger' type='button' value='no' >No</button>", 'Are you sure?', {
             allowHtml: true,
             onclick: function(toast) {
-                value = toast.target.value
+                value = toast.target.value;
                 if (value == 'yes') {
                     var url = "{{ route('notification-settings.update-status') }}";
 

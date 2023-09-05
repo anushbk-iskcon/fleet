@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetAddFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetEditFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Save</button>
                         </div>
                     </div>
@@ -226,8 +226,14 @@
         $("#add0").on('hidden.bs.modal', function(ev) {
             $("#addRTAOfficeForm").trigger('reset');
             $("#addRTAOfficeForm").validate().resetForm();
-            $("#office_location").removeClass('error');
-            $("#office_location").removeAttr('aria-invalid');
+            $("#office_location").removeClass('error').removeAttr('aria-invalid');
+        });
+
+        // On resetting Add RETA Circle Office Form
+        $("#resetAddFormBtn").click(function() {
+            $("#addRTAOfficeForm").trigger('reset');
+            $("#addRTAOfficeForm").validate().resetForm();
+            $("#office_location").removeClass('error').removeAttr('aria-invalid');
         });
 
         // Remove validations, errors and reset Edit RTA Circle Office form on closing modal
@@ -238,6 +244,12 @@
             $("#new_office_location").removeAttr('aria-invalid');
         });
 
+        // On resetting resetEditFormBtn
+        $("#resetEditFormBtn").click(function() {
+            setTimeout(() => {
+                $("#new_office_location").valid();
+            }, 10);
+        });
 
     });
 </script>
@@ -245,7 +257,7 @@
 <script>
     function editInfo(el) {
         $("#rtaOfficeId").val($(el).data('id'));
-        $("#new_office_location").val($(el).data('name'));
+        $("#new_office_location").attr('value', $(el).data('name'));
         $("#edit").modal('show');
     }
 
@@ -255,9 +267,8 @@
         toastr.warning("<br /><button type='button' class='btn btn-success mr-2' value='yes'>Yes</button><button class='btn btn-danger' type='button' value='no' >No</button>", 'Are you sure?', {
             allowHtml: true,
             onclick: function(toast) {
-                value = toast.target.value
+                value = toast.target.value;
                 if (value == 'yes') {
-
                     var url = "{{ route('rta-details.status-update') }}";
 
                     $.ajax({
@@ -268,7 +279,6 @@
                             rta_circle_office_id: rtaOfficeId
                         },
                         success: function(response) {
-
                             toastr.remove();
 
                             if (response['IS_ACTIVE'] == 'Y') {

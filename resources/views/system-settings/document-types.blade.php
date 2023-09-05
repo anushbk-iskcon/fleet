@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetAddFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetEditFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Save</button>
                         </div>
                     </div>
@@ -136,25 +136,8 @@
                                     <a onclick="editinfo(2)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
                                     <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_documenttype/2" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>NID</td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_3" value="https://vmsdemo.bdtask-demo.com/setting/Setting/updatedocumentfrm" />
-                                    <a onclick="editinfo(3)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_documenttype/3" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>Vehicle</td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_4" value="https://vmsdemo.bdtask-demo.com/setting/Setting/updatedocumentfrm" />
-                                    <a onclick="editinfo(4)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_documenttype/4" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
                             </tr> -->
+
                         </tbody>
                     </table> <!-- /.table-responsive -->
                 </div>
@@ -230,6 +213,14 @@
             $("#document_name").removeAttr('aria-invalid');
         });
 
+        // On resetting Add document Type Form
+        $("#resetAddFormBtn").click(function() {
+            $("#addDocumentTypeForm").trigger('reset');
+            $("#addDocumentTypeForm").validate().resetForm();
+            $("#document_name").removeClass('error');
+            $("#document_name").removeAttr('aria-invalid');
+        });
+
         // Validate and Submit Edit Maintenance Type Form
         $("#editDocumentTypeForm").validate({
             rules: {
@@ -281,6 +272,12 @@
             $("#new_document_name").removeAttr('aria-invalid');
         });
 
+        $("#resetEditFormBtn").click(function() {
+            setTimeout(() => {
+                $("#new_document_name").valid();
+            }, 10);
+        });
+
     });
 </script>
 
@@ -289,7 +286,7 @@
         // el has been passed 'this' to get data-* attributes of clicked button
         // Set initial form details using button's data attributes set while loading/reloading table
         $("#documentTypeId").val($(el).data('id'));
-        $("#new_document_name").val($(el).data('name'));
+        $("#new_document_name").attr('value', $(el).data('name'));
         $("#edit").modal('show');
     }
 

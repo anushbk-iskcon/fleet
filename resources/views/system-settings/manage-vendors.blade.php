@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetAddFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetEditFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Save</button>
                         </div>
                     </div>
@@ -233,6 +233,14 @@
             $("#vendor_name").removeAttr('aria-invalid');
         });
 
+        // Remove validation errors on restting add form
+        $("#resetAddFormBtn").click(function() {
+            $("#addVendorForm").trigger('reset');
+            $("#addVendorForm").validate().resetForm();
+            $("#vendor_name").removeClass('error');
+            $("#vendor_name").removeAttr('aria-invalid');
+        });
+
         // Remove validations, errors and reset Edit Vendor form on closing modal
         $("#edit").on('hidden.bs.modal', function(ev) {
             $("#editVendorForm").trigger('reset');
@@ -241,13 +249,20 @@
             $("#new_vendor_name").removeAttr('aria-invalid');
         });
 
+        // Remove vlaidation erros on resetting edit form
+        $("#resetEditFormBtn").click(function() {
+            setTimeout(() => {
+                $("#new_vendor_name").valid();
+            }, 10);
+        });
+
     });
 </script>
 
 <script>
     function editInfo(el) {
         $("#vendorId").val($(el).data('id'));
-        $("#new_vendor_name").val($(el).data('name'));
+        $("#new_vendor_name").attr('value', $(el).data('name'));
         $("#edit").modal('show');
     }
 
@@ -257,9 +272,8 @@
         toastr.warning("<br /><button type='button' class='btn btn-success mr-2' value='yes'>Yes</button><button class='btn btn-danger' type='button' value='no' >No</button>", 'Are you sure?', {
             allowHtml: true,
             onclick: function(toast) {
-                value = toast.target.value
+                value = toast.target.value;
                 if (value == 'yes') {
-
                     var url = "{{ route('vendor-settings.status-update') }}";
 
                     $.ajax({

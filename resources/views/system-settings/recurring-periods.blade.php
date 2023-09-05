@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetAddFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetEditFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Save</button>
                         </div>
                     </div>
@@ -232,6 +232,13 @@
             $("#recurringPeriodName").removeClass('error').removeAttr('aria-invalid');
         });
 
+        // On clicking reset add recurring period form button
+        $("#resetAddFormBtn").click(function() {
+            $("#addRecurringPeriodForm").trigger('reset');
+            $("#addRecurringPeriodForm").data('validator').resetForm();
+            $("#recurringPeriodName").removeClass('error').removeAttr('aria-invalid');
+        });
+
         // Validate and submit Edit Recurring Period Form
         $("#editRecurringPeriodForm").validate({
             rules: {
@@ -282,13 +289,19 @@
             $("#newRecurringPeriodName").removeClass('error').removeAttr('aria-invalid');
         });
 
+        $("#resetEditFormBtn").click(function() {
+            setTimeout(() => {
+                $("#newRecurringPeriodName").valid()
+            }, 10);
+        });
+
     });
 
     function editInfo(el) {
         // el has been passed 'this' to get data-* attributes of clicked button
         // Set initial form details using button's data attributes set while loading/reloading table
         $("#recurringPeriodId").val($(el).data('id'));
-        $("#newRecurringPeriodName").val($(el).data('name'));
+        $("#newRecurringPeriodName").attr('value', $(el).data('name'));
         $("#edit").modal('show');
     }
 
@@ -299,7 +312,7 @@
         toastr.warning("<br /><button type='button' class='btn btn-success mr-2' value='yes'>Yes</button><button class='btn btn-danger' type='button' value='no' >No</button>", 'Are you sure?', {
             allowHtml: true,
             onclick: function(toast) {
-                value = toast.target.value
+                value = toast.target.value;
                 if (value == 'yes') {
                     var url = "{{ route('recurring-periods.update-status') }}";
 
