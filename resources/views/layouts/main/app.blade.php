@@ -114,6 +114,7 @@
                         @php 
                         $userMenuPermissions = getMenuPermission();
                         $userMenu = getuserMenu();
+                      
                         @endphp
                         @foreach($userMenu as $menuItem)
                         @php
@@ -124,9 +125,10 @@
 
                         # Collect link text (subtitles) and corresponding URLs into a new array:
                         $menuLinks = array_combine($subTitles, $urls);
+                       
                         @endphp
                         @if(count($menuLinks) >= 1)
-                        @if($userMenuPermissions[$currentMenuLink]['CAN_READ'] == 'Y')
+                        @if(isset($userMenuPermissions[$currentMenuLink]) && $userMenuPermissions[$currentMenuLink]['CAN_READ'] == 'Y')
                         <li class="">
                             <a href="#" class="has-arrow material-ripple">
                                 {!! $menuItem->MENU_TITLE !!}
@@ -134,7 +136,7 @@
                             <ul class="nav-second-level mm-collapse">
 
                                 @foreach($menuLinks as $subTitle => $url)
-                                @if($userMenuPermissions[$url]['CAN_READ'] == 'Y')
+                                @if(isset($userMenuPermissions[$url]) && $userMenuPermissions[$url]['CAN_READ'] == 'Y')
                                 <li class="{{Route::is($url) ? 'mm-active' : ''}}">
                                     <a href="{{route($url)}}">{!!$subTitle!!}</a>
                                 </li>
@@ -151,7 +153,7 @@
                             </a>
                         </li>
                         @else
-                        @if($userMenuPermissions[$currentMenuLink]['CAN_READ'] == 'Y')
+                        @if(isset($userMenuPermissions[$currentMenuLink]) && $userMenuPermissions[$currentMenuLink]['CAN_READ'] == 'Y')
                         <li class="">
                             <a href="#">
                                 {!! $menuItem->MENU_TITLE !!}

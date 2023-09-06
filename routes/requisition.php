@@ -35,6 +35,11 @@
     use Illuminate\Support\Facades\Route;
 
     Route::middleware('auth')->group(function () {
+        // ///////////This Route Need to delete//////////
+        Route::get('system-setting', [DepartmentController::class, 'index'])->name('system-settings');
+        Route::get('user', [DepartmentController::class, 'index'])->name('user');
+
+        // /////////////
         Route::get('vehicle-requisitions', [VehicleReqController::class, 'index'])->name('vehicle-requisitions');
         Route::post('add-requisition', [VehicleReqController::class, 'addRequisition'])->name('add_requisition');
         Route::post('add-driver', [VehicleReqController::class, 'addDriver'])->name('add_driver');
@@ -66,4 +71,7 @@
         // /////////////////////Debit Notes Report//////////////
         Route::get('reports/debit-note', [ReportController::class, 'debitNote'])->name('debit.note');
         Route::get('reports/generate-pdf', [ReportController::class, 'generatePDF'])->name('generate.pdf');
+
+        // /////////////Salary/////////////////////
+        Route::get('manage-salary', [SalaryController::class, 'index'])->name('manage-salary');
     });
