@@ -12,13 +12,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
 
     <script>
-        WebFont.load({
-            google: {
-                families: [
-                    'Nunito+Sans:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&display=swap'
-                ]
-            }
-        });
+    WebFont.load({
+        google: {
+            families: [
+                'Nunito+Sans:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&display=swap'
+            ]
+        }
+    });
     </script>
 
     <!-- Datatables bootstrap 4 -->
@@ -53,11 +53,11 @@
     <!-- Multiselected JS -->
     <link href="{{asset('public/plugins/multiselectedjs/jquery.multiselect.css')}}" rel="stylesheet">
     <style>
-        .sidebar-nav ul li a i.fa,
-        .sidebar-nav ul li a i.fas,
-        .sidebar-nav ul li a i.far {
-            font-size: 16px !important;
-        }
+    .sidebar-nav ul li a i.fa,
+    .sidebar-nav ul li a i.fas,
+    .sidebar-nav ul li a i.far {
+        font-size: 16px !important;
+    }
     </style>
     @yield('css-content')
 
@@ -70,7 +70,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 
     <script>
-        var baseurl = "http://localhost/fleet/public/";
+    var baseurl = "http://localhost/fleet/public/";
     </script>
 </head>
 
@@ -111,61 +111,101 @@
             <div class="sidebar-body">
                 <nav class="sidebar-nav">
                     <ul class="metismenu">
-                        @php 
-                        $userMenuPermissions = getMenuPermission();
+                        @php
                         $userMenu = getuserMenu();
-                      
                         @endphp
                         @foreach($userMenu as $menuItem)
-                        @php
-                        $subTitles = explode(',', $menuItem->subtitles);
-                        $currentMenuTitle = array_shift($subTitles);
-                        $urls = explode(',', $menuItem->urls);
-                        $currentMenuLink = array_shift($urls);
-
-                        # Collect link text (subtitles) and corresponding URLs into a new array:
-                        $menuLinks = array_combine($subTitles, $urls);
-                       
-                        @endphp
-                        @if(count($menuLinks) >= 1)
-                        @if(isset($userMenuPermissions[$currentMenuLink]) && $userMenuPermissions[$currentMenuLink]['CAN_READ'] == 'Y')
-                        <li class="">
-                            <a href="#" class="has-arrow material-ripple">
-                                {!! $menuItem->MENU_TITLE !!}
-                            </a>
-                            <ul class="nav-second-level mm-collapse">
-
-                                @foreach($menuLinks as $subTitle => $url)
-                                @if(isset($userMenuPermissions[$url]) && $userMenuPermissions[$url]['CAN_READ'] == 'Y')
-                                <li class="{{Route::is($url) ? 'mm-active' : ''}}">
-                                    <a href="{{route($url)}}">{!!$subTitle!!}</a>
+                         @php 
+                           $checkMenuExist = checkMenuExist($menuItem->PERMISSION_ID);
+                           $checkSubmenu=checkSubmenu($menuItem->PARENT_ID);
+                         @endphp
+                         @if($checkMenuExist)
+                            @if(count($checkSubmenu)==0)
+                              @if($menuItem->urls == 'dashboard') 
+                                <li class="{{Route::is('dashboard') ? 'mm-active' : ''}}">
+                                    <a href="{{route($menuItem->urls)}}" class="has-arrow material-ripple">
+                                        {!! $menuItem->MENU_TITLE !!}
+                                    </a>
                                 </li>
-                                @endif
-                                @endforeach
-                            </ul>
-                        </li>
-                        @endif
-                        @else
-                        @if($menuItem->urls == 'dashboard')
-                        <li class="{{Route::is('dashboard') ? 'mm-active' : ''}}">
-                            <a href="{{route('dashboard')}}">
-                                {!! $menuItem->MENU_TITLE !!}
-                            </a>
-                        </li>
-                        @else
-                        @if(isset($userMenuPermissions[$currentMenuLink]) && $userMenuPermissions[$currentMenuLink]['CAN_READ'] == 'Y')
-                        <li class="">
-                            <a href="#">
-                                {!! $menuItem->MENU_TITLE !!}
-                            </a>
-                        </li>
-                        @endif
-                        @endif
-                        @endif
+                              @endif
+                            @else
+                              @if($checkMenuExist && $checkMenuExist->CAN_READ == 'Y')
+                                <li class="">
+                                    <a href="#" class="has-arrow material-ripple">
+                                        {!! $menuItem->MENU_TITLE !!}
+                                    </a>
+                                    <ul class="nav-second-level mm-collapse">
+                                        @foreach($checkSubmenu as $subTitle)
+                                          @php 
+                                            $checkMenuExist = checkMenuExist($subTitle->PERMISSION_ID);
+                                          @endphp
+                                          @if($checkMenuExist && $checkMenuExist->CAN_READ == 'Y')
+                                            <li class="{{Route::is($subTitle->SLUG) ? 'mm-active' : ''}}">
+                                                <a href="{{route($subTitle->SLUG)}}">{!!$subTitle->MENU_SUBTITLE!!}</a>
+                                            </li>
+                                          @endif
+                                        @endforeach
+                                    </ul>
+                                </li>
+                              @endif
+                            @endif
+                         @endif
                         @endforeach
-
                     </ul>
 
+                    <!-- @php
+                    $userMenuPermissions = getMenuPermission();
+                    $userMenu = getuserMenu();
+                    
+                    @endphp
+                    @foreach($userMenu as $menuItem)
+                    @php
+                    $subTitles = explode(',', $menuItem->subtitles);
+                    $currentMenuTitle = array_shift($subTitles);
+                    $urls = explode(',', $menuItem->urls);
+                    $currentMenuLink = array_shift($urls);
+
+                    # Collect link text (subtitles) and corresponding URLs into a new array:
+                    $menuLinks = array_combine($subTitles, $urls);
+                    
+                    @endphp
+                    @if(count($menuLinks) >= 1)
+                    @if(isset($userMenuPermissions[$currentMenuLink]) && $userMenuPermissions[$currentMenuLink]['CAN_READ'] == 'Y')
+                    <li class="">
+                        <a href="#" class="has-arrow material-ripple">
+                            {!! $menuItem->MENU_TITLE !!}
+                        </a>
+                        <ul class="nav-second-level mm-collapse">
+
+                            @foreach($menuLinks as $subTitle => $url)
+                            @php 
+                            @if(isset($userMenuPermissions[$url]) && $userMenuPermissions[$url]['CAN_READ'] == 'Y')
+                            <li class="{{Route::is($url) ? 'mm-active' : ''}}">
+                                <a href="{{route($url)}}">{!!$subTitle!!}</a>
+                            </li>
+                            @endif
+                            @endforeach
+                        </ul>
+                    </li>
+                    @endif
+                    @else
+                    @if($menuItem->urls == 'dashboard')
+                    <li class="{{Route::is('dashboard') ? 'mm-active' : ''}}">
+                        <a href="{{route('dashboard')}}">
+                            {!! $menuItem->MENU_TITLE !!}
+                        </a>
+                    </li>
+                    @else
+                    @if(isset($userMenuPermissions[$currentMenuLink]) && $userMenuPermissions[$currentMenuLink]['CAN_READ'] == 'Y')
+                    <li class="">
+                        <a href="#">
+                            {!! $menuItem->MENU_TITLE !!}
+                        </a>
+                    </li>
+                    @endif
+                    @endif
+                    @endif
+                    @endforeach -->
                     <!-- Existing Sidebar Menu -->
                     <!-- <li class="mm-active">
                             <a href="{{url('dashboard')}}" aria-expanded="true"><i class="typcn typcn-home-outline mr-2"></i> Dashboard</a>
@@ -553,9 +593,11 @@
                             <li class="nav-item dropdown user-menu">
                                 <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
                                     @if(Auth()->user()->PROFILE_IMAGE)
-                                    <img src="{{asset('public/upload/profile/users/' .auth()->user()->PROFILE_IMAGE .'')}}" alt="Profile Picture" class="header-image">
+                                    <img src="{{asset('public/upload/profile/users/' .auth()->user()->PROFILE_IMAGE .'')}}"
+                                        alt="Profile Picture" class="header-image">
                                     @else
-                                    <img src="{{asset('public/upload/profile/default.png')}}" alt="Profile Picture" class="header-image">
+                                    <img src="{{asset('public/upload/profile/default.png')}}" alt="Profile Picture"
+                                        class="header-image">
                                     @endif
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
@@ -566,15 +608,19 @@
                                         <div class="img-user">
 
                                             @if(Auth()->user()->PROFILE_IMAGE)
-                                            <img src="{{asset('public/upload/profile/users/' .auth()->user()->PROFILE_IMAGE .'')}}" alt="Profile Picture">
+                                            <img src="{{asset('public/upload/profile/users/' .auth()->user()->PROFILE_IMAGE .'')}}"
+                                                alt="Profile Picture">
                                             @else
-                                            <img src="{{asset('public/upload/profile/default.png')}}" alt="Profile Picture">
+                                            <img src="{{asset('public/upload/profile/default.png')}}"
+                                                alt="Profile Picture">
                                             @endif
                                         </div>
                                         Super Admin
                                     </div>
-                                    <a href="{{url('profile')}}" class="dropdown-item"><i class="typcn typcn-user-outline"></i> My Profile</a>
-                                    <a href="{{route('edit-profile')}}" class="dropdown-item"><i class="typcn typcn-edit"></i> Edit Profile</a>
+                                    <a href="{{url('profile')}}" class="dropdown-item"><i
+                                            class="typcn typcn-user-outline"></i> My Profile</a>
+                                    <a href="{{route('edit-profile')}}" class="dropdown-item"><i
+                                            class="typcn typcn-edit"></i> Edit Profile</a>
 
                                     <!-- For Logout -->
                                     <form action="{{url('logout')}}" method="post">
