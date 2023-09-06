@@ -300,7 +300,12 @@
     // URLs and CSRF Token for AJAX Requests
     let deactivateDriverURL = "{{url('deactivate-driver')}}";
     let activateDriverURL = "{{url('activate-driver')}}";
+    let getDataURL = "{{url('drivers/get-data')}}";
     let csrfToken = "{{csrf_token()}}";
+
+    let defaultProfileImgPath = "{{asset('public/upload/profile/')}}";
+    let driverProfileImgPath = "{{asset('public/upload/profile/drivers/')}}";
+    console.log(driverProfileImgPath);
 
     let licenseTypes = JSON.parse(`{!! json_encode($licenseTypes) !!}`);
 </script>

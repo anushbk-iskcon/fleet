@@ -22,6 +22,12 @@ class DriverController extends Controller
         return view('employee.manage-drivers', compact('drivers', 'licenseTypes'));
     }
 
+    public function getData(Request $request)
+    {
+        $drivers = DB::table('drivers')->get();
+        return $drivers->toJson();
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -132,7 +138,7 @@ class DriverController extends Controller
         $driver->JOIN_DATE = $request->join_date;
         $driver->CTC = $request->ctc ?? 0;
         $driver->OVT = $request->ovt ?? 0;
-        
+
         if ($request->dob) $driver->DATE_OF_BIRTH = $request->dob;
         if ($request->permanent_address) $driver->PERMANENT_ADDRESS = $request->permanent_address;
         if ($request->present_address) $driver->PRESENT_ADDRESS = $request->present_address;

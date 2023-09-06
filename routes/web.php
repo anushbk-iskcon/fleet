@@ -96,6 +96,7 @@ Route::middleware('auth')->group(function () {
     // Driver management routes
     Route::put('deactivate-driver', [DriverController::class, 'deactivateDriver']);
     Route::put('activate-driver', [DriverController::class, 'activateDriver']);
+    Route::post('drivers/get-data', [DriverController::class, 'getData']);
 
     Route::resource('drivers', DriverController::class)->except(['destroy']);
 

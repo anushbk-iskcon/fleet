@@ -192,7 +192,7 @@ function loadFile(ev) {
     // }
 }
 
-function updateDriverDetails(driver_id, driver_name, mobile_number, license_number, license_type, national_id, license_issue_date, work_start_time, work_end_time, join_date, dob, permanent_address, present_address, leave_status, is_active, profile_photo,ctc,ovt) {
+function updateDriverDetails(driver_id, driver_name, mobile_number, license_number, license_type, national_id, license_issue_date, work_start_time, work_end_time, join_date, dob, permanent_address, present_address, leave_status, is_active, profile_photo, ctc, ovt) {
     let updateForm = $("#updateDriverDetailsForm");
     // To set Driver ID For Update Form Action by replacing placeholder 0 or current Driver ID which previously 
     // replaced 0 in formaction by driver_id
@@ -384,6 +384,43 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
     });
 
     $("#editDriverDetailsModal").modal('show');
+}
+
+function loadTable(table) {
+    $.ajax({
+        url: getDataURL,
+        type: 'post',
+        data: {
+            _token: csrfToken
+        },
+        dataType: 'json',
+        success: function (res) {
+            if (res.length >= 1) {
+                table.clear();
+                $.each(res, function (i, data) {
+                    let driverNameDiv = `<div class="driver-profile-img-container" style="width: 30%;display: inline-block;">`;
+                    if (data.PROFILE_PHOTO)
+                        driverNameDiv += `<img src="${driverProfileImgPath}/${data.PROFILE_PHOTO}" alt="Image" style="width: 45px;height: 45px;border-radius:50%"></div>`;
+                    else
+                        driverNameDiv += `<img src="${defaultProfileImgPath}/default.png" alt="Image" style="width: 45px;height: 45px;border-radius:50%"></div>`;
+                    driverNameDiv += `<div width: 60%;display: inline-block;>${data.DRIVER_NAME}</div>`;
+
+                    let activeStatus = data.IS_ACTIVE == 'Y' ? 'Active' : 'Inactive';
+                    table.row.add([
+                        i + 1,
+                        driverNameDiv,
+                        data.MOBILE_NUMBER,
+                        data.LICENSE_NUMBER,
+                        data.NATIONAL_ID,
+                        activeStatus
+                    ]);
+                });
+            }
+        },
+        error: function () {
+            toastr.error("Error getting data. Please try again", "", { closeButton: true });
+        }
+    });
 }
 
 function deactivateDriver(el) {
