@@ -52,6 +52,8 @@ class DriverController extends Controller
         $driver->WORKING_TIME_END = $request->timeslot_end ?? "";
         $driver->JOIN_DATE = $request->join_date;
         $driver->DATE_OF_BIRTH = $request->dob ?? null;
+        $driver->CTC = $request->ctc ?? 0;
+        $driver->OVT = $request->ovt ?? 0;
         if ($request->permanent_address) {
             $driver->PERMANENT_ADDRESS = $request->permanent_address;
         }
@@ -128,7 +130,9 @@ class DriverController extends Controller
         $driver->WORKING_TIME_START = $request->timeslot_start ?? "";
         $driver->WORKING_TIME_END = $request->timeslot_end ?? "";
         $driver->JOIN_DATE = $request->join_date;
-
+        $driver->CTC = $request->ctc ?? 0;
+        $driver->OVT = $request->ovt ?? 0;
+        
         if ($request->dob) $driver->DATE_OF_BIRTH = $request->dob;
         if ($request->permanent_address) $driver->PERMANENT_ADDRESS = $request->permanent_address;
         if ($request->present_address) $driver->PRESENT_ADDRESS = $request->present_address;

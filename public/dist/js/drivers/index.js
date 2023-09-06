@@ -192,7 +192,7 @@ function loadFile(ev) {
     // }
 }
 
-function updateDriverDetails(driver_id, driver_name, mobile_number, license_number, license_type, national_id, license_issue_date, work_start_time, work_end_time, join_date, dob, permanent_address, present_address, leave_status, is_active, profile_photo) {
+function updateDriverDetails(driver_id, driver_name, mobile_number, license_number, license_type, national_id, license_issue_date, work_start_time, work_end_time, join_date, dob, permanent_address, present_address, leave_status, is_active, profile_photo,ctc,ovt) {
     let updateForm = $("#updateDriverDetailsForm");
     // To set Driver ID For Update Form Action by replacing placeholder 0 or current Driver ID which previously 
     // replaced 0 in formaction by driver_id
@@ -255,6 +255,12 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
             <label for="checkbox_edit_is_active">Is Active</label>
         </div>
     </div>
+    <div class="form-group row">
+    <label for="newpicture" class="col-sm-5 col-form-label">Photograph </label>
+    <div class="col-sm-7" style="display:flex;flex-wrap:wrap;">
+        <input type="file" accept="image/*" name="picture" id="newpicture">
+    </div>
+</div>
 </div>
 <div class="col-md-12 col-lg-6">
     <div class="form-group row">
@@ -311,13 +317,19 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
             </div>
         </div>
     </div>
+
     <div class="form-group row">
-        <label for="newpicture" class="col-sm-5 col-form-label">Photograph </label>
-        <div class="col-sm-7" style="display:flex;flex-wrap:wrap;">
-            <input type="file" accept="image/*" name="picture" id="newpicture">
+        <label for="permanent_address" class="col-sm-5 col-form-label">CTC</label>
+        <div class="col-sm-7">
+            <input name="ctc" class="form-control" type="text" placeholder="Enter CTC" id="newctc" value="${ctc}">
         </div>
     </div>
-
+    <div class="form-group row">
+        <label for="permanent_address" class="col-sm-5 col-form-label">Overtime Price </label>
+        <div class="col-sm-7">
+            <input name="ovt" class="form-control" type="text" placeholder="Enter Overtime Price" id="newovt" value="${ovt}">
+        </div>
+    </div>
     <div class="form-group text-right">
         <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
         <button type="submit" class="btn btn-success w-md m-b-5">Update</button>

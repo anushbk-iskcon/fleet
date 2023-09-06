@@ -78,6 +78,13 @@
                                 <label for="checkbox2">Is Active</label>
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="picture" class="col-sm-5 col-form-label">Photograph </label>
+                            <div class="col-sm-7" style="display:flex;flex-wrap:wrap;">
+                                <input type="file" accept="image/*" name="picture" onchange="loadFile(event)">
+                                <div id="selectedFileName"></div>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
@@ -131,13 +138,17 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="picture" class="col-sm-5 col-form-label">Photograph </label>
-                            <div class="col-sm-7" style="display:flex;flex-wrap:wrap;">
-                                <input type="file" accept="image/*" name="picture" onchange="loadFile(event)">
-                                <div id="selectedFileName"></div>
+                            <label for="permanent_address" class="col-sm-5 col-form-label">CTC</label>
+                            <div class="col-sm-7">
+                                <input name="ctc" class="form-control" type="text" placeholder="Enter CTC" id="ctc">
                             </div>
                         </div>
-
+                        <div class="form-group row">
+                            <label for="permanent_address" class="col-sm-5 col-form-label">Overtime Price </label>
+                            <div class="col-sm-7">
+                                <input name="ovt" class="form-control" type="text" placeholder="Enter Overtime Price" id="ovt">
+                            </div>
+                        </div>
                         <div class="form-group text-right">
                             <button type="reset" id="resetAddDriverForm" class="btn btn-primary w-md m-b-5">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
@@ -256,7 +267,7 @@
                                 <!-- <td> {{$driver['WORKING_TIME_START'] . ' - ' . $driver['WORKING_TIME_END'] }} </td> -->
                                 <td> @if($driver['IS_ACTIVE'] == 'Y') {{"Active"}} @else {{"Inactive"}} @endif </td>
                                 <td>
-                                    <button class="btn btn-success mr-1" onclick="updateDriverDetails('{{$driver->DRIVER_ID}}','{{$driver->DRIVER_NAME}}', '{{$driver->MOBILE_NUMBER}}','{{$driver->LICENSE_NUMBER}}','{{$driver->LICENSE_TYPE}}','{{$driver->NATIONAL_ID}}','{{$driver->LICENSE_ISSUE_DATE}}','{{$driver->WORKING_TIME_START}}','{{$driver->WORKING_TIME_END}}','{{$driver->JOIN_DATE}}','{{$driver->DATE_OF_BIRTH}}','{{$driver->PERMANENT_ADDRESS}}','{{$driver->PRESENT_ADDRESS}}','{{$driver->LEAVE_STATUS}}','{{$driver->IS_ACTIVE}}','{{$driver->PROFILE_PHOTO}}')" data-toggle="tooltip" data-placement="right" title="Update">
+                                    <button class="btn btn-success mr-1" onclick="updateDriverDetails('{{$driver->DRIVER_ID}}','{{$driver->DRIVER_NAME}}', '{{$driver->MOBILE_NUMBER}}','{{$driver->LICENSE_NUMBER}}','{{$driver->LICENSE_TYPE}}','{{$driver->NATIONAL_ID}}','{{$driver->LICENSE_ISSUE_DATE}}','{{$driver->WORKING_TIME_START}}','{{$driver->WORKING_TIME_END}}','{{$driver->JOIN_DATE}}','{{$driver->DATE_OF_BIRTH}}','{{$driver->PERMANENT_ADDRESS}}','{{$driver->PRESENT_ADDRESS}}','{{$driver->LEAVE_STATUS}}','{{$driver->IS_ACTIVE}}','{{$driver->PROFILE_PHOTO}}','{{$driver->CTC}}','{{$driver->OVT}}')" data-toggle="tooltip" data-placement="right" title="Update">
                                         <i class="fa fa-edit"></i>
                                     </button>
                                     @if($driver['IS_ACTIVE'] == 'Y')
