@@ -149,6 +149,8 @@ class DriverController extends Controller
         }
         if ($request->is_active) {
             $driver->IS_ACTIVE = ($request->is_active == 1 ? 'Y' : 'N');
+        } else {
+            $driver->IS_ACTIVE = 'N';
         }
 
         // To update profile photo

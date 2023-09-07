@@ -305,7 +305,6 @@
 
     let defaultProfileImgPath = "{{asset('public/upload/profile/')}}";
     let driverProfileImgPath = "{{asset('public/upload/profile/drivers/')}}";
-    console.log(driverProfileImgPath);
 
     let licenseTypes = JSON.parse(`{!! json_encode($licenseTypes) !!}`);
 </script>
