@@ -107,6 +107,18 @@ $(document).ready(function () {
         }
     });
 
+    $("#btn-filter").click(function (e) {
+        e.preventDefault();
+        populateTable(insuranceTable);
+    });
+
+    $("#btn-reset").click(function () {
+        setTimeout(() => {
+            $("#vehiclesr").change();
+            populateTable(insuranceTable);
+        });
+    });
+
 }); // End of document.ready
 
 function populateTable(table) {
@@ -123,8 +135,8 @@ function populateTable(table) {
         },
         dataType: 'json',
         success: function (res) {
+            table.clear();
             if (res.length >= 1) {
-                table.clear();
                 $.each(res, function (i, data) {
                     let actionBtns = `<button class="btn btn-sm btn-info mr-1" onclick="editInfo(${data.INSURANCE_ID})" title="Edit"><i class="ti-pencil"></i></button>`;
 
@@ -139,9 +151,9 @@ function populateTable(table) {
                         data.RECURRING_DATE,
                         actionBtns
                     ]);
-                })
-                table.draw();
+                });
             }
+            table.draw();
         },
         error: function (jqXHR, status, err) {
             toastr.error("Error fetching data. Please try again", '', { closeButton: true });

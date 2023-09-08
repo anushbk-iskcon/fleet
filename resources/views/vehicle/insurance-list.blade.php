@@ -176,58 +176,60 @@
                     </small>
                 </h4>
             </div>
-            <div class="card-body row">
-                <div class="col-sm-12 col-xl-4">
-                    <div class="form-group row mb-1">
-                        <label for="vehiclesr" class="col-sm-5 col-form-label justify-content-start text-left">Vehicle <br><br> </label>
-                        <div class="col-sm-7">
-                            <select class="form-control basic-single" name="vehiclesr" id="vehiclesr">
-                                <option value="" selected="selected">Please Select One</option>
-                                @foreach($vehicles as $vehicle)
-                                <option value="{{$vehicle['VEHICLE_ID']}}">{{$vehicle['VEHICLE_NAME']}}</option>
-                                @endforeach
-                            </select>
+            <div class="card-body">
+                <form action="" id="insuranceListFilterForm" class="row">
+                    <div class="col-sm-12 col-xl-4">
+                        <div class="form-group row mb-1">
+                            <label for="vehiclesr" class="col-sm-5 col-form-label justify-content-start text-left">Vehicle <br><br> </label>
+                            <div class="col-sm-7">
+                                <select class="form-control basic-single" name="vehiclesr" id="vehiclesr">
+                                    <option value="" selected="selected">Please Select One</option>
+                                    @foreach($vehicles as $vehicle)
+                                    <option value="{{$vehicle['VEHICLE_ID']}}">{{$vehicle['VEHICLE_NAME']}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row mb-1">
-                        <label for="date_fr" class="col-sm-5 col-form-label justify-content-start text-left">Date From </label>
-                        <div class="col-sm-7">
-                            <input name="date_fr" autocomplete="off" class="form-control newdatetimepicker" type="text" placeholder="Date From" id="date_fr">
+                        <div class="form-group row mb-1">
+                            <label for="date_fr" class="col-sm-5 col-form-label justify-content-start text-left">Date From </label>
+                            <div class="col-sm-7">
+                                <input name="date_fr" autocomplete="off" class="form-control newdatetimepicker" type="text" placeholder="Date From" id="date_fr">
+                            </div>
                         </div>
-                    </div>
 
-                </div>
-                <div class="col-sm-12 col-xl-4">
-                    <div class="form-group row mb-1">
-                        <label for="insurance_company" class="col-sm-5 col-form-label justify-content-start text-left">Insurance Company</label>
-                        <div class="col-sm-7">
-                            <input class="form-control" name="insurance_company" id="insurance_company" type="text" placeholder="Company Name">
+                    </div>
+                    <div class="col-sm-12 col-xl-4">
+                        <div class="form-group row mb-1">
+                            <label for="insurance_company" class="col-sm-5 col-form-label justify-content-start text-left">Insurance Company</label>
+                            <div class="col-sm-7">
+                                <input class="form-control" name="insurance_company" id="insurance_company" type="text" placeholder="Company Name">
+                            </div>
+                        </div>
+                        <div class="form-group row mb-1">
+                            <label for="date_to" class="col-sm-5 col-form-label justify-content-start text-left">Date To </label>
+                            <div class="col-sm-7">
+                                <input name="date_to" autocomplete="off" class="form-control newdatetimepicker" type="text" placeholder="Date To" id="date_to">
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group row mb-1">
-                        <label for="date_to" class="col-sm-5 col-form-label justify-content-start text-left">Date To </label>
-                        <div class="col-sm-7">
-                            <input name="date_to" autocomplete="off" class="form-control newdatetimepicker" type="text" placeholder="Date To" id="date_to">
+                    <div class="col-sm-12 col-xl-4">
+                        <div class="form-group row mb-1">
+                            <label for="policy_numbersr" class="col-sm-5 col-form-label justify-content-start text- left">Policy Number </label>
+                            <div class="col-sm-7">
+                                <input name="policy_numbersr" class="form-control" type="text" placeholder="Policy Number" id="policy_numbersr">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-12 col-xl-4">
-                    <div class="form-group row mb-1">
-                        <label for="policy_numbersr" class="col-sm-5 col-form-label justify-content-start text- left">Policy Number </label>
-                        <div class="col-sm-7">
-                            <input name="policy_numbersr" class="form-control" type="text" placeholder="Policy Number" id="policy_numbersr">
+                    <div class="col-sm-12">
+                        <div class="form-group row  mb-1">
+                            <label for="joining_d_to" class="col-sm-5 col-form-label">&nbsp;</label>
+                            <div class="col-sm-7 text-right">
+                                <button type="submit" class="btn btn-success" id="btn-filter">Search</button>&nbsp;
+                                <button type="reset" class="btn btn-inverse" id="btn-reset">Reset</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-12">
-                    <div class="form-group row  mb-1">
-                        <label for="joining_d_to" class="col-sm-5 col-form-label">&nbsp;</label>
-                        <div class="col-sm-7 text-right">
-                            <button type="button" class="btn btn-success" id="btn-filter">Search</button>&nbsp;
-                            <button type="button" class="btn btn-inverse" id="btn-reset">Reset</button>
-                        </div>
-                    </div>
-                </div>
+                </form>
 
             </div>
         </div>

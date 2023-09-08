@@ -303,7 +303,7 @@
     let getDataURL = "{{url('drivers/get-data')}}";
     let csrfToken = "{{csrf_token()}}";
 
-    let defaultProfileImgPath = "{{asset('public/upload/profile/')}}";
+    let defaultProfileImgPath = "{{asset('public/img/')}}";
     let driverProfileImgPath = "{{asset('public/upload/profile/drivers/')}}";
 
     let licenseTypes = JSON.parse(`{!! json_encode($licenseTypes) !!}`);

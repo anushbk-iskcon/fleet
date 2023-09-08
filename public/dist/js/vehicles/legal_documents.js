@@ -150,8 +150,8 @@ function populateTable(table) {
         dataType: 'json',
         success: function (res) {
             // console.log(res);
+            table.clear();
             if (res.length >= 1) {
-                table.clear();
                 $.each(res, function (i, data) {
                     let actionBtns = `<button class="btn btn-sm btn-info mr-1" onclick="editInfo(${data.LEGAL_DOCUMENT_ID})" title="Edit"><i class="ti-pencil"></i></button>`;
 
@@ -171,8 +171,9 @@ function populateTable(table) {
                         actionBtns
                     ]);
                 });
-                table.draw();
+
             }
+            table.draw();
         },
         error: function (jqxhr, status, err) {
             toastr.error("Error loading data. Please try again", "", { closeButton: true });

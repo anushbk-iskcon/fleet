@@ -208,16 +208,6 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
     let workStartTime = work_start_time ? work_start_time : '';
     let workEndTime = work_end_time ? work_end_time : '';
 
-    let presentAddress = '';
-    let permanentAddress = '';
-    let dateOfBirth = '';
-    if (present_address)
-        presentAddress = present_address;
-    if (permanent_address)
-        permanentAddress = permanent_address;
-    if (dob)
-        dateOfBirth = dob;
-
     updateForm.empty().append('<input type="hidden" name="_method" value="PUT">');
     updateForm.append('<input type="hidden" name="_token" value="' + $('meta[name="csrf-token"]').attr('content') + '">');
 
@@ -253,13 +243,13 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
     <div class="form-group row">
         <label for="update_dob" class="col-sm-5 col-form-label">Date of Birth </label>
         <div class="col-sm-7">
-            <input name="dob" autocomplete="off" class="form-control edit-date-picker" type="text" placeholder="Date of Birth" id="update_dob" value="${dateOfBirth}">
+            <input name="dob" autocomplete="off" class="form-control edit-date-picker" type="text" placeholder="Date of Birth" id="update_dob" value="${dob}">
         </div>
     </div>
     <div class="form-group row">
         <label for="update_present_address" class="col-sm-5 col-form-label">Present Address </label>
         <div class="col-sm-7">
-            <input name="present_address" class="form-control" type="text" placeholder="Present Address" id="update_present_address" value="${presentAddress}">
+            <input name="present_address" class="form-control" type="text" placeholder="Present Address" id="update_present_address" value="${present_address}">
         </div>
     </div>
     <div class="form-group row">
@@ -315,7 +305,7 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
     <div class="form-group row">
         <label for="update_permanent_address" class="col-sm-5 col-form-label">Permanent Address </label>
         <div class="col-sm-7">
-            <input name="permanent_address" class="form-control" type="text" placeholder="Permanent Address" id="update_permanent_address" value="${permanentAddress}">
+            <input name="permanent_address" class="form-control" type="text" placeholder="Permanent Address" id="update_permanent_address" value="${permanent_address}">
         </div>
     </div>
     <div class="form-group row">
@@ -416,12 +406,17 @@ function loadTable(table) {
                     if (data.PROFILE_PHOTO)
                         driverNameDiv += `<img src="${driverProfileImgPath}/${data.PROFILE_PHOTO}" alt="Image" style="width: 45px;height: 45px;border-radius:50%"></div>`;
                     else
-                        driverNameDiv += `<img src="${defaultProfileImgPath}/default.png" alt="Image" style="width: 45px;height: 45px;border-radius:50%"></div>`;
+                        driverNameDiv += `<img src="${defaultProfileImgPath}/default.jpeg" alt="Image" style="width: 45px;height: 45px;border-radius:50%"></div>`;
                     driverNameDiv += `<div style="width:60%;display:inline-block;">${data.DRIVER_NAME}</div>`;
+
+                    // Checking for values which may be null in DB, to set them to empty string in update form
+                    let presentAddress = data.PRESENT_ADDRESS ? data.PRESENT_ADDRESS : "";
+                    let permanentAddress = data.PERMANENT_ADDRESS ? data.PERMANENT_ADDRESS : "";
+                    let dateOfBirth = data.DATE_OF_BIRTH ? data.DATE_OF_BIRTH : "";
 
                     let activeStatus = data.IS_ACTIVE == 'Y' ? 'Active' : 'Inactive';
                     let actionBtns = `<button class="btn btn-success mr-1" onclick="updateDriverDetails('${data.DRIVER_ID}', '${data.DRIVER_NAME}', '${data.MOBILE_NUMBER}', '${data.LICENSE_NUMBER}', '${data.LICENSE_TYPE}', 
-                    '${data.NATIONAL_ID}', '${data.LICENSE_ISSUE_DATE}', '${data.WORKING_TIME_START}', '${data.WORKING_TIME_END}', '${data.JOIN_DATE}', '${data.DATE_OF_BIRTH}', '${data.PERMANENT_ADDRESS}', '${data.PRESENT_ADDRESS}', 
+                    '${data.NATIONAL_ID}', '${data.LICENSE_ISSUE_DATE}', '${data.WORKING_TIME_START}', '${data.WORKING_TIME_END}', '${data.JOIN_DATE}', '${dateOfBirth}', '${permanentAddress}', '${presentAddress}', 
                     '${data.LEAVE_STATUS}', '${data.IS_ACTIVE}', '${data.PROFILE_PHOTO}', '${data.CTC}', '${data.OVT}')" 
                     data-toggle="tooltip" data-placement="right" title="" data-original-title="Update"><i class="fa fa-edit"></i></button>`;
                     if (data.IS_ACTIVE == 'Y')

@@ -901,7 +901,7 @@
             dataType: 'json',
             success: function(res) {
                 if (res.successCode == 1) {
-                    console.log(res.data);
+                    // console.log(res.data);
                     $("#new_vehicle_name").val(res.data.VEHICLE_NAME);
                     $("#new_vehicle_type").val(res.data.VEHICLE_TYPE_ID);
 

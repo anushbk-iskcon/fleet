@@ -94,11 +94,11 @@
                                 <td>{{$loop->iteration}}</td>
                                 <td> {{$licenseType->LICENSE_NAME}} </td>
                                 <td>
-                                    <a onclick="editInfo({{$licenseType->LICENSE_ID}}, '{{$licenseType->LICENSE_NAME}}')" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
+                                    <a onclick="editInfo({{$licenseType->LICENSE_ID}}, '{{$licenseType->LICENSE_NAME}}')" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update" style="cursor:pointer;"><i class="ti-pencil"></i></a>
                                     @if($licenseType->IS_ACTIVE == 'Y')
-                                    <a onclick="changeActivation({{$licenseType->LICENSE_ID}}, 0)" class="btn btn-xs btn-danger btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Deactivate"><i class="ti-close"></i></a>
+                                    <a onclick="changeActivation({{$licenseType->LICENSE_ID}}, 0)" class="btn btn-xs btn-danger btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Deactivate" style="cursor:pointer;"><i class="ti-close"></i></a>
                                     @else
-                                    <a onclick="changeActivation({{$licenseType->LICENSE_ID}}, 1)" class="btn btn-xs btn-danger btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Activate"><i class="ti-reload"></i></a>
+                                    <a onclick="changeActivation({{$licenseType->LICENSE_ID}}, 1)" class="btn btn-xs btn-danger btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Activate" style="cursor:pointer;"><i class="ti-reload"></i></a>
                                     @endif
                                 </td>
                             </tr>
