@@ -106,14 +106,14 @@
 @if($user['PROFILE_IMAGE'])
 <script>
     // Default profile image path for use in user-form.js
-    var defaultProfileImg = "{{asset('upload/profile/' .$user['PROFILE_IMAGE'] .'')}}"
+    var defaultProfileImg = "{{asset('public/upload/profile/' .$user['PROFILE_IMAGE'] .'')}}"
 </script>
 @else
 <script>
     // Default profile image path for use in user-form.js
-    var defaultProfileImg = "{{asset('img/default.jpeg')}}"
+    var defaultProfileImg = "{{asset('public/img/default.jpeg')}}"
 </script>
 @endif
-<script src="{{asset('dist/js/user/edit-user.js')}}"></script>
-<script src="{{asset('dist/js/user/user-form.js')}}"></script>
+<script src="{{asset('public/dist/js/user/edit-user.js')}}"></script>
+<script src="{{asset('public/dist/js/user/user-form.js')}}"></script>
 @endsection

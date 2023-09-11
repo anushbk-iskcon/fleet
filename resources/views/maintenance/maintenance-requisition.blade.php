@@ -155,8 +155,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </td> -->
-                            </tr>
+                                </td>
+                            </tr>  -->
                         </tbody>
                     </table> <!-- /.table-responsive -->
                 </div>

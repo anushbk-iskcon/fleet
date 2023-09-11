@@ -23,7 +23,7 @@
     <div class="col-sm-12">
         <div class="card">
             <div class="card-header">
-                Add User
+                <h4>Add User</h4>
             </div>
             <div class="card-body">
                 <form action="{{route('users.store')}}" id="addUserForm" enctype="multipart/form-data" method="post" accept-charset="utf-8">
@@ -104,8 +104,8 @@
 @section('js-content')
 <script>
     // Default profile image path
-    var defaultProfileImg = "{{asset('img/default.jpeg')}}"
+    var defaultProfileImg = "{{asset('public/img/default.jpeg')}}"
 </script>
-<script src="{{asset('dist/js/user/add-user.js')}}"></script>
-<script src="{{asset('dist/js/user/user-form.js')}}"></script>
+<script src="{{asset('public/dist/js/user/add-user.js')}}"></script>
+<script src="{{asset('public/dist/js/user/user-form.js')}}"></script>
 @endsection

@@ -60,6 +60,16 @@ $(document).ready(function () {
         $('#add0 .basic-single').val('').trigger('change');
     });
 
+    // To reset form validation and remove errors on resetting add requisition form
+    $("#resetAddRefuelReqFormBtn").click(function () {
+        $("#addRefuelRequisitionForm").trigger('reset');
+        $("#addRefuelRequisitionForm").validate().resetForm();
+        $("#addRefuelRequisitionForm .form-control.error").removeClass('error').removeAttr('aria-invalid');
+
+        // To prevent select2 boxes still displaying previously selected value on resetting form
+        $('#add0 .basic-single').val('').trigger('change');
+    });
+
     // Validate and submit Update Refuel Requisition Form
     $("#editRefuelRequisitionForm").validate({
         rules: {
@@ -184,17 +194,19 @@ function editInfo(el) {
             if (res.successCode == 1) {
                 console.log(res.data);
                 $("#editRefuelReqId").val($(el).data('id'));
-
                 $("#edit").modal('show');
                 $("#new_vehicle_name").val(res.data.VEHICLE_ID).trigger('change');
-                $("#new_qty").val(res.data.QUANTITY);
+                $("#new_vehicle_name").data('original-selection', res.data.VEHICLE_ID);
+                $("#new_qty").attr('value', res.data.QUANTITY);
                 $("#new_fuel_station").val(res.data.FUEL_STATION).trigger('change');
+                $("#new_fuel_station").data('original-selection', res.data.FUEL_STATION);
                 $("#new_fuel_type").val(res.data.FUEL_TYPE).trigger('change');
-                $("#new_current_odometer").val(res.data.CURRENT_ODOMETER);
+                $("#new_fuel_type").data('original-selection', res.data.FUEL_TYPE);
+                $("#new_current_odometer").attr('value', res.data.CURRENT_ODOMETER);
                 if (res.data.STATUS == 'R')
-                    $("#new_amount").val(res.data.AMOUNT).prop('disabled', true);
+                    $("#new_amount").attr('value', res.data.AMOUNT).prop('disabled', true);
                 else
-                    $("#new_amount").val(res.data.AMOUNT);
+                    $("#new_amount").attr('value', res.data.AMOUNT);
             } else {
                 console.log(res.message);
                 toastr.error(res.message, '', { closeButton: true });
@@ -205,6 +217,15 @@ function editInfo(el) {
         }
     });
 }
+
+// On clicking the reset button of the edit form
+$("#resetUpdateRefuelReqFormBtn").click(function () {
+    setTimeout(() => {
+        $("#new_vehicle_name").val($("#new_vehicle_name").data('original-selection')).trigger('change');
+        $("#new_fuel_station").val($("#new_fuel_station").data('original-selection')).trigger('change');
+        $("#new_fuel_type").val($("#new_fuel_type").data('original-selection')).trigger('change');
+    }, 10)
+});
 
 function changeStatus2(status, reqId) {
     // Status 0 = Pending, 1 = Approved (in controller)
