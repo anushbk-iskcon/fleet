@@ -148,6 +148,9 @@ function populateTable(table) {
             exp_date_to: $("#exp_date_to").val()
         },
         dataType: 'json',
+        beforeSend: function () {
+            $("#table-loader").show();
+        },
         success: function (res) {
             // console.log(res);
             table.clear();
@@ -177,6 +180,9 @@ function populateTable(table) {
         },
         error: function (jqxhr, status, err) {
             toastr.error("Error loading data. Please try again", "", { closeButton: true });
+        },
+        complete: function () {
+            $("#table-loader").hide();
         }
     });
 }

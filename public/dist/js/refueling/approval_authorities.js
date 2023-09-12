@@ -149,6 +149,9 @@ function populateTable(table) {
             _token: csrfToken
         },
         dataType: 'json',
+        beforeSend: function () {
+            $("#table-loader").show();
+        },
         success: function (res) {
             table.clear();
             if (res.length >= 1) {
@@ -178,6 +181,9 @@ function populateTable(table) {
         },
         error: function (jqXHR, text, err) {
             toastr.error("Error getting requisition data. Please try again", "", { closeButton: true });
+        },
+        complete: function () {
+            $("#table-loader").hide();
         }
     });
 }

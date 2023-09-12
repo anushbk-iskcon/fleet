@@ -9,9 +9,28 @@
         color: #f66;
     }
 
-
     select.error~.select2 .select2-selection {
         border: 1px solid #f99;
+    }
+
+    #table-loader {
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        border: 6px solid #eee;
+        border-top-color: #28a745;
+        animation: rotate 1s infinite;
+        position: absolute;
+        /* top: 20%; */
+        right: 50%;
+        z-index: 2;
+        display: none;
+    }
+
+    @keyframes rotate {
+        100% {
+            rotate: 360deg;
+        }
     }
 </style>
 @endsection
@@ -226,14 +245,10 @@
                         </div>
                     </form>
                 </div>
-
             </div>
-            <div class="modal-footer">
-            </div>
-
         </div>
-
     </div>
+
     <div class="col-sm-12">
         <div class="card mb-3">
             <div class="card-header p-2">
@@ -241,6 +256,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
+                    <div id="table-loader"></div>
                     <table id="rauthinfo" class="table display table-bordered table-striped table-hover ">
                         <thead>
                             <tr>

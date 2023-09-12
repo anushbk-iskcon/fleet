@@ -224,7 +224,8 @@ $("#resetUpdateRefuelReqFormBtn").click(function () {
         $("#new_vehicle_name").val($("#new_vehicle_name").data('original-selection')).trigger('change');
         $("#new_fuel_station").val($("#new_fuel_station").data('original-selection')).trigger('change');
         $("#new_fuel_type").val($("#new_fuel_type").data('original-selection')).trigger('change');
-    }, 10)
+        $("#editRefuelRequisitionForm").validate().resetForm();
+    }, 10);
 });
 
 function changeStatus2(status, reqId) {

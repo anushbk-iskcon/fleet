@@ -55,6 +55,13 @@ $(document).ready(function () {
         $("#addMaintenanceServiceForm .form-control").removeAttr('aria-invalid');
     });
 
+    // On resetting Add New Maintenance Requisition Form
+    $("#resetAddFormBtn").click(function () {
+        setTimeout(() => {
+            $("#addMaintenanceServiceForm").data('validator').resetForm();
+        });
+    });
+
     // Validate and Submit Edit Maintenance Service Form
     $("#editMaintenanceServiceForm").validate({
         rules: {
@@ -112,6 +119,9 @@ function populateTable(table) {
             ser_namesr: $("#ser_namesr").val()
         },
         dataType: 'json',
+        beforeSend: function () {
+            $("#table-loader").show();
+        },
         success: function (res) {
             table.clear();
 
@@ -138,6 +148,12 @@ function populateTable(table) {
             }
 
             table.draw();
+        },
+        error: function (jqXHR, status, err) {
+            toastr.success("Error loading data. Please try again", "", { closeButton: true });
+        },
+        complete: function () {
+            $("#table-loader").hide();
         }
     });
 }

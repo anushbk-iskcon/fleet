@@ -2,6 +2,30 @@
 
 @section('title', 'Maintenance Service List')
 
+@section('css-content')
+<style>
+    #table-loader {
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        border: 6px solid #eee;
+        border-top-color: #28a745;
+        animation: rotate 1s infinite;
+        position: absolute;
+        /* top: 20%; */
+        right: 50%;
+        z-index: 2;
+        display: none;
+    }
+
+    @keyframes rotate {
+        100% {
+            rotate: 360deg;
+        }
+    }
+</style>
+@endsection
+
 @section('breadcrumb-content')
 <li class="breadcrumb-item"><a href="{{url('home')}}">Home</a></li>
 <li class="breadcrumb-item active" id="moduleName">Maintenance</li>
@@ -74,7 +98,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetAddFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
                         </div>
                     </div>
@@ -158,6 +182,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
+                    <div id="table-loader"></div>
                     <table id="maintenServiceInfoTable" class="table table-striped table-bordered dt-responsive">
                         <thead>
                             <tr>

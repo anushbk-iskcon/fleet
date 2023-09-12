@@ -85,7 +85,7 @@ $(document).ready(function () {
         $("#addRefuelSettingForm").trigger('reset');
         $("#addRefuelSettingForm").data('validator').resetForm();
         $("#addRefuelSettingForm .form-control").removeClass('error').removeAttr('aria-invalid');
-        $('.basic-single').trigger('change');
+        $('#addRefuelSettingForm .basic-single').trigger('change');
     });
 
     // To validate and submit Edit Refuel Setting form
@@ -126,8 +126,10 @@ function populateTable(table) {
             _token: csrfToken
         },
         dataType: 'json',
+        beforeSend: function () {
+            $("#table-loader").show();
+        },
         success: function (res) {
-            console.log(res);
             table.clear();
             if (res.length >= 1) {
                 $.each(res, function (i, data) {
@@ -157,6 +159,9 @@ function populateTable(table) {
         },
         error: function (jqXHR, textStatus, err) {
             toastr.error("Error trying to get data. Please try again", "", { closeButton: true });
+        },
+        complete: function () {
+            $("#table-loader").hide();
         }
     })
 }

@@ -88,10 +88,13 @@ class MaintenanceServiceController extends Controller
         <label for="new_serv_type" class="col-sm-5 col-form-label">Service Type <i class="text-danger">*</i></label>
         <div class="col-sm-7">
         <select class="form-control" required="" name="service_type" id="new_serv_type">
-        <option value="" selected="selected">Please Select One</option>';
+        <option value="">Please Select One</option>';
 
         foreach ($serviceTypes as $serviceType) {
-            $editFormContent .= '<option value="' . $serviceType['MAINTENANCE_ID'] . '">' . $serviceType['MAINTENANCE_NAME'] . '</option>';
+            if ($serviceType['MAINTENANCE_ID'] == $maintenanceService['SERVICE_TYPE'])
+                $editFormContent .= '<option value="' . $serviceType['MAINTENANCE_ID'] . '" selected>' . $serviceType['MAINTENANCE_NAME'] . '</option>';
+            else
+                $editFormContent .= '<option value="' . $serviceType['MAINTENANCE_ID'] . '">' . $serviceType['MAINTENANCE_NAME'] . '</option>';
         }
         $editFormContent .= '</select></div></div>';
 

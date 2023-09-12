@@ -72,6 +72,7 @@ $(document).ready(function () {
             $("#addInsuranceDetailsForm").data('validator').resetForm();
             $("#addInsuranceDetailsForm .form-control").removeClass('error').removeAttr('aria-invalid');
             $("#addInsuranceDetailsForm input[name='policy_document']").removeClass('error');
+            $("#addInsuranceDetailsForm .basic-single").val("").change();
         }, 10);
     });
 
@@ -134,6 +135,9 @@ function populateTable(table) {
             date_to: $("#date_to").val()
         },
         dataType: 'json',
+        beforeSend: function () {
+            $("#table-loader").show();
+        },
         success: function (res) {
             table.clear();
             if (res.length >= 1) {
@@ -157,7 +161,10 @@ function populateTable(table) {
         },
         error: function (jqXHR, status, err) {
             toastr.error("Error fetching data. Please try again", '', { closeButton: true });
-        }
+        },
+        complete: function () {
+            $("#table-loader").hide();
+        },
     });
 }
 

@@ -2,6 +2,44 @@
 
 @section('title', 'Fuel Stations')
 
+@section('css-content')
+<style>
+    .customloader {
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        border: 3px solid #ddd;
+        border-top-color: #28a745;
+        animation: rotate 1s infinite;
+        position: fixed;
+        top: 33%;
+        right: 42%;
+        display: none;
+        z-index: 9999;
+    }
+
+    #table-loader {
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        border: 6px solid #eee;
+        border-top-color: #28a745;
+        animation: rotate 1s infinite;
+        position: absolute;
+        /* top: 20%; */
+        right: 50%;
+        z-index: 2;
+        display: none;
+    }
+
+    @keyframes rotate {
+        100% {
+            rotate: 360deg;
+        }
+    }
+</style>
+@endsection
+
 @section('breadcrumb-content')
 <li class="breadcrumb-item"><a href="{{url('home')}}">Home</a></li>
 <li class="breadcrumb-item active" id="moduleName">Refueling</li>
@@ -71,7 +109,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetAddFormBtn">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
                         </div>
                     </div>
@@ -184,7 +222,7 @@
                                 </div>
                             </div>
                             <div class="form-group text-right">
-                                <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                                <button type="reset" class="btn btn-primary w-md m-b-5" id="resetEditFormBtn">Reset</button>
                                 <button type="submit" class="btn btn-success w-md m-b-5">Save</button>
                             </div>
                         </div>
@@ -202,6 +240,7 @@
                 <h4 class="pl-3">Manage Fuel Stations </h4>
             </div>
             <div class="card-body">
+                <div id="table-loader"></div>
                 <div class="table-responsive">
                     <table id="stationinfo" class="table table-striped table-bordered dt-responsive nowrap">
                         <thead>
@@ -223,6 +262,7 @@
         </div>
     </div>
 </div>
+<div class="customloader"></div>
 @endsection
 
 @section('js-content')

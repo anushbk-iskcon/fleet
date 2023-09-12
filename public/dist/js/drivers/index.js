@@ -168,6 +168,7 @@ $(document).ready(function () {
 
         $("#add_driver_form .time-picker").on('apply.daterangepicker', function (ev, picker) {
             $(this).val(picker.startDate.format('hh:mm A'));
+            // $(this).valid();
         });
 
         $("#add_driver_form .time-picker").on('cancel.daterangepicker', function (ev, picker) {
@@ -231,13 +232,13 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
         </div>
     </div>
     <div class="form-group row">
-        <label for="timeslot" required="" class="col-sm-5 col-form-label">Working Time Slot <i class="text-danger">*</i></label>
+        <label for="timeslot" required="" class="col-sm-5 col-form-label">Working Time Slot </label>
         <div class="col-sm-3 pr-0">
-            <input name="timeslot_start" required="" class="form-control edit-time-picker" type="text" placeholder="09:00 AM" id="newTimeslotStart" value="${workStartTime}">
+            <input name="timeslot_start" class="form-control edit-time-picker" type="text" placeholder="09:00 AM" id="newTimeslotStart" value="${workStartTime}">
         </div>
         <div class="col-sm-1"><sub>&ndash;</sub></div>
         <div class="col-sm-3 pl-0">
-            <input name="timeslot_end" required="" class="form-control edit-time-picker" type="text" placeholder="05:00 PM" id="newTimeslotEnd" value="${workEndTime}">
+            <input name="timeslot_end" class="form-control edit-time-picker" type="text" placeholder="05:00 PM" id="newTimeslotEnd" value="${workEndTime}">
         </div>
     </div>
     <div class="form-group row">

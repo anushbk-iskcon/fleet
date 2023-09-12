@@ -9,9 +9,41 @@
         color: #f66;
     }
 
-
     select.error~.select2 .select2-selection {
         border: 1px solid #f99;
+    }
+
+    .customloader {
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        border: 3px solid #ddd;
+        border-top-color: #28a745;
+        animation: rotate 1s infinite;
+        position: fixed;
+        top: 33%;
+        right: 42%;
+        display: none;
+        z-index: 9999;
+    }
+
+    #table-loader {
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        border: 6px solid #eee;
+        border-top-color: #28a745;
+        animation: rotate 1s infinite;
+        position: absolute;
+        right: 50%;
+        z-index: 2;
+        display: none;
+    }
+
+    @keyframes rotate {
+        100% {
+            rotate: 360deg;
+        }
     }
 </style>
 @endsection
@@ -483,6 +515,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
+                    <div id="table-loader"></div>
                     <table id="vehicinfo" class="table table-striped table-bordered dt-responsive nowrap">
                         <thead>
                             <tr>
@@ -505,6 +538,7 @@
         </div>
     </div>
 </div>
+<div class="customloader"></div>
 <!-- <script src="{{asset('dist/js/vehicle_list.js')}}"></script> -->
 @endsection
 
@@ -850,6 +884,9 @@
                 vendorsr: $("#vendorsr").val()
             },
             dataType: 'json',
+            beforeSend: function() {
+                $("#table-loader").show();
+            },
             success: function(res) {
                 table.clear();
                 $.each(res, function(i, data) {
@@ -885,6 +922,9 @@
             },
             error: function(xhr, status, err) {
                 console.log("Error fetching data");
+            },
+            complete: function() {
+                $("#table-loader").hide();
             }
         });
     }
@@ -899,6 +939,9 @@
                 vehicle_id: vehicleId
             },
             dataType: 'json',
+            beforeSend: function() {
+                $('.customloader').show();
+            },
             success: function(res) {
                 if (res.successCode == 1) {
                     // console.log(res.data);
@@ -932,6 +975,9 @@
             error: function(xhr, status, err) {
                 console.log("Error occurred while fetching details");
                 $("#edit").modal('hide');
+            },
+            complete: function() {
+                $('.customloader').hide();
             }
         });
     }
@@ -954,7 +1000,6 @@
             },
             dataType: 'json',
             success: function(res) {
-                console.log(res);
                 if (res.successCode === 1) {
                     $("#driverAssignedVehicle").attr('value', res.data.VEHICLE_NAME);
                     if (res.data.DRIVER_ID !== 0) {
@@ -990,6 +1035,9 @@
                 vehicle_id: $(el).data('id')
             },
             dataType: 'json',
+            beforeSend: function() {
+                $('.customloader').show();
+            },
             success: function(res) {
                 if (res.successCode == 1) {
                     $("#allocatedVehicle").attr('value', res.data.VEHICLE_NAME);
@@ -1012,26 +1060,37 @@
                     }
 
                     $("#allocateVehicleModal").modal('show');
+                    $('.customloader').hide();
 
                 } else {
                     toastr.error("Error getting details. Please try again", "", {
                         closeButton: true
                     });
+                    $('.customloader').hide();
                 }
+            },
+            error: function() {
+                toastr.error("Error getting details. Please try again", "", {
+                    closeButton: true
+                });
+                $('.customloader').hide();
             }
         });
     }
 
     function getEmployeesByDept(el) {
         let dept = $(el).val();
-        console.log($(el));
-        console.log(dept);
+        // console.log($(el));
+        // console.log(dept);
         $.ajax({
             url: "{{route('vehicle.get-employees')}}",
             type: 'post',
             data: {
                 _token: "{{csrf_token()}}",
                 department: dept
+            },
+            beforeSend: function() {
+                $('.customloader').show();
             },
             success: function(res) {
                 console.log(res);
@@ -1061,6 +1120,9 @@
                 toastr.error("Error loading employees. Please try again", "", {
                     closeButton: true
                 });
+            },
+            complete: function() {
+                $('.customloader').hide();
             }
         });
     }

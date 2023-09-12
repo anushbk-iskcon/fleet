@@ -39,13 +39,13 @@ $(document).ready(function () {
     });
 
     // On changing select2 options for dept and employee, remove validation if selection made
-    $("#department").on('select2:close', function () {
+    $("#department").on('change', function () {
         if ($(this).closest('div.col-sm-*').has('.error')) {
             $(this).valid();
         }
     });
 
-    $("#employeeSelect").on('select2:close', function () {
+    $("#employeeSelect").on('change', function () {
         if ($(this).closest('div.col-sm-*').has('.error')) {
             $(this).valid();
         }
@@ -70,6 +70,7 @@ $(document).ready(function () {
         setTimeout(() => {
             $('#department').val('').trigger('change');
             $("#employeeSelect").val("").trigger('change');
+            $("#addMaintenAuthorityForm").validate().resetForm();
             // $("#employeeSelect").html("").append("<option value='' selected>Please Select Employee</option>");
         }, 10);
     });
@@ -150,6 +151,9 @@ function populateTable(table) {
             _token: csrfToken
         },
         dataType: 'json',
+        beforeSend: function () {
+            $("#table-loader").show();
+        },
         success: function (res) {
             table.clear();
             if (res.length >= 1) {
@@ -178,6 +182,9 @@ function populateTable(table) {
         },
         error: function (jqXHR, text, err) {
             toastr.error("Error getting requisition data. Please try again", "", { closeButton: true });
+        },
+        complete: function () {
+            $("#table-loader").hide();
         }
     });
 }

@@ -6,10 +6,10 @@ $(document).ready(function () {
     });
 
     $("#btn-reset").click(function () {
-        $("#mainten_type").val("");
-        $("#vehicle").val("");
-        $("#status").val("");
-        $("#service_fr").val("");
+        $("#mainten_type").val("").change();
+        $("#vehicle").val("").change();
+        $("#status").val("").change();
+        $("#service_fr").val("").change();
         $("#from").val("");
         $("#to").val("");
         populateTable(maintenReqTable);
@@ -32,6 +32,9 @@ function populateTable(table) {
             _token: csrfToken
         },
         dataType: 'json',
+        beforeSend: function () {
+            $("#table-loader").show();
+        },
         success: function (res) {
             table.clear();
             if (res.length >= 1) {
@@ -82,6 +85,9 @@ function populateTable(table) {
         },
         error: function () {
             toastr.error("Could not load details. Please try again", "", { closeButton: true });
+        },
+        complete: function () {
+            $("#table-loader").hide();
         }
     });
 }
@@ -106,9 +112,6 @@ function viewInfo(reqId) {
 
 function changeStatus2(approvalStatus, requisitionId) {
     // approvalStatus 1 = Accept (Approve), 2 = Deny (Reject)
-    console.log(approvalStatus);
-    console.log(requisitionId);
-
     $.ajax({
         url: updateApprovalStatusURL,
         type: 'post',

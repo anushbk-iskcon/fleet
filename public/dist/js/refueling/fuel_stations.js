@@ -75,6 +75,13 @@ $(document).ready(function () {
         $("#addFuelStationForm .form-control.error").removeClass('error').removeAttr('aria-invalid');
     });
 
+    // Reset error messages in add form on clicking the reset button
+    $("#resetAddFormBtn").click(function () {
+        setTimeout(() => {
+            $("#addFuelStationForm").data('validator').resetForm();
+        }, 10);
+    });
+
     // Validate and submit Edit Fuel Station Details Form
     $("#editFuelStationForm").validate({
         rules: {
@@ -135,7 +142,15 @@ $(document).ready(function () {
         $("#editFuelStationForm input[name=is_authorized]").attr('id', 'checkbox2');
     });
 
-    // For Filtering and Seacching
+    // On clicking the reset button on the edit form,
+    // remove validation errors
+    $("#resetEditFormBtn").click(function () {
+        setTimeout(() => {
+            $("#editFuelStationForm").validate().resetForm();
+        }, 10);
+    });
+
+    // For Filtering and Searching
     $("#btn-filter").click(function () {
         populateTable(fuelStationsTable);
     });
@@ -157,6 +172,9 @@ function populateTable(table) {
             station_namesr: $("#station_namesr").val()
         },
         dataType: 'json',
+        beforeSend: function () {
+            $("#table-loader").show();
+        },
         success: function (res) {
             table.clear();
             $.each(res, function (i, data) {
@@ -183,6 +201,9 @@ function populateTable(table) {
         },
         error: function (jqXHR, textStatus, err) {
             console.log("Error fetching data");
+        },
+        complete: function () {
+            $("#table-loader").hide();
         }
     });
 }
@@ -202,6 +223,9 @@ function getFuelStationDetails(fuelStationId) {
             fuel_station_id: fuelStationId
         },
         dataType: 'json',
+        beforeSend: function () {
+            $(".customloader").show();
+        },
         success: function (res) {
             if (res.successCode == 1) {
                 $("#new_station_name").attr('value', res.data.FUEL_STATION_NAME);
@@ -224,6 +248,9 @@ function getFuelStationDetails(fuelStationId) {
         error: function (jqxhr, status, err) {
             $("#edit").modal('hide');
             toastr.error("Error getting details", '', { closeButton: true });
+        },
+        complete: function () {
+            $(".customloader").hide();
         }
     });
 }
