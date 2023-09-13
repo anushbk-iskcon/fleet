@@ -52,7 +52,7 @@ class RoleController extends Controller
         $role = Role::create([
             'ROLE_NAME' => $request->role_name,
             'DESCRIPTION' => $request->role_description,
-            'CREATED_BY' => 'Admin'
+            'CREATED_BY' => Auth::id()
         ]);
 
         $roleId = $role->ROLE_ID;
@@ -64,7 +64,7 @@ class RoleController extends Controller
         // echo '</pre>';
         $i = 0;
         foreach ($request['role_permission'] as $rp) {
-            $canCreate = $rp['create'] ? 'Y' : 'N';
+            $canCreate = $rp['create'] ? 'Y' : 'N';  // If value is 1, Y else when value is 0, N
             $canRead = $rp['read'] ? 'Y' : 'N';
             $canEdit = $rp['edit'] ? 'Y' : 'N';
             $canDelete = $rp['delete'] ? 'Y' : 'N';
@@ -79,7 +79,7 @@ class RoleController extends Controller
                 'CAN_READ' => $canRead,
                 'CAN_EDIT' => $canEdit,
                 'CAN_DELETE' => $canDelete,
-                'CREATED_BY' => 'Admin',
+                'CREATED_BY' => Auth::id(),
                 'CREATED_ON' => date('Y-m-d H:i:s')
             ]);
         }
@@ -111,7 +111,16 @@ class RoleController extends Controller
         $menupermissions = DB::select('select * from permissions');
 
         $role = Role::find($id);
-        $userPermissions = DB::select('select * from role_permissions where ROLE_ID = ?', [$id]);
+        $userPermissions = DB::select('select p.PERMISSION_ID, 
+        p.MENU_TITLE, p.MENU_SUBTITLE, rp.USER_PERMISSION_ID, rp.CAN_CREATE, rp.CAN_READ, rp.CAN_EDIT, rp.CAN_DELETE
+        from permissions p left join role_permissions rp on p.PERMISSION_ID = rp.PERMISSION_ID AND rp.ROLE_ID = ? WHERE p.IS_ACTIVE = ?', [$id, 'Y']);
+
+        // $res = DB::table('role_permissions')->where('ROLE_ID', $id)->where('PERMISSION_ID', 700)->get();
+        // $s = "";
+        // if (count($res)) $s = "True";
+        // else $s = "False";
+        // dd($res, $s);
+        // dd($userPermissions);
         return view('roles-permissions.edit-role', compact('menuTitles', 'menupermissions', 'role', 'userPermissions'));
     }
 
@@ -128,7 +137,7 @@ class RoleController extends Controller
         $role = Role::find($id);
         $role->ROLE_NAME = $request->role_name;
         $role->DESCRIPTION = $request->role_description;
-        $role->MODIFIED_BY = 'Admin';
+        $role->MODIFIED_BY = Auth::id();
         $updated = $role->save();
 
         // Update individual permissions if any changes made
@@ -174,6 +183,7 @@ class RoleController extends Controller
         $id = $request->role_id;
         $role = Role::find($id);
         $role->IS_ACTIVE = 'N';
+        $role->MODIFIED_BY = Auth::id();
         $deactivated = $role->save();
         if ($deactivated) {
             return "Successfully deactivated role";
@@ -190,6 +200,7 @@ class RoleController extends Controller
         $id = $request->role_id;
         $role = Role::find($id);
         $role->IS_ACTIVE = 'Y';
+        $role->MODIFIED_BY = Auth::id();
         $deactivated = $role->save();
         if ($deactivated) {
             return "Successfully activated role";

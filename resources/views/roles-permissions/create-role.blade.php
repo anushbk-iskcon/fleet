@@ -39,12 +39,12 @@
                         </div>
                     </div>
 
-                    <!-- Newly created tables for Permissions Selections -->
+                    <!-- Newly created tables for Selecting Permissions -->
                     @php $i=0 @endphp
-                    @foreach($menuTitles as $menutitle)
+                    @foreach($menuTitles as $mainMenuItem)
 
                     <table class="table table-bordered table-hover" id="RoleTbl{{$i}}">
-                        <h2>{!!$menutitle->MENU_TITLE!!}</h2>
+                        <h2>{!!$mainMenuItem->MENU_TITLE!!}</h2>
                         <thead>
                             <tr>
                                 <th>Sl No.</th>
@@ -78,15 +78,15 @@
                         </thead>
                         <tbody>
                             @php $j = 1; $k=0; @endphp
-                            @foreach($menupermissions as $menuSubtitle)
-                            @if($menuSubtitle->MENU_TITLE == $menutitle->MENU_TITLE)
+                            @foreach($menupermissions as $subMenuItem)
+                            @if($subMenuItem->MENU_TITLE == $mainMenuItem->MENU_TITLE)
                             <tr>
                                 <td>{{$j++}}</td>
                                 <td class="text-">
-                                    {!!$menuSubtitle->MENU_SUBTITLE!!}
-                                    <input type="hidden" name="role_permission[{{$k}}][permission_id]" value="{{$menuSubtitle->PERMISSION_ID}}">
-                                    <input type="hidden" name="role_permission[{{$k}}][title]" value="{{$menuSubtitle->MENU_TITLE}}">
-                                    <input type="hidden" name="role_permission[{{$k}}][subtitle]" value="{{$menuSubtitle->MENU_SUBTITLE}}">
+                                    {!!$subMenuItem->MENU_SUBTITLE!!}
+                                    <input type="hidden" name="role_permission[{{$k}}][permission_id]" value="{{$subMenuItem->PERMISSION_ID}}">
+                                    <input type="hidden" name="role_permission[{{$k}}][title]" value="{{$subMenuItem->MENU_TITLE}}">
+                                    <input type="hidden" name="role_permission[{{$k}}][subtitle]" value="{{$subMenuItem->MENU_SUBTITLE}}">
                                 </td>
                                 <td>
                                     <div class="checkbox checkbox-success text-center">

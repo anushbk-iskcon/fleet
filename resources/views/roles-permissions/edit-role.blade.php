@@ -40,12 +40,12 @@
                     </div>
                     <input type="hidden" name="role_id" value="{{$role['ROLE_ID']}}">
 
-                    {{-- $i - index to allowe select all checkboxes, to number checkboxes as 2D array --}}
+                    {{-- $i - index to allow selecting all checkboxes, to number checkboxes as 2D array --}}
                     @php $i=0 @endphp
-                    @foreach($menuTitles as $menutitle)
+                    @foreach($menuTitles as $mainMenuItem)
 
                     <table class="table table-bordered table-hover" id="RoleTbl{{$i}}">
-                        <h2>{!!$menutitle->MENU_TITLE!!}</h2>
+                        <h2>{!!$mainMenuItem->MENU_TITLE!!}</h2>
                         <thead>
                             <tr>
                                 <th>Sl No.</th>
@@ -81,41 +81,41 @@
                             {{-- $j - index to display menu subtitle number --}}
                             {{-- $k - index to store data in array sent to server --}}
                             @php $j = 1; $k=0; @endphp
-                            @foreach($userPermissions as $menuSubtitle)
-                            @if($menuSubtitle->MENU_TITLE == $menutitle->MENU_TITLE)
+                            @foreach($userPermissions as $subMenuItem)
+                            @if($subMenuItem->MENU_TITLE == $mainMenuItem->MENU_TITLE)
                             <tr>
                                 <td>{{$j++}}</td>
                                 <td class="text-">
-                                    {!!$menuSubtitle->MENU_SUBTITLE!!}
-                                    <input type="hidden" name="role_permission[{{$k}}][permission_id]" value="{{$menuSubtitle->PERMISSION_ID}}">
-                                    <input type="hidden" name="role_permission[{{$k}}][title]" value="{{$menuSubtitle->MENU_TITLE}}">
-                                    <input type="hidden" name="role_permission[{{$k}}][subtitle]" value="{{$menuSubtitle->MENU_SUBTITLE}}">
+                                    {!!$subMenuItem->MENU_SUBTITLE!!}
+                                    <input type="hidden" name="role_permission[{{$k}}][permission_id]" value="{{$subMenuItem->PERMISSION_ID}}">
+                                    <input type="hidden" name="role_permission[{{$k}}][title]" value="{{$subMenuItem->MENU_TITLE}}">
+                                    <input type="hidden" name="role_permission[{{$k}}][subtitle]" value="{{$subMenuItem->MENU_SUBTITLE}}">
                                 </td>
                                 <td>
                                     <div class="checkbox checkbox-success text-center">
                                         <input type="hidden" name="role_permission[{{$k}}][create]" value="0">
-                                        <input type="checkbox" class="create_{{$i}}" name="role_permission[{{$k}}][create]" id="check_create_[{{$i}}][{{$j}}]" value="1" @if($menuSubtitle->CAN_CREATE == 'Y') {{"checked"}} @endif>
+                                        <input type="checkbox" class="create_{{$i}}" name="role_permission[{{$k}}][create]" id="check_create_[{{$i}}][{{$j}}]" value="1" @if($subMenuItem->CAN_CREATE == 'Y') {{"checked"}} @endif>
                                         <label for="check_create_[{{$i}}][{{$j}}]"></label>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="checkbox checkbox-success text-center">
                                         <input type="hidden" name="role_permission[{{$k}}][read]" value="0">
-                                        <input type="checkbox" class="read_{{$i}}" name="role_permission[{{$k}}][read]" id="check_read_[{{$i}}][{{$j}}]" value="1" @if($menuSubtitle->CAN_READ == 'Y') {{"checked"}} @endif>
+                                        <input type="checkbox" class="read_{{$i}}" name="role_permission[{{$k}}][read]" id="check_read_[{{$i}}][{{$j}}]" value="1" @if($subMenuItem->CAN_READ == 'Y') {{"checked"}} @endif>
                                         <label for="check_read_[{{$i}}][{{$j}}]"></label>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="checkbox checkbox-success text-center">
                                         <input type="hidden" name="role_permission[{{$k}}][edit]" value="0">
-                                        <input type="checkbox" class="edit_{{$i}}" name="role_permission[{{$k}}][edit]" id="check_edit_[{{$i}}][{{$j}}]" value="1" @if($menuSubtitle->CAN_EDIT == 'Y') {{"checked"}} @endif>
+                                        <input type="checkbox" class="edit_{{$i}}" name="role_permission[{{$k}}][edit]" id="check_edit_[{{$i}}][{{$j}}]" value="1" @if($subMenuItem->CAN_EDIT == 'Y') {{"checked"}} @endif>
                                         <label for="check_edit_[{{$i}}][{{$j}}]"></label>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="checkbox checkbox-success text-center">
                                         <input type="hidden" name="role_permission[{{$k}}][delete]" value="0">
-                                        <input type="checkbox" class="del_{{$i}}" name="role_permission[{{$k}}][delete]" id="check_delete_[{{$i}}][{{$j}}]" value="1" @if($menuSubtitle->CAN_DELETE == 'Y') {{"checked"}} @endif>
+                                        <input type="checkbox" class="del_{{$i}}" name="role_permission[{{$k}}][delete]" id="check_delete_[{{$i}}][{{$j}}]" value="1" @if($subMenuItem->CAN_DELETE == 'Y') {{"checked"}} @endif>
                                         <label for="check_delete_[{{$i}}][{{$j}}]"></label>
                                     </div>
                                 </td>
