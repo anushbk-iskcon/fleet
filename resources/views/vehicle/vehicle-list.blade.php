@@ -310,7 +310,6 @@
                     </div>
                 </form>
             </div>
-
         </div>
 
     </div>
@@ -427,7 +426,9 @@
     <div class="col-sm-12">
         <div class="card mb-3">
             <div class="card-header p-2">
-                <h4 class="pl-3">Search Here <small class="float-right">
+                <h4 class="pl-3">
+                    Search Here
+                    <small class="float-right">
                         <button type="button" class="btn btn-primary btn-md" data-target="#add0" data-toggle="modal"><i class="ti-plus" aria-hidden="true"></i>
                             Add Vehicle
                         </button>

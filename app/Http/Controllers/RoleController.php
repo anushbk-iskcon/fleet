@@ -31,8 +31,8 @@ class RoleController extends Controller
     public function create()
     {
         //
-        $menuTitles = DB::select('select distinct MENU_TITLE from permissions');
-        $menupermissions = DB::select('select * from permissions');
+        $menuTitles = DB::select('select distinct MENU_TITLE from permissions where IS_ACTIVE = "Y"');
+        $menupermissions = DB::select('select * from permissions where IS_ACTIVE = "Y"');
         return view('roles-permissions.create-role', compact('menuTitles', 'menupermissions'));
     }
 
@@ -107,13 +107,14 @@ class RoleController extends Controller
     public function edit($id)
     {
         //
-        $menuTitles = DB::select('select distinct MENU_TITLE from permissions');
+        $menuTitles = DB::select('select distinct MENU_TITLE from permissions where IS_ACTIVE = "Y"');
         $menupermissions = DB::select('select * from permissions');
 
         $role = Role::find($id);
-        $userPermissions = DB::select('select p.PERMISSION_ID, 
-        p.MENU_TITLE, p.MENU_SUBTITLE, rp.USER_PERMISSION_ID, rp.CAN_CREATE, rp.CAN_READ, rp.CAN_EDIT, rp.CAN_DELETE
-        from permissions p left join role_permissions rp on p.PERMISSION_ID = rp.PERMISSION_ID AND rp.ROLE_ID = ? WHERE p.IS_ACTIVE = ?', [$id, 'Y']);
+        $userPermissions = DB::select('select p.PERMISSION_ID, p.MENU_TITLE, p.MENU_SUBTITLE, 
+        rp.USER_PERMISSION_ID, rp.CAN_CREATE, rp.CAN_READ, rp.CAN_EDIT, rp.CAN_DELETE
+        from permissions p left join role_permissions rp on p.PERMISSION_ID = rp.PERMISSION_ID AND rp.ROLE_ID = ? 
+        AND rp.IS_ACTIVE = ? WHERE p.IS_ACTIVE = ?', [$id, 'Y', 'Y']);
 
         // $res = DB::table('role_permissions')->where('ROLE_ID', $id)->where('PERMISSION_ID', 700)->get();
         // $s = "";
@@ -147,15 +148,37 @@ class RoleController extends Controller
             $canEdit = $rp['edit'] ? 'Y' : 'N';
             $canDelete = $rp['delete'] ? 'Y' : 'N';
 
+            $checkPermission = DB::table('role_permissions')->where('ROLE_ID', $id)->where('PERMISSION_ID', $rp['permission_id'])->get();
+            $permissionExists = count($checkPermission);
+            if ($permissionExists) {
+                # There is an entry for the existing menu item in role_permissions table, update it
+
+                DB::table('role_permissions')->where('ROLE_ID', $id)->where('PERMISSION_ID', $rp['permission_id'])->update([
+                    'CAN_CREATE' => $canCreate,
+                    'CAN_READ' => $canRead,
+                    'CAN_EDIT' => $canEdit,
+                    'CAN_DELETE' => $canDelete,
+                    'MODIFIED_BY' => Auth::id(),
+                    'MODIFIED_ON' => date('Y-m-d H:i:s')
+                ]);
+            } else {
+                # Create entry with new Create/Read/Edit/Delete permissions for the given menu item
+                DB::table('role_permissions')->insert([
+                    'ROLE_ID' => $id,
+                    'PERMISSION_ID' => $rp['permission_id'],
+                    'MENU_TITLE' => $rp['title'],
+                    'MENU_SUBTITLE' => $rp['subtitle'],
+                    'CAN_CREATE' => $canCreate,
+                    'CAN_READ' => $canRead,
+                    'CAN_EDIT' => $canEdit,
+                    'CAN_DELETE' => $canDelete,
+                    'CREATED_BY' => Auth::id(),
+                    'CREATED_ON' => date('Y-m-d H:i:s')
+                ]);
+            }
+
             // echo $canCreate . "<br>" . $canRead . "<br>" . $canEdit . "<br>" . $canDelete . "<br>";
-            DB::table('role_permissions')->where('ROLE_ID', $id)->where('PERMISSION_ID', $rp['permission_id'])->update([
-                'CAN_CREATE' => $canCreate,
-                'CAN_READ' => $canRead,
-                'CAN_EDIT' => $canEdit,
-                'CAN_DELETE' => $canDelete,
-                'MODIFIED_BY' => Auth::id(),
-                'MODIFIED_ON' => date('Y-m-d H:i:s')
-            ]);
+
         }
         if ($updated) {
             return "Role has been successfully updated";

@@ -6,6 +6,9 @@ use App\Models\Driver;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use stdClass;
+
+use function PHPUnit\Framework\returnSelf;
 
 class DriverController extends Controller
 {
@@ -180,6 +183,33 @@ class DriverController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Show page to display and capture Overtime and other transaction details
+     */
+    public function transactionsPage()
+    {
+        $drivers = Driver::where('IS_ACTIVE', 'Y')->get();
+        return view('employee.manage-transactions', compact('drivers'));
+    }
+
+    /**
+     * Store overtime or other transaction details in DB 
+     */
+    public function storeTransactionDetails(Request $request)
+    {
+        $transaction = new stdClass;
+
+        $saved = '';
+        if ($saved)
+            return response()->json(['successCode' => 1, 'message' => 'Details successfully saved']);
+        else
+            return response()->json(['successCode' => 0, 'message' => 'Failed to save details']);
+    }
+
+    public function updateTransactionDetails(Request $request)
+    {
     }
 
     /**

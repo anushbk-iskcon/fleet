@@ -4,11 +4,11 @@
 
 @section('breadcrumb-content')
 <li class="breadcrumb-item"><a href="{{url('home')}}">Home</a></li>
-<li class="breadcrumb-item active" id="moduleName">Employee Management</li>
+<li class="breadcrumb-item active" id="moduleName">Driver Management</li>
 @endsection
 
 @section('header-title-media-body')
-<h1 class="font-weight-bold" id="moduleName1">Employee Management</h1>
+<h1 class="font-weight-bold" id="moduleName1">Driver Management</h1>
 <small id="controllerName">Manage Drivers</small>
 @endsection
 @section('css-content')

@@ -8,7 +8,7 @@
 @endsection
 
 @section('header-title-media-body')
-<h1 class="font-weight-bold" id="moduleName1">Employee Management</h1>
+<h1 class="font-weight-bold" id="moduleName1">Driver Management</h1>
 <small id="controllerName">Manage Request Approval</small>
 @endsection
 
