@@ -210,6 +210,11 @@ class DriverController extends Controller
 
     public function updateTransactionDetails(Request $request)
     {
+        $updated = '';
+        if ($updated)
+            return response()->json(['successCode' => 1, 'message' => 'Details successfully saved']);
+        else
+            return response()->json(['successCode' => 0, 'message' => 'Failed to save details']);
     }
 
     /**

@@ -31,7 +31,12 @@ $(document).ready(function () {
         }
     });
 
-    // On closing Add details From modal, reset validations
+    // On selecting driver in Add Form, validate to remove any existing error message
+    $("#transactionForDriver").on('change', function () {
+        $("#transactionForDriver").valid();
+    });
+
+    // On closing Add details Form modal, reset validations
     $("#add0").on('hidden.bs.modal', function () {
         $("#addTransactionDetailsForm").trigger('reset');
         $("#addTransactionDetailsForm").data('validator').resetForm();
@@ -42,11 +47,37 @@ $(document).ready(function () {
     // On resetting Add details form, remove validation errors
     $("#resetAddFormBtn").click(function () {
         setTimeout(() => {
+            $("#addTransactionDetailsForm .basic-single").val("").trigger('change');
             $("#addTransactionDetailsForm").data('validator').resetForm();
             $("#addTransactionDetailsForm .form-control").removeClass('error').removeAttr('aria-invalid');
-            $("#addTransactionDetailsForm .basic-single").val("").trigger('change');
         }, 10);
     });
+
+    $("#btn-filter").click(function () {
+        loadTable(transactionsTable);
+    });
+
+    $("#btn-reset").click(function () {
+        $("#filter_driver").val('').trigger('change');
+        $("#filter_date").val('');
+        $("#filterPurpose").val('');
+        loadTable(transactionsTable);
+    })
+
+
 });
 
-function loadTable(table) { }
+function loadTable(table) {
+    // $.ajax({
+    //     url: '',
+    //     type: 'post',
+    //     data: {
+    //         _token: csrfToken
+    //     },
+    //     dataType: 'json',
+    //     beforeSend: function () { },
+    //     success: function (res) { },
+    //     error: function () { },
+    //     complete: function () { }
+    // });
+}

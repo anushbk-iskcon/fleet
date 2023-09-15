@@ -101,7 +101,7 @@
                     </div>
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
-                            <label for="durationForOvertime" class="col-form-label col-md-5">Duration <i class="text-danger">*</i></label>
+                            <label for="durationForOvertime" class="col-form-label col-md-5">Duration (in minutes) <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" id="durationForOvertime" name="duration" placeholder="Enter duration">
                             </div>
@@ -238,7 +238,9 @@
 
 @section('js-content')
 <script>
-
+    let transactionsListURL = '';
+    let transactionDetailsUpdateURL = '';
+    let csrfToken = $('meta[name="csrf-token"]').attr("content");
 </script>
 <script src="{{asset('public/dist/js/drivers/transactions.js')}}"></script>
 @endsection
