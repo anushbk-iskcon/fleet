@@ -201,6 +201,14 @@ class DriverController extends Controller
     {
         $transaction = new stdClass;
 
+        $transaction->TRANSACTION_DATE = $request->transaction_date;
+        $transaction->PURPOSE = $request->purpose;
+        $transaction->DRIVER = $request->driver;
+        $transaction->DURATION = $request->duration ?? "";
+        $transaction->AMOUNT = $request->amount;
+
+        $transaction->CREATED_BY = Auth::id();
+
         $saved = '';
         if ($saved)
             return response()->json(['successCode' => 1, 'message' => 'Details successfully saved']);

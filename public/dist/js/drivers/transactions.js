@@ -39,9 +39,9 @@ $(document).ready(function () {
     // On closing Add details Form modal, reset validations
     $("#add0").on('hidden.bs.modal', function () {
         $("#addTransactionDetailsForm").trigger('reset');
+        $("#addTransactionDetailsForm .basic-single").val("").trigger('change');
         $("#addTransactionDetailsForm").data('validator').resetForm();
         $("#addTransactionDetailsForm .form-control").removeClass('error').removeAttr('aria-invalid');
-        $("#addTransactionDetailsForm .basic-single").val("").trigger('change');
     });
 
     // On resetting Add details form, remove validation errors
@@ -75,9 +75,13 @@ function loadTable(table) {
     //         _token: csrfToken
     //     },
     //     dataType: 'json',
-    //     beforeSend: function () { },
+    //     beforeSend: function () {
+    //     $("#table-loader").show();
+    // },
     //     success: function (res) { },
     //     error: function () { },
-    //     complete: function () { }
+    //     complete: function () {
+    //     $("#table-loader").hide();
+    // }
     // });
 }

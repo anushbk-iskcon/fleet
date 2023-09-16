@@ -122,6 +122,7 @@
         </div>
     </div>
 </div>
+<!-- End Modal for Adding Details -->
 
 <!-- Modal for editing transaction details -->
 <div id="edit" class="modal fade bd-examplemodal-lg" role="dialog">
@@ -132,6 +133,7 @@
         </div>
     </div>
 </div>
+<!-- END Modal for Editing Details -->
 
 <div class="row">
     <div class="col-sm-12">
