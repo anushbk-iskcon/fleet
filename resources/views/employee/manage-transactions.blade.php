@@ -69,7 +69,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form id="addTransactionDetailsForm" class="row" method="post" accept-charset="utf-8">
+                <form id="addTransactionDetailsForm" action="{{route('driver-transaction.add')}}" class="row" method="post" accept-charset="utf-8">
                     @csrf
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
@@ -128,8 +128,13 @@
 <div id="edit" class="modal fade bd-examplemodal-lg" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header"></div>
-            <div class="modal-body"></div>
+            <div class="modal-header">
+                <strong>Edit Transaction Details</strong>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+
+            </div>
         </div>
     </div>
 </div>
@@ -240,8 +245,9 @@
 
 @section('js-content')
 <script>
-    let transactionsListURL = '';
-    let transactionDetailsUpdateURL = '';
+    let transactionsListURL = '{{route("driver-transaction.list")}}';
+    let transactionDetailsURL = '{{route("driver-transaction.details")}}';
+    let transactionDetailsUpdateURL = '{{route("driver-transaction.update")}}';
     let csrfToken = $('meta[name="csrf-token"]').attr("content");
 </script>
 <script src="{{asset('public/dist/js/drivers/transactions.js')}}"></script>

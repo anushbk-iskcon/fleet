@@ -98,8 +98,10 @@ Route::middleware('auth')->group(function () {
     Route::put('activate-driver', [DriverController::class, 'activateDriver']);
     Route::post('drivers/get-data', [DriverController::class, 'getData']);
 
-    Route::get('drivers/transactions', [DriverController::class, 'transactionsPage'])->name('manage-transactions');
+    Route::get('drivers/transactions', [DriverController::class, 'transactions'])->name('manage-transactions');
+    Route::post('drivers/transactions/list', [DriverController::class, 'transactions'])->name('driver-transaction.list');
     Route::post('drivers/transactions/add', [DriverController::class, 'storeTransactionDetails'])->name('driver-transaction.add');
+    Route::post('drivers/transactions/details', [DriverController::class, 'getDetails'])->name('driver-transaction.details');
     Route::post('drivers/transactions/update', [DriverController::class, 'updateTransactionDetails'])->name('driver-transaction.update');
 
     Route::resource('drivers', DriverController::class)->except(['destroy']);

@@ -108,7 +108,7 @@ class RoleController extends Controller
     {
         //
         $menuTitles = DB::select('select distinct MENU_TITLE from permissions where IS_ACTIVE = "Y"');
-        $menupermissions = DB::select('select * from permissions');
+        $menupermissions = DB::select('select * from permissions where IS_ACTIVE = "Y"');
 
         $role = Role::find($id);
         $userPermissions = DB::select('select p.PERMISSION_ID, p.MENU_TITLE, p.MENU_SUBTITLE, 

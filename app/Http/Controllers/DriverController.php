@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Driver;
+use App\Models\DriverTransaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -188,37 +189,87 @@ class DriverController extends Controller
     /**
      * Show page to display and capture Overtime and other transaction details
      */
-    public function transactionsPage()
+    public function transactions(Request $request)
     {
-        $drivers = Driver::where('IS_ACTIVE', 'Y')->get();
-        return view('employee.manage-transactions', compact('drivers'));
+        if (request()->isMethod('post')) {
+            // Return list of all or filtered transactions
+            $driver = $request->driver_sr;
+            $transactionDate = $request->date_sr;
+            $purpose = $request->purpose_sr;
+
+            $transactionList = DB::table('driver_transaction')
+                ->join('drivers', 'driver_transaction.DRIVER_ID', '=', 'drivers.DRIVER_ID')
+                ->select('driver_transaction.*', 'drivers.DRIVER_NAME')
+                ->when($driver, function ($query, $driver) {
+                    return $query->where('driver_transaction.DRIVER_ID', '=', $driver);
+                })
+                ->when($transactionDate, function ($query, $transactionDate) {
+                    return $query->where('driver_transaction.TRANSACTION_DATE', '=', $transactionDate);
+                })
+                ->when($purpose, function ($query, $purpose) {
+                    return $query->where('driver_transaction.PURPOSE', '=', $purpose);
+                })
+                ->get();
+
+            return $transactionList->toJson();
+        } else {
+            // Return the page
+            $drivers = Driver::where('IS_ACTIVE', 'Y')->get();
+            return view('employee.manage-transactions', compact('drivers'));
+        }
     }
+
+    /** */
 
     /**
      * Store overtime or other transaction details in DB 
      */
     public function storeTransactionDetails(Request $request)
     {
-        $transaction = new stdClass;
+        $transaction = new DriverTransaction;
 
         $transaction->TRANSACTION_DATE = $request->transaction_date;
         $transaction->PURPOSE = $request->purpose;
-        $transaction->DRIVER = $request->driver;
+        $transaction->DRIVER_ID = $request->driver;
         $transaction->DURATION = $request->duration ?? "";
         $transaction->AMOUNT = $request->amount;
 
         $transaction->CREATED_BY = Auth::id();
 
-        $saved = '';
+        $saved = $transaction->save();
         if ($saved)
             return response()->json(['successCode' => 1, 'message' => 'Details successfully saved']);
         else
             return response()->json(['successCode' => 0, 'message' => 'Failed to save details']);
     }
 
+    /**
+     * Get details of specified transaction
+     */
+    public function getDetails(Request $request)
+    {
+        $transaction_id = $request->transaction_id;
+        $transaction = DriverTransaction::find($transaction_id);
+        return $transaction->toJson();
+    }
+
+    /**
+     * Update transaction details in DB
+     */
     public function updateTransactionDetails(Request $request)
     {
-        $updated = '';
+        $transaction_id = $request->transaction_id;
+        $transaction = DriverTransaction::find($transaction_id);
+
+        $transaction->TRANSACTION_DATE = $request->transaction_date;
+        $transaction->PURPOSE = $request->purpose;
+        $transaction->DRIVER_ID = $request->driver;
+        $transaction->DURATION = $request->duration ?? "";
+        $transaction->AMOUNT = $request->amount;
+
+        $transaction->MODIFIED_BY = Auth::id();
+
+        $updated = $transaction->save();
         if ($updated)
             return response()->json(['successCode' => 1, 'message' => 'Details successfully saved']);
         else
