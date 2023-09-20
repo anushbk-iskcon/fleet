@@ -15,7 +15,11 @@ $(document).ready(function () {
             transaction_date: 'required',
             driver: 'required',
             purpose: 'required',
-            duration: 'required',
+            duration: {
+                required: true,
+                number: true,
+                min: 0
+            },
             amount: {
                 required: true,
                 number: true,
@@ -49,7 +53,6 @@ $(document).ready(function () {
             });
         }
     });
-    // /\ End of jQuery document.ready block 
 
     // On selecting driver in Add Form, validate to remove any existing error message
     $("#transactionForDriver").on('change', function () {
@@ -73,6 +76,68 @@ $(document).ready(function () {
         }, 10);
     });
 
+    $("#updateTransactionDetailsForm").validate({
+        rules: {
+            transaction_date: 'required',
+            driver: 'required',
+            purpose: 'required',
+            duration: {
+                required: true,
+                number: true,
+                min: 0
+            },
+            amount: {
+                required: true,
+                number: true,
+                min: 0
+            }
+        },
+        errorElement: 'div',
+        errorPlacement: function (error, element) {
+            $(element).closest('div[class*=col-sm-]').append(error);
+        },
+        submitHandler: function (form, ev) {
+            ev.preventDefault();
+
+            $.ajax({
+                url: form.action,
+                type: form.method,
+                data: $(form).serialize(),
+                dataType: 'json',
+                success: function (res) {
+                    if (res.successCode === 1) {
+                        toastr.success(res.message, '', { closeButton: true });
+                        $("#edit").modal('hide');
+                        loadTable(transactionsTable);
+                    } else {
+                        toastr.error(res.message, '', { closeButton: true });
+                    }
+                },
+                error: function () {
+                    toastr.error("Error updating details. Please try again", '', { closeButton: true });
+                }
+            });
+        }
+    });
+
+    // On resetting Update Transaction Details Form
+    $("#resetUpdateFormBtn").click(function () {
+        setTimeout(() => {
+            $("#editTransactionForDriver").val($("#editTransactionForDriver").data('og-selection')).change();
+            $("#editTransactionPurpose").val($("#editTransactionPurpose").data('og-selection'));
+            $("#updateTransactionDetailsForm").data('validator').resetForm();
+            // For Date Range Picker to reflect initially set set date:
+            $("#editTransactionDate").data('daterangepicker').setStartDate($("#editTransactionDate").data('og-date'));
+            $("#editTransactionDate").data('daterangepicker').setEndDate($("#editTransactionDate").data('og-date'));
+        }, 10);
+    });
+
+    // On closing the Update Transaction Form Modal
+    $("#edit").on('hidden.bs.modal', function () {
+        $("#updateTransactionDetailsForm").data('validator').resetForm();
+        $("#updateTransactionDetailsForm .form-control").removeAttr('aria-invalid').removeClass('error');
+    });
+
     $("#btn-filter").click(function () {
         loadTable(transactionsTable);
     });
@@ -86,6 +151,7 @@ $(document).ready(function () {
 
 
 });
+// /\ End of jQuery document.ready block 
 
 function loadTable(table) {
     $.ajax({
@@ -107,11 +173,11 @@ function loadTable(table) {
                 // console.log(res);
                 $.each(res, function (i, data) {
                     let actionBtns = `<button class="btn btn-sm btn-info" title="Edit" onclick="editInfo(${data.TRANSACTION_ID})">
-                    <i class="fas fa-edit"></i>
+                    <i class="ti-pencil"></i>
                     </button>`;
 
                     let transactionPurpose = data.PURPOSE == 1 ? 'Over Time' : '';
-
+                    let dateAdded = data.CREATED_ON.substring(0, 10);
                     table.row.add([
                         i + 1,
                         data.TRANSACTION_DATE,
@@ -119,7 +185,7 @@ function loadTable(table) {
                         transactionPurpose,
                         data.DURATION,
                         data.AMOUNT,
-                        data.CREATED_ON,
+                        dateAdded,
                         actionBtns
                     ]);
                 });
@@ -137,6 +203,7 @@ function loadTable(table) {
 
 function editInfo(transaction_id) {
     // console.log(transaction_id);
+    $("#editTransactionId").val(transaction_id);
     $.ajax({
         url: transactionDetailsURL,
         type: 'post',
@@ -144,12 +211,34 @@ function editInfo(transaction_id) {
             _token: csrfToken,
             transaction_id: transaction_id
         },
+        beforeSend: function () {
+            $('.customloader').show();
+        },
         dataType: 'json',
         success: function (res) {
-            console.log(res);
+            // console.log(res);
+            $("#editTransactionDate").val(res.TRANSACTION_DATE);
+            $("#editTransactionDate").data('og-date', res.TRANSACTION_DATE);
+            $("#editTransactionDate").attr('value', res.TRANSACTION_DATE);
+
+            // For Date Range Picker to reflect set date:
+            $("#editTransactionDate").data('daterangepicker').setStartDate(res.TRANSACTION_DATE);
+            $("#editTransactionDate").data('daterangepicker').setEndDate(res.TRANSACTION_DATE);
+
+            $("#editTransactionForDriver").val(res.DRIVER_ID).change();
+            $("#editTransactionForDriver").data('og-selection', res.DRIVER_ID);
+            $("#editTransactionPurpose").val(res.PURPOSE);
+            $("#editTransactionPurpose").data('og-selection', res.PURPOSE);
+            $("#editDurationForOvertime").val(res.DURATION);
+            $("#editDurationForOvertime").attr('value', res.DURATION);
+            $("#editTransactionAmt").val(res.AMOUNT);
+            $("#editTransactionAmt").attr('value', res.AMOUNT);
+            $("#edit").modal('show');
+            $(".customloader").hide();
         },
         error: function () {
-            console.log("Error getting details");
+            toastr.error("Error getting detals. Please try again", "", { closeButton: true })
+            $(".customloader").hide();
         }
     });
 }

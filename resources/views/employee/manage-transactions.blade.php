@@ -133,7 +133,56 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-
+                <form id="updateTransactionDetailsForm" action="{{route('driver-transaction.update')}}" class="row" method="post" accept-charset="utf-8">
+                    @csrf
+                    <input type="hidden" name="transaction_id" id="editTransactionId" value="">
+                    <div class="col-md-12 col-lg-6">
+                        <div class="form-group row">
+                            <label for="editTransactionDate" class="col-sm-5 col-form-label">Date <i class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <input type="text" name="transaction_date" class="form-control newdatetimepicker" id="editTransactionDate" placeholder="Date">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="editTransactionForDriver" class="col-sm-5 col-form-label">Driver <i class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <select name="driver" id="editTransactionForDriver" class="form-control basic-single">
+                                    <option value="">Please Select Driver</option>
+                                    @foreach($drivers as $driver)
+                                    <option value="{{$driver['DRIVER_ID']}}">{{$driver['DRIVER_NAME']}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="editTransactionPurpose" class="col-sm-5 col-form-label">Purpose <i class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <select name="purpose" id="editTransactionPurpose" class="form-control">
+                                    <option value="">Please Select Purpose</option>
+                                    <option value="1">Over Time</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-6">
+                        <div class="form-group row">
+                            <label for="editDurationForOvertime" class="col-form-label col-md-5">Duration (in minutes) <i class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="editDurationForOvertime" name="duration" placeholder="Enter duration">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="editTransactionAmt" class="col-md-5 col-form-label">Amount (INR) <i class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <input type="number" class="form-control" id="editTransactionAmt" name="amount" placeholder="Amount">
+                            </div>
+                        </div>
+                        <div class="form-group text-right">
+                            <button type="reset" id="resetUpdateFormBtn" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="submit" class="btn btn-success w-md m-b-5">Save</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -145,7 +194,7 @@
         <div class="card mb-3">
             <div class="card-header p-2">
                 <h4 class="pl-3">
-                    Search Here <!-- Manage Transactions -->
+                    Search Here
                     <small class="float-right">
                         <button class="btn btn-primary btn-md" data-target="#add0" data-toggle="modal" title="Add">
                             <i class="fas fa-plus"></i>
@@ -224,7 +273,7 @@
                                 <th>Date</th>
                                 <th>Driver</th>
                                 <th>Purpose</th>
-                                <th>Duration</th>
+                                <th>Duration (minutes)</th>
                                 <th>Amount (INR)</th>
                                 <th>Date Recorded</th>
                                 <th>Action(s)</th>
