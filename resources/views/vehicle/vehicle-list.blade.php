@@ -78,7 +78,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="vehicleDept" class="col-sm-5 col-form-label">Department<i class="text-danger">*</i></label>
+                            <label for="vehicleDept" class="col-sm-5 col-form-label">User Department<i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="department" id="vehicleDept">
                                     <option value="" selected="selected">Please Select One</option>
@@ -206,7 +206,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="newVehicleDept" class="col-sm-5 col-form-label">Department<i class="text-danger">*</i></label>
+                            <label for="newVehicleDept" class="col-sm-5 col-form-label">User Department<i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="department" id="newVehicleDept">
                                     <option value="" selected="selected">Please Select One</option>
@@ -366,7 +366,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <strong>Allocate Vehicle to Employee</strong>
+                <strong>Allocate Vehicle to User</strong>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
@@ -384,10 +384,10 @@
                     </div>
                     <div class="col-md-12 col-lg-10">
                         <div class="form-group row">
-                            <label for="vehicleAllocatedDept" class="col-sm-12 col-lg-4 col-form-label">Department <i class="text-danger">*</i></label>
+                            <label for="vehicleAllocatedDept" class="col-sm-12 col-lg-4 col-form-label">User Department <i class="text-danger">*</i></label>
                             <div class="col-sm-12 col-lg-8">
                                 <select name="vehicle_dept" id="vehicleAllocatedDept" class="form-control basic-single" required onchange="getEmployeesByDept(this)">
-                                    <option value="" selected>Select Department</option>
+                                    <option value="" selected>Select User Department</option>
                                     @foreach($departments as $dept)
                                     <option value="{{$dept['deptCode'] . '|' . $dept['deptName']}}">{{$dept['deptName']}}</option>
                                     @endforeach
@@ -439,7 +439,7 @@
                 <form id="filterVehiclesForm" action="" method="post" class="row">
                     <div class="col-sm-12 col-xl-4">
                         <div class="form-group row mb-1">
-                            <label for="search_department" class="col-sm-4 col-form-label justify-content-start text-left">Department </label>
+                            <label for="search_department" class="col-sm-4 col-form-label justify-content-start text-left">User Department </label>
                             <div class="col-sm-8">
                                 <select class="form-control basic-single" name="search_department" id="search_department">
                                     <option value="" selected="selected">Please Select One</option>
@@ -523,7 +523,7 @@
                                 <th>Sl No.</th>
                                 <th>Name</th>
                                 <th>Type</th>
-                                <th>Department</th>
+                                <th>User Department</th>
                                 <th>Registration Date</th>
                                 <th>Ownership</th>
                                 <th>Vendor</th>
@@ -904,9 +904,9 @@
                         buttons += '<button class="btn btn-sm btn-danger mr-1" data-id="' + data.VEHICLE_ID + '" onclick="assignToDriver(this)" title="Assign to Driver"><i class="fas fa-user-plus"></i></button>';
 
                     if (data.DEPARTMENT_ID == 0)
-                        buttons += '<button class="btn btn-sm btn-success mr-1" data-id="' + data.VEHICLE_ID + '" onclick="allocateVehicle(this)" title="Allocate Vehicle"><i class="fas fa-user-check"></i></button>';
+                        buttons += '<button class="btn btn-sm btn-success mr-1" data-id="' + data.VEHICLE_ID + '" onclick="allocateVehicle(this)" title="Allocate Vehicle to User"><i class="fas fa-user-check"></i></button>';
                     else
-                        buttons += '<button class="btn btn-sm btn-danger mr-1" data-id="' + data.VEHICLE_ID + '" onclick="allocateVehicle(this)" title="Allocate Vehicle"><i class="fas fa-user-check"></i></button>';
+                        buttons += '<button class="btn btn-sm btn-danger mr-1" data-id="' + data.VEHICLE_ID + '" onclick="allocateVehicle(this)" title="Allocate Vehicle to User"><i class="fas fa-user-check"></i></button>';
                     table.row.add(
                         [i + 1,
                             data.VEHICLE_NAME,

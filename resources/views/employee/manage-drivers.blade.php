@@ -43,12 +43,12 @@
                                 <input name="license_number" required="" class="form-control" type="text" placeholder="License Number" id="license_number" autocomplete="off">
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                             <label for="national_id" class="col-sm-5 col-form-label">National ID <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="national_id" required="" class="form-control" type="number" placeholder="National ID" id="national_id" autocomplete="off">
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group row">
                             <label for="timeslot" required="" class="col-sm-5 col-form-label">Working Time Slot <i class="text-danger">*</i></label>
                             <div class="col-sm-3 pr-0">
@@ -72,12 +72,24 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label for="distanceFromTemple" class="col-sm-5 col-form-label"> Distance From Temple (in km) </label>
+                            <div class="col-sm-7">
+                                <input name="distance_from_temple" class="form-control" type="text" placeholder="Distance in km" id="distanceFromTemple">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="travelMode" class="col-sm-5 col-form-label">Mode of Travel </label>
+                            <div class="col-sm-7">
+                                <input name="mode_of_travel" class="form-control" type="text" placeholder="Mode of Travel" id="travelMode">
+                            </div>
+                        </div>
+                        <!-- <div class="form-group row">
                             <label for="checkbox2" class="col-sm-5 col-form-label">&nbsp;</label>
                             <div class="col-sm-7 checkbox checkbox-primary">
                                 <input id="checkbox2" type="checkbox" name="is_active">
                                 <label for="checkbox2">Is Active</label>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group row">
                             <label for="picture" class="col-sm-5 col-form-label">Photograph </label>
                             <div class="col-sm-7" style="display:flex;flex-wrap:wrap;">
@@ -125,10 +137,10 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="leavestatus" class="col-sm-5 col-form-label">Leave Status </label>
+                            <label for="leavestatus" class="col-sm-5 col-form-label"> On Leave </label>
                             <div class="col-sm-7">
                                 <div class="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" id="statusyes" name="leavestatus" class="custom-control-input" value="1" checked="checked">
+                                    <input type="radio" id="statusyes" name="leavestatus" class="custom-control-input" value="1">
                                     <label class="custom-control-label" for="statusyes">Yes</label>
                                 </div>
                                 <div class="custom-control custom-radio custom-control-inline">

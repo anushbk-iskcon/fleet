@@ -1,6 +1,6 @@
 @extends('layouts.main.app')
 
-@section('title','Manage Transactions')
+@section('title','Manage OT')
 
 @section('css-content')
 <style>
@@ -55,7 +55,7 @@
 
 @section('header-title-media-body')
 <h1 class="font-weight-bold" id="moduleName1">Driver Management</h1>
-<small id="controllerName">Manage Transactions</small>
+<small id="controllerName">Manage OT</small>
 @endsection
 
 @section('content')
@@ -65,7 +65,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <strong>Add Transaction Details</strong>
+                <strong>Add OT Details</strong>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
@@ -129,7 +129,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <strong>Edit Transaction Details</strong>
+                <strong>Edit OT Details</strong>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
@@ -242,6 +242,7 @@
                                 <select name="purpose_sr" id="filterPurpose" class="form-control">
                                     <option value="">Select Purpose</option>
                                     <option value="1">Over Time</option>
+                                    {{-- Add Any other purposes --}}
                                 </select>
                             </div>
                         </div>
@@ -261,7 +262,7 @@
     <div class="col-sm-12">
         <div class="card mb-3">
             <div class="card-header p-2">
-                <h4 class="pl-3">Transaction Details</h4>
+                <h4 class="pl-3">OT Details</h4>
             </div>
             <div class="card-body">
                 <div class="table-responsive">

@@ -237,7 +237,7 @@ function editInfo(transaction_id) {
             $(".customloader").hide();
         },
         error: function () {
-            toastr.error("Error getting detals. Please try again", "", { closeButton: true })
+            toastr.error("Error getting details. Please try again", "", { closeButton: true });
             $(".customloader").hide();
         }
     });

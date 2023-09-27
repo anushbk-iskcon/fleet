@@ -56,7 +56,7 @@ class DriverController extends Controller
         $driver->MOBILE_NUMBER = $request->mobile;
         $driver->LICENSE_NUMBER = $request->license_number;
         $driver->LICENSE_TYPE = $request->license_type;
-        $driver->NATIONAL_ID = $request->national_id;
+        $driver->NATIONAL_ID = $request->national_id ?? "";
         $driver->LICENSE_ISSUE_DATE = $request->license_issue_date;
         $driver->WORKING_TIME_START = $request->timeslot_start ?? "";
         $driver->WORKING_TIME_END = $request->timeslot_end ?? "";

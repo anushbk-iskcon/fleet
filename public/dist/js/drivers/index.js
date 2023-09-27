@@ -254,14 +254,20 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
         </div>
     </div>
     <div class="form-group row">
-        <label for="checkbox2" class="col-sm-5 col-form-label">&nbsp;</label>
-        <div class="col-sm-7 checkbox checkbox-primary">
-            <input id="checkbox_edit_is_active" type="checkbox" name="is_active" ${is_active == 'Y' ? 'checked' : ''} value="1">
-            <label for="checkbox_edit_is_active">Is Active</label>
-        </div>
+        <label for="update_distance_from_temple" class="col-sm-5 col-form-label">Distance From Temple (in km)</label>
+            <div class="col-sm-7">
+                <input name="distance_from_temple" class="form-control" type="text" placeholder="Distance in km" id="update_distance_from_temple" value="${present_address}">
+            </div>
     </div>
     <div class="form-group row">
-    <label for="newpicture" class="col-sm-5 col-form-label">Photograph </label>
+        <label for="update_present_address" class="col-sm-5 col-form-label">Mode of Travel</label>
+            <div class="col-sm-7">
+                <input name="mode_of_travel" class="form-control" type="text" placeholder="Mode of Travel" id="update_present_address" value="${present_address}">
+            </div>
+    </div>
+
+    <div class="form-group row">
+    <label for="newpicture" class="col-sm-5 col-form-label">Update Photograph </label>
     <div class="col-sm-7" style="display:flex;flex-wrap:wrap;">
         <input type="file" accept="image/*" name="picture" id="newpicture">
     </div>
@@ -310,7 +316,7 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
         </div>
     </div>
     <div class="form-group row">
-        <label for="leavestatus" class="col-sm-5 col-form-label">Leave Status </label>
+        <label for="leavestatus" class="col-sm-5 col-form-label">On Leave</label>
         <div class="col-sm-7">
             <div class="custom-control custom-radio custom-control-inline">
                 <input type="radio" id="updatedstatusyes" name="leavestatus" class="custom-control-input" value="1" ${leave_status === 'Y' ? 'checked' : ''}>

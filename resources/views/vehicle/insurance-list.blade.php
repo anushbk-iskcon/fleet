@@ -125,9 +125,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="charge_payable" class="col-sm-5 col-form-label">Charge Payable <i class="text-danger">*</i></label>
+                            <label for="charge_payable" class="col-sm-5 col-form-label">Policy Amount (INR) <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="charge_payable" required="" class="form-control" type="number" placeholder="Charge Payable" id="charge_payable">
+                                <input name="charge_payable" required="" class="form-control" type="number" placeholder="Enter Amount (INR)" id="charge_payable">
                             </div>
                         </div>
                         <div class="form-group row">
