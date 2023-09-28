@@ -87,7 +87,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="station_name" class="col-sm-5 col-form-label">Station Name <i class="text-danger">*</i></label>
+                            <label for="station_name" class="col-sm-5 col-form-label">Station Name </label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required name="fuel_station" id="station_name">
                                     <option value="" selected="selected">Please Select One</option>
@@ -97,36 +97,36 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                             <label for="budgetgiven" class="col-sm-5 col-form-label">Budget Given <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="budget_given" required class="form-control" type="number" placeholder="Budget Given" id="budgetgiven">
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group row">
                             <label for="place" class="col-sm-5 col-form-label">Place <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="place" required class="form-control" type="text" placeholder="Place" id="place">
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                             <label for="kilometer_per_unit" class="col-sm-5 col-form-label">Kilometer Per Unit <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="kilometer_per_unit" required class="form-control" type="number" placeholder="Kilometer Per Unit" id="kilometer_per_unit">
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group row">
                             <label for="last_reading" class="col-sm-5 col-form-label">Last Reading </label>
                             <div class="col-sm-7">
                                 <input name="last_reading" class="form-control" type="number" placeholder="Last Reading" id="last_reading">
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                             <label for="last_unit" class="col-sm-5 col-form-label">Last Unit </label>
                             <div class="col-sm-7">
                                 <input name="last_unit" class="form-control" type="number" placeholder="Last Unit" id="last_unit">
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
                     <div class="col-md-12 col-lg-6">
@@ -141,37 +141,37 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                             <label for="driver_mobile" class="col-sm-5 col-form-label">Driver Mobile <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="driver_mobile" class="form-control" required type="number" placeholder="Driver Mobile" id="driver_mobile">
                             </div>
-                        </div>
-                        <div class="form-group row">
+                        </div> -->
+                        <!-- <div class="form-group row">
                             <label for="refuel_limit_type" class="col-sm-5 col-form-label">Refuel Limit Type </label>
                             <div class="col-sm-7">
                                 <input name="refuel_limit_type" class="form-control" type="text" placeholder="Refuel Limit Type" id="refuel_limit_type">
                             </div>
-                        </div>
+                        </div> -->
 
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                             <label for="max_unit" class="col-sm-5 col-form-label">Max Unit <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="max_unit" required class="form-control" type="number" placeholder="Max Unit" id="max_unit">
                             </div>
-                        </div>
-                        <div class="form-group row">
+                        </div> -->
+                        <!-- <div class="form-group row">
                             <label for="consumption_percent" class="col-sm-5 col-form-label">Consumption Percent </label>
                             <div class="col-sm-7">
                                 <input name="consumption_percent" class="form-control" type="number" placeholder="Consumption Percent" id="consumption_percent">
                             </div>
-                        </div>
-                        <div class="form-group row">
+                        </div> -->
+                        <!-- <div class="form-group row">
                             <label for="odometer_km_after_day_end_stop" class="col-sm-5 col-form-label">Odometer KM after day end stop </label>
                             <div class="col-sm-7">
                                 <input name="odometer_after_day_end" class="form-control" type="number" placeholder="Odometer KM after day end stop" id="odometer_km_after_day_end_stop">
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group row">
                             <label for="odometer_at_time_of_refueling" class="col-sm-5 col-form-label">Odometer at time of refueling </label>
                             <div class="col-sm-7">
@@ -190,13 +190,13 @@
                                 <input type="file" accept="image/*" name="picture">
                             </div>
                         </div>
-                        <div class="form-group row m-0">
+                        <!-- <div class="form-group row m-0">
                             <label for="" class="col-sm-5 col-form-label">&nbsp; </label>
                             <div class="col-sm-7 checkbox checkbox-primary">
                                 <input id="checkbox2" type="checkbox" name="strict_consumption" value="1">
                                 <label for="checkbox2">Strict Consumption Apply</label>
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="form-group text-right">
                             <button type="reset" class="btn btn-primary w-md m-b-5" id="resetAddRefuelSettingForm">Reset</button>

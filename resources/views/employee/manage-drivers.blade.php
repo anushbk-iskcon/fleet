@@ -91,6 +91,13 @@
                             </div>
                         </div> -->
                         <div class="form-group row">
+                            <label for="permanent_address" class="col-sm-5 col-form-label">Permanent Address </label>
+                            <div class="col-sm-7">
+                                <input name="permanent_address" class="form-control" type="text" placeholder="Permanent Address" id="permanent_address">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label for="picture" class="col-sm-5 col-form-label">Photograph </label>
                             <div class="col-sm-7" style="display:flex;flex-wrap:wrap;">
                                 <input type="file" accept="image/*" name="picture" onchange="loadFile(event)">
@@ -130,12 +137,7 @@
                                 <input name="join_date" class="form-control date-picker" type="text" placeholder="Join Date" id="join_date">
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label for="permanent_address" class="col-sm-5 col-form-label">Permanent Address </label>
-                            <div class="col-sm-7">
-                                <input name="permanent_address" class="form-control" type="text" placeholder="Permanent Address" id="permanent_address">
-                            </div>
-                        </div>
+
                         <div class="form-group row">
                             <label for="leavestatus" class="col-sm-5 col-form-label"> On Leave </label>
                             <div class="col-sm-7">
@@ -149,18 +151,39 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-group row">
-                            <label for="permanent_address" class="col-sm-5 col-form-label">CTC</label>
+                            <label for="ctc" class="col-sm-5 col-form-label">CTC</label>
                             <div class="col-sm-7">
                                 <input name="ctc" class="form-control" type="text" placeholder="Enter CTC" id="ctc">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="permanent_address" class="col-sm-5 col-form-label">Overtime Price </label>
+                            <label for="ovt" class="col-sm-5 col-form-label">Overtime Price </label>
                             <div class="col-sm-7">
                                 <input name="ovt" class="form-control" type="text" placeholder="Enter Overtime Price" id="ovt">
                             </div>
                         </div>
+
+                        <div class="form-group row">
+                            <label for="emergencyContactName" class="col-sm-5 col-form-label">Emergency Contact Name</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="emergency_contact" placeholder="Emergency Contact Name" id="emergencyContactName" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="emergencyContactNumber" class="col-sm-5 col-form-label">Emergency Contact Number</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="emergency_contact_num" placeholder="Emergency Contact Number" id="emergencyContactName" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="emergencyContactRelationship" class="col-sm-5 col-form-label">Emergency Contact Relationship</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="emergency_contact_rel" placeholder="Emergency Contact Relationship" id="emergencyContactName" class="form-control">
+                            </div>
+                        </div>
+
                         <div class="form-group text-right">
                             <button type="reset" id="resetAddDriverForm" class="btn btn-primary w-md m-b-5">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>

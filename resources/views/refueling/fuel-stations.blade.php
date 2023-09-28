@@ -88,13 +88,26 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="authorize_person" class="col-sm-5 col-form-label">Authorize Person <i class="text-danger">*</i> </label>
+                            <label for="advance_amount" class="col-sm-5 col-form-label">Advance Amount (INR) </label>
                             <div class="col-sm-7">
-                                <input name="authorize_person" required class="form-control" type="text" placeholder="Authorize Person" id="authorize_person">
+                                <input name="advance_amount" class="form-control" type="text" placeholder="Advance Amount" id="advance_amount">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="fuel_type" class="col-sm-5 col-form-label">Fuel Type <i class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <input name="fuel_type" required class="form-control" type="text" placeholder="Fuel Type" id="fuel_type">
                             </div>
                         </div>
                     </div>
+
                     <div class="col-md-12 col-lg-6">
+                        <div class="form-group row">
+                            <label for="authorize_person" class="col-sm-5 col-form-label">Authorized Person <i class="text-danger">*</i> </label>
+                            <div class="col-sm-7">
+                                <input name="authorize_person" required class="form-control" type="text" placeholder="Authorized Person" id="authorize_person">
+                            </div>
+                        </div>
                         <div class="form-group row">
                             <label for="contact_num" class="col-sm-5 col-form-label">Contact Number <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
@@ -105,7 +118,7 @@
                             <label for="milage_traking" class="col-sm-5 col-form-label">&nbsp; </label>
                             <div class="col-sm-7 checkbox checkbox-primary">
                                 <input id="checkbox2" type="checkbox" name="is_authorized">
-                                <label for="checkbox2">Is Authorize</label>
+                                <label for="checkbox2">Is Authorized</label>
                             </div>
                         </div>
                         <div class="form-group text-right">
@@ -177,7 +190,7 @@
                         <input type="hidden" name="fuel_station_id" id="editFuelStationId">
                         <div class="col-md-12 col-lg-6">
                             <div class="form-group row">
-                                <label for="req_for" class="col-sm-5 col-form-label">Vendor Name <i class="text-danger">*</i></label>
+                                <label for="new_vendor_name" class="col-sm-5 col-form-label">Vendor Name <i class="text-danger">*</i></label>
                                 <div class="col-sm-7">
                                     <!-- <select class="form-control basic-single" required name="vendor_name" id="vendor_name">
                                     <option value="" selected="selected">Please Select One</option>
@@ -189,25 +202,38 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="station_name" class="col-sm-5 col-form-label">Station Name </label>
+                                <label for="new_station_name" class="col-sm-5 col-form-label">Station Name </label>
                                 <div class="col-sm-7">
                                     <input name="station_name" class="form-control" type="text" placeholder="Station Name" id="new_station_name">
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="station_code" class="col-sm-5 col-form-label">Station Code <i class="text-danger">*</i></label>
+                                <label for="new_station_code" class="col-sm-5 col-form-label">Station Code <i class="text-danger">*</i></label>
                                 <div class="col-sm-7">
                                     <input name="station_code" required class="form-control" type="text" placeholder="Station Code" id="new_station_code">
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="authorize_person" class="col-sm-5 col-form-label">Authorize Person <i class="text-danger">*</i> </label>
+                                <label for="new_adv_amt" class="col-sm-5 col-form-label">Advance Amount (INR)</label>
                                 <div class="col-sm-7">
-                                    <input name="authorize_person" required class="form-control" type="text" placeholder="Authorize Person" id="new_authorize_person">
+                                    <input name="advance_amount" class="form-control" type="text" placeholder="Advance Amount" id="new_adv_amt">
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label for="new_fuel_type" class="col-sm-5 col-form-label">Fuel Type <i class="text-danger">*</i></label>
+                                <div class="col-sm-7">
+                                    <input name="fuel_type" required class="form-control" type="text" placeholder="Fuel Type" id="new_fuel_type">
+                                </div>
+                            </div>
+
                         </div>
                         <div class="col-md-12 col-lg-6">
+                            <div class="form-group row">
+                                <label for="authorize_person" class="col-sm-5 col-form-label">Authorized Person <i class="text-danger">*</i> </label>
+                                <div class="col-sm-7">
+                                    <input name="authorize_person" required class="form-control" type="text" placeholder="Authorized Person" id="new_authorize_person">
+                                </div>
+                            </div>
                             <div class="form-group row">
                                 <label for="contact_num" class="col-sm-5 col-form-label">Contact Number <i class="text-danger">*</i></label>
                                 <div class="col-sm-7">
@@ -218,7 +244,7 @@
                                 <label for="milage_traking" class="col-sm-5 col-form-label">&nbsp; </label>
                                 <div class="col-sm-7 checkbox checkbox-primary">
                                     <input id="checkbox2" type="checkbox" name="is_authorized">
-                                    <label for="checkbox2">Is Authorize</label>
+                                    <label for="checkbox2">Is Authorized</label>
                                 </div>
                             </div>
                             <div class="form-group text-right">
@@ -269,7 +295,7 @@
 <!-- <script src="{{asset('dist/js/fuelstation_list.js')}}"></script> -->
 <script>
     let csrfToken = '{{csrf_token()}}';
-    let getFuelStationDetailsURl = '{{route("fuel-stations.get-details")}}';
+    let getFuelStationDetailsURL = '{{route("fuel-stations.get-details")}}';
     let fuelStationsListURL = '{{route("fuel-stations.list")}}';
     let updateActivationStatusURL = "{{ route('fuel-stations.update-status') }}";
 </script>

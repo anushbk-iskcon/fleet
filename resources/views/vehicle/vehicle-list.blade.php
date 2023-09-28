@@ -123,6 +123,24 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="" class="col-sm-5 col-form-label">Chassis Number</label>
+                            <div class="col-sm-7">
+                                <input type="text" id="" placeholder="Chassis Number" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="" class="col-sm-5 col-form-label">Engine Number</label>
+                            <div class="col-sm-7">
+                                <input type="text" id="" placeholder="Engine Number" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="" class="col-sm-5 col-form-label">Vehicle Value</label>
+                            <div class="col-sm-7">
+                                <input type="text" id="" placeholder="Vehicle Value" class="form-control">
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
@@ -173,6 +191,18 @@
                             <label for="seat_capacity" class="col-sm-5 col-form-label">Seat Capacity (With Driver) <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="seat_capacity" required="" class="form-control" type="number" placeholder="Seat Capacity (With Driver)" id="seat_capacity">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="" class="col-sm-5 col-form-label">UVW</label>
+                            <div class="col-sm-7">
+                                <input type="text" placeholder="UVW" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="" class="col-sm-5 col-form-label">CC</label>
+                            <div class="col-sm-7">
+                                <input type="text" placeholder="CC" class="form-control">
                             </div>
                         </div>
                         <div class="form-group text-right">
@@ -361,7 +391,7 @@
     </div>
 </div> <!-- End modal to assign a driver the vehicle -->
 
-<!-- Begin Modal to allocate the vehicle to an employee -->
+<!-- Begin Modal to allocate the vehicle to user -->
 <div id="allocateVehicleModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -376,16 +406,16 @@
                     <input type="hidden" name="vehicle_id" id="allocatedVehicleId" value="">
                     <div class="col-md-12 col-lg-10">
                         <div class="form-group row">
-                            <label for="allocatedVehicle" class="col-sm-12 col-lg-4 col-form-label">Vehicle <i class="text-danger">*</i></label>
-                            <div class="col-sm-12 col-lg-8">
+                            <label for="allocatedVehicle" class="col-sm-12 col-lg-5 col-form-label">Vehicle <i class="text-danger">*</i></label>
+                            <div class="col-sm-12 col-lg-7">
                                 <input class="form-control" id="allocatedVehicle" type="text" name="vehicle" value="" disabled>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-12 col-lg-10">
                         <div class="form-group row">
-                            <label for="vehicleAllocatedDept" class="col-sm-12 col-lg-4 col-form-label">User Department <i class="text-danger">*</i></label>
-                            <div class="col-sm-12 col-lg-8">
+                            <label for="vehicleAllocatedDept" class="col-sm-12 col-lg-5 col-form-label">User Department <i class="text-danger">*</i></label>
+                            <div class="col-sm-12 col-lg-7">
                                 <select name="vehicle_dept" id="vehicleAllocatedDept" class="form-control basic-single" required onchange="getEmployeesByDept(this)">
                                     <option value="" selected>Select User Department</option>
                                     @foreach($departments as $dept)
@@ -397,8 +427,8 @@
                     </div>
                     <div class="col-md-12 col-lg-10">
                         <div class="form-group row">
-                            <label for="vehicleOwner" class="col-sm-12 col-lg-4 col-form-label">Allocate To <i class="text-danger">*</i></label>
-                            <div class="col-sm-12 col-lg-8">
+                            <label for="vehicleOwner" class="col-sm-12 col-lg-5 col-form-label">Allocate To <i class="text-danger">*</i></label>
+                            <div class="col-sm-12 col-lg-7">
                                 <select name="vehicle_owner" id="vehicleOwner" class="form-control basic-single" data-init-owner-value="" required>
                                     <option value="" selected>Please Select Owner</option>
                                     <!-- @foreach($drivers as $driver)
@@ -439,7 +469,7 @@
                 <form id="filterVehiclesForm" action="" method="post" class="row">
                     <div class="col-sm-12 col-xl-4">
                         <div class="form-group row mb-1">
-                            <label for="search_department" class="col-sm-4 col-form-label justify-content-start text-left">User Department </label>
+                            <label for="search_department" class="col-sm-4 col-form-label justify-content-start text-left">User Dept </label>
                             <div class="col-sm-8">
                                 <select class="form-control basic-single" name="search_department" id="search_department">
                                     <option value="" selected="selected">Please Select One</option>

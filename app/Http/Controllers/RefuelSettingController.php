@@ -138,7 +138,7 @@ class RefuelSettingController extends Controller
         </div></div>';
 
         $editFormContent .= '<div class="form-group row">
-        <label for="edit_station_name" class="col-sm-5 col-form-label">Station Name <i class="text-danger">*</i></label>
+        <label for="edit_station_name" class="col-sm-5 col-form-label">Station Name</label>
         <div class="col-sm-7">
             <select class="form-control basic-single" required name="fuel_station" id="edit_station_name">
                 <option value="">Please Select One</option>';
@@ -152,11 +152,11 @@ class RefuelSettingController extends Controller
         }
         $editFormContent .= '</select></div></div>';
 
-        $editFormContent .= '<div class="form-group row">
-        <label for="editbudgetgiven" class="col-sm-5 col-form-label">Budget Given <i class="text-danger">*</i></label>
-        <div class="col-sm-7">
-            <input name="budget_given" required class="form-control" type="number" placeholder="Budget Given" id="editbudgetgiven" value="' . $refuelSetting->BUDGET_GIVEN . '">
-        </div></div>';
+        // $editFormContent .= '<div class="form-group row">
+        // <label for="editbudgetgiven" class="col-sm-5 col-form-label">Budget Given <i class="text-danger">*</i></label>
+        // <div class="col-sm-7">
+        //     <input name="budget_given" required class="form-control" type="number" placeholder="Budget Given" id="editbudgetgiven" value="' . $refuelSetting->BUDGET_GIVEN . '">
+        // </div></div>';
 
         $editFormContent .= '<div class="form-group row">
         <label for="editplace" class="col-sm-5 col-form-label">Place <i class="text-danger">*</i></label>
@@ -164,19 +164,21 @@ class RefuelSettingController extends Controller
             <input name="place" required class="form-control" type="text" placeholder="Place" id="editplace" value="' . $refuelSetting->PLACE . '">
         </div></div>';
 
-        $editFormContent .= '<div class="form-group row"><label for="edit_kilometer_per_unit" class="col-sm-5 col-form-label">Kilometer Per Unit <i class="text-danger">*</i></label>
-        <div class="col-sm-7">
-            <input name="kilometer_per_unit" required class="form-control" type="number" placeholder="Kilometer Per Unit" id="edit_kilometer_per_unit" value="' . $refuelSetting->KILOMETER_PER_UNIT . '">
-        </div></div>';
+        // $editFormContent .= '<div class="form-group row"><label for="edit_kilometer_per_unit" class="col-sm-5 col-form-label">Kilometer Per Unit <i class="text-danger">*</i></label>
+        // <div class="col-sm-7">
+        //     <input name="kilometer_per_unit" required class="form-control" type="number" placeholder="Kilometer Per Unit" id="edit_kilometer_per_unit" value="' . $refuelSetting->KILOMETER_PER_UNIT . '">
+        // </div></div>';
 
         $editFormContent .= '<div class="form-group row"><label for="edit_last_reading" class="col-sm-5 col-form-label">Last Reading </label>
         <div class="col-sm-7">
             <input name="last_reading" class="form-control" type="number" placeholder="Last Reading" id="edit_last_reading" value="' . $refuelSetting->LAST_READING . '">
         </div></div>';
 
-        $editFormContent .= '<div class="form-group row"><label for="edit_last_unit" class="col-sm-5 col-form-label">Last Unit </label>
-        <div class="col-sm-7"><input name="last_unit" class="form-control" type="number" placeholder="Last Unit" id="edit_last_unit" value="' . $refuelSetting->LAST_UNIT . '">
-        </div></div></div>';  #End col-md-12 and begin new
+        // $editFormContent .= '<div class="form-group row"><label for="edit_last_unit" class="col-sm-5 col-form-label">Last Unit </label>
+        // <div class="col-sm-7"><input name="last_unit" class="form-control" type="number" placeholder="Last Unit" id="edit_last_unit" value="' . $refuelSetting->LAST_UNIT . '">
+        // </div></div></div>';  
+        $editFormContent .= '</div>';
+        #End col-md-12 and begin new
 
         $editFormContent .= '<div class="col-md-12 col-lg-6">
         <div class="form-group row">
@@ -192,34 +194,29 @@ class RefuelSettingController extends Controller
         }
         $editFormContent .= '</select></div></div>';
 
-        $editFormContent .= '<div class="form-group row">
-        <label for="edit_driver_mobile" class="col-sm-5 col-form-label">Driver Mobile <i class="text-danger">*</i></label>
-        <div class="col-sm-7">
-            <input name="driver_mobile" class="form-control" required type="number" placeholder="Driver Mobile" id="edit_driver_mobile" value="' . $refuelSetting->DRIVER_MOBILE . '">
-        </div></div>
-        <div class="form-group row">
-        <label for="edit_refuel_limit_type" class="col-sm-5 col-form-label">Refuel Limit Type </label>
-        <div class="col-sm-7">
-            <input name="refuel_limit_type" class="form-control" type="text" placeholder="Refuel Limit Type" id="edit_refuel_limit_type" value="' . $refuelSetting->REFUEL_LIMIT_TYPE . '">
-        </div></div>';
+        // $editFormContent .= '<div class="form-group row">
+        // <label for="edit_driver_mobile" class="col-sm-5 col-form-label">Driver Mobile <i class="text-danger">*</i></label>
+        // <div class="col-sm-7">
+        //     <input name="driver_mobile" class="form-control" required type="number" placeholder="Driver Mobile" id="edit_driver_mobile" value="' . $refuelSetting->DRIVER_MOBILE . '">
+        // </div></div>
+        // <div class="form-group row">
+        // <label for="edit_refuel_limit_type" class="col-sm-5 col-form-label">Refuel Limit Type </label>
+        // <div class="col-sm-7">
+        //     <input name="refuel_limit_type" class="form-control" type="text" placeholder="Refuel Limit Type" id="edit_refuel_limit_type" value="' . $refuelSetting->REFUEL_LIMIT_TYPE . '">
+        // </div></div>';
+
+        // $editFormContent .= '<div class="form-group row">
+        // <label for="edit_max_unit" class="col-sm-5 col-form-label">Max Unit <i class="text-danger">*</i></label>
+        // <div class="col-sm-7">
+        //     <input name="max_unit" required class="form-control" type="number" placeholder="Max Unit" id="edit_max_unit" value="' . $refuelSetting->MAX_UNIT . '">
+        // </div></div>
+        // <div class="form-group row">
+        // <label for="edit_consumption_percent" class="col-sm-5 col-form-label">Consumption Percent </label>
+        // <div class="col-sm-7">
+        //     <input name="consumption_percent" class="form-control" type="number" placeholder="Consumption Percent" id="edit_consumption_percent" value="' . $refuelSetting->CONSUMPTION_PERCENT . '">
+        // </div></div>';
 
         $editFormContent .= '<div class="form-group row">
-        <label for="edit_max_unit" class="col-sm-5 col-form-label">Max Unit <i class="text-danger">*</i></label>
-        <div class="col-sm-7">
-            <input name="max_unit" required class="form-control" type="number" placeholder="Max Unit" id="edit_max_unit" value="' . $refuelSetting->MAX_UNIT . '">
-        </div></div>
-        <div class="form-group row">
-        <label for="edit_consumption_percent" class="col-sm-5 col-form-label">Consumption Percent </label>
-        <div class="col-sm-7">
-            <input name="consumption_percent" class="form-control" type="number" placeholder="Consumption Percent" id="edit_consumption_percent" value="' . $refuelSetting->CONSUMPTION_PERCENT . '">
-        </div></div>';
-
-        $editFormContent .= '<div class="form-group row">
-        <label for="edit_odometer_km_after_day_end_stop" class="col-sm-5 col-form-label">Odometer KM after day end stop </label>
-        <div class="col-sm-7">
-            <input name="odometer_after_day_end" class="form-control" type="number" placeholder="Odometer KM after day end stop" id="edit_odometer_km_after_day_end_stop" value="' . $refuelSetting->ODOMETER_DAY_END . '">
-        </div></div>
-        <div class="form-group row">
         <label for="edit_odometer_at_time_of_refueling" class="col-sm-5 col-form-label">Odometer at time of refueling </label>
         <div class="col-sm-7">
             <input name="odometer_at_refueling" class="form-control" type="number" placeholder="Odometer at time of refueling" id="edit_odometer_at_time_of_refueling" value="' . $refuelSetting->ODOMETER_AT_REFUEL . '">
@@ -234,16 +231,6 @@ class RefuelSettingController extends Controller
         <label for="edit_picture" class="col-sm-5 col-form-label">Fuel Slip Scan Copy </label>
         <div class="col-sm-7">
             <input type="file" accept="image/*" name="picture">
-        </div></div>
-        <div class="form-group row m-0">
-        <label for="" class="col-sm-5 col-form-label">&nbsp; </label>
-        <div class="col-sm-7 checkbox checkbox-primary">';
-
-        if ($refuelSetting->STRICT_CONSUMPTION == 'Y')
-            $editFormContent .= '<input id="checkbox_edit_strict" type="checkbox" name="strict_consumption" value="1" checked>';
-        else
-            $editFormContent .= '<input id="checkbox_edit_strict" type="checkbox" name="strict_consumption" value="1">';
-        $editFormContent .=    '<label for="checkbox_edit_strict">Strict Consumption Apply</label>
         </div></div>';
 
         $editFormContent .= '<div class="form-group text-right">

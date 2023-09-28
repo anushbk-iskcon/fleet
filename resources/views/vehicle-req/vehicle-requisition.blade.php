@@ -19,8 +19,7 @@
             <div class="card-header p-2">
                 <h4 class="pl-3">Search Here<small class="float-right">
 
-                        <button type="button" class="btn btn-primary btn-md" data-target="#add" data-toggle="modal"><i
-                                class="ti-plus" aria-hidden="true"></i>
+                        <button type="button" class="btn btn-primary btn-md" data-target="#add" data-toggle="modal"><i class="ti-plus" aria-hidden="true"></i>
                             Add Requisition</button>
                     </small></h4>
             </div>
@@ -28,8 +27,7 @@
                 <div class="card-body row">
                     <div class="col-sm-12 col-xl-4">
                         <div class="form-group row mb-1">
-                            <label for="req_forsr"
-                                class="col-sm-5 col-form-label justify-content-start text-left">Requisition For </label>
+                            <label for="req_forsr" class="col-sm-5 col-form-label justify-content-start text-left">Requisition For </label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" name="req_forsr" id="req_forsr">
                                     <option value="" selected="selected">Please Select One</option>
@@ -41,8 +39,7 @@
                             </div>
                         </div>
                         <div class="form-group row mb-1">
-                            <label for="vehicle_typesr"
-                                class="col-sm-5 col-form-label justify-content-start text-left">Vehicle Type </label>
+                            <label for="vehicle_typesr" class="col-sm-5 col-form-label justify-content-start text-left">Vehicle Type </label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" name="vehicle_typesr" id="vehicle_typesr">
                                     <option value="" selected="selected">Please Select One</option>
@@ -59,8 +56,7 @@
                             <label for="from" class="col-sm-5 col-form-label justify-content-start text-left">Time From
                             </label>
                             <div class="col-sm-7">
-                                <input name="from" autocomplete="off" class="form-control vnewdatetimepicker w-100"
-                                    type="time" placeholder="From" id="from">
+                                <input name="from" autocomplete="off" class="form-control vnewdatetimepicker w-100" type="time" placeholder="From" id="from">
                             </div>
 
                         </div>
@@ -68,8 +64,7 @@
                             <label for="to" class="col-sm-5 col-form-label justify-content-start text-left">Time To
                             </label>
                             <div class="col-sm-7">
-                                <input name="to" autocomplete="off" class="form-control vnewdatetimepicker w-100"
-                                    type="time" placeholder="To" id="to">
+                                <input name="to" autocomplete="off" class="form-control vnewdatetimepicker w-100" type="time" placeholder="To" id="to">
                             </div>
 
                         </div>
@@ -136,16 +131,13 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form id="form" action="{{route('add_requisition')}}" class="row" enctype="multipart/form-data"
-                    method="post" accept-charset="utf-8">
+                <form id="form" action="{{route('add_requisition')}}" class="row" enctype="multipart/form-data" method="post" accept-charset="utf-8">
                     @csrf
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
-                            <label for="department" class="col-sm-5 col-form-label">Department <i
-                                    class="text-danger">*</i></label>
+                            <label for="department" class="col-sm-5 col-form-label">User Department <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <select class="form-control basic-single" required="" name="department"
-                                    id="newDepartment">
+                                <select class="form-control basic-single" required="" name="department" id="newDepartment">
                                     <option value="">Please Select One</option>
                                     @foreach($departments['data'] as $department)
                                     <option value="{{$department['deptCode']}}">
@@ -156,11 +148,10 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="req_for" class="col-sm-5 col-form-label">Requisition For <i
-                                    class="text-danger">*</i></label>
+                            <label for="req_for" class="col-sm-5 col-form-label">Requisition For <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="req_for" id="req_for">
-                                    <option value="" selected="selected">Select Employee</option>
+                                    <option value="" selected="selected">Select User</option>
                                     @foreach($empData as $val)
                                     <option value="{{$val['employeeId']}}">{{$val['employeeName']}}
                                         ({{$val['department']}})</option>
@@ -169,11 +160,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="vehicle_type" class="col-sm-5 col-form-label">Vehicle Type <i
-                                    class="text-danger">*</i></label>
+                            <label for="vehicle_type" class="col-sm-5 col-form-label">Vehicle Type <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <select class="form-control basic-single" required="" name="vehicle_type"
-                                    id="vehicle_type">
+                                <select class="form-control basic-single" required="" name="vehicle_type" id="vehicle_type">
                                     <option value="" selected="selected">Please Select One</option>
                                     @foreach($vehicle_type as $val)
                                     <option value="{{$val->VEHICLE_TYPE_ID}}">{{$val->VEHICLE_TYPE_NAME}}</option>
@@ -182,66 +171,52 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="where_fr" class="col-sm-5 col-form-label">Where From <i
-                                    class="text-danger">*</i></label>
+                            <label for="where_fr" class="col-sm-5 col-form-label">Where From <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="where_fr" required="" class="form-control" type="text"
-                                    placeholder="Where From" id="where_fr">
+                                <input name="where_fr" required="" class="form-control" type="text" placeholder="Where From" id="where_fr">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="where_to" required="" class="col-sm-5 col-form-label">Where To <i
-                                    class="text-danger">*</i></label>
+                            <label for="where_to" required="" class="col-sm-5 col-form-label">Where To <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="where_to" required="" class="form-control" type="text"
-                                    placeholder="Where To" id="where_to">
+                                <input name="where_to" required="" class="form-control" type="text" placeholder="Where To" id="where_to">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="pickup" class="col-sm-5 col-form-label">Pick Up <i
-                                    class="text-danger">*</i></label>
+                            <label for="pickup" class="col-sm-5 col-form-label">Pick Up <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="pickup" class="form-control" type="text" placeholder="Pick Up" id="pickup">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="req_date" class="col-sm-5 col-form-label">Requisition Date <i
-                                    class="text-danger">*</i></label>
+                            <label for="req_date" class="col-sm-5 col-form-label">Requisition Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="req_date" class="form-control  vnewdatetimepicker" autocomplete="off"
-                                    type="date" placeholder="Requisition Date" id="req_date">
+                                <input name="req_date" class="form-control  vnewdatetimepicker" autocomplete="off" type="date" placeholder="Requisition Date" id="req_date">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="time_fr" class="col-sm-5 col-form-label">Time From <i
-                                    class="text-danger">*</i></label>
+                            <label for="time_fr" class="col-sm-5 col-form-label">Time From <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="time_fr" class="form-control ttimepicker" type="time"
-                                    placeholder="Time From" id="time_fr">
+                                <input name="time_fr" class="form-control ttimepicker" type="time" placeholder="Time From" id="time_fr">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
-                            <label for="time_to" class="col-sm-5 col-form-label">Time To <i
-                                    class="text-danger">*</i></label>
+                            <label for="time_to" class="col-sm-5 col-form-label">Time To <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="time_to" class="form-control ttimepicker" type="time" placeholder="Time To"
-                                    id="time_to">
+                                <input name="time_to" class="form-control ttimepicker" type="time" placeholder="Time To" id="time_to">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="tolerance" class="col-sm-5 col-form-label">Tolerance Duration <i
-                                    class="text-danger">*</i></label>
+                            <label for="tolerance" class="col-sm-5 col-form-label">Tolerance Duration <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="tolerance" required="" class="form-control" type="time"
-                                    placeholder="Tolerance Duration" id="tolerance">
+                                <input name="tolerance" required="" class="form-control" type="time" placeholder="Tolerance Duration" id="tolerance">
                             </div>
                         </div>
                         <div class="form-group row justify-content-end">
-                            <label for="purpose" class="col-sm-5 col-form-label">Vehicle <i
-                                    class="text-danger">*</i></label>
+                            <label for="purpose" class="col-sm-5 col-form-label">Vehicle <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="vehicle" id="vehicle">
                                     <option value="" selected="selected">Please Select One</option>
@@ -255,16 +230,13 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="nunpassenger" class="col-sm-5 col-form-label">No of Passenger <i
-                                    class="text-danger">*</i></label>
+                            <label for="nunpassenger" class="col-sm-5 col-form-label">No of Passenger <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="nunpassenger" class="form-control" type="number"
-                                    placeholder="No of Passenger" id="nunpassenger">
+                                <input name="nunpassenger" class="form-control" type="number" placeholder="No of Passenger" id="nunpassenger">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="purpose" class="col-sm-5 col-form-label">Purpose <i
-                                    class="text-danger">*</i></label>
+                            <label for="purpose" class="col-sm-5 col-form-label">Purpose <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="purpose" id="purpose">
                                     <option value="" selected="selected">Please Select One</option>
@@ -276,11 +248,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="details" class="col-sm-5 col-form-label">Details <i
-                                    class="text-danger">*</i></label>
+                            <label for="details" class="col-sm-5 col-form-label">Details <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="details" required="" class="form-control" type="text" placeholder="Details"
-                                    id="details">
+                                <input name="details" required="" class="form-control" type="text" placeholder="Details" id="details">
                             </div>
                         </div>
 
@@ -303,17 +273,14 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form id="form2" action="{{route('edit_requisition')}}" class="row" enctype="multipart/form-data"
-                    method="post" accept-charset="utf-8">
+                <form id="form2" action="{{route('edit_requisition')}}" class="row" enctype="multipart/form-data" method="post" accept-charset="utf-8">
                     @csrf
                     <input type="hidden" name="id" id="requsition_id" value="">
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
-                            <label for="department" class="col-sm-5 col-form-label">Department <i
-                                    class="text-danger">*</i></label>
+                            <label for="department" class="col-sm-5 col-form-label">User Department <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <select class="form-control basic-single" required="" name="department"
-                                    id="editDepartment">
+                                <select class="form-control basic-single" required="" name="department" id="editDepartment">
                                     <option value="">Please Select One</option>
                                     @foreach($departments['data'] as $department)
                                     <option value="{{$department['deptCode']}}">
@@ -324,11 +291,10 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="req_for" class="col-sm-5 col-form-label">Requisition For <i
-                                    class="text-danger">*</i></label>
+                            <label for="req_for" class="col-sm-5 col-form-label">Requisition For <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="req_for" id="req_for2">
-                                    <option value="" selected="selected">Select Employee</option>
+                                    <option value="" selected="selected">Select User</option>
                                     @foreach($empData as $val)
                                     <option value="{{$val['employeeId']}}">{{$val['employeeName']}}
                                         ({{$val['department']}})</option>
@@ -337,11 +303,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="vehicle_type" class="col-sm-5 col-form-label">Vehicle Type <i
-                                    class="text-danger">*</i></label>
+                            <label for="vehicle_type" class="col-sm-5 col-form-label">Vehicle Type <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <select class="form-control basic-single" required="" name="vehicle_type"
-                                    id="vehicle_type2">
+                                <select class="form-control basic-single" required="" name="vehicle_type" id="vehicle_type2">
                                     <option value="" selected="selected">Please Select One</option>
                                     @foreach($vehicle_type as $val)
                                     <option value="{{$val->VEHICLE_TYPE_ID}}">{{$val->VEHICLE_TYPE_NAME}}</option>
@@ -350,67 +314,52 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="where_fr" class="col-sm-5 col-form-label">Where From <i
-                                    class="text-danger">*</i></label>
+                            <label for="where_fr" class="col-sm-5 col-form-label">Where From <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="where_fr" required="" class="form-control" type="text"
-                                    placeholder="Where From" id="where_fr2">
+                                <input name="where_fr" required="" class="form-control" type="text" placeholder="Where From" id="where_fr2">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="where_to" required="" class="col-sm-5 col-form-label">Where To <i
-                                    class="text-danger">*</i></label>
+                            <label for="where_to" required="" class="col-sm-5 col-form-label">Where To <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="where_to" required="" class="form-control" type="text"
-                                    placeholder="Where To" id="where_to2">
+                                <input name="where_to" required="" class="form-control" type="text" placeholder="Where To" id="where_to2">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="pickup" class="col-sm-5 col-form-label">Pick Up <i
-                                    class="text-danger">*</i></label>
+                            <label for="pickup" class="col-sm-5 col-form-label">Pick Up <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="pickup" class="form-control" type="text" placeholder="Pick Up"
-                                    id="pickup2">
+                                <input name="pickup" class="form-control" type="text" placeholder="Pick Up" id="pickup2">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="req_date" class="col-sm-5 col-form-label">Requisition Date <i
-                                    class="text-danger">*</i></label>
+                            <label for="req_date" class="col-sm-5 col-form-label">Requisition Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="req_date" class="form-control  vnewdatetimepicker" autocomplete="off"
-                                    type="date" placeholder="Requisition Date" id="req_date2">
+                                <input name="req_date" class="form-control  vnewdatetimepicker" autocomplete="off" type="date" placeholder="Requisition Date" id="req_date2">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="time_fr" class="col-sm-5 col-form-label">Time From <i
-                                    class="text-danger">*</i></label>
+                            <label for="time_fr" class="col-sm-5 col-form-label">Time From <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="time_fr" class="form-control ttimepicker" type="time"
-                                    placeholder="Time From" id="time_fr2">
+                                <input name="time_fr" class="form-control ttimepicker" type="time" placeholder="Time From" id="time_fr2">
                             </div>
                         </div>
                     </div>
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
-                            <label for="time_to" class="col-sm-5 col-form-label">Time To <i
-                                    class="text-danger">*</i></label>
+                            <label for="time_to" class="col-sm-5 col-form-label">Time To <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="time_to" class="form-control ttimepicker" type="time" placeholder="Time To"
-                                    id="time_to2">
+                                <input name="time_to" class="form-control ttimepicker" type="time" placeholder="Time To" id="time_to2">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="tolerance" class="col-sm-5 col-form-label">Tolerance Duration <i
-                                    class="text-danger">*</i></label>
+                            <label for="tolerance" class="col-sm-5 col-form-label">Tolerance Duration <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="tolerance" required="" class="form-control" type="time"
-                                    placeholder="Tolerance Duration" id="tolerance2">
+                                <input name="tolerance" required="" class="form-control" type="time" placeholder="Tolerance Duration" id="tolerance2">
                             </div>
                         </div>
                         <div class="form-group row justify-content-end">
-                            <label for="purpose" class="col-sm-5 col-form-label">Vehicle <i
-                                    class="text-danger">*</i></label>
+                            <label for="purpose" class="col-sm-5 col-form-label">Vehicle <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="vehicle" id="vehicle2">
                                     <option value="" selected="selected">Please Select One</option>
@@ -424,16 +373,13 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="nunpassenger" class="col-sm-5 col-form-label">No of Passenger <i
-                                    class="text-danger">*</i></label>
+                            <label for="nunpassenger" class="col-sm-5 col-form-label">No of Passenger <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="nunpassenger" class="form-control" type="number"
-                                    placeholder="No of Passenger" id="nunpassenger2">
+                                <input name="nunpassenger" class="form-control" type="number" placeholder="No of Passenger" id="nunpassenger2">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="purpose" class="col-sm-5 col-form-label">Purpose <i
-                                    class="text-danger">*</i></label>
+                            <label for="purpose" class="col-sm-5 col-form-label">Purpose <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="purpose" id="purpose2">
                                     <option value="" selected="selected">Please Select One</option>
@@ -445,11 +391,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="details" class="col-sm-5 col-form-label">Details <i
-                                    class="text-danger">*</i></label>
+                            <label for="details" class="col-sm-5 col-form-label">Details <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="details" required="" class="form-control" type="text" placeholder="Details"
-                                    id="details2">
+                                <input name="details" required="" class="form-control" type="text" placeholder="Details" id="details2">
                             </div>
                         </div>
 
@@ -471,8 +415,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form id="driverform" action="{{route('add_driver')}}" class="" enctype="multipart/form-data"
-                    method="post" accept-charset="utf-8">
+                <form id="driverform" action="{{route('add_driver')}}" class="" enctype="multipart/form-data" method="post" accept-charset="utf-8">
                     @csrf
                     <div class="row">
                         <div class="col-md-12">
@@ -503,8 +446,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form id="statusform" action="{{route('update_status')}}" class="" enctype="multipart/form-data"
-                    method="post" accept-charset="utf-8">
+                <form id="statusform" action="{{route('update_status')}}" class="" enctype="multipart/form-data" method="post" accept-charset="utf-8">
                     @csrf
                     <div class="row">
                         <div class="col-md-12">
@@ -528,482 +470,482 @@
 <div class="customloader"></div>
 <!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/vehiclereq_requisition_list.js"></script> -->
 <style>
-#dataTable {
-    width: 100% !important;
-}
-
-.customloader {
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
-    border: 3px solid #ddd;
-    border-top-color: #28a745;
-    animation: rotate 1s infinite;
-    position: absolute;
-    top: 33%;
-    right: 56%;
-    display: none;
-    z-index: 9999;
-}
-
-@keyframes rotate {
-    100% {
-        rotate: 360deg;
+    #dataTable {
+        width: 100% !important;
     }
-}
+
+    .customloader {
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        border: 3px solid #ddd;
+        border-top-color: #28a745;
+        animation: rotate 1s infinite;
+        position: absolute;
+        top: 33%;
+        right: 56%;
+        display: none;
+        z-index: 9999;
+    }
+
+    @keyframes rotate {
+        100% {
+            rotate: 360deg;
+        }
+    }
 </style>
 <script>
-$(document).ready(function() {
-    var table = $("#dataTable");
-    getdata();
-    $(document).on('click', '#btn-filter', function(e) {
-        $('#dataTable').DataTable().ajax.reload(null, false);
-    });
-
-    function getdata() {
-
-        $("#dataTable").DataTable({
-            processing: true,
-            serverSide: false,
-            ajax: {
-                url: "{{route('vehicle-requisitions')}}",
-                data: function(d) {
-                    d.req_forsr = $('#req_forsr').val();
-                    d.vehicle_typesr = $('#vehicle_typesr').val();
-                    d.from = $('#from').val();
-                    d.to = $('#to').val();
-                    d.status = $('#status').val();
-                }
-            },
-            order: [
-                [0, 'desc']
-            ],
-            columns: [{
-                    data: 'VEHICLE_REQ_ID',
-                    name: 'VEHICLE_REQ_ID',
-                },
-                {
-                    data: 'req_for',
-                    name: 'req_for'
-                },
-                {
-                    data: 'req_date',
-                    name: 'req_date'
-                },
-                {
-                    data: 'driver',
-                    name: 'driver'
-                },
-                {
-                    data: 'create_by',
-                    name: 'create_by'
-                },
-                {
-                    data: 'status',
-                    name: 'status'
-                },
-                {
-                    data: 'action',
-                    name: 'action',
-                    orderable: true,
-                    searchable: true
-                },
-            ],
-
+    $(document).ready(function() {
+        var table = $("#dataTable");
+        getdata();
+        $(document).on('click', '#btn-filter', function(e) {
+            $('#dataTable').DataTable().ajax.reload(null, false);
         });
-    }
 
-    $('body').on('click', '.driver-modal', function() {
-        var val = $(this).data('driverid');
-        var id = $(this).data('id');
-        $('#drivenby').val(val).trigger('change');
-        $('#req_id').val(id);
-    });
+        function getdata() {
 
-    $("#driverform").validate({
-        rules: {
-            drivenby: {
-                required: true,
-            },
-        },
-        submitHandler: function(form, ev) {
-            ev.preventDefault();
-            $.ajax({
-                url: form.action,
-                method: form.method,
-                dataType: 'json',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                data: $(form).serialize(),
-                success: function(data) {
-                    if (data.error == false) {
-                        $('#driverform').find('select').val('');
-                        $('.basic-single').val('').trigger('change');
-                        toastr.success(data.msg);
-                        $('#driverModal').modal('hide');
-                        $('#dataTable').DataTable().ajax.reload(null, false);
-                        // location.reload();
-                    } else {
-                        toastr.error(data.msg);
+            $("#dataTable").DataTable({
+                processing: true,
+                serverSide: false,
+                ajax: {
+                    url: "{{route('vehicle-requisitions')}}",
+                    data: function(d) {
+                        d.req_forsr = $('#req_forsr').val();
+                        d.vehicle_typesr = $('#vehicle_typesr').val();
+                        d.from = $('#from').val();
+                        d.to = $('#to').val();
+                        d.status = $('#status').val();
                     }
                 },
-                error: function(jqXHR, textStatus, err) {
-                    toastr.error("Error Updating Driver. Please try again", '', {
-                        closeButton: true
-                    });
-                }
-            });
-        }
-    });
-    $('body').on('click', '.statusModal', function() {
-        var id = $(this).data('id');
-        $('#st_req_id').val(id);
-    });
-    $("#statusform").validate({
-        rules: {
-            status: {
-                required: true,
-            },
-        },
-        submitHandler: function(form, ev) {
-            ev.preventDefault();
-            $.ajax({
-                url: form.action,
-                method: form.method,
-                dataType: 'json',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                data: $(form).serialize(),
-                success: function(data) {
-                    if (data.error == false) {
-                        $('#statusform').find('select').val('');
-                        toastr.success(data.msg);
-                        $('#statusModal').modal('hide');
-                        $('#dataTable').DataTable().ajax.reload(null, false);
-                        // location.reload();
-                    } else {
-                        toastr.error(data.msg);
-                    }
-                },
-                error: function(jqXHR, textStatus, err) {
-                    toastr.error("Error Updating Status. Please try again", '', {
-                        closeButton: true
-                    });
-                }
-            });
-        }
-    });
-    $("#form").validate({
-        rules: {
-            department:{
-                required: true,
-            },
-            req_for: {
-                required: true,
-            },
-            vehicle_type: {
-                required: true,
-            },
-            vehicle: {
-                required: true,
-            },
-            where_fr: {
-                required: true,
-            },
-            where_to: {
-                required: true,
-            },
-            pickup: {
-                required: true,
-            },
-            req_date: {
-                required: true,
-            },
-            time_fr: {
-                required: true,
-            },
-            time_to: {
-                required: true,
-            },
-            tolerance: {
-                required: true,
-            },
-            nunpassenger: {
-                required: true,
-            },
-            purpose: {
-                required: true,
-            },
-            details: {
-                required: true,
-            }
-        },
-        submitHandler: function(form, ev) {
-            ev.preventDefault();
-            $.ajax({
-                url: form.action,
-                method: form.method,
-                dataType: 'json',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                data: $(form).serialize(),
-                success: function(data) {
-                    if (data.error == false) {
-                        $('#form').find('input').val('');
-                        $('#form').find('select').val('');
-                        $('.basic-single').val('').trigger('change');
-                        $('#checkValue').val('0');
-                        toastr.success(data.msg);
-                        $('#add').modal('hide');
-                        $('#dataTable').DataTable().ajax.reload(null, false);
-                    } else {
-                        toastr.error(data.msg);
-                    }
-                },
-                error: function(jqXHR, textStatus, err) {
-                    toastr.error("Error Adding Booking. Please try again", '', {
-                        closeButton: true
-                    });
-                }
-            });
-        }
-    });
-
-    $("#form2").validate({
-        rules: {
-            department:{
-                required: true,
-            },
-            req_for: {
-                required: true,
-            },
-            vehicle_type: {
-                required: true,
-            },
-            where_fr: {
-                required: true,
-            },
-            where_to: {
-                required: true,
-            },
-            pickup: {
-                required: true,
-            },
-            req_date: {
-                required: true,
-            },
-            time_fr: {
-                required: true,
-            },
-            time_to: {
-                required: true,
-            },
-            tolerance: {
-                required: true,
-            },
-            nunpassenger: {
-                required: true,
-            },
-            purpose: {
-                required: true,
-            },
-            details: {
-                required: true,
-            }
-        },
-        submitHandler: function(form, ev) {
-            ev.preventDefault();
-            $.ajax({
-                url: form.action,
-                method: form.method,
-                dataType: 'json',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                data: $(form).serialize(),
-                success: function(data) {
-                    if (data.error == false) {
-                        $('#form2').find('input').val('');
-                        toastr.success(data.msg);
-                        $('#edit').modal('hide');
-                        $('#dataTable').DataTable().ajax.reload(null, false);
-                    } else {
-                        toastr.error(data.msg);
-                    }
-                },
-                error: function(jqXHR, textStatus, err) {
-                    toastr.error("Error updating. Please try again", '', {
-                        closeButton: true
-                    });
-                }
-            });
-        }
-    });
-    $('body').on('click', '.editModal', function() {
-        $('.customloader').show();
-        var id = $(this).data('id');
-        $('#edit').modal('show');
-        $.ajax({
-            url: '{{route("get.req.data")}}',
-            type: 'get',
-            dataType: 'json',
-            data: {
-                req_id: id,
-            },
-            success: function(res) {
-                $('#requsition_id').val(res.VEHICLE_REQ_ID);
-                $('#editDepartment').val(res.DEPT_ID).trigger('change');
-                $('#req_for2').val(res.REQUISITION_FOR).trigger('change');
-                $('#where_fr2').val(res.WHERE_FROM);
-                $('#where_to2').val(res.WHERE_TO);
-                $('#pickup2').val(res.PICK_UP);
-                $('#req_date2').val(res.REQUISITION_DATE);
-                $('#time_fr2').val(res.TIME_FROM);
-                $('#time_to2').val(res.TIME_TO);
-                $('#tolerance2').val(res.TOLERANCE_DURATION);
-                $('#nunpassenger2').val(res.NUMBER_OF_PASSENGER);
-                $('#purpose2').val(res.REQUISITION_PURPOSE_ID).trigger('change');
-                $('#details2').val(res.DETAILS);
-                $('#checkValue2').val(res.IS_CHECK);
-                if (res.IS_CHECK == '1') {
-                    $('#aloc_checkbox2').prop('checked', true);
-                } else {
-                    $('#aloc_checkbox2').prop('checked', false);
-                }
-                $('#vehicle_type2').val(res.VEHICLE_TYPE_ID).trigger('change');
-                $('#vehicle2').val(res.VEHICLE_ID).trigger('change');
-                $('#nunpassenger2').attr('max', res.max_num);
-
-            }
-        });
-    });
-    $('body').on('change', '#vehicle_type', function() {
-        getVehicle();
-    });
-    $('body').on('click', '#req_date', function() {
-        getVehicle();
-    });
-    $('body').on('click', '#time_fr', function() {
-        getVehicle();
-    });
-    $('body').on('click', '#time_to', function() {
-        getVehicle();
-    });
-    $('body').on('click', '#aloc_checkbox', function() {
-        if ($('#aloc_checkbox').is(':checked') == true) {
-            $('#checkValue').val('1');
-        } else {
-            $('#checkValue').val('0');
-        }
-        getVehicle();
-    });
-    $('body').on('click', '#aloc_checkbox2', function() {
-        if ($('#aloc_checkbox2').is(':checked') == true) {
-            $('#checkValue2').val('1');
-        } else {
-            $('#checkValue2').val('0');
-        }
-        geteditVehicle();
-    });
-    $('body').on('change', '#vehicle_type2', function() {
-        geteditVehicle();
-    });
-    $('body').on('click', '#req_date2', function() {
-        geteditVehicle();
-    });
-    $('body').on('click', '#time_fr2', function() {
-        geteditVehicle();
-    });
-    $('body').on('click', '#time_to2', function() {
-        geteditVehicle();
-    });
-
-    function getVehicle() {
-        var chk = $('#aloc_checkbox').is(':checked');
-        var type = $('#vehicle_type').val();
-        var rdate = $('#req_date').val();
-        var frmt = $('#time_fr').val();
-        var tot = $('#time_to').val();
-        $.ajax({
-            url: '{{route("get.vehicle.data")}}',
-            type: 'get',
-            dataType: 'html',
-            data: {
-                type: type,
-                rdate: rdate,
-                frmt: frmt,
-                tot: tot,
-                checked: chk
-            },
-            success: function(res) {
-                $('#vehicle').html(res);
-            }
-        });
-    }
-
-    function geteditVehicle() {
-        var chk = $('#aloc_checkbox2').is(':checked');
-        var type = $('#vehicle_type2').val();
-        var rdate = $('#req_date2').val();
-        var frmt = $('#time_fr2').val();
-        var tot = $('#time_to2').val();
-        var id = $('#requsition_id').val();
-
-        $.ajax({
-            url: '{{route("get.editvehicle.data")}}',
-            type: 'get',
-            dataType: 'html',
-            data: {
-                type: type,
-                rdate: rdate,
-                frmt: frmt,
-                tot: tot,
-                id: id,
-                checked: chk
-            },
-            success: function(res) {
-                $('#vehicle2').html(res);
-                $.ajax({
-                    url: '{{route("get.req.data")}}',
-                    type: 'get',
-                    dataType: 'json',
-                    data: {
-                        req_id: id,
+                order: [
+                    [0, 'desc']
+                ],
+                columns: [{
+                        data: 'VEHICLE_REQ_ID',
+                        name: 'VEHICLE_REQ_ID',
                     },
-                    success: function(res) {
-                        $('#vehicle2').val(res.VEHICLE_ID).trigger('change');
-                        $('.customloader').hide();
+                    {
+                        data: 'req_for',
+                        name: 'req_for'
+                    },
+                    {
+                        data: 'req_date',
+                        name: 'req_date'
+                    },
+                    {
+                        data: 'driver',
+                        name: 'driver'
+                    },
+                    {
+                        data: 'create_by',
+                        name: 'create_by'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: true,
+                        searchable: true
+                    },
+                ],
+
+            });
+        }
+
+        $('body').on('click', '.driver-modal', function() {
+            var val = $(this).data('driverid');
+            var id = $(this).data('id');
+            $('#drivenby').val(val).trigger('change');
+            $('#req_id').val(id);
+        });
+
+        $("#driverform").validate({
+            rules: {
+                drivenby: {
+                    required: true,
+                },
+            },
+            submitHandler: function(form, ev) {
+                ev.preventDefault();
+                $.ajax({
+                    url: form.action,
+                    method: form.method,
+                    dataType: 'json',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    data: $(form).serialize(),
+                    success: function(data) {
+                        if (data.error == false) {
+                            $('#driverform').find('select').val('');
+                            $('.basic-single').val('').trigger('change');
+                            toastr.success(data.msg);
+                            $('#driverModal').modal('hide');
+                            $('#dataTable').DataTable().ajax.reload(null, false);
+                            // location.reload();
+                        } else {
+                            toastr.error(data.msg);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, err) {
+                        toastr.error("Error Updating Driver. Please try again", '', {
+                            closeButton: true
+                        });
                     }
                 });
             }
         });
-    }
-    $('body').on('change', '#vehicle', function() {
-        var selectedOption = $(this).find('option:selected');
-        var newLimit = parseInt(selectedOption.attr('data-limit'));
-        $('#nunpassenger').attr('max', newLimit);
-    });
-    $('body').on('change', '#vehicle2', function() {
-        var selectedOption = $(this).find('option:selected');
-        var newLimit = parseInt(selectedOption.attr('data-limit'));
-        $('#nunpassenger2').attr('max', newLimit);
-    });
-    // Remove validations, errors and reset add vehicle type form on closing modal
-    $("#add").on('hidden.bs.modal', function(ev) {
-        $("#form").trigger('reset');
-        $("#form").validate().resetForm();
-    });
+        $('body').on('click', '.statusModal', function() {
+            var id = $(this).data('id');
+            $('#st_req_id').val(id);
+        });
+        $("#statusform").validate({
+            rules: {
+                status: {
+                    required: true,
+                },
+            },
+            submitHandler: function(form, ev) {
+                ev.preventDefault();
+                $.ajax({
+                    url: form.action,
+                    method: form.method,
+                    dataType: 'json',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    data: $(form).serialize(),
+                    success: function(data) {
+                        if (data.error == false) {
+                            $('#statusform').find('select').val('');
+                            toastr.success(data.msg);
+                            $('#statusModal').modal('hide');
+                            $('#dataTable').DataTable().ajax.reload(null, false);
+                            // location.reload();
+                        } else {
+                            toastr.error(data.msg);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, err) {
+                        toastr.error("Error Updating Status. Please try again", '', {
+                            closeButton: true
+                        });
+                    }
+                });
+            }
+        });
+        $("#form").validate({
+            rules: {
+                department: {
+                    required: true,
+                },
+                req_for: {
+                    required: true,
+                },
+                vehicle_type: {
+                    required: true,
+                },
+                vehicle: {
+                    required: true,
+                },
+                where_fr: {
+                    required: true,
+                },
+                where_to: {
+                    required: true,
+                },
+                pickup: {
+                    required: true,
+                },
+                req_date: {
+                    required: true,
+                },
+                time_fr: {
+                    required: true,
+                },
+                time_to: {
+                    required: true,
+                },
+                tolerance: {
+                    required: true,
+                },
+                nunpassenger: {
+                    required: true,
+                },
+                purpose: {
+                    required: true,
+                },
+                details: {
+                    required: true,
+                }
+            },
+            submitHandler: function(form, ev) {
+                ev.preventDefault();
+                $.ajax({
+                    url: form.action,
+                    method: form.method,
+                    dataType: 'json',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    data: $(form).serialize(),
+                    success: function(data) {
+                        if (data.error == false) {
+                            $('#form').find('input').val('');
+                            $('#form').find('select').val('');
+                            $('.basic-single').val('').trigger('change');
+                            $('#checkValue').val('0');
+                            toastr.success(data.msg);
+                            $('#add').modal('hide');
+                            $('#dataTable').DataTable().ajax.reload(null, false);
+                        } else {
+                            toastr.error(data.msg);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, err) {
+                        toastr.error("Error Adding Booking. Please try again", '', {
+                            closeButton: true
+                        });
+                    }
+                });
+            }
+        });
 
-    // Remove validations, errors and reset add vehicle type form on closing modal
-    $("#edit").on('hidden.bs.modal', function(ev) {
-        $("#form2").trigger('reset');
-        $("#form2").validate().resetForm();
+        $("#form2").validate({
+            rules: {
+                department: {
+                    required: true,
+                },
+                req_for: {
+                    required: true,
+                },
+                vehicle_type: {
+                    required: true,
+                },
+                where_fr: {
+                    required: true,
+                },
+                where_to: {
+                    required: true,
+                },
+                pickup: {
+                    required: true,
+                },
+                req_date: {
+                    required: true,
+                },
+                time_fr: {
+                    required: true,
+                },
+                time_to: {
+                    required: true,
+                },
+                tolerance: {
+                    required: true,
+                },
+                nunpassenger: {
+                    required: true,
+                },
+                purpose: {
+                    required: true,
+                },
+                details: {
+                    required: true,
+                }
+            },
+            submitHandler: function(form, ev) {
+                ev.preventDefault();
+                $.ajax({
+                    url: form.action,
+                    method: form.method,
+                    dataType: 'json',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    data: $(form).serialize(),
+                    success: function(data) {
+                        if (data.error == false) {
+                            $('#form2').find('input').val('');
+                            toastr.success(data.msg);
+                            $('#edit').modal('hide');
+                            $('#dataTable').DataTable().ajax.reload(null, false);
+                        } else {
+                            toastr.error(data.msg);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, err) {
+                        toastr.error("Error updating. Please try again", '', {
+                            closeButton: true
+                        });
+                    }
+                });
+            }
+        });
+        $('body').on('click', '.editModal', function() {
+            $('.customloader').show();
+            var id = $(this).data('id');
+            $('#edit').modal('show');
+            $.ajax({
+                url: '{{route("get.req.data")}}',
+                type: 'get',
+                dataType: 'json',
+                data: {
+                    req_id: id,
+                },
+                success: function(res) {
+                    $('#requsition_id').val(res.VEHICLE_REQ_ID);
+                    $('#editDepartment').val(res.DEPT_ID).trigger('change');
+                    $('#req_for2').val(res.REQUISITION_FOR).trigger('change');
+                    $('#where_fr2').val(res.WHERE_FROM);
+                    $('#where_to2').val(res.WHERE_TO);
+                    $('#pickup2').val(res.PICK_UP);
+                    $('#req_date2').val(res.REQUISITION_DATE);
+                    $('#time_fr2').val(res.TIME_FROM);
+                    $('#time_to2').val(res.TIME_TO);
+                    $('#tolerance2').val(res.TOLERANCE_DURATION);
+                    $('#nunpassenger2').val(res.NUMBER_OF_PASSENGER);
+                    $('#purpose2').val(res.REQUISITION_PURPOSE_ID).trigger('change');
+                    $('#details2').val(res.DETAILS);
+                    $('#checkValue2').val(res.IS_CHECK);
+                    if (res.IS_CHECK == '1') {
+                        $('#aloc_checkbox2').prop('checked', true);
+                    } else {
+                        $('#aloc_checkbox2').prop('checked', false);
+                    }
+                    $('#vehicle_type2').val(res.VEHICLE_TYPE_ID).trigger('change');
+                    $('#vehicle2').val(res.VEHICLE_ID).trigger('change');
+                    $('#nunpassenger2').attr('max', res.max_num);
+
+                }
+            });
+        });
+        $('body').on('change', '#vehicle_type', function() {
+            getVehicle();
+        });
+        $('body').on('click', '#req_date', function() {
+            getVehicle();
+        });
+        $('body').on('click', '#time_fr', function() {
+            getVehicle();
+        });
+        $('body').on('click', '#time_to', function() {
+            getVehicle();
+        });
+        $('body').on('click', '#aloc_checkbox', function() {
+            if ($('#aloc_checkbox').is(':checked') == true) {
+                $('#checkValue').val('1');
+            } else {
+                $('#checkValue').val('0');
+            }
+            getVehicle();
+        });
+        $('body').on('click', '#aloc_checkbox2', function() {
+            if ($('#aloc_checkbox2').is(':checked') == true) {
+                $('#checkValue2').val('1');
+            } else {
+                $('#checkValue2').val('0');
+            }
+            geteditVehicle();
+        });
+        $('body').on('change', '#vehicle_type2', function() {
+            geteditVehicle();
+        });
+        $('body').on('click', '#req_date2', function() {
+            geteditVehicle();
+        });
+        $('body').on('click', '#time_fr2', function() {
+            geteditVehicle();
+        });
+        $('body').on('click', '#time_to2', function() {
+            geteditVehicle();
+        });
+
+        function getVehicle() {
+            var chk = $('#aloc_checkbox').is(':checked');
+            var type = $('#vehicle_type').val();
+            var rdate = $('#req_date').val();
+            var frmt = $('#time_fr').val();
+            var tot = $('#time_to').val();
+            $.ajax({
+                url: '{{route("get.vehicle.data")}}',
+                type: 'get',
+                dataType: 'html',
+                data: {
+                    type: type,
+                    rdate: rdate,
+                    frmt: frmt,
+                    tot: tot,
+                    checked: chk
+                },
+                success: function(res) {
+                    $('#vehicle').html(res);
+                }
+            });
+        }
+
+        function geteditVehicle() {
+            var chk = $('#aloc_checkbox2').is(':checked');
+            var type = $('#vehicle_type2').val();
+            var rdate = $('#req_date2').val();
+            var frmt = $('#time_fr2').val();
+            var tot = $('#time_to2').val();
+            var id = $('#requsition_id').val();
+
+            $.ajax({
+                url: '{{route("get.editvehicle.data")}}',
+                type: 'get',
+                dataType: 'html',
+                data: {
+                    type: type,
+                    rdate: rdate,
+                    frmt: frmt,
+                    tot: tot,
+                    id: id,
+                    checked: chk
+                },
+                success: function(res) {
+                    $('#vehicle2').html(res);
+                    $.ajax({
+                        url: '{{route("get.req.data")}}',
+                        type: 'get',
+                        dataType: 'json',
+                        data: {
+                            req_id: id,
+                        },
+                        success: function(res) {
+                            $('#vehicle2').val(res.VEHICLE_ID).trigger('change');
+                            $('.customloader').hide();
+                        }
+                    });
+                }
+            });
+        }
+        $('body').on('change', '#vehicle', function() {
+            var selectedOption = $(this).find('option:selected');
+            var newLimit = parseInt(selectedOption.attr('data-limit'));
+            $('#nunpassenger').attr('max', newLimit);
+        });
+        $('body').on('change', '#vehicle2', function() {
+            var selectedOption = $(this).find('option:selected');
+            var newLimit = parseInt(selectedOption.attr('data-limit'));
+            $('#nunpassenger2').attr('max', newLimit);
+        });
+        // Remove validations, errors and reset add vehicle type form on closing modal
+        $("#add").on('hidden.bs.modal', function(ev) {
+            $("#form").trigger('reset');
+            $("#form").validate().resetForm();
+        });
+
+        // Remove validations, errors and reset add vehicle type form on closing modal
+        $("#edit").on('hidden.bs.modal', function(ev) {
+            $("#form2").trigger('reset');
+            $("#form2").validate().resetForm();
+        });
+
+
     });
-
-
-});
 </script>
 @endsection

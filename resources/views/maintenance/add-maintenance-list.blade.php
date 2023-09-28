@@ -54,21 +54,21 @@
                             <div class="col-sm-7">
                                 <div class="custom-control custom-radio custom-control-inline">
                                     <input type="radio" id="maintenance" name="req_type" class="custom-control-input" value="M">
-                                    <label class="custom-control-label" for="maintenance">Maintenance</label>
+                                    <label class="custom-control-label" for="maintenance">Breakdown</label>
                                 </div>
                                 <div class="custom-control custom-radio custom-control-inline">
                                     <input type="radio" id="general" name="req_type" class="custom-control-input" value="G">
-                                    <label class="custom-control-label" for="general">General</label>
+                                    <label class="custom-control-label" for="general">Periodic</label>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
-                            <label for="requested_by" class="col-sm-5 col-form-label">Requisition For <i class="text-danger">*</i></label>
+                            <label for="requested_by" class="col-sm-5 col-form-label">Requisition By <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required name="requested_by" id="requested_by">
-                                    <option value selected="selected">Select Employee</option>
+                                    <option value selected="selected">Select User</option>
                                     @foreach($employeeData['data'] as $employee)
                                     <option value="{{$employee['employeeId'] . '|' . $employee['employeeName']}}">
                                         {{$employee['employeeName'] . ' (' . $employee['department'] . ')'}}
@@ -116,26 +116,21 @@
                                 <input name="service_date" required class="form-control newdatetimepicker" type="text" placeholder="Service Date" id="service_date">
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label for="remarks" class="col-sm-5 col-form-label">Remarks</label>
-                            <div class="col-sm-7">
-                                <textarea name="remarks" id="remarks" class="form-control" cols="30" rows="3" placeholder="Remarks"></textarea>
-                            </div>
-                        </div>
+
                     </div>
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
-                            <label for="charge" class="col-sm-5 col-form-label">Charge <i class="text-danger">*</i></label>
+                            <label for="charge" class="col-sm-5 col-form-label">Amount <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="charge" class="form-control" type="text" placeholder="Charge" id="charge">
+                                <input name="charge" class="form-control" type="text" placeholder="Amount" id="charge">
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                             <label for="charge_bear_by" class="col-sm-5 col-form-label">Charge Bear By </label>
                             <div class="col-sm-7">
                                 <input name="charge_bear_by" class="form-control" type="text" placeholder="Charge Bear By" id="charge_bear_by">
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group row">
                             <label for="priority" class="col-sm-5 col-form-label">Priority <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
@@ -147,11 +142,17 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                             <label for="is_add_schedule" class="col-sm-5 col-form-label"> </label>
                             <div class="col-sm-7 checkbox checkbox-primary">
                                 <input id="checkbox2" type="checkbox" name="is_add_schedule">
                                 <label for="checkbox2">Is Add Schedule</label>
+                            </div>
+                        </div> -->
+                        <div class="form-group row">
+                            <label for="remarks" class="col-sm-5 col-form-label">Remarks</label>
+                            <div class="col-sm-7">
+                                <textarea name="remarks" id="remarks" class="form-control" cols="30" rows="3" placeholder="Remarks"></textarea>
                             </div>
                         </div>
                     </div>

@@ -112,6 +112,7 @@ $(document).ready(function () {
             ev.preventDefault();
 
             console.log("Validating Form");
+            // Rest of submit handler left out since validation is re-initialized
         }
     });
 

@@ -99,10 +99,10 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="employeeSelect" class="col-sm-3 col-form-label">Employee <i class="text-danger">*</i></label>
+                            <label for="employeeSelect" class="col-sm-3 col-form-label">User <i class="text-danger">*</i></label>
                             <div class="col-sm-5">
                                 <select name="employee" id="employeeSelect" class="form-control basic-single" required="">
-                                    <option value="" selected>Please Select Employee</option>
+                                    <option value="" selected>Please Select User</option>
                                     @foreach($employees['data'] as $employee)
                                     <option value="{{$employee['employeeId'] . '|'. $employee['employeeName']}}">{{$employee['employeeName'] . ' (' . $employee['department'] . ')'}}</option>
                                     @endforeach
@@ -249,10 +249,10 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="demo" class="col-sm-3 col-form-label">Employee <i class="text-danger">*</i></label>
+                                <label for="demo" class="col-sm-3 col-form-label">User <i class="text-danger">*</i></label>
                                 <div class="col-sm-5">
                                     <select name="employee" id="newEmployeeSelect" class="form-control basic-single" required="">
-                                        <option value="">Please Select Employee</option>
+                                        <option value="">Please Select User</option>
                                         @foreach($employees['data'] as $employee)
                                         <option value="{{$employee['employeeId'] . '|' . $employee['employeeName']}}">{{$employee['employeeName'] . ' (' . $employee['department'] . ')'}}</option>
                                         @endforeach
@@ -288,7 +288,7 @@
                                 <th>Requisition Type</th>
                                 <th>Requisition Phase</th>
                                 <th>Department</th>
-                                <th>Employee</th>
+                                <th>User</th>
                                 <th>Action(s)</th>
                             </tr>
                         </thead>

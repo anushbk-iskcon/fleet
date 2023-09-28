@@ -225,12 +225,7 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
             <input name="license_number" required="" class="form-control" type="text" placeholder="License Number" id="update_license_number" value="${license_number}" autocomplete="off">
         </div>
     </div>
-    <div class="form-group row">
-        <label for="update_national_id" class="col-sm-5 col-form-label">National ID <i class="text-danger">*</i></label>
-        <div class="col-sm-7">
-            <input name="national_id" required="" class="form-control" type="number" placeholder="National ID" id="update_national_id" value="${national_id}" autocomplete="off">
-        </div>
-    </div>
+    
     <div class="form-group row">
         <label for="timeslot" required="" class="col-sm-5 col-form-label">Working Time Slot </label>
         <div class="col-sm-3 pr-0">
@@ -266,6 +261,12 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
             </div>
     </div>
 
+    <div class="form-group row">
+        <label for="update_permanent_address" class="col-sm-5 col-form-label">Permanent Address </label>
+        <div class="col-sm-7">
+            <input name="permanent_address" class="form-control" type="text" placeholder="Permanent Address" id="update_permanent_address" value="${permanent_address}">
+        </div>
+    </div>
     <div class="form-group row">
     <label for="newpicture" class="col-sm-5 col-form-label">Update Photograph </label>
     <div class="col-sm-7" style="display:flex;flex-wrap:wrap;">
@@ -309,12 +310,7 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
             <input name="join_date" autocomplete="off" class="form-control edit-date-picker" type="text" placeholder="Join Date" id="update_join_date" value="${join_date}">
         </div>
     </div>
-    <div class="form-group row">
-        <label for="update_permanent_address" class="col-sm-5 col-form-label">Permanent Address </label>
-        <div class="col-sm-7">
-            <input name="permanent_address" class="form-control" type="text" placeholder="Permanent Address" id="update_permanent_address" value="${permanent_address}">
-        </div>
-    </div>
+    
     <div class="form-group row">
         <label for="leavestatus" class="col-sm-5 col-form-label">On Leave</label>
         <div class="col-sm-7">
@@ -330,15 +326,33 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
     </div>
 
     <div class="form-group row">
-        <label for="permanent_address" class="col-sm-5 col-form-label">CTC</label>
+        <label for="newctc" class="col-sm-5 col-form-label">CTC</label>
         <div class="col-sm-7">
             <input name="ctc" class="form-control" type="text" placeholder="Enter CTC" id="newctc" value="${ctc}">
         </div>
     </div>
     <div class="form-group row">
-        <label for="permanent_address" class="col-sm-5 col-form-label">Overtime Price </label>
+        <label for="newovt" class="col-sm-5 col-form-label">Overtime Price </label>
         <div class="col-sm-7">
             <input name="ovt" class="form-control" type="text" placeholder="Enter Overtime Price" id="newovt" value="${ovt}">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="updateEmergencyContactName" class="col-sm-5 col-form-label">Emergency Contact Name</label>
+            <div class="col-sm-7">
+                <input type="text" name="emergency_contact" placeholder="Emergency Contact Name" id="emergencyContactName" class="form-control">
+            </div>
+    </div>
+    <div class="form-group row">
+         <label for="updateEmergencyContactNumber" class="col-sm-5 col-form-label">Emergency Contact Number</label>
+            <div class="col-sm-7">
+                <input type="text" name="emergency_contact_num" placeholder="Emergency Contact Number" id="emergencyContactName" class="form-control">
+            </div>
+    </div>
+    <div class="form-group row">
+        <label for="updateEmergencyContactRelationship" class="col-sm-5 col-form-label">Emergency Contact Relationship</label>
+            <div class="col-sm-7">
+                <input type="text" name="emergency_contact_rel" placeholder="Emergency Contact Relationship" id="emergencyContactName" class="form-control">
         </div>
     </div>
     <div class="form-group text-right">

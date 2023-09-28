@@ -21,7 +21,6 @@ $(document).ready(function () {
                 min: 0
             },
             amount: {
-                required: true,
                 number: true,
                 min: 0
             }
@@ -87,7 +86,6 @@ $(document).ready(function () {
                 min: 0
             },
             amount: {
-                required: true,
                 number: true,
                 min: 0
             }

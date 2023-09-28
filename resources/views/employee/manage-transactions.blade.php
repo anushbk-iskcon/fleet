@@ -172,7 +172,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="editTransactionAmt" class="col-md-5 col-form-label">Amount (INR) <i class="text-danger">*</i></label>
+                            <label for="editTransactionAmt" class="col-md-5 col-form-label">Bata Amount (INR) </label>
                             <div class="col-sm-7">
                                 <input type="number" class="form-control" id="editTransactionAmt" name="amount" placeholder="Amount">
                             </div>
@@ -275,7 +275,7 @@
                                 <th>Driver</th>
                                 <th>Purpose</th>
                                 <th>Duration (minutes)</th>
-                                <th>Amount (INR)</th>
+                                <th>Bata Amount (INR)</th>
                                 <th>Date Recorded</th>
                                 <th>Action(s)</th>
                             </tr>

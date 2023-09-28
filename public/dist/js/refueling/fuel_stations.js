@@ -216,7 +216,7 @@ function editInfo(el) {
 
 function getFuelStationDetails(fuelStationId) {
     $.ajax({
-        url: getFuelStationDetailsURl,
+        url: getFuelStationDetailsURL,
         type: 'post',
         data: {
             _token: csrfToken,
