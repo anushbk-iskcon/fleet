@@ -162,7 +162,13 @@ class RefuelSettingController extends Controller
         <label for="editplace" class="col-sm-5 col-form-label">Place <i class="text-danger">*</i></label>
         <div class="col-sm-7">
             <input name="place" required class="form-control" type="text" placeholder="Place" id="editplace" value="' . $refuelSetting->PLACE . '">
-        </div></div>';
+        </div></div>
+        <div class="form-group row">
+            <label for="edit_security_name" class="col-sm-5 col-form-label">Security Name </label>
+            <div class="col-sm-7">
+                <input name="security_name" required class="form-control" type="text" placeholder="Security" id="edit_security_name">
+            </div>
+        </div>';
 
         // $editFormContent .= '<div class="form-group row"><label for="edit_kilometer_per_unit" class="col-sm-5 col-form-label">Kilometer Per Unit <i class="text-danger">*</i></label>
         // <div class="col-sm-7">
@@ -227,6 +233,18 @@ class RefuelSettingController extends Controller
         <div class="col-sm-7">
             <input name="unit_taken" class="form-control" type="number" placeholder="Unit Taken" id="edit_unit_taken" value="' . $refuelSetting->UNIT_TAKEN . '">
         </div></div>
+        <div class="form-group row">
+            <label for="edit_amount_per_unit" class="col-sm-5 col-form-label">Amount Per Unit (INR)</label>
+            <div class="col-sm-7">
+                <input type="number" name="amount_per_unit" class="form-control" placeholder="Amount Per Unit (INR)" id="edit_amount_per_unit">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="edit_total_amount" class="col-sm-5 col-form-label">Total Amount (INR)</label>
+            <div class="col-sm-7">
+                <input type="number" name="total_amount" class="form-control" placeholder="Total Amount (INR)" id="edit_total_amount">
+            </div>
+        </div>
         <div class="form-group row">
         <label for="edit_picture" class="col-sm-5 col-form-label">Fuel Slip Scan Copy </label>
         <div class="col-sm-7">

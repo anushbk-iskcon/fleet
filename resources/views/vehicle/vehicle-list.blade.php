@@ -124,21 +124,21 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="" class="col-sm-5 col-form-label">Chassis Number</label>
+                            <label for="chassis_number" class="col-sm-5 col-form-label">Chassis Number</label>
                             <div class="col-sm-7">
-                                <input type="text" id="" placeholder="Chassis Number" class="form-control">
+                                <input type="text" name="chassis_number" id="chassis_number" placeholder="Chassis Number" class="form-control">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="" class="col-sm-5 col-form-label">Engine Number</label>
+                            <label for="engine_number" class="col-sm-5 col-form-label">Engine Number</label>
                             <div class="col-sm-7">
-                                <input type="text" id="" placeholder="Engine Number" class="form-control">
+                                <input type="text" name="engine_number" id="engine_number" placeholder="Engine Number" class="form-control">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="" class="col-sm-5 col-form-label">Vehicle Value</label>
+                            <label for="vehicle_value" class="col-sm-5 col-form-label">Vehicle Value</label>
                             <div class="col-sm-7">
-                                <input type="text" id="" placeholder="Vehicle Value" class="form-control">
+                                <input type="text" id="vehicle_value" name="vehicle_value" placeholder="Vehicle Value" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -194,15 +194,15 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="" class="col-sm-5 col-form-label">UVW</label>
+                            <label for="uvw" class="col-sm-5 col-form-label">UVW</label>
                             <div class="col-sm-7">
-                                <input type="text" placeholder="UVW" class="form-control">
+                                <input type="text" name="uvw" id="uvw" placeholder="UVW" class="form-control">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="" class="col-sm-5 col-form-label">CC</label>
+                            <label for="cc" class="col-sm-5 col-form-label">CC</label>
                             <div class="col-sm-7">
-                                <input type="text" placeholder="CC" class="form-control">
+                                <input type="text" placeholder="CC" name="cc" id="cc" class="form-control">
                             </div>
                         </div>
                         <div class="form-group text-right">
@@ -281,6 +281,24 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="new_chassis_number" class="col-sm-5 col-form-label">Chassis Number</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="chassis_number" id="new_chassis_number" class="form-control" placeholder="Chassis Number">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="new_engine_number" class="col-sm-5 col-form-label">Engine Number</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="engine_number" id="new_engine_number" class="form-control" placeholder="Engine Number">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="new_vehicle_value" class="col-sm-5 col-form-label">Vehicle Value</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="vehicle_value" id="new_vehicle_value" class="form-control" placeholder="Vehicle Value">
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
@@ -331,6 +349,18 @@
                             <label for="new_seat_capacity" class="col-sm-5 col-form-label">Seat Capacity (With Driver) <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="seat_capacity" required="" class="form-control" type="number" placeholder="Seat Capacity (With Driver)" id="new_seat_capacity">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="new_uvw" class="col-sm-5 col-form-label">UVW</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="uvw" id="new_uvw" class="form-control" placeholder="UVW">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="" class="col-sm-5 col-form-label">CC</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="cc" id="new_cc" class="form-control" placeholder="CC">
                             </div>
                         </div>
                         <div class="form-group text-right">

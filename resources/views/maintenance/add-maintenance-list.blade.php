@@ -163,11 +163,12 @@
                         <table class="table table-bordered table-hover" id="purchaseTable">
                             <thead class="thead-light">
                                 <tr>
-                                    <th class="text-center" width="20%">Item Type Name<i class="text-danger">*</i></th>
+                                    <th class="text-center" width="20%">Item Type <i class="text-danger">*</i></th>
                                     <th class="text-center">Item Name</th>
                                     <th class="text-center">Item Unit <i class="text-danger">*</i>
                                     </th>
-                                    <th class="text-center">Unit Price<i class="text-danger">*</i>
+                                    <th class="text-center">Warranty</th>
+                                    <th class="text-center">Item Amount <i class="text-danger">*</i>
                                     </th>
                                     <th class="text-center">Total Amount</th>
                                     <th class="text-center">Action</th>
@@ -182,6 +183,9 @@
                                     </td>
                                     <td class="text-right">
                                         <input type="number" required name="product_quantity[]" id="cartoon_1" class="form-control text-right pqty store_cal_1" onkeyup="calculate_store(1);" onchange="calculate_store(1);" placeholder="0.00" value min="0" tabindex="6">
+                                    </td>
+                                    <td class="text-right">
+                                        <input type="text" name="product_warranty[]" id="warranty_1" class="form-control text-right">
                                     </td>
                                     <td class="text-right">
                                         <input type="number" required name="product_rate[]" onkeyup="calculate_store(1);" onchange="calculate_store(1);" id="product_rate_1" class="form-control product_rate product_rate_1 text-right" placeholder="0.00" value min="0" tabindex="7">

@@ -198,7 +198,7 @@ function editInfo(refuelSettingId) {
                 var years = moment().diff(start, 'years');
             });
             $('#edit .newdatetimepicker').on('apply.daterangepicker', function (ev, picker) {
-                $(this).val(picker.startDate.format('YYYY-MM-DD'));
+                $(this).val(picker.startDate.format('DD-MMM-YYYY'));
             });
             $('#edit .newdatetimepicker').on('cancel.daterangepicker', function (ev, picker) {
                 $(this).val('');

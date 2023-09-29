@@ -116,6 +116,12 @@
                             </div>
                         </div> -->
                         <div class="form-group row">
+                            <label for="security_name" class="col-sm-5 col-form-label">Security Name </label>
+                            <div class="col-sm-7">
+                                <input name="security_name" required class="form-control" type="text" placeholder="Security" id="security_name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label for="last_reading" class="col-sm-5 col-form-label">Last Reading </label>
                             <div class="col-sm-7">
                                 <input name="last_reading" class="form-control" type="number" placeholder="Last Reading" id="last_reading">
@@ -185,9 +191,25 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label for="amount_per_unit" class="col-sm-5 col-form-label">
+                                Amount Per Unit (INR)
+                            </label>
+                            <div class="col-sm-7">
+                                <input type="number" name="amount_per_unit" class="form-control" placeholder="Amount Per Unit (INR)" id="amount_per_unit">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="total_amount" class="col-sm-5 col-form-label">
+                                Total Amount (INR)
+                            </label>
+                            <div class="col-sm-7">
+                                <input type="number" name="total_amount" class="form-control" placeholder="Total Amount (INR)" id="total_amount">
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label for="picture" class="col-sm-5 col-form-label">Fuel Slip Scan Copy </label>
                             <div class="col-sm-7">
-                                <input type="file" accept="image/*" name="picture">
+                                <input type="file" accept="image/*, application/pdf" name="picture">
                             </div>
                         </div>
                         <!-- <div class="form-group row m-0">
@@ -270,21 +292,6 @@
                                     <input name="url" type="hidden" id="url_10" value="https://vmsdemo.bdtask-demo.com/refueling/refueling/updaterefuelfrm" />
                                     <a onclick="editinfo(10)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
                                     <a href="https://vmsdemo.bdtask-demo.com/refueling/refueling/delete_refuel/10" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Test Express 2</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>No</td>
-                                <td>03091234567</td>
-                                <td>Diesel</td>
-                                <td></td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_9" value="https://vmsdemo.bdtask-demo.com/refueling/refueling/updaterefuelfrm" />
-                                    <a onclick="editinfo(9)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/refueling/refueling/delete_refuel/9" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
                                 </td>
                             </tr> -->
 

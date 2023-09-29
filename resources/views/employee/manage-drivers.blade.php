@@ -66,7 +66,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="present_address" class="col-sm-5 col-form-label">Present Address </label>
+                            <label for="present_address" class="col-sm-5 col-form-label">Present Address <i class="text-danger">*</i> </label>
                             <div class="col-sm-7">
                                 <input name="present_address" class="form-control" type="text" placeholder="Present Address" id="present_address">
                             </div>
@@ -125,14 +125,14 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="license_issue_date" class="col-sm-5 col-form-label">License Issue Date </label>
+                            <label for="license_issue_date" class="col-sm-5 col-form-label">License Issue Date <i class="text-danger">*</i> </label>
                             <div class="col-sm-7">
                                 <input name="license_issue_date" class="form-control date-picker" type="text" placeholder="License Issue Date" id="license_issue_date">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="join_date" class="col-sm-5 col-form-label">Join Date </label>
+                            <label for="join_date" class="col-sm-5 col-form-label">Join Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="join_date" class="form-control date-picker" type="text" placeholder="Join Date" id="join_date">
                             </div>

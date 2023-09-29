@@ -72,7 +72,7 @@
                     <div class="col-sm-12 col-xl-4">
                         <div class="form-group row mb-1">
                             <label for="status" class="col-sm-5 col-form-label justify-content-start text-left">Status
-                                <i class="text-danger">*</i></label>
+                            </label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" name="status" id="status">
                                     <option value="" selected="selected">Please Select One</option>
@@ -111,7 +111,7 @@
                                 <th>Driver Name</th>
                                 <th>Requested By </th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <th>Action(s)</th>
                             </tr>
                         </thead>
                         <tbody id="table_data">
@@ -166,6 +166,17 @@
                                     <option value="" selected="selected">Please Select One</option>
                                     @foreach($vehicle_type as $val)
                                     <option value="{{$val->VEHICLE_TYPE_ID}}">{{$val->VEHICLE_TYPE_NAME}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="tripType" class="col-sm-5 col-form-label">Trip Type</label>
+                            <div class="col-sm-7">
+                                <select name="trip_type" id="tripType" class="form-control">
+                                    <option value="">Please Select One</option>
+                                    @foreach($trip_types as $trip_type)
+                                    <option value="{{$trip_type['TRIP_ID']}}">{{$trip_type['TRIP_NAME']}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -309,6 +320,17 @@
                                     <option value="" selected="selected">Please Select One</option>
                                     @foreach($vehicle_type as $val)
                                     <option value="{{$val->VEHICLE_TYPE_ID}}">{{$val->VEHICLE_TYPE_NAME}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="tripType2" class="col-sm-5 col-form-label">Trip Type</label>
+                            <div class="col-sm-7">
+                                <select name="trip_type" id="tripType2" class="form-control">
+                                    <option value="">Please Select One</option>
+                                    @foreach($trip_types as $trip_type)
+                                    <option value="{{$trip_type['TRIP_ID']}}">{{$trip_type['TRIP_NAME']}}</option>
                                     @endforeach
                                 </select>
                             </div>

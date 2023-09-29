@@ -21,7 +21,10 @@ $(document).ready(function () {
             start_date: 'required',
             end_date: 'required',
             recurring_period: 'required',
-            deductible: 'required',
+            deductible: {
+                required: true,
+                min: 0
+            },
             policy_document: {
                 required: true
             },
@@ -94,7 +97,10 @@ $(document).ready(function () {
             start_date: 'required',
             end_date: 'required',
             recurring_period: 'required',
-            deductible: 'required',
+            deductible: {
+                required: true,
+                min: 0
+            },
             remarks: {
                 maxlength: 200
             }
@@ -259,9 +265,9 @@ function editInfo(id) {
                 </div>
 
                 <div class="form-group row">
-                    <label for="edit_charge_payable" class="col-sm-5 col-form-label">Charge Payable <i class="text-danger">*</i></label>
+                    <label for="edit_charge_payable" class="col-sm-5 col-form-label">Policy Amount (INR) <i class="text-danger">*</i></label>
                     <div class="col-sm-7">
-                        <input name="charge_payable" required="" class="form-control" type="number" placeholder="Charge Payable" id="edit_charge_payable" value="${res.CHARGE_PAYABLE}">
+                        <input name="charge_payable" required="" class="form-control" type="number" placeholder="Policy Amount (INR)" id="edit_charge_payable" value="${res.CHARGE_PAYABLE}">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -353,7 +359,10 @@ function reinitValidationForEditForm() {
             start_date: 'required',
             end_date: 'required',
             recurring_period: 'required',
-            deductible: 'required',
+            deductible: {
+                required: true,
+                min: 0
+            },
             remarks: {
                 maxlength: 200
             }

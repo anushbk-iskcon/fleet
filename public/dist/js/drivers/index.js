@@ -27,9 +27,9 @@ $(document).ready(function () {
                 maxlength: 50
             },
             license_type: 'required',
-            national_id: {
-                required: true
-            },
+            // national_id: {
+            //     required: true
+            // },
             license_issue_date: {
                 required: true
             },
@@ -379,7 +379,7 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
         var years = moment().diff(start, 'years');
     });
     $('#updateDriverDetailsForm .edit-date-picker').on('apply.daterangepicker', function (ev, picker) {
-        $(this).val(picker.startDate.format('YYYY-MM-DD'));
+        $(this).val(picker.startDate.format('DD-MMM-YYYY'));
     });
     $('#updateDriverDetailsForm .edit-date-picker').on('cancel.daterangepicker', function (ev, picker) {
         $(this).val('');

@@ -174,16 +174,18 @@ function loadTable(table) {
                     <i class="ti-pencil"></i>
                     </button>`;
 
+                    let transactionDate = moment(data.TRANSACTION_DATE).format('DD-MMM-YYYY');
                     let transactionPurpose = data.PURPOSE == 1 ? 'Over Time' : '';
                     let dateAdded = data.CREATED_ON.substring(0, 10);
+                    let dateRecorded = moment(dateAdded).format('DD-MMM-YYYY');
                     table.row.add([
                         i + 1,
-                        data.TRANSACTION_DATE,
+                        transactionDate,
                         data.DRIVER_NAME,
                         transactionPurpose,
                         data.DURATION,
                         data.AMOUNT,
-                        dateAdded,
+                        dateRecorded,
                         actionBtns
                     ]);
                 });
