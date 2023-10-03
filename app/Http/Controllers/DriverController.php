@@ -79,6 +79,15 @@ class DriverController extends Controller
             $driver->IS_ACTIVE = ($request->is_active == 1 ? 'Y' : 'N');
         }
 
+        // Additional details
+        // $driver->DISTANCE_FROM_TEMPLE = $request->distance_from_temple ?? 0;
+        // $driver->MODE_OF_TRAVEL = $request->mode_of_travel ?? "";
+
+        // Emergency Contact Details
+        // $driver->EMERGENCY_CONTACT_NAME = $request->emergency_contact ?? "";
+        // $driver->EMERGENCY_CONTACT_NUMBER = $request->emergency_contact_num ?? "";
+        // $driver->EMERGENCY_CONTACT_REL = $request->emergency_contact_rel ?? "";
+
         //To upload profile image
         if ($request->hasFile('picture')) {
             $image = $request->file('picture');

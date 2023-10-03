@@ -46,7 +46,7 @@
                 </h6>
             </div>
             <div class="card-body">
-                <form action="{{route('maintenance-requisitions.add')}}" id="addMaintenRequisitionForm" class="row" method="post" accept-charset="utf-8">
+                <form action="{{route('maintenance-requisitions.add')}}" id="addMaintenRequisitionForm" class="row" method="post" enctype="multipart/form-data" accept-charset="utf-8">
                     @csrf
                     <div class="col-md-12 col-lg-12">
                         <div class="form-group row">
@@ -113,7 +113,7 @@
                         <div class="form-group row">
                             <label for="service_date" class="col-sm-5 col-form-label">Service Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="service_date" required class="form-control newdatetimepicker" type="text" placeholder="Service Date" id="service_date">
+                                <input name="service_date" required class="form-control new-datepicker" type="text" placeholder="Service Date" id="service_date">
                             </div>
                         </div>
 
@@ -153,6 +153,12 @@
                             <label for="remarks" class="col-sm-5 col-form-label">Remarks</label>
                             <div class="col-sm-7">
                                 <textarea name="remarks" id="remarks" class="form-control" cols="30" rows="3" placeholder="Remarks"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="maintenanceInvoiceUpload" class="col-sm-5 col-form-label">Invoice Upload</label>
+                            <div class="col-sm-7">
+                                <input type="file" name="mainten_invoice" id="maintenanceInvoiceUpload" accept="application/pdf, image/jpeg, image/jpg, image/png">
                             </div>
                         </div>
                     </div>

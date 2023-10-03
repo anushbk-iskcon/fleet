@@ -91,8 +91,8 @@ class VehicleController extends Controller
             })
             ->get();
 
-        $testVehicles = $vehicles->toJson();
-        echo $testVehicles;
+        $vehicleDetails = $vehicles->toJson();
+        echo $vehicleDetails;
     }
 
     /**
@@ -123,6 +123,13 @@ class VehicleController extends Controller
         $vehicle->VENDOR_ID = $request->vendor;
         $vehicle->ALERT_EMAIL_ID = $request->alert_email;
         $vehicle->SEAT_CAPACITY = $request->seat_capacity;
+
+        // Details added Oct 3 2023
+        // $vehicle->CHASSIS_NUMBER = $request->chassis_number;
+        // $vehicle->ENGINE_NUMBER = $request->engine_number;
+        // $vehicle->VEHICLE_VALUE = $request->vehicle_value;
+        // $vehicle->UVW = $request->uvw;
+        // $vehicle->CC = $request->cc;
 
         $ownership = $request->ownership;
         $ownershipArray = explode('|', $ownership);

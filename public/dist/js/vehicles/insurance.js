@@ -337,7 +337,7 @@ function editInfo(id) {
     });
 }
 
-// Re-initilaize validation for dynamically-generated Edit Insurance details Form
+// Re-initialize validation for dynamically-generated Edit Insurance details Form
 function reinitValidationForEditForm() {
     let validator = $("#editInsuranceDetailsForm").validate();
     validator.destroy();

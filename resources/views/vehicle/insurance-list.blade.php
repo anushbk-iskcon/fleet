@@ -86,7 +86,11 @@
                                 <select class="form-control basic-single" required="" name="recurring_period" id="recurring_period">
                                     <option value="" selected="selected">Please Select One</option>
                                     @foreach($recurringPeriods as $recurringPeriod)
+                                    @if($recurringPeriod['RECURRING_PERIOD_ID'] == 7) {{-- For default 30 days --}}
+                                    <option value="{{$recurringPeriod['RECURRING_PERIOD_ID']}}" selected>{{$recurringPeriod['RECURRING_PERIOD_NAME']}}</option>
+                                    @else
                                     <option value="{{$recurringPeriod['RECURRING_PERIOD_ID']}}">{{$recurringPeriod['RECURRING_PERIOD_NAME']}}</option>
+                                    @endif
                                     @endforeach
                                 </select>
                             </div>

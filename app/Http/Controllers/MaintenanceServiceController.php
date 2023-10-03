@@ -74,7 +74,6 @@ class MaintenanceServiceController extends Controller
         $maintenanceService = MaintenanceService::find($serviceId);
         $serviceTypes = MaintenanceType::all();
 
-        // dd($maintenanceService);
         // Return pre-populated form
         $editFormContent = '<input type="hidden" name="mainten_service_id" id="editMaintenServiceId" value="' . $maintenanceService['MAINTENANCE_SERVICE_ID'] . '">';
         $editFormContent .= '<div class="col-md-12 col-lg-6"><div class="form-group row">';

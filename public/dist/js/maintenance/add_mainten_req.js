@@ -3,36 +3,32 @@ var count = 2, limits = 500;
 $(document).ready(function () {
     $(".basic-single").select2();
 
-    $('.newdatetimepicker').daterangepicker({
-
+    $('.new-datepicker').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
         autoUpdateInput: false,
-
         minYear: 1901,
         maxDate: '2100',
         "drops": "up",
         locale: {
             format: 'YYYY-MM-DD'
-
         },
-
         maxYear: parseInt(moment().format('YYYY'), 10)
     }, function (start, end, label) {
         var years = moment().diff(start, 'years');
     });
-    $('.newdatetimepicker').on('apply.daterangepicker', function (ev, picker) {
-        $(this).val(picker.startDate.format('YYYY-MM-DD'));
+    $('.new-datepicker').on('apply.daterangepicker', function (ev, picker) {
+        $(this).val(picker.startDate.format('DD-MMM-YYYY'));
     });
 
-    $('.newdatetimepicker').on('cancel.daterangepicker', function (ev, picker) {
+    $('.new-datepicker').on('cancel.daterangepicker', function (ev, picker) {
         $(this).val('');
     });
 
     $('.form-check-input').bootstrapToggle();
 
     // To validate select2 selections on change
-    $(".basic-single").on("select2:close", function (e) {
+    $(".basic-single").on("change", function (e) {
         $(this).valid();
     });
 
@@ -89,13 +85,13 @@ function deleteRow(t) {
         $("#purchaseTable > tbody > tr td input.product_name").each(function () {
             current++;
             $(this).attr('id', 'product_name_' + current);
-            $(this).attr('onkeypress', 'getexpenceitem(' + current + ');')
+            $(this).attr('onkeypress', 'getexpenceitem(' + current + ');');
         });
         var it = 0;
         $("#purchaseTable > tbody > tr td input.pitem").each(function () {
             it++;
             $(this).attr('id', 'itemname' + it);
-            $(this).attr('onkeypress', 'getpitem(' + it + ');')
+            $(this).attr('onkeypress', 'getpitem(' + it + ');');
         });
         var common_avail_qnt = 0;
         $("#purchaseTable > tbody > tr td input.pqty").each(function () {
@@ -181,7 +177,7 @@ function calculate_store(sl) {
     $("#total_price_" + sl).val(total_price.toFixed(2));
 
 
-    //Total Price
+    // Total Price
     $(".total_price").each(function () {
         isNaN(this.value) || 0 == this.value.length || (gr_tot += parseFloat(this.value))
     });

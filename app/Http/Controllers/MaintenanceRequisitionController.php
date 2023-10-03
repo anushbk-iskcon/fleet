@@ -166,6 +166,17 @@ class MaintenanceRequisitionController extends Controller
             }
         }
 
+        // To upload scanned copy of invoice
+        if ($request->hasFile('mainten_invoice')) {
+            $invoice = $request->file('mainten_invoice');
+            $document = time() . '-' . date('Y') . '.' . $invoice->getClientOriginalExtension();
+            $destination = public_path('/upload/documents/maintenance/');
+            $invoice->move($destination, $document);
+
+            // Store filename in DB column:
+
+        }
+
         // To return successCode and message/data
         if ($entrySaved && $itemsSaved) {
             return redirect()->route('maintenance-requisitions')->with('message', "Requisition details successfully added");
@@ -396,6 +407,17 @@ class MaintenanceRequisitionController extends Controller
                         'MODIFIED_ON' => date('Y-m-d H:i:s')
                     ]);
             }
+        }
+
+        // To upload scanned copy of invoice if updated invoice is provided
+        if ($request->hasFile('mainten_invoice')) {
+            $invoice = $request->file('mainten_invoice');
+            $document = time() . '-' . date('Y') . '.' . $invoice->getClientOriginalExtension();
+            $destination = public_path('/upload/documents/maintenance/');
+            $invoice->move($destination, $document);
+
+            // Change filename in DB column:
+
         }
 
         // Return to Maintenance Requisitions Listing if update successful

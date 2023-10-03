@@ -10,7 +10,7 @@
     </figure>
 </div>
 <div class="container py-3 py-sm-7">
-    <a class="d-flex justify-content-center mb-5 news365-logo" href>
+    <a class="d-flex justify-content-center mb-3 news365-logo" href>
         <img class="z-index-2" src="{{asset('public/img/logo1.png')}}" alt="Image Description" data-pagespeed-url-hash="799927880">
     </a>
     <div class="row justify-content-center">
@@ -25,6 +25,9 @@
             </div>
             <div class="form-card mb-5">
                 <div class="form-card_body">
+                    <div class="text-center mb-2">
+                        <img src="{{asset('public/img/Group 11681.png')}}" alt="" style="height:auto; width:300px;">
+                    </div>
                     <form action="" id="loginForm" novalidate method="post" accept-charset="utf-8">
                         @csrf
                         <div class="text-center">

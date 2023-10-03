@@ -107,7 +107,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="transactionAmt" class="col-md-5 col-form-label">Amount (INR) <i class="text-danger">*</i></label>
+                            <label for="transactionAmt" class="col-md-5 col-form-label">Bata Amount (INR) </label>
                             <div class="col-sm-7">
                                 <input type="number" class="form-control" id="transactionAmt" name="amount" placeholder="Amount">
                             </div>
