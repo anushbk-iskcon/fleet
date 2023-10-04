@@ -130,6 +130,7 @@ class MaintenanceRequisitionController extends Controller
         $maintenRequisition->MAINTENANCE_TYPE = $request->mainten_type;
         $maintenRequisition->MAINTENANCE_SERVICE_NAME = $request->mainten_service_name;
         $maintenRequisition->SERVICE_DATE = $request->service_date;
+        # Date format d-M-Y
 
         //Add remarks column
         // $maintenRequisition->REMARKS = $request->remarks;

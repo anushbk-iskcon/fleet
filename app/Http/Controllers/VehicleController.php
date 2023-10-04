@@ -186,6 +186,8 @@ class VehicleController extends Controller
         $vehicle->DEPARTMENT_ID = $deptArray[0];  #deptCode
         $vehicle->DEPARTMENT_NAME = $deptArray[1]; #deptName
 
+        // Date Format: d-M-Y in php
+
         $vehicle->VEHICLE_DIVISION_ID = $request->vehicle_division;
         $vehicle->REGISTRATION_DATE = $request->registration_date;
         $vehicle->RTA_CIRCLE_OFFICE_ID = $request->rta_office;
