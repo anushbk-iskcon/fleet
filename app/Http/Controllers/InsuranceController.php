@@ -22,8 +22,13 @@ class InsuranceController extends Controller
             $vehicle = $request->vehiclesr;
             $insuranceCompany = $request->insurance_company;
             $policyNumber = $request->policy_numbersr;
-            $startDate = $request->date_fr;
-            $endDate = $request->date_to;
+            $dateFrom = $request->date_fr;
+            $dateTo = $request->date_to;
+            $startDate = null;
+            $endDate = null;
+            # To convert Date from 01-Jan-2023 format to 2023-01-01 format
+            if ($dateFrom) $startDate = date('Y-m-d', strtotime($dateFrom));
+            if ($dateTo) $endDate = date('Y-m-d', strtotime($dateTo));
 
             $insuranceList = DB::table('vehicle_insurance')
                 ->join('vehicles', 'vehicle_insurance.VEHICLE', '=', 'vehicles.VEHICLE_ID')
@@ -64,10 +69,11 @@ class InsuranceController extends Controller
         $insurance->VEHICLE = $request->vehicle;
         $insurance->POLICY_NUMBER = $request->policy_number;
         $insurance->CHARGE_PAYABLE = $request->charge_payable;
-        $insurance->START_DATE = $request->start_date;
-        $insurance->END_DATE = $request->end_date;
+        $insurance->START_DATE = date('Y-m-d', strtotime($request->start_date));
+        $insurance->END_DATE = date('Y-m-d', strtotime($request->end_date));
         $insurance->RECURRING_PERIOD = $request->recurring_period;
-        $insurance->RECURRING_DATE = $request->recurring_date ?? null;
+        if (isset($request->recurring_date))
+            $insurance->RECURRING_DATE = date('Y-m-d', strtotime($request->recurring_date));
         $insurance->RECURRING_PERIOD_REMINDER = $request->add_reminder == 1 ? 'Y' : 'N';
         $insurance->STATUS = $request->status == 1 ? 'Y' : 'N';
         $insurance->REMARKS = $request->remarks ?? null;

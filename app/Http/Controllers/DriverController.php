@@ -57,11 +57,12 @@ class DriverController extends Controller
         $driver->LICENSE_NUMBER = $request->license_number;
         $driver->LICENSE_TYPE = $request->license_type;
         $driver->NATIONAL_ID = $request->national_id ?? "";
-        $driver->LICENSE_ISSUE_DATE = $request->license_issue_date;
+        $driver->LICENSE_ISSUE_DATE = date('Y-m-d', strtotime($request->license_issue_date));
         $driver->WORKING_TIME_START = $request->timeslot_start ?? "";
         $driver->WORKING_TIME_END = $request->timeslot_end ?? "";
-        $driver->JOIN_DATE = $request->join_date;
-        $driver->DATE_OF_BIRTH = $request->dob ?? null;
+        $driver->JOIN_DATE = date('Y-m-d', strtotime($request->join_date));
+        if ($request->dob)
+            $driver->DATE_OF_BIRTH = date('Y-m-d', strtotime($request->dob));
         $driver->CTC = $request->ctc ?? 0;
         $driver->OVT = $request->ovt ?? 0;
         if ($request->permanent_address) {
@@ -74,9 +75,6 @@ class DriverController extends Controller
             $driver->LEAVE_STATUS = ($request->leavestatus == 1 ? 'Y' : 'N');
         } else {
             $driver->LEAVE_STATUS = 'N';
-        }
-        if ($request->is_active) {
-            $driver->IS_ACTIVE = ($request->is_active == 1 ? 'Y' : 'N');
         }
 
         // Additional details
@@ -144,27 +142,30 @@ class DriverController extends Controller
         $driver->MOBILE_NUMBER = $request->mobile;
         $driver->LICENSE_NUMBER = $request->license_number;
         $driver->LICENSE_TYPE = $request->license_type;
-        $driver->NATIONAL_ID = $request->national_id;
-        $driver->LICENSE_ISSUE_DATE = $request->license_issue_date;
+        $driver->NATIONAL_ID = $request->national_id ?? "";
+        $driver->LICENSE_ISSUE_DATE = date('Y-m-d', strtotime($request->license_issue_date));
         $driver->WORKING_TIME_START = $request->timeslot_start ?? "";
         $driver->WORKING_TIME_END = $request->timeslot_end ?? "";
-        $driver->JOIN_DATE = $request->join_date;
+        $driver->JOIN_DATE = date('Y-m-d', strtotime($request->join_date));
         $driver->CTC = $request->ctc ?? 0;
         $driver->OVT = $request->ovt ?? 0;
 
-        if ($request->dob) $driver->DATE_OF_BIRTH = $request->dob;
+        if ($request->dob) $driver->DATE_OF_BIRTH = date('Y-m-d', strtotime($request->dob));
         if ($request->permanent_address) $driver->PERMANENT_ADDRESS = $request->permanent_address;
         if ($request->present_address) $driver->PRESENT_ADDRESS = $request->present_address;
         if ($request->leavestatus) {
             $driver->LEAVE_STATUS = ($request->leavestatus == 1 ? 'Y' : 'N');
-        } else {
-            $driver->LEAVE_STATUS = 'N';
         }
-        if ($request->is_active) {
-            $driver->IS_ACTIVE = ($request->is_active == 1 ? 'Y' : 'N');
-        } else {
-            $driver->IS_ACTIVE = 'N';
-        }
+
+
+        // Additional details
+        // $driver->DISTANCE_FROM_TEMPLE = $request->distance_from_temple ?? 0;
+        // $driver->MODE_OF_TRAVEL = $request->mode_of_travel ?? "";
+
+        // Emergency Contact Details
+        // $driver->EMERGENCY_CONTACT_NAME = $request->emergency_contact ?? "";
+        // $driver->EMERGENCY_CONTACT_NUMBER = $request->emergency_contact_num ?? "";
+        // $driver->EMERGENCY_CONTACT_REL = $request->emergency_contact_rel ?? "";
 
         // To update profile photo
         if ($request->hasFile('picture')) {
@@ -203,7 +204,9 @@ class DriverController extends Controller
         if (request()->isMethod('post')) {
             // Return list of all or filtered transactions
             $driver = $request->driver_sr;
-            $transactionDate = $request->date_sr;
+            $transactionDate = null;
+            if ($request->date_sr)
+                $transactionDate = date('Y-m-d', strtotime($request->date_sr));
             $purpose = $request->purpose_sr;
 
             $transactionList = DB::table('driver_transaction')
@@ -237,7 +240,7 @@ class DriverController extends Controller
     {
         $transaction = new DriverTransaction;
 
-        $transaction->TRANSACTION_DATE = $request->transaction_date;
+        $transaction->TRANSACTION_DATE = date('Y-m-d', strtotime($request->transaction_date));
         $transaction->PURPOSE = $request->purpose;
         $transaction->DRIVER_ID = $request->driver;
         $transaction->DURATION = $request->duration ?? "";
@@ -270,7 +273,7 @@ class DriverController extends Controller
         $transaction_id = $request->transaction_id;
         $transaction = DriverTransaction::find($transaction_id);
 
-        $transaction->TRANSACTION_DATE = $request->transaction_date;
+        $transaction->TRANSACTION_DATE = date('Y-m-d', strtotime($request->transaction_date));
         $transaction->PURPOSE = $request->purpose;
         $transaction->DRIVER_ID = $request->driver;
         $transaction->DURATION = $request->duration ?? "";

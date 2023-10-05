@@ -311,7 +311,7 @@ class MaintenanceRequisitionController extends Controller
 
         // Get employee names
         $hrApi = new HrApi;
-        $employeeData = $hrApi->getEmployeeList(""); // No parameters sent (dept = "")
+        $employeeData = $hrApi->getEmployeeList(""); // No parameters sent to get all employees from all departments (dept = "")
 
         return view('maintenance.edit-maintenance-list', compact(
             'maintenanceTypes',
@@ -449,7 +449,7 @@ class MaintenanceRequisitionController extends Controller
         $mainten_req_id = $request->mainten_req_id;
         $maintenRequisition = MaintenanceRequisition::find($mainten_req_id); // Find by Id
         // Change status based on flag value in request
-        // status = 1 => Approved, staus = 2 => Rejected
+        // status = 1 => Approved, status = 2 => Rejected
 
         $message = '';
         if ($request->approval_status == 1) {

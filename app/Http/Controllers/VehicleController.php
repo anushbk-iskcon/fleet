@@ -43,7 +43,14 @@ class VehicleController extends Controller
         $vehicle_type = $request->vehicle_typesr;
         $ownership = $request->ownershipsr;
         $registration_date_from = $request->registration_date_fr;
+        $reg_date_from = null;
+        if ($registration_date_from)
+            $reg_date_from = date('Y-m-d', strtotime($registration_date_from)); # To convert date from 01-Jan-2023 format to 2023-01-01 format
+
         $registration_date_to = $request->registration_date_to;
+        $reg_date_to = null;
+        if ($registration_date_to)
+            $reg_date_to = date('Y-m-d', strtotime($registration_date_to));
         $vendor = $request->vendorsr;
 
         $vehicles = DB::table('vehicles')
@@ -80,11 +87,11 @@ class VehicleController extends Controller
             ->when($ownership, function ($query, $ownership) {
                 return $query->where('vehicles.OWNERSHIP_ID', '=', $ownership);
             })
-            ->when($registration_date_from, function ($query, $registration_date_from) {
-                return $query->where('vehicles.REGISTRATION_DATE', '>', $registration_date_from);
+            ->when($reg_date_from, function ($query, $reg_date_from) {
+                return $query->where('vehicles.REGISTRATION_DATE', '>', $reg_date_from);
             })
-            ->when($registration_date_to, function ($query, $registration_date_to) {
-                return $query->where('vehicles.REGISTRATION_DATE', '<', $registration_date_to);
+            ->when($reg_date_to, function ($query, $reg_date_to) {
+                return $query->where('vehicles.REGISTRATION_DATE', '<', $reg_date_to);
             })
             ->when($vendor, function ($query, $vendor) {
                 return $query->where('vehicles.VENDOR_ID', '=', $vendor);
@@ -115,7 +122,7 @@ class VehicleController extends Controller
         $vehicle->DEPARTMENT_NAME = $deptArray[1]; #deptName
 
         $vehicle->VEHICLE_DIVISION_ID = $request->vehicle_division;
-        $vehicle->REGISTRATION_DATE = $request->registration_date;
+        $vehicle->REGISTRATION_DATE = date('Y-m-d', strtotime($request->registration_date));
         $vehicle->RTA_CIRCLE_OFFICE_ID = $request->rta_office;
         $vehicle->LICENSE_PLATE = $request->license_plate;
         $vehicle->DRIVER_ID = $request->driver ?? 0;
@@ -186,10 +193,10 @@ class VehicleController extends Controller
         $vehicle->DEPARTMENT_ID = $deptArray[0];  #deptCode
         $vehicle->DEPARTMENT_NAME = $deptArray[1]; #deptName
 
-        // Date Format: d-M-Y in php
+        // Date Format: Y-m-d in php
 
         $vehicle->VEHICLE_DIVISION_ID = $request->vehicle_division;
-        $vehicle->REGISTRATION_DATE = $request->registration_date;
+        $vehicle->REGISTRATION_DATE = date('Y-m-d', strtotime($request->registration_date));
         $vehicle->RTA_CIRCLE_OFFICE_ID = $request->rta_office;
         $vehicle->LICENSE_PLATE = $request->license_plate;
         // $vehicle->DRIVER_ID = $request->driver;

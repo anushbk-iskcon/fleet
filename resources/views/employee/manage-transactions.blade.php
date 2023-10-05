@@ -75,7 +75,7 @@
                         <div class="form-group row">
                             <label for="transactionDate" class="col-sm-5 col-form-label">Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input type="text" name="transaction_date" class="form-control newdatetimepicker" id="transactionDate" placeholder="Date">
+                                <input type="text" name="transaction_date" class="form-control new-datepicker" id="transactionDate" placeholder="Date">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -140,7 +140,7 @@
                         <div class="form-group row">
                             <label for="editTransactionDate" class="col-sm-5 col-form-label">Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input type="text" name="transaction_date" class="form-control newdatetimepicker" id="editTransactionDate" placeholder="Date">
+                                <input type="text" name="transaction_date" class="form-control new-datepicker" id="editTransactionDate" placeholder="Date">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -229,7 +229,7 @@
                                 Date
                             </label>
                             <div class="col-sm-8">
-                                <input type="text" name="date_sr" class="form-control newdatetimepicker" id="filter_date" placeholder="Date">
+                                <input type="text" name="date_sr" class="form-control new-datepicker" id="filter_date" placeholder="Date">
                             </div>
                         </div>
                     </div>

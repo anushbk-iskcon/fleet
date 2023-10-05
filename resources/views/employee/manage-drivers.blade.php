@@ -62,7 +62,7 @@
                         <div class="form-group row">
                             <label for="dob" class="col-sm-5 col-form-label">Date of Birth </label>
                             <div class="col-sm-7">
-                                <input name="dob" autocomplete="off" class="form-control date-picker" type="text" placeholder="Date of Birth" id="dob">
+                                <input name="dob" autocomplete="off" class="form-control date-picker" type="text" placeholder="Date of Birth" id="dob" value="">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -274,7 +274,7 @@
                                 <th>Driver Name</th>
                                 <th>Mobile</th>
                                 <th>License Number</th>
-                                <th title="National ID">NID</th>
+                                <!-- <th title="National ID">NID</th> -->
                                 <!-- <th>Working Time Slot</th> -->
                                 <th>Status</th>
                                 <th>Action(s)</th>
@@ -298,7 +298,7 @@
                                 </td>
                                 <td> {{$driver['MOBILE_NUMBER']}} </td>
                                 <td> {{$driver['LICENSE_NUMBER']}} </td>
-                                <td> {{$driver['NATIONAL_ID']}} </td>
+                                <!-- <td> {{$driver['NATIONAL_ID']}} </td> -->
                                 <!-- <td> {{$driver['WORKING_TIME_START'] . ' - ' . $driver['WORKING_TIME_END'] }} </td> -->
                                 <td> @if($driver['IS_ACTIVE'] == 'Y') {{"Active"}} @else {{"Inactive"}} @endif </td>
                                 <td>
@@ -348,27 +348,6 @@
 <script>
     $(document).ready(function() {
         $("#driverinfo").DataTable();
-    });
-
-    $('.date-picker').daterangepicker({
-        singleDatePicker: true,
-        showDropdowns: true,
-        autoUpdateInput: false,
-        minYear: 1901,
-        maxDate: moment().format('YYYY-MM-DD'),
-        drops: "down",
-        locale: {
-            format: 'YYYY-MM-DD'
-        },
-        maxYear: parseInt(moment().format('YYYY'), 10)
-    }, function(start, end, label) {
-        var years = moment().diff(start, 'years');
-    });
-    $('.date-picker').on('apply.daterangepicker', function(ev, picker) {
-        $(this).val(picker.startDate.format('YYYY-MM-DD'));
-    });
-    $('.date-picker').on('cancel.daterangepicker', function(ev, picker) {
-        $(this).val('');
     });
 </script>
 @endsection

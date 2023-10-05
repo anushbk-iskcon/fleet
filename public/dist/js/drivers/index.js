@@ -150,7 +150,7 @@ $(document).ready(function () {
         $("#add_driver_form input[name='picture']").removeClass('error');
     });
 
-    // Enable timepickers on showing modal
+    // Enable timepickers and datepickers on showing modal
     $("#add0").on('shown.bs.modal', function () {
         $("#add_driver_form .time-picker").daterangepicker({
             singleDatePicker: true,
@@ -172,6 +172,28 @@ $(document).ready(function () {
         });
 
         $("#add_driver_form .time-picker").on('cancel.daterangepicker', function (ev, picker) {
+            $(this).val('');
+        });
+
+        $('#add_driver_form .date-picker').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            autoUpdateInput: false,
+            autoApply: false,
+            minYear: 1901,
+            maxDate: moment().format('DD-MMM-YYYY'),
+            drops: "down",
+            locale: {
+                format: 'DD-MMM-YYYY'
+            },
+            maxYear: parseInt(moment().format('YYYY'), 10)
+        }, function (start, end, label) {
+            var years = moment().diff(start, 'years');
+        });
+        $('#add_driver_form .date-picker').on('apply.daterangepicker', function (ev, picker) {
+            $(this).val(picker.startDate.format('DD-MMM-YYYY'));
+        });
+        $('#add_driver_form .date-picker').on('cancel.daterangepicker', function (ev, picker) {
             $(this).val('');
         });
     });
@@ -209,6 +231,11 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
     let workStartTime = work_start_time ? work_start_time : '';
     let workEndTime = work_end_time ? work_end_time : '';
 
+    let driverDOB = moment(dob).format('DD-MMM-YYYY');
+    console.log(driverDOB);
+    let licenseIssueDate = moment(license_issue_date).format('DD-MMM-YYYY');
+    let driverDOJ = moment(join_date).format('DD-MMM-YYYY');
+
     updateForm.empty().append('<input type="hidden" name="_method" value="PUT">');
     updateForm.append('<input type="hidden" name="_token" value="' + $('meta[name="csrf-token"]').attr('content') + '">');
 
@@ -239,7 +266,7 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
     <div class="form-group row">
         <label for="update_dob" class="col-sm-5 col-form-label">Date of Birth </label>
         <div class="col-sm-7">
-            <input name="dob" autocomplete="off" class="form-control edit-date-picker" type="text" placeholder="Date of Birth" id="update_dob" value="${dob}">
+            <input name="dob" autocomplete="off" class="form-control edit-date-picker" type="text" placeholder="Date of Birth" id="update_dob" value="${driverDOB}">
         </div>
     </div>
     <div class="form-group row">
@@ -251,13 +278,13 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
     <div class="form-group row">
         <label for="update_distance_from_temple" class="col-sm-5 col-form-label">Distance From Temple (in km)</label>
             <div class="col-sm-7">
-                <input name="distance_from_temple" class="form-control" type="text" placeholder="Distance in km" id="update_distance_from_temple" value="${present_address}">
+                <input name="distance_from_temple" class="form-control" type="text" placeholder="Distance in km" id="update_distance_from_temple" value="">
             </div>
     </div>
     <div class="form-group row">
         <label for="update_present_address" class="col-sm-5 col-form-label">Mode of Travel</label>
             <div class="col-sm-7">
-                <input name="mode_of_travel" class="form-control" type="text" placeholder="Mode of Travel" id="update_present_address" value="${present_address}">
+                <input name="mode_of_travel" class="form-control" type="text" placeholder="Mode of Travel" id="update_mode_of_travel" value="">
             </div>
     </div>
 
@@ -300,14 +327,14 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
     <div class="form-group row">
         <label for="update_license_issue_date" class="col-sm-5 col-form-label">License Issue Date </label>
         <div class="col-sm-7">
-            <input name="license_issue_date" autocomplete="off" class="form-control edit-date-picker" type="text" placeholder="License Issue Date" id="update_license_issue_date" value="${license_issue_date}">
+            <input name="license_issue_date" autocomplete="off" class="form-control edit-date-picker" type="text" placeholder="License Issue Date" id="update_license_issue_date" value="${licenseIssueDate}">
         </div>
     </div>
 
     <div class="form-group row">
         <label for="update_join_date" class="col-sm-5 col-form-label">Join Date </label>
         <div class="col-sm-7">
-            <input name="join_date" autocomplete="off" class="form-control edit-date-picker" type="text" placeholder="Join Date" id="update_join_date" value="${join_date}">
+            <input name="join_date" autocomplete="off" class="form-control edit-date-picker" type="text" placeholder="Join Date" id="update_join_date" value="${driverDOJ}">
         </div>
     </div>
     
@@ -367,12 +394,12 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
     $('#updateDriverDetailsForm .edit-date-picker').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
-        // autoUpdateInput: false,
+        autoUpdateInput: true,
         minYear: 1901,
-        maxDate: '2100',
+        // maxDate: '2100',
         "drops": "down",
         locale: {
-            format: 'YYYY-MM-DD'
+            format: 'DD-MMM-YYYY'
         },
         maxYear: parseInt(moment().format('YYYY'), 10)
     }, function (start, end, label) {
@@ -451,7 +478,6 @@ function loadTable(table) {
                         driverNameDiv,
                         data.MOBILE_NUMBER,
                         data.LICENSE_NUMBER,
-                        data.NATIONAL_ID,
                         activeStatus,
                         actionBtns
                     ]);

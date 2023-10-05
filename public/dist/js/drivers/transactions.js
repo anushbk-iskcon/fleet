@@ -9,6 +9,45 @@ $(document).ready(function () {
     //     $("#filterBtn").toggleClass('btn-success');
     // });
 
+    // Enable Datepicker for the filter
+    $("#filter_date").daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        minYear: 1901,
+        autoUpdateInput: false,
+        locale: {
+            cancelLabel: 'Clear',
+            format: "DD-MMM-YYYY"
+        }
+    });
+    $("#filter_date").on('apply.daterangepicker', function (ev, picker) {
+        $(this).val(picker.startDate.format('DD-MMM-YYYY'));
+    });
+    $("#filter_date").on('cancel.daterangepicker', function (ev, picker) {
+        $(this).val('');
+    });
+
+    // Enable Datepicker on the Add Form on openeing modal:
+    $("#add0").on('shown.bs.modal', function () {
+        $("#addTransactionDetailsForm .new-datepicker").daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            minYear: 1901,
+            autoUpdateInput: false,
+            locale: {
+                cancelLabel: 'Clear',
+                "format": "DD-MMM-YYYY"
+            }
+        });
+
+        $("#addTransactionDetailsForm .new-datepicker").on('apply.daterangepicker', function (ev, picker) {
+            $(this).val(picker.startDate.format('DD-MMM-YYYY'));
+        });
+        $("#addTransactionDetailsForm .new-datepicker").on('cancel.daterangepicker', function (ev, picker) {
+            $(this).val('');
+        });
+    });
+
     // Validate and submit Add Transaction / Over time details form
     $("#addTransactionDetailsForm").validate({
         rules: {
@@ -217,13 +256,35 @@ function editInfo(transaction_id) {
         dataType: 'json',
         success: function (res) {
             // console.log(res);
-            $("#editTransactionDate").val(res.TRANSACTION_DATE);
-            $("#editTransactionDate").data('og-date', res.TRANSACTION_DATE);
-            $("#editTransactionDate").attr('value', res.TRANSACTION_DATE);
+            let transactionDate = moment(res.TRANSACTION_DATE).format('DD-MMM-YYYY');
+
+            $("#editTransactionDate").val(transactionDate);
+
+            $("#editTransactionDate").data('og-date', transactionDate);
+            $("#editTransactionDate").attr('value', transactionDate);
+
+            // To enable date picker on date input
+            $("#updateTransactionDetailsForm .new-datepicker").daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                minYear: 1901,
+                autoUpdateInput: false,
+                locale: {
+                    cancelLabel: 'Clear',
+                    "format": "DD-MMM-YYYY"
+                }
+            });
+
+            $("#updateTransactionDetailsForm .new-datepicker").on('apply.daterangepicker', function (ev, picker) {
+                $(this).val(picker.startDate.format('DD-MMM-YYYY'));
+            });
+            $("#updateTransactionDetailsForm .new-datepicker").on('cancel.daterangepicker', function (ev, picker) {
+                $(this).val('');
+            });
 
             // For Date Range Picker to reflect set date:
-            $("#editTransactionDate").data('daterangepicker').setStartDate(res.TRANSACTION_DATE);
-            $("#editTransactionDate").data('daterangepicker').setEndDate(res.TRANSACTION_DATE);
+            $("#editTransactionDate").data('daterangepicker').setStartDate(transactionDate);
+            $("#editTransactionDate").data('daterangepicker').setEndDate(transactionDate);
 
             $("#editTransactionForDriver").val(res.DRIVER_ID).change();
             $("#editTransactionForDriver").data('og-selection', res.DRIVER_ID);

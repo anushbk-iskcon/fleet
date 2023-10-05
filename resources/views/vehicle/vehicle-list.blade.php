@@ -91,7 +91,7 @@
                         <div class="form-group row">
                             <label for="registration_date" class="col-sm-5 col-form-label">Registration Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="registration_date" required="" class="form-control newdatetimepicker" type="text" placeholder="Registration Date" id="registration_date">
+                                <input name="registration_date" required="" class="form-control new-datepicker" type="text" placeholder="Registration Date" id="registration_date">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -249,7 +249,7 @@
                         <div class="form-group row">
                             <label for="new_registration_date" class="col-sm-5 col-form-label">Registration Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="registration_date" required="" class="form-control newdatetimepicker" type="text" placeholder="Registration Date" id="new_registration_date">
+                                <input name="registration_date" required="" class="form-control edit-datepicker" type="text" placeholder="Registration Date" id="new_registration_date">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -536,13 +536,13 @@
                         <div class="form-group row mb-1">
                             <label for="registration_date_fr" class="col-sm-5 col-form-label justify-content-start text-left">Registration Date From </label>
                             <div class="col-sm-6">
-                                <input name="registration_date_fr" autocomplete="off" class="form-control newdatetimepicker" type="text" placeholder="Registration Date From" id="registration_date_fr">
+                                <input name="registration_date_fr" autocomplete="off" class="form-control filter-datepicker" type="text" placeholder="Registration Date From" id="registration_date_fr">
                             </div>
                         </div>
                         <div class="form-group row mb-1">
                             <label for="registration_date_to" class="col-sm-5 col-form-label justify-content-start text-left">Registration Date To </label>
                             <div class="col-sm-6">
-                                <input name="registration_date_to" autocomplete="off" class="form-control newdatetimepicker" type="text" placeholder="Registration Date To" id="registration_date_to">
+                                <input name="registration_date_to" autocomplete="off" class="form-control filter-datepicker" type="text" placeholder="Registration Date To" id="registration_date_to">
                             </div>
                         </div>
                         <div class="form-group row mb-1">
@@ -606,10 +606,34 @@
 @section('js-content')
 <script>
     $(document).ready(function() {
+        let currentYear = moment().year();
+
         var vehiclesTable = $("#vehicinfo").DataTable({
             paging: true,
             lengthMenu: [5, 10, 15, 20, 25],
             pageLength: 5
+        });
+
+        // To enable datepickers for Filter Dates
+        $("#registration_date_fr, #registration_date_to").daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            autoUpdateInput: false,
+            autoApply: false,
+            minYear: 1901,
+            maxDate: moment(currentYear + '-12-31').format('DD-MMM-YYYY'),
+            drops: "down",
+            locale: {
+                format: 'DD-MMM-YYYY'
+            },
+            maxYear: parseInt(moment().format('YYYY'), 10)
+        });
+
+        $("#registration_date_fr, #registration_date_to").on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('DD-MMM-YYYY'));
+        });
+        $("#registration_date_fr, #registration_date_to").on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
         });
 
         populateVehiclesTable(vehiclesTable);
@@ -621,6 +645,30 @@
         // To allow validation of select2 selections
         $('#edit select.basic-single').on('change', function(e) {
             $(this).valid();
+        });
+
+        // On showing Add Vehicle modal, enable datepicker(s)
+        $("#add0").on('shown.bs.modal', function() {
+            $("#addVehicleForm .new-datepicker").daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                autoUpdateInput: false,
+                autoApply: false,
+                minYear: 1901,
+                maxDate: moment(currentYear + '-12-31').format('DD-MMM-YYYY'),
+                drops: "down",
+                locale: {
+                    format: 'DD-MMM-YYYY'
+                },
+                maxYear: parseInt(moment().format('YYYY'), 10)
+            });
+
+            $("#addVehicleForm .new-datepicker").on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('DD-MMM-YYYY'));
+            });
+            $("#addVehicleForm .new-datepicker").on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val('');
+            });
         });
 
         // Validate and submit Add Vehicle Form
@@ -714,6 +762,30 @@
                 $(this).removeAttr('aria-invalid');
             });
 
+        });
+
+        // On showing Edit Vehicle modal, enable datepicker(s)
+        $("#edit").on('shown.bs.modal', function() {
+            $("#editVehicleForm .edit-datepicker").daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                autoUpdateInput: false,
+                autoApply: false,
+                minYear: 1901,
+                maxDate: moment(currentYear + '-12-31').format('DD-MMM-YYYY'),
+                drops: "down",
+                locale: {
+                    format: 'DD-MMM-YYYY'
+                },
+                maxYear: parseInt(moment().format('YYYY'), 10)
+            });
+
+            $("#editVehicleForm .edit-datepicker").on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('DD-MMM-YYYY'));
+            });
+            $("#editVehicleForm .edit-datepicker").on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val('');
+            });
         });
 
         // Validate and submit Edit Vehicle Form for Updating Details
@@ -953,6 +1025,8 @@
                 $.each(res, function(i, data) {
                     // console.log(data);
                     let buttons = '<button class="btn btn-sm btn-primary mr-1" data-id="' + data.VEHICLE_ID + '" onclick="editInfo(this)" title="Edit"><i class="fa fa-edit"></i></button>';
+                    let registrationDate = moment(data.REGISTRATION_DATE).format('DD-MMM-YYYY');
+
                     if (data.IS_ACTIVE == 'Y')
                         buttons += '<button class="btn btn-sm btn-danger mr-1" data-id="' + data.VEHICLE_ID + '" onclick="updateStatus(this)" title="Deactivate"><i class="ti-close"></i></button>';
                     else
@@ -972,7 +1046,7 @@
                             data.VEHICLE_NAME,
                             data.VEHICLE_TYPE_NAME,
                             data.DEPARTMENT_NAME,
-                            data.REGISTRATION_DATE,
+                            registrationDate,
                             data.OWNERSHIP_NAME,
                             data.VENDOR_NAME,
                             buttons
@@ -1014,7 +1088,7 @@
                     $("#newVehicleDept").select2().trigger('change');
 
                     $("#new_vehicle_division").val(res.data.VEHICLE_DIVISION_ID).trigger('change');
-                    $("#new_registration_date").val(res.data.REGISTRATION_DATE);
+                    $("#new_registration_date").val(moment(res.data.REGISTRATION_DATE).format('DD-MMM-YYYY'));
                     $("#new_rta_office").val(res.data.RTA_CIRCLE_OFFICE_ID);
                     $("#new_license_plate").val(res.data.LICENSE_PLATE);
 

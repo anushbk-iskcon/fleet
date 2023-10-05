@@ -1,7 +1,48 @@
 $(document).ready(function () {
     let insuranceTable = $("#insuranceInfoTable").DataTable();
 
+    let currentYear = moment().year();
+
+    // Enable Datepickers in Filter Form
+    $("#date_fr, #date_to").daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        autoUpdateInput: false,
+        autoApply: false,
+        minYear: 1901,
+        drops: "down",
+        locale: {
+            format: 'DD-MMM-YYYY'
+        }
+    });
+    $('#date_fr, #date_to').on('apply.daterangepicker', function (ev, picker) {
+        $(this).val(picker.startDate.format('DD-MMM-YYYY'));
+    });
+    $('#date_fr, #date_to').on('cancel.daterangepicker', function (ev, picker) {
+        $(this).val('');
+    });
+
     populateTable(insuranceTable);
+
+    // Enable Date Pickers in Add Insurance Details Form
+    $("#add0").on('shown.bs.modal', function () {
+        $("#addInsuranceDetailsForm .new-datepicker").daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            autoUpdateInput: false,
+            autoApply: false,
+            minYear: 2000,
+            locale: {
+                format: 'DD-MMM-YYYY'
+            }
+        });
+    });
+    $("#addInsuranceDetailsForm .new-datepicker").on('apply.daterangepicker', function (ev, picker) {
+        $(this).val(picker.startDate.format('DD-MMM-YYYY'));
+    });
+    $("#addInsuranceDetailsForm .new-datepicker").on('cancel.daterangepicker', function (ev, picker) {
+        $(this).val('');
+    });
 
     $("#addInsuranceDetailsForm").validate({
         rules: {
@@ -150,15 +191,18 @@ function populateTable(table) {
                 $.each(res, function (i, data) {
                     let actionBtns = `<button class="btn btn-sm btn-info mr-1" onclick="editInfo(${data.INSURANCE_ID})" title="Edit"><i class="ti-pencil"></i></button>`;
 
+                    let startDate = moment(data.START_DATE).format('DD-MMM-YYYY');
+                    let endDate = moment(data.END_DATE).format('DD-MMM-YYYY');
+                    let recurringDate = moment(data.RECURRING_DATE).format('DD-MMM-YYYY');
                     table.row.add([
                         i + 1,
                         data.COMPANY_NAME,
                         data.VEHICLE_NAME,
                         data.POLICY_NUMBER,
-                        data.START_DATE,
-                        data.END_DATE,
+                        startDate,
+                        endDate,
                         data.RECURRING_PERIOD_NAME,
-                        data.RECURRING_DATE,
+                        recurringDate,
                         actionBtns
                     ]);
                 });

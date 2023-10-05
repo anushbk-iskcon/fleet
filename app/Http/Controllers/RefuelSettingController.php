@@ -49,21 +49,26 @@ class RefuelSettingController extends Controller
         $refuelSetting->VEHICLE = $request->vehicle;
         $refuelSetting->DRIVER =  $request->driver;
         $refuelSetting->FUEL_TYPE = $request->fuel_type;
-        $refuelSetting->DRIVER_MOBILE = $request->driver_mobile;
+        $refuelSetting->DRIVER_MOBILE = $request->driver_mobile; # Column removed from form/view
         $refuelSetting->REFUELED_DATE = $request->refueling_date;
-        $refuelSetting->REFUEL_LIMIT_TYPE = $request->refuel_limit_type ?? null;
+        $refuelSetting->REFUEL_LIMIT_TYPE = $request->refuel_limit_type ?? null; # Column removed from form/view
         $refuelSetting->FUEL_STATION = $request->fuel_station;
-        $refuelSetting->MAX_UNIT = $request->max_unit;
-        $refuelSetting->BUDGET_GIVEN = $request->budget_given;
+        $refuelSetting->MAX_UNIT = $request->max_unit; # Column removed from form/view
+        $refuelSetting->BUDGET_GIVEN = $request->budget_given ?? 0; # Column removed from form/view
         $refuelSetting->PLACE = $request->place;
-        $refuelSetting->KILOMETER_PER_UNIT = $request->kilometer_per_unit;
+        $refuelSetting->KILOMETER_PER_UNIT = $request->kilometer_per_unit ?? 0; # Column removed from form/view
         $refuelSetting->LAST_READING = $request->last_reading ?? null;
-        $refuelSetting->LAST_UNIT = $request->last_unit ?? null;
-        $refuelSetting->CONSUMPTION_PERCENT = $request->consumption_percent ?? 0;
-        $refuelSetting->ODOMETER_DAY_END = $request->odometer_after_day_end ?? null;
+        $refuelSetting->LAST_UNIT = $request->last_unit ?? null; # Column removed from form/view
+        $refuelSetting->CONSUMPTION_PERCENT = $request->consumption_percent ?? 0; # Column removed from form/view
+        $refuelSetting->ODOMETER_DAY_END = $request->odometer_after_day_end ?? null; # Column removed from form/view
         $refuelSetting->ODOMETER_AT_REFUEL = $request->odometer_at_refueling ?? null;
         $refuelSetting->UNIT_TAKEN = $request->unit_taken ?? 0;
-        $refuelSetting->STRICT_CONSUMPTION = $request->strict_consumption == 1 ? 'Y' : 'N';
+        $refuelSetting->STRICT_CONSUMPTION = $request->strict_consumption == 1 ? 'Y' : 'N'; # Option removed from view
+
+        // Add new fields for unit price / total amount
+        // $refuelSetting->AMOUNT_PER_UNIT = $request->amount_per_unit ?? 0;
+        // $refuelSetting->TOTAL_AMOUNT = $request->total_amount ?? 0;
+        // $refuelSetting->SECURITY_NAME = $request->security_name ?? "";
 
         // For uploading Fuel Slip Image or PDF and storing file path
         if ($request->hasFile('picture')) {
@@ -93,7 +98,7 @@ class RefuelSettingController extends Controller
         $fuelStations = FuelStation::where('IS_ACTIVE', 'Y')->get(['FUEL_STATION_ID', 'VENDOR_NAME', 'FUEL_STATION_NAME']);
         $drivers = Driver::where('IS_ACTIVE', 'Y')->get(['DRIVER_ID', 'DRIVER_NAME']);
 
-        # +ADD CODE TO Get details on the Selected Refuel Setting using find(id)
+        # Get details on the Selected Refuel Setting using find(id)
         $refuel_setting_id = $request->refuel_setting_id;
         $refuelSetting = RefuelSetting::find($refuel_setting_id);
 
@@ -271,21 +276,26 @@ class RefuelSettingController extends Controller
         $refuelSetting->VEHICLE = $request->vehicle;
         $refuelSetting->DRIVER =  $request->driver;
         $refuelSetting->FUEL_TYPE = $request->fuel_type;
-        $refuelSetting->DRIVER_MOBILE = $request->driver_mobile;
+        $refuelSetting->DRIVER_MOBILE = $request->driver_mobile ?? ""; # Column removed from view/form
         $refuelSetting->REFUELED_DATE = $request->refueling_date;
-        $refuelSetting->REFUEL_LIMIT_TYPE = $request->refuel_limit_type ?? null;
-        $refuelSetting->FUEL_STATION = $request->fuel_station;
-        $refuelSetting->MAX_UNIT = $request->max_unit;
-        $refuelSetting->BUDGET_GIVEN = $request->budget_given;
+        $refuelSetting->REFUEL_LIMIT_TYPE = $request->refuel_limit_type ?? null; # Column removed from view
+        $refuelSetting->FUEL_STATION = $request->fuel_station ?? 0;
+        $refuelSetting->MAX_UNIT = $request->max_unit; # Column removed from view
+        $refuelSetting->BUDGET_GIVEN = $request->budget_given ?? 0; # Column removed from view
         $refuelSetting->PLACE = $request->place;
-        $refuelSetting->KILOMETER_PER_UNIT = $request->kilometer_per_unit;
+        $refuelSetting->KILOMETER_PER_UNIT = $request->kilometer_per_unit ?? 0; # Column removed from view
         $refuelSetting->LAST_READING = $request->last_reading ?? null;
-        $refuelSetting->LAST_UNIT = $request->last_unit ?? null;
-        $refuelSetting->CONSUMPTION_PERCENT = $request->consumption_percent ?? 0;
-        $refuelSetting->ODOMETER_DAY_END = $request->odometer_after_day_end ?? null;
+        $refuelSetting->LAST_UNIT = $request->last_unit ?? null; # Column removed from view
+        $refuelSetting->CONSUMPTION_PERCENT = $request->consumption_percent ?? 0; # Column removed from view
+        $refuelSetting->ODOMETER_DAY_END = $request->odometer_after_day_end ?? null; # Column removed from view
         $refuelSetting->ODOMETER_AT_REFUEL = $request->odometer_at_refueling ?? null;
         $refuelSetting->UNIT_TAKEN = $request->unit_taken ?? 0;
-        $refuelSetting->STRICT_CONSUMPTION = $request->strict_consumption == 1 ? 'Y' : 'N';
+        $refuelSetting->STRICT_CONSUMPTION = $request->strict_consumption == 1 ? 'Y' : 'N'; # Option removed from view
+
+        // Newly added fields
+        // $refuelSetting->AMOUNT_PER_UNIT = $request->amount_per_unit ?? 0;
+        // $refuelSetting->TOTAL_AMOUNT = $request->total_amount ?? 0;
+        // $refuelSetting->SECURITY_NAME = $request->security_name ?? "";
 
         // For uploading Fuel Slip Image or PDF and storing file path
         if ($request->hasFile('picture')) {

@@ -77,7 +77,7 @@
                         <div class="form-group row">
                             <label for="start_date" class="col-sm-5 col-form-label">Start Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="start_date" class="form-control newdatetimepicker" type="text" placeholder="Start Date" id="start_date">
+                                <input name="start_date" class="form-control new-datepicker" type="text" placeholder="Start Date" id="start_date">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -137,13 +137,13 @@
                         <div class="form-group row">
                             <label for="end_date" class="col-sm-5 col-form-label">End Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="end_date" class="form-control newdatetimepicker" type="text" placeholder="End Date" id="end_date">
+                                <input name="end_date" class="form-control new-datepicker" type="text" placeholder="End Date" id="end_date">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="recurring_date" class="col-sm-5 col-form-label">Recurring Date </label>
                             <div class="col-sm-7">
-                                <input name="recurring_date" class="form-control newdatetimepicker" type="text" placeholder="Recurring Date" id="recurring_date">
+                                <input name="recurring_date" class="form-control new-datepicker" type="text" placeholder="Recurring Date" id="recurring_date">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -217,7 +217,7 @@
                         <div class="form-group row mb-1">
                             <label for="date_fr" class="col-sm-5 col-form-label justify-content-start text-left">Date From </label>
                             <div class="col-sm-7">
-                                <input name="date_fr" autocomplete="off" class="form-control newdatetimepicker" type="text" placeholder="Date From" id="date_fr">
+                                <input name="date_fr" autocomplete="off" class="form-control new-datepicker" type="text" placeholder="Date From" id="date_fr">
                             </div>
                         </div>
 
@@ -232,7 +232,7 @@
                         <div class="form-group row mb-1">
                             <label for="date_to" class="col-sm-5 col-form-label justify-content-start text-left">Date To </label>
                             <div class="col-sm-7">
-                                <input name="date_to" autocomplete="off" class="form-control newdatetimepicker" type="text" placeholder="Date To" id="date_to">
+                                <input name="date_to" autocomplete="off" class="form-control new-datepicker" type="text" placeholder="Date To" id="date_to">
                             </div>
                         </div>
                     </div>
