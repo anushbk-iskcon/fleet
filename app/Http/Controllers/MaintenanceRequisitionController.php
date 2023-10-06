@@ -39,8 +39,14 @@ class MaintenanceRequisitionController extends Controller
                 $status = null;
             $vehicle = $request->vehicle;
             $maintenance_service = $request->mainten_service;
-            $serviceFromDate = $request->from;
-            $serviceToDate = $request->to;
+            $fromDate = $request->from;
+            $toDate = $request->to;
+            $serviceFromDate = null;
+            $serviceToDate = null;
+            if (isset($fromDate))
+                $serviceFromDate = date('Y-m-d', strtotime($fromDate));
+            if (isset($toDate))
+                $serviceToDate = date('Y-m-d', strtotime($toDate));
 
             $mainten_reqs = DB::table('maintenance_requisitions')
                 ->join('vehicles', 'maintenance_requisitions.VEHICLE_ID', '=', 'vehicles.VEHICLE_ID')
@@ -129,8 +135,8 @@ class MaintenanceRequisitionController extends Controller
         $maintenRequisition->VEHICLE_ID = $request->vehicle_name;
         $maintenRequisition->MAINTENANCE_TYPE = $request->mainten_type;
         $maintenRequisition->MAINTENANCE_SERVICE_NAME = $request->mainten_service_name;
-        $maintenRequisition->SERVICE_DATE = $request->service_date;
-        # Date format d-M-Y
+        $maintenRequisition->SERVICE_DATE = date('Y-m-d', strtotime($request->service_date));
+        # Date format YYYY-MM-DD
 
         //Add remarks column
         // $maintenRequisition->REMARKS = $request->remarks;
@@ -221,7 +227,7 @@ class MaintenanceRequisitionController extends Controller
         $requisitionDetails .= '" class="btn btn-success ml-2"><i class="typcn typcn-edit mr-1"></i>Edit Maintenance </a></div>';
         $requisitionDetails .= ' <div class="card card-body p-5"><div class="row"><div class="col-12 col-md-6"><p class="text-muted mb-4">';
         $requisitionDetails .= '<strong>Requisition Type</strong>: ';
-        $requisitionDetails .= $maintenRequisition->REQUISITION_TYPE == 'M' ? 'Maintenance' : 'General';
+        $requisitionDetails .= $maintenRequisition->REQUISITION_TYPE == 'M' ? 'Breakdown' : 'Periodic';
         $requisitionDetails .= '<br> <strong>Vehicle Name</strong>: ';
         $requisitionDetails .= $maintenRequisition->VEHICLE_NAME . '<br>';
         $requisitionDetails .= '<strong>Maintenance Type</strong>: ';
@@ -237,7 +243,7 @@ class MaintenanceRequisitionController extends Controller
         $requisitionDetails .= '<strong>Priority</strong>: ';
         $requisitionDetails .= $maintenRequisition->REQ_PRIORITY . '<br>';
         $requisitionDetails .= '<p><h6 class="text-uppercase text-muted fs-12 font-weight-600">Service Date</h6>';
-        $requisitionDetails .= '<p class="mb-4"><time datetime="' . $maintenRequisition->SERVICE_DATE . '">' . $maintenRequisition->SERVICE_DATE . '</time></p>';
+        $requisitionDetails .= '<p class="mb-4"><time datetime="' . $maintenRequisition->SERVICE_DATE . '">' . date('d-M-Y', strtotime($maintenRequisition->SERVICE_DATE)) . '</time></p>';
         $requisitionDetails .= '</div></div>';
         $requisitionDetails .= '<div class="row"><div class="col-12"><div class="table-responsive"><table class="table my-4">';
         $requisitionDetails .= '<thead>
@@ -344,7 +350,7 @@ class MaintenanceRequisitionController extends Controller
         $maintenRequisition->VEHICLE_ID = $request->vehicle_name;
         $maintenRequisition->MAINTENANCE_TYPE = $request->mainten_type;
         $maintenRequisition->MAINTENANCE_SERVICE_NAME = $request->mainten_service_name;
-        $maintenRequisition->SERVICE_DATE = $request->service_date;
+        $maintenRequisition->SERVICE_DATE = date('Y-m-d', strtotime($request->service_date));
         $maintenRequisition->CHARGE = $request->charge ?? "";
         $maintenRequisition->CHARGE_BEAR_BY = $request->charge_bear_by ?? "";
         $maintenRequisition->TOTAL_AMOUNT = $request->grand_total_price; // Or use session stored value

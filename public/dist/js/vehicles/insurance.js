@@ -24,24 +24,25 @@ $(document).ready(function () {
 
     populateTable(insuranceTable);
 
-    // Enable Date Pickers in Add Insurance Details Form
+    // Enable Date-Pickers in Add Insurance Details Form
     $("#add0").on('shown.bs.modal', function () {
         $("#addInsuranceDetailsForm .new-datepicker").daterangepicker({
             singleDatePicker: true,
             showDropdowns: true,
             autoUpdateInput: false,
-            autoApply: false,
+            // autoApply: false,
             minYear: 2000,
             locale: {
                 format: 'DD-MMM-YYYY'
             }
         });
-    });
-    $("#addInsuranceDetailsForm .new-datepicker").on('apply.daterangepicker', function (ev, picker) {
-        $(this).val(picker.startDate.format('DD-MMM-YYYY'));
-    });
-    $("#addInsuranceDetailsForm .new-datepicker").on('cancel.daterangepicker', function (ev, picker) {
-        $(this).val('');
+
+        $("#addInsuranceDetailsForm .new-datepicker").on('apply.daterangepicker', function (ev, picker) {
+            $(this).val(picker.startDate.format('DD-MMM-YYYY'));
+        });
+        $("#addInsuranceDetailsForm .new-datepicker").on('cancel.daterangepicker', function (ev, picker) {
+            $(this).val('');
+        });
     });
 
     $("#addInsuranceDetailsForm").validate({
@@ -230,6 +231,11 @@ function editInfo(id) {
         dataType: 'json',
         success: function (res) {
             // console.log(res);
+            let currentStartDate = moment(res.START_DATE).format('DD-MMM-YYYY');
+            let currentEndDate = moment(res.END_DATE).format('DD-MMM-YYYY');
+            let currentRecurringDate = '';
+            if (res.RECURRING_DATE)
+                currentRecurringDate = moment(res.RECURRING_DATE).format('DD-MMM-YYYY');
 
             $("#edit .modal-body").html('');
             let editFormContent = `<form action="${updateURL}" method="post" enctype="multipart/form-data" class="row" id="editInsuranceDetailsForm" accept-charset="utf-8">
@@ -251,7 +257,7 @@ function editInfo(id) {
                 <div class="form-group row">
                     <label for="edit_start_date" class="col-sm-5 col-form-label">Start Date <i class="text-danger">*</i></label>
                     <div class="col-sm-7">
-                        <input name="start_date" class="form-control newdatetimepicker" type="text" placeholder="Start Date" id="edit_start_date" value="${res.START_DATE}">
+                        <input name="start_date" class="form-control new-datepicker" type="text" placeholder="Start Date" id="edit_start_date" value="${currentStartDate}">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -317,13 +323,13 @@ function editInfo(id) {
                 <div class="form-group row">
                     <label for="edit_end_date" class="col-sm-5 col-form-label">End Date <i class="text-danger">*</i></label>
                     <div class="col-sm-7">
-                            <input name="end_date" class="form-control newdatetimepicker" type="text" placeholder="End Date" id="edit_end_date" value="${res.END_DATE}">
+                            <input name="end_date" class="form-control new-datepicker" type="text" placeholder="End Date" id="edit_end_date" value="${currentEndDate}">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="edit_recurring_date" class="col-sm-5 col-form-label">Recurring Date </label>
                     <div class="col-sm-7">
-                        <input name="recurring_date" class="form-control newdatetimepicker" type="text" placeholder="Recurring Date" id="edit_recurring_date" value="${res.RECURRING_DATE}">
+                        <input name="recurring_date" class="form-control new-datepicker" type="text" placeholder="Recurring Date" id="edit_recurring_date" value="${currentRecurringDate}">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -356,13 +362,22 @@ function editInfo(id) {
 
             $("#edit .modal-body").html(editFormContent);
             $("#editInsuranceDetailsForm .basic-single").select2();
-            $("#editInsuranceDetailsForm .newdatetimepicker").daterangepicker({
+            $("#editInsuranceDetailsForm .new-datepicker").daterangepicker({
                 singleDatePicker: true,
                 showDropdowns: true,
+                autoUpdateInput: false,
                 locale: {
-                    format: 'YYYY-MM-DD'
+                    format: 'DD-MMM-YYYY'
                 },
+                minYear: 2000,
+                maxDate: '31-Dec-' + currentYear,
                 maxYear: parseInt(moment().format('YYYY'), 10)
+            });
+            $("#editInsuranceDetailsForm .new-datepicker").on('apply.daterangepicker', function (ev, picker) {
+                $(this).val(picker.startDate.format('DD-MMM-YYYY'));
+            });
+            $("#editInsuranceDetailsForm .new-datepicker").on('cancel.daterangepicker', function (ev, picker) {
+                $(this).val('');
             });
 
             $("#resetEditInsFormBtn").click(function () {

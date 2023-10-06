@@ -23,6 +23,25 @@ $(document).ready(function () {
 
     populateTable(legalDocumentsTable);
 
+    // Enable datepickers on filter date select
+    $("#exp_date_fr, #exp_date_to").daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        autoUpdateInput: false,
+        autoApply: false,
+        minYear: 2000,
+        drops: "down",
+        locale: {
+            format: 'DD-MMM-YYYY'
+        }
+    });
+    $('#exp_date_fr, #exp_date_to').on('apply.daterangepicker', function (ev, picker) {
+        $(this).val(picker.startDate.format('DD-MMM-YYYY'));
+    });
+    $('#exp_date_fr, #exp_date_to').on('cancel.daterangepicker', function (ev, picker) {
+        $(this).val('');
+    });
+
     // For sending email and SMS number in Add Form based on checked state of toggleboxes
     $("#emailCheckbox").change(function () {
         if (this.checked) {
@@ -50,6 +69,27 @@ $(document).ready(function () {
         $("#exp_date_fr").val("");
         $("#exp_date_to").val("");
         populateTable(legalDocumentsTable);
+    });
+
+    // Enable date-pickers on Add Details Form
+    $("#add0").on('shown.bs.modal', function (ev) {
+        $("#addLegalDocumentForm .new-datepicker").daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            autoUpdateInput: false,
+            autoApply: false,
+            minYear: 2000,
+            drops: "down",
+            locale: {
+                format: 'DD-MMM-YYYY'
+            }
+        });
+        $('#addLegalDocumentForm .new-datepicker').on('apply.daterangepicker', function (ev, picker) {
+            $(this).val(picker.startDate.format('DD-MMM-YYYY'));
+        });
+        $('#addLegalDocumentForm .new-datepicker').on('cancel.daterangepicker', function (ev, picker) {
+            $(this).val('');
+        });
     });
 
     $("#addLegalDocumentForm").validate({
@@ -158,6 +198,8 @@ function populateTable(table) {
                 $.each(res, function (i, data) {
                     let actionBtns = `<button class="btn btn-sm btn-info mr-1" onclick="editInfo(${data.LEGAL_DOCUMENT_ID})" title="Edit"><i class="ti-pencil"></i></button>`;
 
+                    let lastIssueDate = moment(data.LAST_ISSUE_DATE).format('DD-MMM-YYYY');
+                    let expireDate = moment(data.EXPIRE_DATE).format('DD-MMM-YYYY');
                     if (data.IS_ACTIVE == 'Y')
                         actionBtns += `<button class="btn btn-sm btn-danger mr-1" onclick="changeActivation(${data.LEGAL_DOCUMENT_ID}, 0)" title="Deactivate"><i class="ti-close"></i></button>`;
                     else
@@ -166,8 +208,8 @@ function populateTable(table) {
                         i + 1,
                         data.DOCUMENT_TYPE_NAME,
                         data.VEHICLE_NAME,
-                        data.LAST_ISSUE_DATE,
-                        data.EXPIRE_DATE,
+                        lastIssueDate,
+                        expireDate,
                         data.VENDOR_NAME,
                         data.COMMISSION,
                         data.NOTIFICATION_TYPE_NAME,
@@ -199,6 +241,9 @@ function editInfo(id) {
         dataType: 'json',
         success: function (res) {
             $("#edit .modal-body").html("");
+
+            let lastIssueDate = moment(res.LAST_ISSUE_DATE).format('DD-MMM-YYYY');
+            let expireDate = moment(res.EXPIRE_DATE).format('DD-MMM-YYYY');
 
             let editFormContent = `<form action="${updateDetailsURL}" method="post" id="updateLegalDocumentForm" class="row" enctype="multipart/form-data" accept-charset="utf-8">`;
             editFormContent += `<input type="hidden" name="_token" value="${csrfToken}">`;
@@ -237,15 +282,15 @@ function editInfo(id) {
             editFormContent += `<div class="form-group row">
             <label for="edit_last_issue_date" class="col-sm-5 col-form-label">Last Issue Date <i class="text-danger">*</i></label>
             <div class="col-sm-7">
-                <input name="last_issue_date" autocomplete="off" class="form-control newdatetimepicker" type="text" placeholder="Last Issue Date" id="edit_last_issue_date"
-                value="${res.LAST_ISSUE_DATE}">
+                <input name="last_issue_date" autocomplete="off" class="form-control new-datepicker" type="text" placeholder="Last Issue Date" id="edit_last_issue_date"
+                value="${lastIssueDate}">
             </div>
             </div>
             <div class="form-group row">
                 <label for="edit_expire_date" class="col-sm-5 col-form-label">Expire Date <i class="text-danger">*</i></label>
             <div class="col-sm-7">
-                <input name="expire_date" autocomplete="off" class="form-control newdatetimepicker" type="text" placeholder="Expire Date" id="edit_expire_date"
-                value="${res.EXPIRE_DATE}">
+                <input name="expire_date" autocomplete="off" class="form-control new-datepicker" type="text" placeholder="Expire Date" id="edit_expire_date"
+                value="${expireDate}">
             </div>
             </div>
             <div class="form-group row">
@@ -355,13 +400,19 @@ function editInfo(id) {
 
             // To allow plugins to work on dynamically generated form elements
             $("#updateLegalDocumentForm .basic-single").select2();
-            $("#updateLegalDocumentForm .newdatetimepicker").daterangepicker({
+            $("#updateLegalDocumentForm .new-datepicker").daterangepicker({
                 singleDatePicker: true,
                 showDropdowns: true,
                 minYear: 1990,
                 locale: {
-                    format: 'YYYY-MM-DD'
+                    format: 'DD-MMM-YYYY'
                 }
+            });
+            $('#updateLegalDocumentForm .new-datepicker').on('apply.daterangepicker', function (ev, picker) {
+                $(this).val(picker.startDate.format('DD-MMM-YYYY'));
+            });
+            $('#updateLegalDocumentForm .new-datepicker').on('cancel.daterangepicker', function (ev, picker) {
+                $(this).val('');
             });
 
             if (res.EMAIL_NOTIFICATIONS == 'Y') {

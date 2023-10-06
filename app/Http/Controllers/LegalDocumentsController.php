@@ -24,8 +24,16 @@ class LegalDocumentsController extends Controller
         if (request()->isMethod('post')) {
             $vehicle = $request->vehiclesr;
             $doctype = $request->document_typesr;
-            $expire_date_from = $request->exp_date_fr;
-            $expire_date_to = $request->exp_date_to;
+            $exp_date_fr = $request->exp_date_fr;
+            $exp_date_to = $request->exp_date_to;
+            $expire_date_from = null;
+            $expire_date_to = null;
+
+            # To convert date times to required fromat as in DB (YYYY-MM-DD)
+            if (isset($exp_date_fr))
+                $expire_date_from = date('Y-m-d', strtotime($exp_date_fr));
+            if (isset($exp_date_to))
+                $expire_date_to = date('Y-m-d', strtotime($exp_date_to));
 
             $legalDocsList = DB::table('legal_documents')
                 ->join('mstr_document_type', 'legal_documents.DOCUMENT_TYPE', '=', 'mstr_document_type.DOCUMENT_TYPE_ID')
@@ -66,8 +74,8 @@ class LegalDocumentsController extends Controller
         $legalDocument->DOCUMENT_TYPE = $request->document_type;
         $legalDocument->VEHICLE = $request->vehicle;
         $legalDocument->VENDOR = $request->vendor;
-        $legalDocument->LAST_ISSUE_DATE = $request->last_issue_date;
-        $legalDocument->EXPIRE_DATE = $request->expire_date;
+        $legalDocument->LAST_ISSUE_DATE = date('Y-m-d', strtotime($request->last_issue_date));
+        $legalDocument->EXPIRE_DATE = date('Y-m-d', strtotime($request->expire_date));
         $legalDocument->CHARGE_PAID = $request->charge_paid;
         $legalDocument->COMMISSION = $request->commission;
         $legalDocument->NOTIFICATION_BEFORE = $request->notification_before;
@@ -117,8 +125,8 @@ class LegalDocumentsController extends Controller
         $legalDocument->DOCUMENT_TYPE = $request->document_type;
         $legalDocument->VEHICLE = $request->vehicle;
         $legalDocument->VENDOR = $request->vendor;
-        $legalDocument->LAST_ISSUE_DATE = $request->last_issue_date;
-        $legalDocument->EXPIRE_DATE = $request->expire_date;
+        $legalDocument->LAST_ISSUE_DATE = date('Y-m-d', strtotime($request->last_issue_date));
+        $legalDocument->EXPIRE_DATE = date('Y-m-d', strtotime($request->expire_date));
         $legalDocument->CHARGE_PAID = $request->charge_paid;
         $legalDocument->COMMISSION = $request->commission;
         $legalDocument->NOTIFICATION_BEFORE = $request->notification_before;

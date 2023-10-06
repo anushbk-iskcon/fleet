@@ -7,11 +7,11 @@ $(document).ready(function () {
         singleDatePicker: true,
         showDropdowns: true,
         autoUpdateInput: false,
-        minYear: 1901,
-        maxDate: '2100',
+        minYear: 2000,
+        maxDate: '31-Dec-' + currentYear,
         "drops": "up",
         locale: {
-            format: 'YYYY-MM-DD'
+            format: 'DD-MMM-YYYY'
         },
         maxYear: parseInt(moment().format('YYYY'), 10)
     }, function (start, end, label) {
@@ -19,8 +19,8 @@ $(document).ready(function () {
     });
     $('.new-datepicker').on('apply.daterangepicker', function (ev, picker) {
         $(this).val(picker.startDate.format('DD-MMM-YYYY'));
+        $(this).valid();
     });
-
     $('.new-datepicker').on('cancel.daterangepicker', function (ev, picker) {
         $(this).val('');
     });

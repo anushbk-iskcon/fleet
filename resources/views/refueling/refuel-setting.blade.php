@@ -83,7 +83,7 @@
                         <div class="form-group row">
                             <label for="dateofrefuel" class="col-sm-5 col-form-label">Refueled Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="refueling_date" autocomplete="off" class="form-control newdatetimepicker" type="text" placeholder="Refueled Date" id="dateofrefuel">
+                                <input name="refueling_date" autocomplete="off" class="form-control new-datepicker" type="text" placeholder="Refueled Date" id="dateofrefuel">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -270,11 +270,9 @@
                                 <th>Sl No.</th>
                                 <th>Vehicle Name</th>
                                 <th>Last Reading</th>
-                                <th>Consumption</th>
-                                <th>Strict Policy</th>
-                                <th>Driver Mobile</th>
+
                                 <th>Fuel Type</th>
-                                <th>Refuel Limit</th>
+
                                 <th>Action(s)</th>
                             </tr>
                         </thead>

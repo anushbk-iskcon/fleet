@@ -3,17 +3,38 @@ $(document).ready(function () {
 
     populateTable(refuelSettingTable);
 
+    $("#add0").on('shown.bs.modal', function (ev) {
+        // To enable datepickers on Add Refuel Setting Form
+        $("#addRefuelSettingForm .new-datepicker").daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            autoUpdateInput: false,
+            autoApply: false,
+            minYear: 2000,
+            drops: "down",
+            locale: {
+                format: 'DD-MMM-YYYY'
+            },
+        });
+        $('#addRefuelSettingForm .new-datepicker').on('apply.daterangepicker', function (ev, picker) {
+            $(this).val(picker.startDate.format('DD-MMM-YYYY'));
+        });
+        $('#addRefuelSettingForm .new-datepicker').on('cancel.daterangepicker', function (ev, picker) {
+            $(this).val('');
+        });
+    });
+
     $("#addRefuelSettingForm").validate({
         rules: {
             vehicle: 'required',
             fuel_type: 'required',
             fuel_station: 'required',
             refueling_date: 'required',
-            budget_given: {
-                required: true,
-                number: true,
-                min: 0
-            },
+            // budget_given: {
+            //     required: true,
+            //     number: true,
+            //     min: 0
+            // },
             last_reading: {
                 min: 0
             },
@@ -22,9 +43,16 @@ $(document).ready(function () {
                 required: true,
                 maxlength: 50
             },
+            security_name: {
+                required: {
+                    depends: function (element) {
+                        return $("#station_name").val() != '';
+                    }
+                }
+            },
             kilometer_per_unit: { required: true, min: 0 },
             driver: 'required',
-            driver_mobile: 'required',
+            // driver_mobile: 'required',
             unit_taken: {
                 required: true,
                 min: 0
@@ -32,6 +60,11 @@ $(document).ready(function () {
             max_unit: {
                 required: true,
                 min: 0
+            }
+        },
+        messages: {
+            security_name: {
+                required: 'Required when Fuel Station is selected'
             }
         },
         errorElement: 'div',
@@ -147,11 +180,10 @@ function populateTable(table) {
                         i + 1,
                         data.VEHICLE_NAME,
                         data.LAST_READING,
-                        data.CONSUMPTION_PERCENT,
-                        data.STRICT_CONSUMPTION == 'Y' ? 'Yes' : 'No',
-                        data.DRIVER_MOBILE,
+                        // data.STRICT_CONSUMPTION == 'Y' ? 'Yes' : 'No',
+                        // data.DRIVER_MOBILE,
                         data.FUEL_TYPE_NAME,
-                        data.REFUEL_LIMIT_TYPE,
+                        // data.REFUEL_LIMIT_TYPE,
                         actionBtns
                     ]);
                 });
@@ -183,24 +215,22 @@ function editInfo(refuelSettingId) {
             $("#edit .basic-single").select2();
 
             // For Date picker functionality
-            $('#edit .newdatetimepicker').daterangepicker({
+            $('#edit .edit-datepicker').daterangepicker({
                 singleDatePicker: true,
                 showDropdowns: true,
                 autoUpdateInput: false,
-                minYear: 1901,
-                maxDate: '2100',
+                minYear: 2000,
                 "drops": "down",
                 locale: {
-                    format: 'YYYY-MM-DD'
-                },
-                maxYear: parseInt(moment().format('YYYY'), 10)
+                    format: 'DD-MMM-YYYY'
+                }
             }, function (start, end, label) {
                 var years = moment().diff(start, 'years');
             });
-            $('#edit .newdatetimepicker').on('apply.daterangepicker', function (ev, picker) {
+            $('#edit .edit-datepicker').on('apply.daterangepicker', function (ev, picker) {
                 $(this).val(picker.startDate.format('DD-MMM-YYYY'));
             });
-            $('#edit .newdatetimepicker').on('cancel.daterangepicker', function (ev, picker) {
+            $('#edit .edit-datepicker').on('cancel.daterangepicker', function (ev, picker) {
                 $(this).val('');
             });
 
@@ -259,11 +289,11 @@ function reinitValidationForEditForm() {
             fuel_type: 'required',
             fuel_station: 'required',
             refueling_date: 'required',
-            budget_given: {
-                required: true,
-                number: true,
-                min: 0
-            },
+            // budget_given: {
+            //     required: true,
+            //     number: true,
+            //     min: 0
+            // },
             last_reading: {
                 min: 0
             },
@@ -272,17 +302,17 @@ function reinitValidationForEditForm() {
                 required: true,
                 maxlength: 50
             },
-            kilometer_per_unit: { required: true, min: 0 },
+            // kilometer_per_unit: { required: true, min: 0 },
             driver: 'required',
-            driver_mobile: 'required',
+            // driver_mobile: 'required',
             unit_taken: {
                 required: true,
                 min: 0
-            },
-            max_unit: {
-                required: true,
-                min: 0
             }
+            // max_unit: {
+            //     required: true,
+            //     min: 0
+            // }
         },
         errorElement: 'div',
         errorPlacement: function (error, element) {

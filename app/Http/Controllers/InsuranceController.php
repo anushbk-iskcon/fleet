@@ -121,12 +121,12 @@ class InsuranceController extends Controller
         $insurance->VEHICLE = $request->vehicle;
         $insurance->POLICY_NUMBER = $request->policy_number;
         $insurance->CHARGE_PAYABLE = $request->charge_payable;
-        $insurance->START_DATE = $request->start_date;
-        $insurance->END_DATE = $request->end_date;
+        $insurance->START_DATE = date('Y-m-d', strtotime($request->start_date));
+        $insurance->END_DATE = date('Y-m-d', strtotime($request->end_date));
         $insurance->RECURRING_PERIOD = $request->recurring_period;
 
         if ($request->has('recurring_date'))
-            $insurance->RECURRING_DATE = $request->recurring_date;
+            $insurance->RECURRING_DATE = date('Y-m-d', strtotime($request->recurring_date));
 
         $insurance->RECURRING_PERIOD_REMINDER = $request->add_reminder == 1 ? 'Y' : 'N';
         $insurance->STATUS = $request->status == 1 ? 'Y' : 'N';

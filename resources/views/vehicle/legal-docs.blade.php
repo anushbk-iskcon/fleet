@@ -89,13 +89,13 @@
                         <div class="form-group row">
                             <label for="last_issue_date" class="col-sm-5 col-form-label">Last Issue Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="last_issue_date" autocomplete="off" required="" class="form-control newdatetimepicker" type="text" placeholder="Last Issue Date" id="last_issue_date">
+                                <input name="last_issue_date" autocomplete="off" required="" class="form-control new-datepicker" type="text" placeholder="Last Issue Date" id="last_issue_date">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="expire_date" class="col-sm-5 col-form-label">Expire Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="expire_date" required="" autocomplete="off" class="form-control newdatetimepicker" type="text" placeholder="Expire Date" id="expire_date">
+                                <input name="expire_date" required="" autocomplete="off" class="form-control new-datepicker" type="text" placeholder="Expire Date" id="expire_date">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -238,13 +238,13 @@
                     <div class="form-group row mb-1">
                         <label for="exp_date_fr" class="col-sm-5 col-form-label justify-content-start text-left">Expire Date From </label>
                         <div class="col-sm-7">
-                            <input name="exp_date_fr" autocomplete="off" class="form-control newdatetimepicker" type="text" placeholder="Expire Date From" id="exp_date_fr">
+                            <input name="exp_date_fr" autocomplete="off" class="form-control new-datepicker" type="text" placeholder="Expire Date From" id="exp_date_fr">
                         </div>
                     </div>
                     <div class="form-group row mb-1">
                         <label for="exp_date_to" class="col-sm-5 col-form-label justify-content-start text-left">Expire Date To </label>
                         <div class="col-sm-7">
-                            <input name="exp_date_to" autocomplete="off" class="form-control newdatetimepicker" type="text" placeholder="Expire Date To" id="exp_date_to">
+                            <input name="exp_date_to" autocomplete="off" class="form-control new-datepicker" type="text" placeholder="Expire Date To" id="exp_date_to">
                         </div>
                     </div>
                 </div>
@@ -313,6 +313,8 @@
     let getDetailsURL = "{{route('legal-documents.details')}}";
     let changeActivationURL = "{{route('legal-documents.change-activation')}}";
     let updateDetailsURL = "{{route('legal-documents.update')}}";
+
+    let currentYear = moment().year();
 
     // Converting JSON returned from Laravel controller for use in External JS
     let vehicles = JSON.parse(`{!! json_encode($vehicles) !!}`);

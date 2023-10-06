@@ -10,9 +10,30 @@ $(document).ready(function () {
         $("#vehicle").val("").change();
         $("#status").val("").change();
         $("#service_fr").val("").change();
-        $("#from").val("");
-        $("#to").val("");
+        $("#filter_from").val("");
+        $("#filter_to").val("");
         populateTable(maintenReqTable);
+    });
+
+    // To enable date-pickers on filter form
+    $("#filter_from, #filter_to").daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        autoUpdateInput: false,
+        autoApply: false,
+        minYear: 2000,
+        maxDate: '31-Dec' + currentYear,
+        drops: "down",
+        locale: {
+            format: 'DD-MMM-YYYY'
+        },
+        maxYear: parseInt(moment().format('YYYY'), 10)
+    });
+    $("#filter_from, #filter_to").on('apply.daterangepicker', function (ev, picker) {
+        $(this).val(picker.startDate.format('DD-MMM-YYYY'));
+    });
+    $("#filter_from, #filter_to").on('cancel.daterangepicker', function (ev, picker) {
+        $(this).val('');
     });
 
     populateTable(maintenReqTable);
@@ -27,8 +48,8 @@ function populateTable(table) {
             vehicle: $("#vehicle").val(),
             status: $("#status").val(),
             mainten_service: $("#service_fr").val(),
-            from: $("#from").val(),
-            to: $("#to").val(),
+            from: $("#filter_from").val(),
+            to: $("#filter_to").val(),
             _token: csrfToken
         },
         dataType: 'json',
@@ -41,6 +62,7 @@ function populateTable(table) {
                 // Fill rows in the table
                 $.each(res, function (i, data) {
                     let reqStatus = '';
+                    let reqDate = moment(data.SERVICE_DATE).format('DD-MMM-YYYY');
                     let editURL = editRequisitionPlaceholderURL;
                     editURL = editURL.replace('0', data.MAINTENANCE_REQ_ID);
                     if (data.APPROVAL_STATUS == 'P')
@@ -72,7 +94,7 @@ function populateTable(table) {
                     actionBtns += approvalBtnsContainer;
                     table.row.add([
                         i + 1,
-                        data.SERVICE_DATE,
+                        reqDate,
                         data.VEHICLE_NAME,
                         data.MAINTENANCE_NAME,
                         data.EMPLOYEE_NAME,

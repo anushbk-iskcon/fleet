@@ -50,7 +50,7 @@ class RefuelSettingController extends Controller
         $refuelSetting->DRIVER =  $request->driver;
         $refuelSetting->FUEL_TYPE = $request->fuel_type;
         $refuelSetting->DRIVER_MOBILE = $request->driver_mobile; # Column removed from form/view
-        $refuelSetting->REFUELED_DATE = $request->refueling_date;
+        $refuelSetting->REFUELED_DATE = date('Y-m-d', strtotime($request->refueling_date));
         $refuelSetting->REFUEL_LIMIT_TYPE = $request->refuel_limit_type ?? null; # Column removed from form/view
         $refuelSetting->FUEL_STATION = $request->fuel_station;
         $refuelSetting->MAX_UNIT = $request->max_unit; # Column removed from form/view
@@ -138,8 +138,8 @@ class RefuelSettingController extends Controller
 
         $editFormContent .= '<div class="form-group row">
         <label for="editdateofrefuel" class="col-sm-5 col-form-label">Refueled Date <i class="text-danger">*</i></label><div class="col-sm-7">
-            <input name="refueling_date" autocomplete="off" class="form-control newdatetimepicker" type="text" placeholder="Refueled Date"
-            id="editdateofrefuel" value="' . $refuelSetting->REFUELED_DATE . '">
+            <input name="refueling_date" autocomplete="off" class="form-control edit-datepicker" type="text" placeholder="Refueled Date"
+            id="editdateofrefuel" value="' . date('d-M-Y', strtotime($refuelSetting->REFUELED_DATE)) . '">
         </div></div>';
 
         $editFormContent .= '<div class="form-group row">
@@ -277,7 +277,7 @@ class RefuelSettingController extends Controller
         $refuelSetting->DRIVER =  $request->driver;
         $refuelSetting->FUEL_TYPE = $request->fuel_type;
         $refuelSetting->DRIVER_MOBILE = $request->driver_mobile ?? ""; # Column removed from view/form
-        $refuelSetting->REFUELED_DATE = $request->refueling_date;
+        $refuelSetting->REFUELED_DATE = date('Y-m-d', strtotime($request->refueling_date));
         $refuelSetting->REFUEL_LIMIT_TYPE = $request->refuel_limit_type ?? null; # Column removed from view
         $refuelSetting->FUEL_STATION = $request->fuel_station ?? 0;
         $refuelSetting->MAX_UNIT = $request->max_unit; # Column removed from view

@@ -240,6 +240,7 @@
 @endif
 <script>
     // Any global variables like routes etc.
+    const currentYear = moment().year();
 </script>
 <script src="{{asset('public/dist/js/maintenance/add_mainten_req.js')}}"></script>
 @endsection

@@ -299,6 +299,8 @@
     let getDetailsURL = "{{route('insurance.details')}}";
     let updateDetailsURL = "{{route('insurance.update')}}";
 
+    let currentYear = moment().year(); // Get current year for use in date pickers
+
     let recurringPeriods = JSON.parse(`{!! json_encode($recurringPeriods) !!}`);
     // console.log(recurringPeriods);
     let vehicles = JSON.parse(`{!! json_encode($vehicles) !!}`);

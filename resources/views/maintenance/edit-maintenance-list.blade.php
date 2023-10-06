@@ -133,7 +133,7 @@
                         <div class="form-group row">
                             <label for="service_date" class="col-sm-5 col-form-label">Service Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="service_date" required class="form-control newdatetimepicker" type="text" placeholder="Service Date" id="service_date" value="{{$maintenReqDetails['SERVICE_DATE']}}">
+                                <input name="service_date" required class="form-control new-datepicker" type="text" placeholder="Service Date" id="service_date" value="{{date('d-M-Y', strtotime($maintenReqDetails['SERVICE_DATE']))}}">
                             </div>
                         </div>
 

@@ -117,15 +117,15 @@
                 </div>
                 <div class="col-sm-12 col-xl-4">
                     <div class="form-group row mb-1">
-                        <label for="from" class="col-sm-5 col-form-label justify-content-start text-left">From </label>
+                        <label for="filter_from" class="col-sm-5 col-form-label justify-content-start text-left">From </label>
                         <div class="col-sm-7">
-                            <input name="from" autocomplete="off" class="form-control newdatetimepicker" type="text" placeholder="From" id="from" value="">
+                            <input name="from" autocomplete="off" class="form-control new-datepicker" type="text" placeholder="From" id="filter_from" value="">
                         </div>
                     </div>
                     <div class="form-group row mb-1">
-                        <label for="to" class="col-sm-5 col-form-label justify-content-start text-left">To </label>
+                        <label for="filter_to" class="col-sm-5 col-form-label justify-content-start text-left">To </label>
                         <div class="col-sm-7">
-                            <input name="to" autocomplete="off" class="form-control newdatetimepicker" type="text" placeholder="To" id="to" value="">
+                            <input name="to" autocomplete="off" class="form-control new-datepicker" type="text" placeholder="To" id="filter_to" value="">
                         </div>
                     </div>
                     <div class="form-group row  mb-1">
@@ -206,6 +206,8 @@
     let getRequisitionDetailsURL = "{{route('maintenance-requisitions.get-details')}}";
     let csrfToken = "{{csrf_token()}}";
     let updateApprovalStatusURL = "{{route('maintenance-requisitions.change-approval-status')}}";
+
+    let currentYear = moment().year();
 </script>
 <script src="{{asset('public/dist/js/maintenance/mainten_req_list.js')}}">
 </script>

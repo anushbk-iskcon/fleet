@@ -3,29 +3,23 @@ var count = 2, limits = 500;
 $(document).ready(function () {
     $(".basic-single").select2();
 
-    $('.newdatetimepicker').daterangepicker({
-
+    $('.new-datepicker').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
         autoUpdateInput: false,
-
-        minYear: 1901,
-        maxDate: '2100',
+        minYear: 2000,
         "drops": "up",
         locale: {
-            format: 'YYYY-MM-DD'
-
+            format: 'DD-MMM-YYYY'
         },
-
-        maxYear: parseInt(moment().format('YYYY'), 10)
     }, function (start, end, label) {
         var years = moment().diff(start, 'years');
     });
-    $('.newdatetimepicker').on('apply.daterangepicker', function (ev, picker) {
-        $(this).val(picker.startDate.format('YYYY-MM-DD'));
+    $('.new-datepicker').on('apply.daterangepicker', function (ev, picker) {
+        $(this).val(picker.startDate.format('DD-MMM-YYYY'));
     });
 
-    $('.newdatetimepicker').on('cancel.daterangepicker', function (ev, picker) {
+    $('.new-datepicker').on('cancel.daterangepicker', function (ev, picker) {
         $(this).val('');
     });
 
