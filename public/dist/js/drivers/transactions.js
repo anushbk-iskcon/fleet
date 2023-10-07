@@ -13,7 +13,7 @@ $(document).ready(function () {
     $("#filter_date").daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
-        minYear: 1901,
+        //minYear: 1901,
         autoUpdateInput: false,
         locale: {
             cancelLabel: 'Clear',
@@ -27,12 +27,11 @@ $(document).ready(function () {
         $(this).val('');
     });
 
-    // Enable Datepicker on the Add Form on openeing modal:
+    // Enable Datepicker on the Add Form on opening modal:
     $("#add0").on('shown.bs.modal', function () {
         $("#addTransactionDetailsForm .new-datepicker").daterangepicker({
             singleDatePicker: true,
             showDropdowns: true,
-            minYear: 1901,
             autoUpdateInput: false,
             locale: {
                 cancelLabel: 'Clear',
@@ -163,9 +162,10 @@ $(document).ready(function () {
             $("#editTransactionForDriver").val($("#editTransactionForDriver").data('og-selection')).change();
             $("#editTransactionPurpose").val($("#editTransactionPurpose").data('og-selection'));
             $("#updateTransactionDetailsForm").data('validator').resetForm();
+
             // For Date Range Picker to reflect initially set set date:
-            $("#editTransactionDate").data('daterangepicker').setStartDate($("#editTransactionDate").data('og-date'));
-            $("#editTransactionDate").data('daterangepicker').setEndDate($("#editTransactionDate").data('og-date'));
+            $("#editTransactionDate").data('daterangepicker').setStartDate($("#editTransactionDate").attr('data-og-date'));
+            $("#editTransactionDate").data('daterangepicker').setEndDate($("#editTransactionDate").attr('data-og-date'));
         }, 10);
     });
 
@@ -260,7 +260,7 @@ function editInfo(transaction_id) {
 
             $("#editTransactionDate").val(transactionDate);
 
-            $("#editTransactionDate").data('og-date', transactionDate);
+            $("#editTransactionDate").attr('data-og-date', transactionDate);
             $("#editTransactionDate").attr('value', transactionDate);
 
             // To enable date picker on date input
@@ -295,6 +295,19 @@ function editInfo(transaction_id) {
             $("#editTransactionAmt").val(res.AMOUNT);
             $("#editTransactionAmt").attr('value', res.AMOUNT);
             $("#edit").modal('show');
+
+            // $("#resetUpdateFormBtn").click(function () {
+            //     setTimeout(() => {
+            //         $("#editTransactionForDriver").val($("#editTransactionForDriver").data('og-selection')).change();
+            //         $("#editTransactionPurpose").val($("#editTransactionPurpose").data('og-selection'));
+            //         $("#updateTransactionDetailsForm").data('validator').resetForm();
+
+            //         // For Date Range Picker to reflect initially set set date:
+            //         $("#editTransactionDate").data('daterangepicker').setStartDate($("#editTransactionDate").attr('data-og-date'));
+            //         $("#editTransactionDate").data('daterangepicker').setEndDate($("#editTransactionDate").attr('data-og-date'));
+            //     }, 10);
+            // });
+
             $(".customloader").hide();
         },
         error: function () {

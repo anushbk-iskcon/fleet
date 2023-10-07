@@ -394,14 +394,12 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
     $('#updateDriverDetailsForm .edit-date-picker').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
-        autoUpdateInput: true,
+        autoUpdateInput: false,
         minYear: 1901,
-        // maxDate: '2100',
         "drops": "down",
         locale: {
             format: 'DD-MMM-YYYY'
-        },
-        maxYear: parseInt(moment().format('YYYY'), 10)
+        }
     }, function (start, end, label) {
         var years = moment().diff(start, 'years');
     });
