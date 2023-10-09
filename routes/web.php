@@ -3,6 +3,7 @@
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\DriverController;
+use App\Http\Controllers\DriverInfoLogController;
 use App\Http\Controllers\InsuranceController;
 use App\Http\Controllers\LegalDocumentsController;
 use App\Http\Controllers\LoginController;
@@ -103,6 +104,12 @@ Route::middleware('auth')->group(function () {
     Route::post('drivers/transactions/add', [DriverController::class, 'storeTransactionDetails'])->name('driver-transaction.add');
     Route::post('drivers/transactions/details', [DriverController::class, 'getDetails'])->name('driver-transaction.details');
     Route::post('drivers/transactions/update', [DriverController::class, 'updateTransactionDetails'])->name('driver-transaction.update');
+
+    Route::get('drivers/information-log', [DriverInfoLogController::class, 'index'])->name('driver-info-log');
+    Route::post('drivers/information-log/list', [DriverInfoLogController::class, 'index'])->name('driver-info-log.list');
+    Route::post('drivers/information-log/add', [DriverInfoLogController::class, 'store'])->name('driver-info-log.add');
+    Route::post('drivers/information-log/details', [DriverInfoLogController::class, 'getDetails'])->name('driver-info-log.details');
+    Route::post('drivers/information-log/update', [DriverInfoLogController::class, 'update'])->name('driver-info-log.update');
 
     Route::resource('drivers', DriverController::class)->except(['destroy']);
 

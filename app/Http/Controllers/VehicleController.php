@@ -44,8 +44,9 @@ class VehicleController extends Controller
         $ownership = $request->ownershipsr;
         $registration_date_from = $request->registration_date_fr;
         $reg_date_from = null;
+        # To convert date from 01-Jan-2023 format to 2023-01-01 format for storing in DB:
         if ($registration_date_from)
-            $reg_date_from = date('Y-m-d', strtotime($registration_date_from)); # To convert date from 01-Jan-2023 format to 2023-01-01 format
+            $reg_date_from = date('Y-m-d', strtotime($registration_date_from));
 
         $registration_date_to = $request->registration_date_to;
         $reg_date_to = null;

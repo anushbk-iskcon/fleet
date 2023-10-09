@@ -251,7 +251,7 @@ class RefuelSettingController extends Controller
             </div>
         </div>
         <div class="form-group row">
-        <label for="edit_picture" class="col-sm-5 col-form-label">Fuel Slip Scan Copy </label>
+        <label for="edit_picture" class="col-sm-5 col-form-label">Fuel Slip Scan Copy</label>
         <div class="col-sm-7">
             <input type="file" accept="image/*" name="picture">
         </div></div>';
