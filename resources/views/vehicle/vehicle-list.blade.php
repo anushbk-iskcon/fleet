@@ -1052,7 +1052,7 @@
                             buttons
                         ]);
                 });
-                table.draw(false);
+                table.draw();
 
             },
             error: function(xhr, status, err) {
@@ -1228,7 +1228,7 @@
                 $('.customloader').show();
             },
             success: function(res) {
-                console.log(res);
+                // console.log(res);
                 if (res.successCode == 1) {
                     if (res.data.length >= 1) {
                         $("#vehicleOwner").empty();

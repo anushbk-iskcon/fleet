@@ -41,10 +41,26 @@ $(document).ready(function () {
                 maxlength: 250
             },
             present_address: {
+                required: true,
                 maxlength: 250
+            },
+            distance_from_temple: {
+                number: true
+            },
+            mode_of_travel: {
+                maxlength: 25
             },
             picture: {
                 validImage: true
+            },
+            emergency_contact: {
+                maxlength: 50
+            },
+            emergency_contact_num: {
+                maxlength: 15
+            },
+            emergency_contact_rel: {
+                maxlength: 25
             }
         },
         submitHandler: function (form, ev) {
@@ -101,11 +117,28 @@ $(document).ready(function () {
                 maxlength: 250
             },
             present_address: {
+                required: true,
                 maxlength: 250
+            },
+            distance_from_temple: {
+                number: true
+            },
+            mode_of_travel: {
+                maxlength: 25
             },
             picture: {
                 validImage: true
+            },
+            emergency_contact: {
+                maxlength: 50
+            },
+            emergency_contact_num: {
+                maxlength: 15
+            },
+            emergency_contact_rel: {
+                maxlength: 25
             }
+
         },
         submitHandler: function (form, ev) {
             ev.preventDefault();
@@ -131,7 +164,7 @@ $(document).ready(function () {
         }
     });
 
-    // Clear and reset form and validatons on closing modal
+    // Clear and reset form and validations on closing modal
     $("#add0").on('hidden.bs.modal', function () {
         $("#add_driver_form").trigger('reset');
         $("#add_driver_form").data('validator').resetForm();
@@ -367,19 +400,19 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
     <div class="form-group row">
         <label for="updateEmergencyContactName" class="col-sm-5 col-form-label">Emergency Contact Name</label>
             <div class="col-sm-7">
-                <input type="text" name="emergency_contact" placeholder="Emergency Contact Name" id="emergencyContactName" class="form-control">
+                <input type="text" name="emergency_contact" placeholder="Emergency Contact Name" id="updateEmergencyContactName" class="form-control">
             </div>
     </div>
     <div class="form-group row">
          <label for="updateEmergencyContactNumber" class="col-sm-5 col-form-label">Emergency Contact Number</label>
             <div class="col-sm-7">
-                <input type="text" name="emergency_contact_num" placeholder="Emergency Contact Number" id="emergencyContactName" class="form-control">
+                <input type="text" name="emergency_contact_num" placeholder="Emergency Contact Number" id="updateEmergencyContactNumber" class="form-control">
             </div>
     </div>
     <div class="form-group row">
         <label for="updateEmergencyContactRelationship" class="col-sm-5 col-form-label">Emergency Contact Relationship</label>
             <div class="col-sm-7">
-                <input type="text" name="emergency_contact_rel" placeholder="Emergency Contact Relationship" id="emergencyContactName" class="form-control">
+                <input type="text" name="emergency_contact_rel" placeholder="Emergency Contact Relationship" id="updateEmergencyContactRelationship" class="form-control">
         </div>
     </div>
     <div class="form-group text-right">

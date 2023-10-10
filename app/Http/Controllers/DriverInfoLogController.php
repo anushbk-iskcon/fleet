@@ -33,6 +33,11 @@ class DriverInfoLogController extends Controller
     {
     }
 
+    // Get details of specific log
+    public function getDetails(Request $request)
+    {
+    }
+
     // Update Driver Log Details in DB
     public function update(Request $request)
     {

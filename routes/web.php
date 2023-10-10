@@ -194,15 +194,15 @@ Route::middleware('auth')->group(function () {
         ->name('maintenance-requisitions.update');
 
     // Get details of specified Maintenance Requisition
-    Route::post('maintenance/requsitions/get-details', [MaintenanceRequisitionController::class, 'getDetails'])
+    Route::post('maintenance/requisitions/get-details', [MaintenanceRequisitionController::class, 'getDetails'])
         ->name('maintenance-requisitions.get-details');
 
     // Activate / De-activate specified requisition in DB
-    Route::post('maintenance/requsitions/change-activation', [MaintenanceRequisitionController::class, 'changeActivationStatus'])
+    Route::post('maintenance/requisitions/change-activation', [MaintenanceRequisitionController::class, 'changeActivationStatus'])
         ->name('maintenance-requisitions.change-activation-status');
 
     // Approve/Reject Maintenance Requisition
-    Route::post('maintenance/requsitions/change-activation', [MaintenanceRequisitionController::class, 'approvalStatusUpdate'])
+    Route::post('maintenance/requisitions/change-activation', [MaintenanceRequisitionController::class, 'approvalStatusUpdate'])
         ->name('maintenance-requisitions.change-approval-status');
 
     // Show page listing all maintenance approval authorities
