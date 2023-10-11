@@ -68,8 +68,50 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="" id="addLogForm" class="row" method="post" accept-charset="utf-8">
+                <form action="{{route('driver-info-log.add')}}" id="addLogForm" class="row" method="post" accept-charset="utf-8">
                     @csrf
+                    <div class="col-sm-12 col-lg-6">
+                        <div class="form-group row">
+                            <label for="loggedDriver" class="col-sm-4 col-form-label">Driver <i class="text-danger">*</i></label>
+                            <div class="col-sm-8">
+                                <select name="driver" id="loggedDriver" class="form-control basic-single">
+                                    <option value="">Please Select</option>
+                                    @foreach($drivers as $driver)
+                                    <option value="{{$driver['DRIVER_ID']}}">{{$driver['DRIVER_NAME']}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="loggedDate" class="col-sm-4 col-form-label">Date <i class="text-danger">*</i></label>
+                            <div class="col-sm-8">
+                                <input type="text" name="log_date" id="loggedDate" class="form-control new-datepicker" autocomplete="off" value="" placeholder="Date">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="logCategory" class="col-sm-4 col-form-label">Category <i class="text-danger">*</i></label>
+                            <div class="col-sm-8">
+                                <select name="log_category" id="logCategory" class="form-control">
+                                    <option value="">Please Select</option>
+                                    <option value="Feedback - Good">Feedback - Good</option>
+                                    <option value="Feedback - Bad">Feedback - Bad</option>
+                                    <option value="Accident">Accident</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-lg-6">
+                        <div class="form-group row">
+                            <label for="logRemarks" class="col-sm-4 col-form-label">Remarks <i class="text-danger">*</i></label>
+                            <div class="col-sm-8">
+                                <textarea name="remarks" id="logRemarks" cols="30" rows="5" class="form-control" placeholder="Enter remarks" autocomplete="off"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group text-right">
+                            <button type="reset" class="btn btn-success" id="resetAddFormBtn">Clear</button>
+                            <button type="submit" class="btn btn-danger" id="submitAddFormBtn">Add</button>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
@@ -131,6 +173,9 @@
                                 <select name="log_categ_sr" id="filterLogCategory" class="form-control">
                                     <option value="">Please Select</option>
                                     {{-- Add options for category--}}
+                                    <option value="Feedback - Good">Feedback - Good</option>
+                                    <option value="Feedback - Bad">Feedback - Bad</option>
+                                    <option value="Accident">Accident</option>
                                 </select>
                             </div>
                         </div>
@@ -159,6 +204,7 @@
                             <tr>
                                 <th>Sl. No.</th>
                                 <th>Driver</th>
+                                <th>Date</th>
                                 <th>Category</th>
                                 <th>Remarks</th>
                                 <th>Action(s)</th>
@@ -177,6 +223,7 @@
 <script>
     // Store info like routes etc. into global variables
     let csrfToken = $('meta[name="csrf-token"]').attr('content');
+    let loadTableDataURL = "{{route('driver-info-log.list')}}";
 </script>
 <script src="{{asset('public/dist/js/drivers/info_log.js')}}"></script>
 @endsection
