@@ -65,10 +65,28 @@ class DriverInfoLogController extends Controller
     // Get details of specific log
     public function getDetails(Request $request)
     {
+        $logId = $request->input('log_id');
+        $driverLog = DriverInfoLog::find($logId);
+
+        return $driverLog->toJson();
     }
 
     // Update Driver Log Details in DB
     public function update(Request $request)
     {
+        $driver_log_id = $request->edit_log_id;
+        $driverLog = DriverInfoLog::find($driver_log_id);
+
+        $driverLog->DRIVER = $request->driver;
+        $driverLog->DATE = date('Y-m-d', strtotime($request->log_date));
+        $driverLog->CATEGORY = $request->log_category;
+        $driverLog->REMARKS = $request->remarks;
+        $driverLog->MODIFIED_BY = Auth::id();
+
+        $updated = $driverLog->save();
+        if ($updated)
+            return response()->json(['successCode' => 1, 'message' => 'Updated successfully']);
+        else
+            return response()->json(['successCode' => 0, 'message' => 'Failed to update log']);
     }
 }

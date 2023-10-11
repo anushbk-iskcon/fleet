@@ -119,8 +119,8 @@ class VehicleController extends Controller
         $department = $request->department;
         # Input 'department' is in form: deptCode|deptName as option value in select
         $deptArray = explode('|', $department);
-        $vehicle->DEPARTMENT_ID = $deptArray[0];  #deptCode
-        $vehicle->DEPARTMENT_NAME = $deptArray[1]; #deptName
+        $vehicle->DEPARTMENT_ID = $deptArray[0];  # deptCode
+        $vehicle->DEPARTMENT_NAME = $deptArray[1]; # deptName
 
         $vehicle->VEHICLE_DIVISION_ID = $request->vehicle_division;
         $vehicle->REGISTRATION_DATE = date('Y-m-d', strtotime($request->registration_date));
@@ -133,11 +133,11 @@ class VehicleController extends Controller
         $vehicle->SEAT_CAPACITY = $request->seat_capacity;
 
         // Details added Oct 3 2023
-        // $vehicle->CHASSIS_NUMBER = $request->chassis_number;
-        // $vehicle->ENGINE_NUMBER = $request->engine_number;
-        // $vehicle->VEHICLE_VALUE = $request->vehicle_value;
-        // $vehicle->UVW = $request->uvw;
-        // $vehicle->CC = $request->cc;
+        $vehicle->CHASSIS_NUMBER = $request->chassis_number ?? "";
+        $vehicle->ENGINE_NUMBER = $request->engine_number ?? "";
+        $vehicle->VEHICLE_VALUE = $request->vehicle_value ?? 0;
+        $vehicle->UVW = $request->uvw ?? 0;
+        $vehicle->CC = $request->cc ?? 0;
 
         $ownership = $request->ownership;
         $ownershipArray = explode('|', $ownership);
@@ -210,6 +210,13 @@ class VehicleController extends Controller
         $ownershipArray = explode('|', $ownership);
         $vehicle->OWNERSHIP_ID = $ownershipArray[0];  # Trust Code
         $vehicle->OWNERSHIP_NAME = $ownershipArray[1]; # Name of the Trust
+
+        // Details added Oct 3 2023
+        $vehicle->CHASSIS_NUMBER = $request->chassis_number ?? "";
+        $vehicle->ENGINE_NUMBER = $request->engine_number ?? "";
+        $vehicle->VEHICLE_VALUE = $request->vehicle_value ?? 0;
+        $vehicle->UVW = $request->uvw ?? 0;
+        $vehicle->CC = $request->cc ?? 0;
 
         // $vehicle->IS_ACTIVE = 'Y';
         $vehicle->MODIFIED_BY = Auth::user()->USER_ID;

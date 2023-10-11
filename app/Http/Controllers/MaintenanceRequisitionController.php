@@ -141,10 +141,10 @@ class MaintenanceRequisitionController extends Controller
         //Add remarks column
         // $maintenRequisition->REMARKS = $request->remarks;
         $maintenRequisition->CHARGE = $request->charge ?? "";
-        $maintenRequisition->CHARGE_BEAR_BY = $request->charge_bear_by ?? "";
+        // $maintenRequisition->CHARGE_BEAR_BY = $request->charge_bear_by ?? "";
         $maintenRequisition->TOTAL_AMOUNT = $request->grand_total_price; // Or use session stored value
         $maintenRequisition->PRIORITY = $request->priority;
-        $maintenRequisition->IS_SCHEDULED = $request->is_add_schedule ? 'Y' : 'N';
+        // $maintenRequisition->IS_SCHEDULED = $request->is_add_schedule ? 'Y' : 'N';
         $maintenRequisition->CREATED_BY = Auth::id();
 
         // dd($items, $qty, $rates, $qty, $total_prices, $item_names, count($items), $maintenRequisition);
@@ -181,7 +181,7 @@ class MaintenanceRequisitionController extends Controller
             $invoice->move($destination, $document);
 
             // Store filename in DB column:
-
+            $maintenRequisition->INVOICE_FILE = $document;
         }
 
         // To return successCode and message/data
@@ -424,7 +424,7 @@ class MaintenanceRequisitionController extends Controller
             $invoice->move($destination, $document);
 
             // Change filename in DB column:
-
+            $maintenRequisition->INVOICE_FILE = $document;
         }
 
         // Return to Maintenance Requisitions Listing if update successful

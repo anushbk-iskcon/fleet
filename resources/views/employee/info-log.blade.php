@@ -120,7 +120,64 @@
 <!--  End: Modal to Add New Log Entry Details -->
 
 <!-- Begin: Modal to Edit Log Entry Details -->
-<div id="edit" class="modal fade bd-example-modal-lg" role="dialog"></div>
+<div id="edit" class="modal fade bd-example-modal-lg" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong>Update Log Details</strong>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form action="{{route('driver-info-log.update')}}" id="editLogForm" class="row" method="post" accept-charset="utf-8">
+                    @csrf
+                    <input type="hidden" name="edit_log_id" id="editLogId" value="">
+                    <div class="col-sm-12 col-lg-6">
+                        <div class="form-group row">
+                            <label for="editLoggedDriver" class="col-sm-4 col-form-label">Driver <i class="text-danger">*</i></label>
+                            <div class="col-sm-8">
+                                <select name="driver" id="editLoggedDriver" class="form-control basic-single">
+                                    <option value="">Please Select</option>
+                                    @foreach($drivers as $driver)
+                                    <option value="{{$driver['DRIVER_ID']}}">{{$driver['DRIVER_NAME']}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="editLoggedDate" class="col-sm-4 col-form-label">Date <i class="text-danger">*</i></label>
+                            <div class="col-sm-8">
+                                <input type="text" name="log_date" id="editLoggedDate" class="form-control edit-datepicker" autocomplete="off" value="" placeholder="Date">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="editLogCategory" class="col-sm-4 col-form-label">Category <i class="text-danger">*</i></label>
+                            <div class="col-sm-8">
+                                <select name="log_category" id="editLogCategory" class="form-control">
+                                    <option value="">Please Select</option>
+                                    <option value="Feedback - Good">Feedback - Good</option>
+                                    <option value="Feedback - Bad">Feedback - Bad</option>
+                                    <option value="Accident">Accident</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-lg-6">
+                        <div class="form-group row">
+                            <label for="editLogRemarks" class="col-sm-4 col-form-label">Remarks <i class="text-danger">*</i></label>
+                            <div class="col-sm-8">
+                                <textarea name="remarks" id="editLogRemarks" cols="30" rows="5" class="form-control" placeholder="Enter remarks" autocomplete="off"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group text-right">
+                            <button type="reset" class="btn btn-success" id="resetEditFormBtn">Reset</button>
+                            <button type="submit" class="btn btn-danger" id="submitEditFormBtn">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- End: Modal to Edit Log Entry Details -->
 
 <div class="row">
@@ -217,6 +274,7 @@
         </div>
     </div>
 </div>
+<div class="customloader"></div>
 @endsection
 
 @section('js-content')
@@ -224,6 +282,7 @@
     // Store info like routes etc. into global variables
     let csrfToken = $('meta[name="csrf-token"]').attr('content');
     let loadTableDataURL = "{{route('driver-info-log.list')}}";
+    let getLogDetailsURL = "{{route('driver-info-log.details')}}";
 </script>
 <script src="{{asset('public/dist/js/drivers/info_log.js')}}"></script>
 @endsection

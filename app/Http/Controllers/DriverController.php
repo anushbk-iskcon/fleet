@@ -56,7 +56,7 @@ class DriverController extends Controller
         $driver->MOBILE_NUMBER = $request->mobile;
         $driver->LICENSE_NUMBER = $request->license_number;
         $driver->LICENSE_TYPE = $request->license_type;
-        $driver->NATIONAL_ID = $request->national_id ?? "";
+        // $driver->NATIONAL_ID = $request->national_id ?? "";
         $driver->LICENSE_ISSUE_DATE = date('Y-m-d', strtotime($request->license_issue_date));
         $driver->WORKING_TIME_START = $request->timeslot_start ?? "";
         $driver->WORKING_TIME_END = $request->timeslot_end ?? "";
@@ -78,13 +78,13 @@ class DriverController extends Controller
         }
 
         // Additional details
-        // $driver->DISTANCE_FROM_TEMPLE = $request->distance_from_temple ?? 0;
-        // $driver->MODE_OF_TRAVEL = $request->mode_of_travel ?? "";
+        $driver->DISTANCE_FROM_TEMPLE = $request->distance_from_temple ?? 0;
+        $driver->MODE_OF_TRAVEL = $request->mode_of_travel ?? "";
 
         // Emergency Contact Details
-        // $driver->EMERGENCY_CONTACT_NAME = $request->emergency_contact ?? "";
-        // $driver->EMERGENCY_CONTACT_NUMBER = $request->emergency_contact_num ?? "";
-        // $driver->EMERGENCY_CONTACT_REL = $request->emergency_contact_rel ?? "";
+        $driver->EMERGENCY_CONTACT_NAME = $request->emergency_contact ?? "";
+        $driver->EMERGENCY_CONTACT_NUMBER = $request->emergency_contact_num ?? "";
+        $driver->EMERGENCY_CONTACT_REL = $request->emergency_contact_rel ?? "";
 
         //To upload profile image
         if ($request->hasFile('picture')) {
@@ -142,7 +142,7 @@ class DriverController extends Controller
         $driver->MOBILE_NUMBER = $request->mobile;
         $driver->LICENSE_NUMBER = $request->license_number;
         $driver->LICENSE_TYPE = $request->license_type;
-        $driver->NATIONAL_ID = $request->national_id ?? "";
+
         $driver->LICENSE_ISSUE_DATE = date('Y-m-d', strtotime($request->license_issue_date));
         $driver->WORKING_TIME_START = $request->timeslot_start ?? "";
         $driver->WORKING_TIME_END = $request->timeslot_end ?? "";
@@ -157,15 +157,14 @@ class DriverController extends Controller
             $driver->LEAVE_STATUS = ($request->leavestatus == 1 ? 'Y' : 'N');
         }
 
-
         // Additional details
-        // $driver->DISTANCE_FROM_TEMPLE = $request->distance_from_temple ?? 0;
-        // $driver->MODE_OF_TRAVEL = $request->mode_of_travel ?? "";
+        $driver->DISTANCE_FROM_TEMPLE = $request->distance_from_temple ?? 0;
+        $driver->MODE_OF_TRAVEL = $request->mode_of_travel ?? "";
 
         // Emergency Contact Details
-        // $driver->EMERGENCY_CONTACT_NAME = $request->emergency_contact ?? "";
-        // $driver->EMERGENCY_CONTACT_NUMBER = $request->emergency_contact_num ?? "";
-        // $driver->EMERGENCY_CONTACT_REL = $request->emergency_contact_rel ?? "";
+        $driver->EMERGENCY_CONTACT_NAME = $request->emergency_contact ?? "";
+        $driver->EMERGENCY_CONTACT_NUMBER = $request->emergency_contact_num ?? "";
+        $driver->EMERGENCY_CONTACT_REL = $request->emergency_contact_rel ?? "";
 
         // To update profile photo
         if ($request->hasFile('picture')) {

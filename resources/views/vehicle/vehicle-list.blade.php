@@ -78,7 +78,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="vehicleDept" class="col-sm-5 col-form-label">User Department<i class="text-danger">*</i></label>
+                            <label for="vehicleDept" class="col-sm-5 col-form-label">User Department <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="department" id="vehicleDept">
                                     <option value="" selected="selected">Please Select One</option>
@@ -236,7 +236,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="newVehicleDept" class="col-sm-5 col-form-label">User Department<i class="text-danger">*</i></label>
+                            <label for="newVehicleDept" class="col-sm-5 col-form-label">User Department <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="department" id="newVehicleDept">
                                     <option value="" selected="selected">Please Select One</option>
