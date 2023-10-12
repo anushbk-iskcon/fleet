@@ -28,7 +28,7 @@ $(document).ready(function () {
         rules: {
             vehicle: 'required',
             fuel_type: 'required',
-            fuel_station: 'required',
+            // fuel_station: 'required',
             refueling_date: 'required',
             // budget_given: {
             //     required: true,
@@ -50,10 +50,20 @@ $(document).ready(function () {
                     }
                 }
             },
-            kilometer_per_unit: { required: true, min: 0 },
             driver: 'required',
             // driver_mobile: 'required',
+            odometer_at_refueling: {
+                number: true
+            },
             unit_taken: {
+                required: true,
+                min: 0
+            },
+            amount_per_unit: {
+                required: true,
+                min: 0
+            },
+            total_amount: {
                 required: true,
                 min: 0
             },
@@ -309,10 +319,6 @@ function reinitValidationForEditForm() {
                 required: true,
                 min: 0
             }
-            // max_unit: {
-            //     required: true,
-            //     min: 0
-            // }
         },
         errorElement: 'div',
         errorPlacement: function (error, element) {

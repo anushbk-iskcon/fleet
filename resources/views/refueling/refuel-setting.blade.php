@@ -192,7 +192,7 @@
                         </div>
                         <div class="form-group row">
                             <label for="amount_per_unit" class="col-sm-5 col-form-label">
-                                Amount Per Unit (INR)
+                                Amount Per Unit (INR) <i class="text-danger">*</i>
                             </label>
                             <div class="col-sm-7">
                                 <input type="number" name="amount_per_unit" class="form-control" placeholder="Amount Per Unit (INR)" id="amount_per_unit">
@@ -200,7 +200,7 @@
                         </div>
                         <div class="form-group row">
                             <label for="total_amount" class="col-sm-5 col-form-label">
-                                Total Amount (INR)
+                                Total Amount (INR) <i class="text-danger">*</i>
                             </label>
                             <div class="col-sm-7">
                                 <input type="number" name="total_amount" class="form-control" placeholder="Total Amount (INR)" id="total_amount">

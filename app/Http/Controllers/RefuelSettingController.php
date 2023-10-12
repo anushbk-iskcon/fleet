@@ -171,7 +171,7 @@ class RefuelSettingController extends Controller
         <div class="form-group row">
             <label for="edit_security_name" class="col-sm-5 col-form-label">Security Name </label>
             <div class="col-sm-7">
-                <input name="security_name" required class="form-control" type="text" placeholder="Security" id="edit_security_name">
+                <input name="security_name" class="form-control" type="text" placeholder="Security" id="edit_security_name">
             </div>
         </div>';
 
@@ -239,13 +239,13 @@ class RefuelSettingController extends Controller
             <input name="unit_taken" class="form-control" type="number" placeholder="Unit Taken" id="edit_unit_taken" value="' . $refuelSetting->UNIT_TAKEN . '">
         </div></div>
         <div class="form-group row">
-            <label for="edit_amount_per_unit" class="col-sm-5 col-form-label">Amount Per Unit (INR)</label>
+            <label for="edit_amount_per_unit" class="col-sm-5 col-form-label">Amount Per Unit (INR) <i class="text-danger">*</i></label>
             <div class="col-sm-7">
                 <input type="number" name="amount_per_unit" class="form-control" placeholder="Amount Per Unit (INR)" id="edit_amount_per_unit">
             </div>
         </div>
         <div class="form-group row">
-            <label for="edit_total_amount" class="col-sm-5 col-form-label">Total Amount (INR)</label>
+            <label for="edit_total_amount" class="col-sm-5 col-form-label">Total Amount (INR) <i class="text-danger">*</i></label>
             <div class="col-sm-7">
                 <input type="number" name="total_amount" class="form-control" placeholder="Total Amount (INR)" id="edit_total_amount">
             </div>

@@ -20,7 +20,8 @@ $(document).ready(function () {
                 maxlength: 75
             },
             mobile: {
-                required: true
+                required: true,
+                maxlength: 15
             },
             license_number: {
                 required: true,
@@ -36,7 +37,7 @@ $(document).ready(function () {
             // timeslot_start: 'required',
             // timeslot_end: 'required',
             join_date: 'required',
-            dob: 'required',
+            // dob: 'required',
             permanent_address: {
                 maxlength: 250
             },
@@ -45,21 +46,35 @@ $(document).ready(function () {
                 maxlength: 250
             },
             distance_from_temple: {
-                number: true
+                required: true,
+                number: true,
+                min: 0
             },
             mode_of_travel: {
+                required: true,
                 maxlength: 25
             },
             picture: {
                 validImage: true
             },
+            ctc: {
+                number: true,
+                min: 0
+            },
+            ovt: {
+                number: true,
+                min: 0
+            },
             emergency_contact: {
+                required: true,
                 maxlength: 50
             },
             emergency_contact_num: {
+                required: true,
                 maxlength: 15
             },
             emergency_contact_rel: {
+                required: true,
                 maxlength: 25
             }
         },
@@ -96,23 +111,21 @@ $(document).ready(function () {
                 maxlength: 75
             },
             mobile: {
-                required: true
+                required: true,
+                maxlength: 15
             },
             license_number: {
                 required: true,
                 maxlength: 50
             },
             license_type: 'required',
-            national_id: {
-                required: true
-            },
             license_issue_date: {
                 required: true
             },
             // timeslot_start: 'required',
             // timeslot_end: 'required',
             join_date: 'required',
-            dob: 'required',
+            // dob: 'required',
             permanent_address: {
                 maxlength: 250
             },
@@ -121,21 +134,35 @@ $(document).ready(function () {
                 maxlength: 250
             },
             distance_from_temple: {
-                number: true
+                number: true,
+                required: true,
+                min: 0
             },
             mode_of_travel: {
+                required: true,
                 maxlength: 25
             },
             picture: {
                 validImage: true
             },
+            ctc: {
+                number: true,
+                min: 0
+            },
+            ovt: {
+                number: true,
+                min: 0
+            },
             emergency_contact: {
+                required: true,
                 maxlength: 50
             },
             emergency_contact_num: {
+                required: true,
                 maxlength: 15
             },
             emergency_contact_rel: {
+                required: true,
                 maxlength: 25
             }
 
@@ -252,22 +279,49 @@ function loadFile(ev) {
     // }
 }
 
-function updateDriverDetails(driver_id, driver_name, mobile_number, license_number, license_type, national_id, license_issue_date, work_start_time, work_end_time, join_date, dob, permanent_address, present_address, leave_status, is_active, profile_photo, ctc, ovt) {
+function updateDriverDetails(driver_id) {
+    $.ajax({
+        url: getDriverDetailsURL,
+        type: 'post',
+        data: {
+            _token: csrfToken,
+            driver_id: driver_id
+        },
+        dataType: 'json',
+        success: function (res) {
+            loadUpdateDriverForm(res);
+        },
+        error: function () {
+            console.log("error");
+        }
+    });
+}
+
+function loadUpdateDriverForm(driver_details) {
     let updateForm = $("#updateDriverDetailsForm");
     // To set Driver ID For Update Form Action by replacing placeholder 0 or current Driver ID which previously 
     // replaced 0 in formaction by driver_id
     let formAction = updateForm.attr('action');
     let currentId = formAction.substring(formAction.lastIndexOf('/') + 1);
-    formAction = formAction.replace(currentId, driver_id);
+    formAction = formAction.replace(currentId, driver_details['DRIVER_ID']);
     updateForm.attr('action', formAction);
 
-    let workStartTime = work_start_time ? work_start_time : '';
-    let workEndTime = work_end_time ? work_end_time : '';
+    let workStartTime = driver_details['WORKING_TIME_START'] ? driver_details['WORKING_TIME_START'] : '';
+    let workEndTime = driver_details['WORKING_TIME_END'] ? driver_details['WORKING_TIME_END'] : '';
+    let distanceFromTemple = driver_details['DISTANCE_FROM_TEMPLE'] ? driver_details['DISTANCE_FROM_TEMPLE'] : '';
+    let presentAddress = driver_details['PRESENT_ADDRESS'] ? driver_details['PRESENT_ADDRESS'] : '';
+    let permanentAddress = driver_details['PERMANENT_ADDRESS'] ? driver_details['PERMANENT_ADDRESS'] : '';
+    let driverLicenseType = driver_details['LICENSE_TYPE'];
 
-    let driverDOB = moment(dob).format('DD-MMM-YYYY');
-    console.log(driverDOB);
-    let licenseIssueDate = moment(license_issue_date).format('DD-MMM-YYYY');
-    let driverDOJ = moment(join_date).format('DD-MMM-YYYY');
+    let driverCTC = driver_details['CTC'] ? driver_details['CTC'] : '';
+    let driverOVT = driver_details['OVT'] ? driver_details['OVT'] : '';
+
+    let driverDOB = '';
+    if (driver_details['DATE_OF_BIRTH'])
+        driverDOB = moment(driver_details['DATE_OF_BIRTH']).format('DD-MMM-YYYY');
+
+    let licenseIssueDate = moment(driver_details['LICENSE_ISSUE_DATE']).format('DD-MMM-YYYY');
+    let driverDOJ = moment(driver_details['JOIN_DATE']).format('DD-MMM-YYYY');
 
     updateForm.empty().append('<input type="hidden" name="_method" value="PUT">');
     updateForm.append('<input type="hidden" name="_token" value="' + $('meta[name="csrf-token"]').attr('content') + '">');
@@ -276,13 +330,13 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
     <div class="form-group row">
         <label for="update_driver_name" class="col-sm-5 col-form-label">Driver Name <i class="text-danger">*</i></label>
         <div class="col-sm-7">
-            <input name="driver_name" required="" class="form-control" type="text" placeholder="Driver Name" id="update_driver_name" value="${driver_name}" autocomplete="off">
+            <input name="driver_name" required="" class="form-control" type="text" placeholder="Driver Name" id="update_driver_name" value="${driver_details['DRIVER_NAME']}" autocomplete="off">
         </div>
     </div>
     <div class="form-group row">
         <label for="update_license_number" class="col-sm-5 col-form-label">License Number <i class="text-danger">*</i></label>
         <div class="col-sm-7">
-            <input name="license_number" required="" class="form-control" type="text" placeholder="License Number" id="update_license_number" value="${license_number}" autocomplete="off">
+            <input name="license_number" required="" class="form-control" type="text" placeholder="License Number" id="update_license_number" value="${driver_details['LICENSE_NUMBER']}" autocomplete="off">
         </div>
     </div>
     
@@ -303,28 +357,28 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
         </div>
     </div>
     <div class="form-group row">
-        <label for="update_present_address" class="col-sm-5 col-form-label">Present Address </label>
+        <label for="update_present_address" class="col-sm-5 col-form-label">Present Address <i class="text-danger">*</i></label>
         <div class="col-sm-7">
-            <input name="present_address" class="form-control" type="text" placeholder="Present Address" id="update_present_address" value="${present_address}">
+            <input name="present_address" class="form-control" type="text" placeholder="Present Address" id="update_present_address" value="${presentAddress}">
         </div>
     </div>
     <div class="form-group row">
-        <label for="update_distance_from_temple" class="col-sm-5 col-form-label">Distance From Temple (in km)</label>
+        <label for="update_distance_from_temple" class="col-sm-5 col-form-label">Distance From Temple (in km) <i class="text-danger">*</i></label>
             <div class="col-sm-7">
-                <input name="distance_from_temple" class="form-control" type="text" placeholder="Distance in km" id="update_distance_from_temple" value="">
+                <input name="distance_from_temple" class="form-control" type="number" placeholder="Distance in km" id="update_distance_from_temple" value="${distanceFromTemple}">
             </div>
     </div>
     <div class="form-group row">
-        <label for="update_present_address" class="col-sm-5 col-form-label">Mode of Travel</label>
+        <label for="update_present_address" class="col-sm-5 col-form-label">Mode of Travel <i class="text-danger">*</i></label>
             <div class="col-sm-7">
-                <input name="mode_of_travel" class="form-control" type="text" placeholder="Mode of Travel" id="update_mode_of_travel" value="">
+                <input name="mode_of_travel" class="form-control" type="text" placeholder="Mode of Travel" id="update_mode_of_travel" value="${driver_details['MODE_OF_TRAVEL']}">
             </div>
     </div>
 
     <div class="form-group row">
         <label for="update_permanent_address" class="col-sm-5 col-form-label">Permanent Address </label>
         <div class="col-sm-7">
-            <input name="permanent_address" class="form-control" type="text" placeholder="Permanent Address" id="update_permanent_address" value="${permanent_address}">
+            <input name="permanent_address" class="form-control" type="text" placeholder="Permanent Address" id="update_permanent_address" value="${permanentAddress}">
         </div>
     </div>
     <div class="form-group row">
@@ -338,7 +392,7 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
     <div class="form-group row">
         <label for="update_mobile" class="col-sm-5 col-form-label">Mobile <i class="text-danger">*</i></label>
         <div class="col-sm-7">
-            <input name="mobile" required="" class="form-control" type="number" placeholder="Mobile" id="update_mobile" value="${mobile_number}">
+            <input name="mobile" required="" class="form-control" type="number" placeholder="Mobile" id="update_mobile" value="${driver_details['MOBILE_NUMBER']}">
         </div>
     </div>
 
@@ -347,10 +401,10 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
         <div class="col-sm-7">
             <select class="form-control" required="" name="license_type" id="update_license_type">
                 <option value="">Please Select One</option>`;
-
     $.each(licenseTypes, function (i, licenseType) {
-        if (license_type == licenseType['LICENSE_ID'])
-            formContent += `<option value="${licenseType['LICENSE_ID']}" selected>${licenseType['LICENSE_NAME']}</option>`;
+        // console.log(driver_details['LICENSE_TYPE']);
+        if (driverLicenseType == licenseType['LICENSE_ID'])
+            formContent += `<option value="${licenseType['LICENSE_ID']}" selected="selected">${licenseType['LICENSE_NAME']}</option>`;
         else
             formContent += `<option value="${licenseType['LICENSE_ID']}">${licenseType['LICENSE_NAME']}</option>`;
     });
@@ -358,14 +412,14 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
         </div>
     </div>
     <div class="form-group row">
-        <label for="update_license_issue_date" class="col-sm-5 col-form-label">License Issue Date </label>
+        <label for="update_license_issue_date" class="col-sm-5 col-form-label">License Issue Date <i class="text-danger">*</i></label>
         <div class="col-sm-7">
             <input name="license_issue_date" autocomplete="off" class="form-control edit-date-picker" type="text" placeholder="License Issue Date" id="update_license_issue_date" value="${licenseIssueDate}">
         </div>
     </div>
 
     <div class="form-group row">
-        <label for="update_join_date" class="col-sm-5 col-form-label">Join Date </label>
+        <label for="update_join_date" class="col-sm-5 col-form-label">Join Date <i class="text-danger">*</i></label>
         <div class="col-sm-7">
             <input name="join_date" autocomplete="off" class="form-control edit-date-picker" type="text" placeholder="Join Date" id="update_join_date" value="${driverDOJ}">
         </div>
@@ -375,11 +429,11 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
         <label for="leavestatus" class="col-sm-5 col-form-label">On Leave</label>
         <div class="col-sm-7">
             <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="updatedstatusyes" name="leavestatus" class="custom-control-input" value="1" ${leave_status === 'Y' ? 'checked' : ''}>
+                <input type="radio" id="updatedstatusyes" name="leavestatus" class="custom-control-input" value="1" ${driver_details['LEAVE_STATUS'] === 'Y' ? 'checked' : ''}>
                 <label class="custom-control-label" for="updatedstatusyes">Yes</label>
             </div>
             <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" id="updatedstatusno" name="leavestatus" class="custom-control-input" value="0" ${leave_status === 'N' ? 'checked' : ''}>
+                <input type="radio" id="updatedstatusno" name="leavestatus" class="custom-control-input" value="0" ${driver_details['LEAVE_STATUS'] === 'N' ? 'checked' : ''}>
                 <label class="custom-control-label" for="updatedstatusno">No</label>
             </div>
         </div>
@@ -388,40 +442,40 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
     <div class="form-group row">
         <label for="newctc" class="col-sm-5 col-form-label">CTC</label>
         <div class="col-sm-7">
-            <input name="ctc" class="form-control" type="text" placeholder="Enter CTC" id="newctc" value="${ctc}">
+            <input name="ctc" class="form-control" type="text" placeholder="Enter CTC" id="newctc" value="${driverCTC}">
         </div>
     </div>
     <div class="form-group row">
         <label for="newovt" class="col-sm-5 col-form-label">Overtime Price </label>
         <div class="col-sm-7">
-            <input name="ovt" class="form-control" type="text" placeholder="Enter Overtime Price" id="newovt" value="${ovt}">
+            <input name="ovt" class="form-control" type="text" placeholder="Enter Overtime Price" id="newovt" value="${driverOVT}">
         </div>
     </div>
     <div class="form-group row">
-        <label for="updateEmergencyContactName" class="col-sm-5 col-form-label">Emergency Contact Name</label>
+        <label for="updateEmergencyContactName" class="col-sm-5 col-form-label">Emergency Contact Name <i class="text-danger">*</i></label>
             <div class="col-sm-7">
-                <input type="text" name="emergency_contact" placeholder="Emergency Contact Name" id="updateEmergencyContactName" class="form-control">
+                <input type="text" name="emergency_contact" placeholder="Emergency Contact Name" id="updateEmergencyContactName" class="form-control" value="${driver_details['EMERGENCY_CONTACT_NAME']}">
             </div>
     </div>
     <div class="form-group row">
-         <label for="updateEmergencyContactNumber" class="col-sm-5 col-form-label">Emergency Contact Number</label>
+         <label for="updateEmergencyContactNumber" class="col-sm-5 col-form-label">Emergency Contact Number <i class="text-danger">*</i></label>
             <div class="col-sm-7">
-                <input type="text" name="emergency_contact_num" placeholder="Emergency Contact Number" id="updateEmergencyContactNumber" class="form-control">
+                <input type="text" name="emergency_contact_num" placeholder="Emergency Contact Number" id="updateEmergencyContactNumber" class="form-control" value="${driver_details['EMERGENCY_CONTACT_NUMBER']}">
             </div>
     </div>
     <div class="form-group row">
-        <label for="updateEmergencyContactRelationship" class="col-sm-5 col-form-label">Emergency Contact Relationship</label>
+        <label for="updateEmergencyContactRelationship" class="col-sm-5 col-form-label">Emergency Contact Relationship <i class="text-danger">*</i></label>
             <div class="col-sm-7">
-                <input type="text" name="emergency_contact_rel" placeholder="Emergency Contact Relationship" id="updateEmergencyContactRelationship" class="form-control">
+                <input type="text" name="emergency_contact_rel" placeholder="Emergency Contact Relationship" id="updateEmergencyContactRelationship" class="form-control" value="${driver_details['EMERGENCY_CONTACT_REL']}">
         </div>
     </div>
     <div class="form-group text-right">
-        <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
-        <button type="submit" class="btn btn-success w-md m-b-5">Update</button>
+        <button type="reset" class="btn btn-primary w-md m-b-5" id="resetUpdateFormBtn">Reset</button>
+        <button type="submit" class="btn btn-success w-md m-b-5" id="submitUpdateFormBtn">Update</button>
     </div>`;
 
     updateForm.append(formContent);
-    $("#update_license_type").val(license_type);
+    $("#update_license_type").val(driverLicenseType);
 
     // For Showing Date Pickers on Date Inputs
     $('#updateDriverDetailsForm .edit-date-picker').daterangepicker({
@@ -467,6 +521,13 @@ function updateDriverDetails(driver_id, driver_name, mobile_number, license_numb
     });
 
     $("#editDriverDetailsModal").modal('show');
+
+    $("#resetUpdateFormBtn").click(function () {
+        setTimeout(() => {
+            $("#updateDriverDetailsForm").data('validator').resetForm();
+            $("#updateDriverDetailsForm .form-control").removeClass('error').removeAttr('aria-invalid');
+        }, 10);
+    });
 }
 
 function loadTable(table) {
@@ -494,10 +555,7 @@ function loadTable(table) {
                     let dateOfBirth = data.DATE_OF_BIRTH ? data.DATE_OF_BIRTH : "";
 
                     let activeStatus = data.IS_ACTIVE == 'Y' ? 'Active' : 'Inactive';
-                    let actionBtns = `<button class="btn btn-success mr-1" onclick="updateDriverDetails('${data.DRIVER_ID}', '${data.DRIVER_NAME}', '${data.MOBILE_NUMBER}', '${data.LICENSE_NUMBER}', '${data.LICENSE_TYPE}', 
-                    '${data.NATIONAL_ID}', '${data.LICENSE_ISSUE_DATE}', '${data.WORKING_TIME_START}', '${data.WORKING_TIME_END}', '${data.JOIN_DATE}', '${dateOfBirth}', '${permanentAddress}', '${presentAddress}', 
-                    '${data.LEAVE_STATUS}', '${data.IS_ACTIVE}', '${data.PROFILE_PHOTO}', '${data.CTC}', '${data.OVT}')" 
-                    data-toggle="tooltip" data-placement="right" title="" data-original-title="Update"><i class="fa fa-edit"></i></button>`;
+                    let actionBtns = `<button class="btn btn-success mr-1" onclick="updateDriverDetails('${data.DRIVER_ID}')" data-toggle="tooltip" data-placement="right" title="" data-original-title="Update"><i class="fa fa-edit"></i></button>`;
                     if (data.IS_ACTIVE == 'Y')
                         actionBtns += `<button class="btn btn-danger" title="" data-toggle="tooltip" data-original-title="Deactivate" data-placement="left" onclick="deactivateDriver(this)" data-driver-id="${data.DRIVER_ID}">
                             <i class="ti-close"></i></button>`;
@@ -583,3 +641,22 @@ function activateDriver(el) {
         });
     }
 }
+
+// function showDriverDetails(driver_id) {
+//     $.ajax({
+//         url: getDriverDetailsURL,
+//         type: 'post',
+//         data: {
+//             _token: csrfToken,
+//             driver_id: driver_id
+//         },
+//         dataType: 'json',
+//         success: function (res) {
+//             console.log(res);
+//             console.log(res['DRIVER_NAME']);
+//         },
+//         error: function () {
+//             console.log("error");
+//         }
+//     });
+// }

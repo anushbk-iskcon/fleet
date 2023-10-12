@@ -98,11 +98,12 @@ Route::middleware('auth')->group(function () {
     Route::put('deactivate-driver', [DriverController::class, 'deactivateDriver']);
     Route::put('activate-driver', [DriverController::class, 'activateDriver']);
     Route::post('drivers/get-data', [DriverController::class, 'getData']);
+    Route::post('get-driver-details', [DriverController::class, 'getDriverDetails']);
 
     Route::get('drivers/transactions', [DriverController::class, 'transactions'])->name('manage-transactions');
     Route::post('drivers/transactions/list', [DriverController::class, 'transactions'])->name('driver-transaction.list');
     Route::post('drivers/transactions/add', [DriverController::class, 'storeTransactionDetails'])->name('driver-transaction.add');
-    Route::post('drivers/transactions/details', [DriverController::class, 'getDetails'])->name('driver-transaction.details');
+    Route::post('drivers/transactions/details', [DriverController::class, 'getTransactionDetails'])->name('driver-transaction.details');
     Route::post('drivers/transactions/update', [DriverController::class, 'updateTransactionDetails'])->name('driver-transaction.update');
 
     Route::get('drivers/information-log', [DriverInfoLogController::class, 'index'])->name('driver-info-log');

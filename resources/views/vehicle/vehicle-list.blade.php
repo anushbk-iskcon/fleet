@@ -124,21 +124,21 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="chassis_number" class="col-sm-5 col-form-label">Chassis Number</label>
+                            <label for="chassis_number" class="col-sm-5 col-form-label">Chassis Number <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input type="text" name="chassis_number" id="chassis_number" placeholder="Chassis Number" class="form-control">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="engine_number" class="col-sm-5 col-form-label">Engine Number</label>
+                            <label for="engine_number" class="col-sm-5 col-form-label">Engine Number <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input type="text" name="engine_number" id="engine_number" placeholder="Engine Number" class="form-control">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="vehicle_value" class="col-sm-5 col-form-label">Vehicle Value</label>
+                            <label for="vehicle_value" class="col-sm-5 col-form-label">Vehicle Value <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input type="text" id="vehicle_value" name="vehicle_value" placeholder="Vehicle Value" class="form-control">
+                                <input type="text" id="vehicle_value" name="vehicle_value" placeholder="Vehicle Value (INR)" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -282,21 +282,21 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="new_chassis_number" class="col-sm-5 col-form-label">Chassis Number</label>
+                            <label for="new_chassis_number" class="col-sm-5 col-form-label">Chassis Number <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input type="text" name="chassis_number" id="new_chassis_number" class="form-control" placeholder="Chassis Number">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="new_engine_number" class="col-sm-5 col-form-label">Engine Number</label>
+                            <label for="new_engine_number" class="col-sm-5 col-form-label">Engine Number <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input type="text" name="engine_number" id="new_engine_number" class="form-control" placeholder="Engine Number">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="new_vehicle_value" class="col-sm-5 col-form-label">Vehicle Value</label>
+                            <label for="new_vehicle_value" class="col-sm-5 col-form-label">Vehicle Value <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input type="text" name="vehicle_value" id="new_vehicle_value" class="form-control" placeholder="Vehicle Value">
+                                <input type="text" name="vehicle_value" id="new_vehicle_value" class="form-control" placeholder="Vehicle Value (INR)">
                             </div>
                         </div>
                     </div>
@@ -701,7 +701,27 @@
                 seat_capacity: {
                     required: true
                 },
-                ownership: 'required'
+                ownership: 'required',
+                chassis_number: {
+                    required: true,
+                    maxlength: 25
+                },
+                engine_number: {
+                    required: true,
+                    maxlength: 25
+                },
+                vehicle_value: {
+                    required: true,
+                    min: 0
+                },
+                uvw: {
+                    number: true,
+                    min: 0
+                },
+                cc: {
+                    number: true,
+                    min: 0
+                }
             },
             errorElement: 'div',
             errorPlacement: function(error, element) {
@@ -818,7 +838,27 @@
                 seat_capacity: {
                     required: true
                 },
-                ownership: 'required'
+                ownership: 'required',
+                chassis_number: {
+                    required: true,
+                    maxlength: 25
+                },
+                engine_number: {
+                    required: true,
+                    maxlength: 25
+                },
+                vehicle_value: {
+                    required: true,
+                    min: 0
+                },
+                uvw: {
+                    number: true,
+                    min: 0
+                },
+                cc: {
+                    number: true,
+                    min: 0
+                }
             },
             errorElement: 'div',
             errorPlacement: function(error, element) {
@@ -1080,6 +1120,9 @@
             success: function(res) {
                 if (res.successCode == 1) {
                     // console.log(res.data);
+                    let uvw = res.data.UVW ? res.data.UVW : '';
+                    let cc = res.data.CC ? res.data.CC : '';
+                    let vehicleValue = res.data.VEHICLE_VALUE ? res.data.VEHICLE_VALUE : '';
                     $("#new_vehicle_name").val(res.data.VEHICLE_NAME);
                     $("#new_vehicle_type").val(res.data.VEHICLE_TYPE_ID);
 
@@ -1099,6 +1142,12 @@
 
                     let ownershipVal = res.data.OWNERSHIP_ID + '|' + res.data.OWNERSHIP_NAME;
                     $("#new_ownership").val(ownershipVal).trigger('change');
+
+                    $("#new_chassis_number").val(res.data.CHASSIS_NUMBER);
+                    $("#new_engine_number").val(res.data.ENGINE_NUMBER);
+                    $("#new_vehicle_value").val(vehicleValue);
+                    $("#new_uvw").val(uvw);
+                    $("#new_cc").val(cc);
                 } else {
                     console.log("Could not fetch details");
                     $("#edit").modal('hide');

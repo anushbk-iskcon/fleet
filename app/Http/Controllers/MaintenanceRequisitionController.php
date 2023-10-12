@@ -519,7 +519,7 @@ class MaintenanceRequisitionController extends Controller
             // To get departments and employees
             $hrApi = new HrApi;
             $departments = $hrApi->getDepartments();
-            $employees = $hrApi->getEmployeeList(""); //Dept "" to get all employees
+            $employees = $hrApi->getEmployeeList(""); // Dept "" to get all employees
 
             return view('maintenance.maintenance-approval-authorities', compact('reqTypes', 'departments', 'employees', 'phases'));
         }

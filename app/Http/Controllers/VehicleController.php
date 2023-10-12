@@ -133,9 +133,9 @@ class VehicleController extends Controller
         $vehicle->SEAT_CAPACITY = $request->seat_capacity;
 
         // Details added Oct 3 2023
-        $vehicle->CHASSIS_NUMBER = $request->chassis_number ?? "";
-        $vehicle->ENGINE_NUMBER = $request->engine_number ?? "";
-        $vehicle->VEHICLE_VALUE = $request->vehicle_value ?? 0;
+        $vehicle->CHASSIS_NUMBER = $request->chassis_number;
+        $vehicle->ENGINE_NUMBER = $request->engine_number;
+        $vehicle->VEHICLE_VALUE = $request->vehicle_value;
         $vehicle->UVW = $request->uvw ?? 0;
         $vehicle->CC = $request->cc ?? 0;
 
@@ -212,9 +212,9 @@ class VehicleController extends Controller
         $vehicle->OWNERSHIP_NAME = $ownershipArray[1]; # Name of the Trust
 
         // Details added Oct 3 2023
-        $vehicle->CHASSIS_NUMBER = $request->chassis_number ?? "";
-        $vehicle->ENGINE_NUMBER = $request->engine_number ?? "";
-        $vehicle->VEHICLE_VALUE = $request->vehicle_value ?? 0;
+        $vehicle->CHASSIS_NUMBER = $request->chassis_number;
+        $vehicle->ENGINE_NUMBER = $request->engine_number;
+        $vehicle->VEHICLE_VALUE = $request->vehicle_value;
         $vehicle->UVW = $request->uvw ?? 0;
         $vehicle->CC = $request->cc ?? 0;
 

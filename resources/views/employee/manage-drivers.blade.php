@@ -50,7 +50,7 @@
                             </div>
                         </div> -->
                         <div class="form-group row">
-                            <label for="timeslot" required="" class="col-sm-5 col-form-label">Working Time Slot <i class="text-danger">*</i></label>
+                            <label for="timeslot" required="" class="col-sm-5 col-form-label">Working Time Slot </label>
                             <div class="col-sm-3 pr-0">
                                 <input name="timeslot_start" class="form-control time-picker" type="text" placeholder="09:00 AM" id="timeslotStart" value="" autocomplete="off">
                             </div>
@@ -72,13 +72,13 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="distanceFromTemple" class="col-sm-5 col-form-label"> Distance From Temple (in km) </label>
+                            <label for="distanceFromTemple" class="col-sm-5 col-form-label"> Distance From Temple (in km) <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="distance_from_temple" class="form-control" type="text" placeholder="Distance in km" id="distanceFromTemple">
+                                <input name="distance_from_temple" class="form-control" type="number" placeholder="Distance in km" id="distanceFromTemple">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="travelMode" class="col-sm-5 col-form-label">Mode of Travel </label>
+                            <label for="travelMode" class="col-sm-5 col-form-label">Mode of Travel <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="mode_of_travel" class="form-control" type="text" placeholder="Mode of Travel" id="travelMode">
                             </div>
@@ -166,26 +166,26 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="emergencyContactName" class="col-sm-5 col-form-label">Emergency Contact Name</label>
+                            <label for="emergencyContactName" class="col-sm-5 col-form-label">Emergency Contact Name <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input type="text" name="emergency_contact" placeholder="Emergency Contact Name" id="emergencyContactName" class="form-control">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="emergencyContactNumber" class="col-sm-5 col-form-label">Emergency Contact Number</label>
+                            <label for="emergencyContactNumber" class="col-sm-5 col-form-label">Emergency Contact Number <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input type="text" name="emergency_contact_num" placeholder="Emergency Contact Number" id="emergencyContactName" class="form-control">
+                                <input type="text" name="emergency_contact_num" placeholder="Emergency Contact Number" id="emergencyContactNumber" class="form-control">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="emergencyContactRelationship" class="col-sm-5 col-form-label">Emergency Contact Relationship</label>
+                            <label for="emergencyContactRelationship" class="col-sm-5 col-form-label">Emergency Contact Relationship <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input type="text" name="emergency_contact_rel" placeholder="Emergency Contact Relationship" id="emergencyContactName" class="form-control">
+                                <input type="text" name="emergency_contact_rel" placeholder="Emergency Contact Relationship" id="emergencyContactRelationship" class="form-control">
                             </div>
                         </div>
 
                         <div class="form-group text-right">
-                            <button type="reset" id="resetAddDriverForm" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" id="resetAddDriverForm" class="btn btn-primary w-md m-b-5">Clear</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
                         </div>
                     </div>
@@ -237,7 +237,7 @@
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5">Clear</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
                         </div>
                     </div>
@@ -302,9 +302,10 @@
                                 <!-- <td> {{$driver['WORKING_TIME_START'] . ' - ' . $driver['WORKING_TIME_END'] }} </td> -->
                                 <td> @if($driver['IS_ACTIVE'] == 'Y') {{"Active"}} @else {{"Inactive"}} @endif </td>
                                 <td>
-                                    <button class="btn btn-success mr-1" onclick="updateDriverDetails('{{$driver->DRIVER_ID}}','{{$driver->DRIVER_NAME}}', '{{$driver->MOBILE_NUMBER}}','{{$driver->LICENSE_NUMBER}}','{{$driver->LICENSE_TYPE}}','{{$driver->NATIONAL_ID}}','{{$driver->LICENSE_ISSUE_DATE}}','{{$driver->WORKING_TIME_START}}','{{$driver->WORKING_TIME_END}}','{{$driver->JOIN_DATE}}','{{$driver->DATE_OF_BIRTH}}','{{$driver->PERMANENT_ADDRESS}}','{{$driver->PRESENT_ADDRESS}}','{{$driver->LEAVE_STATUS}}','{{$driver->IS_ACTIVE}}','{{$driver->PROFILE_PHOTO}}','{{$driver->CTC}}','{{$driver->OVT}}')" data-toggle="tooltip" data-placement="right" title="Update">
+                                    <button class="btn btn-success mr-1" onclick="updateDriverDetails('{{$driver->DRIVER_ID}}', '{{$driver->DRIVER_NAME}}', '{{$driver->MOBILE_NUMBER}}', '{{$driver->LICENSE_NUMBER}}', '{{$driver->LICENSE_TYPE}}', '{{$driver->LICENSE_ISSUE_DATE}}', '{{$driver->WORKING_TIME_START}}', '{{$driver->WORKING_TIME_END}}','{{$driver->JOIN_DATE}}', '{{$driver->DATE_OF_BIRTH}}', '{{$driver->PERMANENT_ADDRESS}}', '{{$driver->PRESENT_ADDRESS}}', '{{$driver->LEAVE_STATUS}}', '{{$driver->PROFILE_PHOTO}}', '{{$driver->CTC}}', '{{$driver->OVT}}', '{{$driver->DISTANCE_FROM_TEMPLE}}', '{{$driver->MODE_OF_TRAVEL}}', '{{$driver->EMERGENCY_CONTACT_NAME}}', '{{$driver->EMERGENCY_CONTACT_NUMBER}}', '{{$driver->EMERGENCY_CONTACT_REL}}')" data-toggle="tooltip" data-placement="right" title="Update">
                                         <i class="fa fa-edit"></i>
                                     </button>
+
                                     @if($driver['IS_ACTIVE'] == 'Y')
                                     <button class="btn btn-danger" title="Deactivate" data-toggle="tooltip" data-placement="left" onclick="deactivateDriver(this)" data-driverid="{{$driver->DRIVER_ID}}">
                                         <i class="ti-close"></i>
@@ -336,6 +337,7 @@
     let deactivateDriverURL = "{{url('deactivate-driver')}}";
     let activateDriverURL = "{{url('activate-driver')}}";
     let getDataURL = "{{url('drivers/get-data')}}";
+    let getDriverDetailsURL = "{{url('get-driver-details')}}";
     let csrfToken = "{{csrf_token()}}";
 
     let defaultProfileImgPath = "{{asset('public/img/')}}";

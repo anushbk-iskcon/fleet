@@ -3,6 +3,8 @@ $(document).ready(function () {
 
     let currentYear = moment().year();
 
+    console.log(vehicles);
+
     // Enable Datepickers in Filter Form
     $("#date_fr, #date_to").daterangepicker({
         singleDatePicker: true,

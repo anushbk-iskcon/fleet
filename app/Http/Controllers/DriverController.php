@@ -32,6 +32,13 @@ class DriverController extends Controller
         return $drivers->toJson();
     }
 
+    public function getDriverDetails(Request $request)
+    {
+        $driver_id = $request->driver_id;
+        $driverDetails = Driver::find($driver_id);
+        return $driverDetails->toJson();
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -257,7 +264,7 @@ class DriverController extends Controller
     /**
      * Get details of specified transaction
      */
-    public function getDetails(Request $request)
+    public function getTransactionDetails(Request $request)
     {
         $transaction_id = $request->transaction_id;
         $transaction = DriverTransaction::find($transaction_id);
