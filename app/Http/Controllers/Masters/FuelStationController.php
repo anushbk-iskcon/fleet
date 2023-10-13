@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Masters;
 
 use App\Http\Controllers\Controller;
+use App\Models\Fuel;
 use App\Models\FuelStation;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
@@ -17,7 +18,8 @@ class FuelStationController extends Controller
     public function index()
     {
         // $fuelStations = FuelStation::all();
-        return view('refueling.fuel-stations');
+        $fuelTypes = Fuel::where('IS_ACTIVE', 'Y')->get();
+        return view('refueling.fuel-stations', compact('fuelTypes'));
     }
 
     /**
@@ -51,6 +53,8 @@ class FuelStationController extends Controller
         $fuelStation->STATION_CODE =  $request->station_code;
         $fuelStation->AUTHORIZE_PERSON = $request->authorize_person;
         $fuelStation->CONTACT_NUMBER = $request->contact_num;
+        $fuelStation->ADVANCE_AMOUNT = $request->advance_amount ?? 0;
+        $fuelStation->FUEL_TYPE = $request->fuel_type;
         if (isset($request->is_authorized))
             $fuelStation->IS_AUTHORIZED = 'Y';
         else
@@ -95,6 +99,9 @@ class FuelStationController extends Controller
             $fuelStation->IS_AUTHORIZED = 'Y';
         else
             $fuelStation->IS_AUTHORIZED = 'N';
+
+        $fuelStation->ADVANCE_AMOUNT = $request->advance_amount ?? 0;
+        $fuelStation->FUEL_TYPE = $request->fuel_type;
         $fuelStation->MODIFIED_BY = Auth::id();
 
         $updated = $fuelStation->save();

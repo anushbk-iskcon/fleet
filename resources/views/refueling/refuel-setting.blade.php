@@ -208,20 +208,13 @@
                         </div>
                         <div class="form-group row">
                             <label for="picture" class="col-sm-5 col-form-label">Fuel Slip Scan Copy </label>
-                            <div class="col-sm-7">
-                                <input type="file" accept="image/*, application/pdf" name="picture">
+                            <div class="col-sm-7" style="display:flex;flex-wrap:wrap;">
+                                <input type="file" accept="image/*, application/pdf" name="fuel_slip_scan_copy">
                             </div>
                         </div>
-                        <!-- <div class="form-group row m-0">
-                            <label for="" class="col-sm-5 col-form-label">&nbsp; </label>
-                            <div class="col-sm-7 checkbox checkbox-primary">
-                                <input id="checkbox2" type="checkbox" name="strict_consumption" value="1">
-                                <label for="checkbox2">Strict Consumption Apply</label>
-                            </div>
-                        </div> -->
 
                         <div class="form-group text-right">
-                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetAddRefuelSettingForm">Reset</button>
+                            <button type="reset" class="btn btn-primary w-md m-b-5" id="resetAddRefuelSettingForm">Clear</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
                         </div>
                     </div>
@@ -264,7 +257,7 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <div id="table-loader"></div>
-                    <table id="refuelSettingTable" class="table table-striped table-bordered dt-responsive nowrap">
+                    <table id="refuelSettingTable" class="table table-striped table-hover table-bordered dt-responsive nowrap">
                         <thead>
                             <tr>
                                 <th>Sl No.</th>
@@ -277,21 +270,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- <tr>
-                                <td>1</td>
-                                <td>Test Express 1</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>No</td>
-                                <td>0301234567</td>
-                                <td>Diesel</td>
-                                <td></td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_10" value="https://vmsdemo.bdtask-demo.com/refueling/refueling/updaterefuelfrm" />
-                                    <a onclick="editinfo(10)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/refueling/refueling/delete_refuel/10" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr> -->
 
                         </tbody>
                     </table> <!-- /.table-responsive -->

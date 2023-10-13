@@ -49,30 +49,20 @@ class RefuelSettingController extends Controller
         $refuelSetting->VEHICLE = $request->vehicle;
         $refuelSetting->DRIVER =  $request->driver;
         $refuelSetting->FUEL_TYPE = $request->fuel_type;
-        $refuelSetting->DRIVER_MOBILE = $request->driver_mobile; # Column removed from form/view
         $refuelSetting->REFUELED_DATE = date('Y-m-d', strtotime($request->refueling_date));
-        $refuelSetting->REFUEL_LIMIT_TYPE = $request->refuel_limit_type ?? null; # Column removed from form/view
-        $refuelSetting->FUEL_STATION = $request->fuel_station;
-        $refuelSetting->MAX_UNIT = $request->max_unit; # Column removed from form/view
-        $refuelSetting->BUDGET_GIVEN = $request->budget_given ?? 0; # Column removed from form/view
+        $refuelSetting->FUEL_STATION = $request->fuel_station ?? 0;
         $refuelSetting->PLACE = $request->place;
-        $refuelSetting->KILOMETER_PER_UNIT = $request->kilometer_per_unit ?? 0; # Column removed from form/view
         $refuelSetting->LAST_READING = $request->last_reading ?? null;
-        $refuelSetting->LAST_UNIT = $request->last_unit ?? null; # Column removed from form/view
-        $refuelSetting->CONSUMPTION_PERCENT = $request->consumption_percent ?? 0; # Column removed from form/view
-        $refuelSetting->ODOMETER_DAY_END = $request->odometer_after_day_end ?? null; # Column removed from form/view
         $refuelSetting->ODOMETER_AT_REFUEL = $request->odometer_at_refueling ?? null;
         $refuelSetting->UNIT_TAKEN = $request->unit_taken ?? 0;
-        $refuelSetting->STRICT_CONSUMPTION = $request->strict_consumption == 1 ? 'Y' : 'N'; # Option removed from view
 
-        // Add new fields for unit price / total amount
-        // $refuelSetting->AMOUNT_PER_UNIT = $request->amount_per_unit ?? 0;
-        // $refuelSetting->TOTAL_AMOUNT = $request->total_amount ?? 0;
-        // $refuelSetting->SECURITY_NAME = $request->security_name ?? "";
+        $refuelSetting->AMOUNT_PER_UNIT = $request->amount_per_unit ?? 0;
+        $refuelSetting->TOTAL_AMOUNT = $request->total_amount ?? 0;
+        $refuelSetting->SECURITY_NAME = $request->security_name ?? "";
 
         // For uploading Fuel Slip Image or PDF and storing file path
-        if ($request->hasFile('picture')) {
-            $file = $request->file('picture');
+        if ($request->hasFile('fuel_slip_scan_copy')) {
+            $file = $request->file('fuel_slip_scan_copy');
             $fileName = time() . '-' . date('Y') . '.' . $file->getClientOriginalExtension();
             $uploadDestination = public_path('/upload/documents/refueling/');
             $file->move($uploadDestination, $fileName);
@@ -103,6 +93,10 @@ class RefuelSettingController extends Controller
         $refuelSetting = RefuelSetting::find($refuel_setting_id);
 
         // dd($refuelSetting);
+        // Default Values for Some Form Fields
+        $securityName = $refuelSetting->SECURITY_NAME ?? "";
+        $totalAmount = $refuelSetting->TOTAL_AMOUNT == 0 ? "" : $refuelSetting->TOTAL_AMOUNT;
+        $amountPerUnit = $refuelSetting->AMOUNT_PER_UNIT == 0 ? "" : $refuelSetting->AMOUNT_PER_UNIT;
 
         $editFormContent = '<form id="editRefuelSettingForm" action="' . route('refuel-setting.update') . '" class="row" enctype="multipart/form-data" method="post" accept-charset="utf-8">
         <input type="hidden" name="_token" value="' . csrf_token() . '">
@@ -171,23 +165,15 @@ class RefuelSettingController extends Controller
         <div class="form-group row">
             <label for="edit_security_name" class="col-sm-5 col-form-label">Security Name </label>
             <div class="col-sm-7">
-                <input name="security_name" class="form-control" type="text" placeholder="Security" id="edit_security_name">
+                <input name="security_name" class="form-control" type="text" placeholder="Security" id="edit_security_name" value="' . $securityName  . '">
             </div>
         </div>';
-
-        // $editFormContent .= '<div class="form-group row"><label for="edit_kilometer_per_unit" class="col-sm-5 col-form-label">Kilometer Per Unit <i class="text-danger">*</i></label>
-        // <div class="col-sm-7">
-        //     <input name="kilometer_per_unit" required class="form-control" type="number" placeholder="Kilometer Per Unit" id="edit_kilometer_per_unit" value="' . $refuelSetting->KILOMETER_PER_UNIT . '">
-        // </div></div>';
 
         $editFormContent .= '<div class="form-group row"><label for="edit_last_reading" class="col-sm-5 col-form-label">Last Reading </label>
         <div class="col-sm-7">
             <input name="last_reading" class="form-control" type="number" placeholder="Last Reading" id="edit_last_reading" value="' . $refuelSetting->LAST_READING . '">
         </div></div>';
 
-        // $editFormContent .= '<div class="form-group row"><label for="edit_last_unit" class="col-sm-5 col-form-label">Last Unit </label>
-        // <div class="col-sm-7"><input name="last_unit" class="form-control" type="number" placeholder="Last Unit" id="edit_last_unit" value="' . $refuelSetting->LAST_UNIT . '">
-        // </div></div></div>';  
         $editFormContent .= '</div>';
         #End col-md-12 and begin new
 
@@ -205,28 +191,6 @@ class RefuelSettingController extends Controller
         }
         $editFormContent .= '</select></div></div>';
 
-        // $editFormContent .= '<div class="form-group row">
-        // <label for="edit_driver_mobile" class="col-sm-5 col-form-label">Driver Mobile <i class="text-danger">*</i></label>
-        // <div class="col-sm-7">
-        //     <input name="driver_mobile" class="form-control" required type="number" placeholder="Driver Mobile" id="edit_driver_mobile" value="' . $refuelSetting->DRIVER_MOBILE . '">
-        // </div></div>
-        // <div class="form-group row">
-        // <label for="edit_refuel_limit_type" class="col-sm-5 col-form-label">Refuel Limit Type </label>
-        // <div class="col-sm-7">
-        //     <input name="refuel_limit_type" class="form-control" type="text" placeholder="Refuel Limit Type" id="edit_refuel_limit_type" value="' . $refuelSetting->REFUEL_LIMIT_TYPE . '">
-        // </div></div>';
-
-        // $editFormContent .= '<div class="form-group row">
-        // <label for="edit_max_unit" class="col-sm-5 col-form-label">Max Unit <i class="text-danger">*</i></label>
-        // <div class="col-sm-7">
-        //     <input name="max_unit" required class="form-control" type="number" placeholder="Max Unit" id="edit_max_unit" value="' . $refuelSetting->MAX_UNIT . '">
-        // </div></div>
-        // <div class="form-group row">
-        // <label for="edit_consumption_percent" class="col-sm-5 col-form-label">Consumption Percent </label>
-        // <div class="col-sm-7">
-        //     <input name="consumption_percent" class="form-control" type="number" placeholder="Consumption Percent" id="edit_consumption_percent" value="' . $refuelSetting->CONSUMPTION_PERCENT . '">
-        // </div></div>';
-
         $editFormContent .= '<div class="form-group row">
         <label for="edit_odometer_at_time_of_refueling" class="col-sm-5 col-form-label">Odometer at time of refueling </label>
         <div class="col-sm-7">
@@ -241,19 +205,19 @@ class RefuelSettingController extends Controller
         <div class="form-group row">
             <label for="edit_amount_per_unit" class="col-sm-5 col-form-label">Amount Per Unit (INR) <i class="text-danger">*</i></label>
             <div class="col-sm-7">
-                <input type="number" name="amount_per_unit" class="form-control" placeholder="Amount Per Unit (INR)" id="edit_amount_per_unit">
+                <input type="number" name="amount_per_unit" class="form-control" placeholder="Amount Per Unit (INR)" id="edit_amount_per_unit" value="' . $amountPerUnit . '">
             </div>
         </div>
         <div class="form-group row">
             <label for="edit_total_amount" class="col-sm-5 col-form-label">Total Amount (INR) <i class="text-danger">*</i></label>
             <div class="col-sm-7">
-                <input type="number" name="total_amount" class="form-control" placeholder="Total Amount (INR)" id="edit_total_amount">
+                <input type="number" name="total_amount" class="form-control" placeholder="Total Amount (INR)" id="edit_total_amount" value="' . $totalAmount . '">
             </div>
         </div>
         <div class="form-group row">
         <label for="edit_picture" class="col-sm-5 col-form-label">Fuel Slip Scan Copy</label>
         <div class="col-sm-7">
-            <input type="file" accept="image/*" name="picture">
+            <input type="file" accept="image/*" name="fuel_slip_scan_copy">
         </div></div>';
 
         $editFormContent .= '<div class="form-group text-right">
@@ -276,30 +240,22 @@ class RefuelSettingController extends Controller
         $refuelSetting->VEHICLE = $request->vehicle;
         $refuelSetting->DRIVER =  $request->driver;
         $refuelSetting->FUEL_TYPE = $request->fuel_type;
-        $refuelSetting->DRIVER_MOBILE = $request->driver_mobile ?? ""; # Column removed from view/form
         $refuelSetting->REFUELED_DATE = date('Y-m-d', strtotime($request->refueling_date));
-        $refuelSetting->REFUEL_LIMIT_TYPE = $request->refuel_limit_type ?? null; # Column removed from view
         $refuelSetting->FUEL_STATION = $request->fuel_station ?? 0;
-        $refuelSetting->MAX_UNIT = $request->max_unit; # Column removed from view
-        $refuelSetting->BUDGET_GIVEN = $request->budget_given ?? 0; # Column removed from view
         $refuelSetting->PLACE = $request->place;
-        $refuelSetting->KILOMETER_PER_UNIT = $request->kilometer_per_unit ?? 0; # Column removed from view
+
         $refuelSetting->LAST_READING = $request->last_reading ?? null;
-        $refuelSetting->LAST_UNIT = $request->last_unit ?? null; # Column removed from view
-        $refuelSetting->CONSUMPTION_PERCENT = $request->consumption_percent ?? 0; # Column removed from view
-        $refuelSetting->ODOMETER_DAY_END = $request->odometer_after_day_end ?? null; # Column removed from view
         $refuelSetting->ODOMETER_AT_REFUEL = $request->odometer_at_refueling ?? null;
         $refuelSetting->UNIT_TAKEN = $request->unit_taken ?? 0;
-        $refuelSetting->STRICT_CONSUMPTION = $request->strict_consumption == 1 ? 'Y' : 'N'; # Option removed from view
 
-        // Newly added fields
-        // $refuelSetting->AMOUNT_PER_UNIT = $request->amount_per_unit ?? 0;
-        // $refuelSetting->TOTAL_AMOUNT = $request->total_amount ?? 0;
-        // $refuelSetting->SECURITY_NAME = $request->security_name ?? "";
+        // Newly added fields OCT 3 2023
+        $refuelSetting->AMOUNT_PER_UNIT = $request->amount_per_unit ?? 0;
+        $refuelSetting->TOTAL_AMOUNT = $request->total_amount ?? 0;
+        $refuelSetting->SECURITY_NAME = $request->security_name ?? "";
 
         // For uploading Fuel Slip Image or PDF and storing file path
-        if ($request->hasFile('picture')) {
-            $file = $request->file('picture');
+        if ($request->hasFile('invoice_copy')) {
+            $file = $request->file('fuel_slip_scan_copy');
             $fileName = time() . '-' . date('Y') . '.' . $file->getClientOriginalExtension();
             $uploadDestination = public_path('/upload/documents/refueling/');
             $file->move($uploadDestination, $fileName);

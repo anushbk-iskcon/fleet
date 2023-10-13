@@ -90,13 +90,18 @@
                         <div class="form-group row">
                             <label for="advance_amount" class="col-sm-5 col-form-label">Advance Amount (INR) </label>
                             <div class="col-sm-7">
-                                <input name="advance_amount" class="form-control" type="text" placeholder="Advance Amount" id="advance_amount">
+                                <input name="advance_amount" class="form-control" type="number" placeholder="Advance Amount" id="advance_amount">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="fuel_type" class="col-sm-5 col-form-label">Fuel Type <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="fuel_type" required class="form-control" type="text" placeholder="Fuel Type" id="fuel_type">
+                                <select name="fuel_type" required class="form-control" id="fuel_type">
+                                    <option value="">Please Select</option>
+                                    @foreach($fuelTypes as $fuelType)
+                                    <option value="{{$fuelType['FUEL_ID']}}">{{$fuelType['FUEL_TYPE_NAME']}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -216,13 +221,18 @@
                             <div class="form-group row">
                                 <label for="new_adv_amt" class="col-sm-5 col-form-label">Advance Amount (INR)</label>
                                 <div class="col-sm-7">
-                                    <input name="advance_amount" class="form-control" type="text" placeholder="Advance Amount" id="new_adv_amt">
+                                    <input name="advance_amount" class="form-control" type="number" placeholder="Advance Amount" id="new_adv_amt">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="new_fuel_type" class="col-sm-5 col-form-label">Fuel Type <i class="text-danger">*</i></label>
                                 <div class="col-sm-7">
-                                    <input name="fuel_type" required class="form-control" type="text" placeholder="Fuel Type" id="new_fuel_type">
+                                    <select name="fuel_type" required class="form-control" id="new_fuel_type">
+                                        <option value="">Please Select</option>
+                                        @foreach($fuelTypes as $fuelType)
+                                        <option value="{{$fuelType['FUEL_ID']}}">{{$fuelType['FUEL_TYPE_NAME']}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
 

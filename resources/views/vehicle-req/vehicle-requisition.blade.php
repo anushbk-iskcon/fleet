@@ -160,6 +160,22 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label for="" class="col-sm-5 col-form-label">User Entity Code <i class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <select name="user_entity" id="userEntityCode" class="from-control basic-single">
+                                    <option value="">Select User Entity Code</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="" class="col-sm-5 col-form-label">User Department HOD <i class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <select name="user_hod" id="userDivisionHead" class="form-control basic-single">
+                                    <option value="">Select HOD</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label for="vehicle_type" class="col-sm-5 col-form-label">Vehicle Type <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="vehicle_type" id="vehicle_type">
@@ -199,6 +215,9 @@
                                 <input name="pickup" class="form-control" type="text" placeholder="Pick Up" id="pickup">
                             </div>
                         </div>
+
+                    </div>
+                    <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
                             <label for="req_date" class="col-sm-5 col-form-label">Requisition Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
@@ -211,8 +230,6 @@
                                 <input name="time_fr" class="form-control ttimepicker" type="time" placeholder="Time From" id="time_fr">
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
                             <label for="time_to" class="col-sm-5 col-form-label">Time To <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
@@ -314,7 +331,23 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="vehicle_type" class="col-sm-5 col-form-label">Vehicle Type <i class="text-danger">*</i></label>
+                            <label for="userEntityCode2" class="col-sm-5 col-form-label">User Entity Code <i class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <select name="user_entity" id="userEntityCode2" class="from-control basic-single">
+                                    <option value="">Select User Entity Code</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="userDivisionHead2" class="col-sm-5 col-form-label">User Department HOD <i class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <select name="user_hod" id="userDivisionHead2" class="form-control basic-single">
+                                    <option value="">Select HOD</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="vehicle_type2" class="col-sm-5 col-form-label">Vehicle Type <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="vehicle_type" id="vehicle_type2">
                                     <option value="" selected="selected">Please Select One</option>
@@ -353,10 +386,14 @@
                                 <input name="pickup" class="form-control" type="text" placeholder="Pick Up" id="pickup2">
                             </div>
                         </div>
+
+                    </div>
+
+                    <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
                             <label for="req_date" class="col-sm-5 col-form-label">Requisition Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="req_date" class="form-control  vnewdatetimepicker" autocomplete="off" type="date" placeholder="Requisition Date" id="req_date2">
+                                <input name="req_date" class="form-control vnewdatetimepicker" autocomplete="off" type="date" placeholder="Requisition Date" id="req_date2">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -365,8 +402,6 @@
                                 <input name="time_fr" class="form-control ttimepicker" type="time" placeholder="Time From" id="time_fr2">
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
                             <label for="time_to" class="col-sm-5 col-form-label">Time To <i class="text-danger">*</i></label>
                             <div class="col-sm-7">

@@ -8,6 +8,16 @@ $.validator.addMethod('validImage', function (value, element, param) {
     return (this.optional(element) || (fileExtn === 'jpg' || fileExtn === 'jpeg' || fileExtn === 'png'));
 }, "Profile image should be only JPG or PNG");
 
+// For validating file size before upload
+$.validator.addMethod('validFileSize', function (val, element, params) {
+    let maxFileSize = 5 * 1024 * 1024; // 5 MB
+    let fileSize = 0;
+    if (element.files[0]) {
+        fileSize = element.files[0].size;
+    }
+    return (this.optional(element) || fileSize <= maxFileSize);
+}, "Maximum allowed file size is 5 MB");
+
 $(document).ready(function () {
     let driversInfoTable = $("#driverinfo").DataTable();
 
@@ -55,7 +65,8 @@ $(document).ready(function () {
                 maxlength: 25
             },
             picture: {
-                validImage: true
+                validImage: true,
+                validFileSize: true
             },
             ctc: {
                 number: true,
@@ -143,7 +154,8 @@ $(document).ready(function () {
                 maxlength: 25
             },
             picture: {
-                validImage: true
+                validImage: true,
+                validFileSize: true
             },
             ctc: {
                 number: true,

@@ -33,6 +33,13 @@ $(document).ready(function () {
             },
             contact_num: {
                 required: true
+            },
+            advance_amount: {
+                number: true,
+                min: 0
+            },
+            fuel_type: {
+                required: true
             }
         },
         submitHandler: function (form, ev) {
@@ -102,6 +109,13 @@ $(document).ready(function () {
             },
             contact_num: {
                 required: true
+            },
+            advance_amount: {
+                number: true,
+                min: 0
+            },
+            fuel_type: {
+                required: true
             }
         },
         submitHandler: function (form, ev) {
@@ -147,6 +161,7 @@ $(document).ready(function () {
     $("#resetEditFormBtn").click(function () {
         setTimeout(() => {
             $("#editFuelStationForm").validate().resetForm();
+            $("#new_fuel_type").val($("#new_fuel_type").attr('data-og-val'));
         }, 10);
     });
 
@@ -233,6 +248,12 @@ function getFuelStationDetails(fuelStationId) {
                 $("#new_station_code").attr('value', res.data.STATION_CODE);
                 $("#new_authorize_person").attr('value', res.data.AUTHORIZE_PERSON);
                 $("#new_contact_num").attr('value', res.data.CONTACT_NUMBER);
+                $("#new_fuel_type").val(res.data.FUEL_TYPE);
+                $("#new_fuel_type").attr('data-og-val', res.data.FUEL_TYPE);
+                if (res.data.ADVANCE_AMOUNT != 0) {
+                    $("#new_adv_amt").val(res.data.ADVANCE_AMOUNT);
+                    $("#new_adv_amt").attr('value', res.data.ADVANCE_AMOUNT);
+                }
                 if (res.data.IS_AUTHORIZED == 'Y')
                     $("#editFuelStationForm input[name=is_authorized]").attr("checked", "checked");
                 else

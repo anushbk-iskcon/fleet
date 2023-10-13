@@ -1,5 +1,5 @@
 // For validating file types before upload
-$.validator.addMethod('validFileType', function (val, element, param) {
+$.validator.addMethod('validFileType', function (val, element, params) {
     let fileName = ''; let fileExtn = '';
     if (element.files[0]) { // If document is selected for uploading
         fileName = element.files[0].name;

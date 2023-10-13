@@ -1,3 +1,23 @@
+// For validating file types before upload
+$.validator.addMethod('validFileType', function (val, element, params) {
+    let fileName = ''; let fileExtn = '';
+    if (element.files[0]) { // If document is selected for uploading
+        fileName = element.files[0].name;
+        fileExtn = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
+    }
+    return (this.optional(element) || fileExtn === 'jpg' || fileExtn === 'jpeg' || fileExtn === 'png' || fileExtn === 'webp' || fileExtn === 'pdf');
+}, "Please select only PDF or image for upload");
+
+// For validating file size before upload
+$.validator.addMethod('validFileSize', function (val, element, params) {
+    let maxFileSize = 5 * 1024 * 1024; // 5 MB
+    let fileSize = 0;
+    if (element.files[0]) {
+        fileSize = element.files[0].size;
+    }
+    return (this.optional(element) || fileSize <= maxFileSize);
+}, "Maximum allowed file size is 5 MB");
+
 $(document).ready(function () {
     let refuelSettingTable = $("#refuelSettingTable").DataTable();
 
@@ -30,11 +50,6 @@ $(document).ready(function () {
             fuel_type: 'required',
             // fuel_station: 'required',
             refueling_date: 'required',
-            // budget_given: {
-            //     required: true,
-            //     number: true,
-            //     min: 0
-            // },
             last_reading: {
                 min: 0
             },
@@ -51,7 +66,6 @@ $(document).ready(function () {
                 }
             },
             driver: 'required',
-            // driver_mobile: 'required',
             odometer_at_refueling: {
                 number: true
             },
@@ -70,6 +84,10 @@ $(document).ready(function () {
             max_unit: {
                 required: true,
                 min: 0
+            },
+            fuel_slip_scan_copy: {
+                validFileType: true,
+                validFileSize: true
             }
         },
         messages: {
@@ -219,6 +237,9 @@ function editInfo(refuelSettingId) {
             refuel_setting_id: refuelSettingId,
             _token: csrfToken
         },
+        beforeSend: function () {
+            $('.customloader').show();
+        },
         success: function (res) {
             $("#edit .modal-body").empty();
             $("#edit .modal-body").html(res);
@@ -252,6 +273,7 @@ function editInfo(refuelSettingId) {
             });
 
             $("#edit").modal('show');
+            $('.customloader').hide();
             reinitValidationForEditForm();
         },
         error: function () {
@@ -297,13 +319,8 @@ function reinitValidationForEditForm() {
         rules: {
             vehicle: 'required',
             fuel_type: 'required',
-            fuel_station: 'required',
+            // fuel_station: 'required',
             refueling_date: 'required',
-            // budget_given: {
-            //     required: true,
-            //     number: true,
-            //     min: 0
-            // },
             last_reading: {
                 min: 0
             },
@@ -312,12 +329,36 @@ function reinitValidationForEditForm() {
                 required: true,
                 maxlength: 50
             },
-            // kilometer_per_unit: { required: true, min: 0 },
+            security_name: {
+                required: {
+                    depends: function (element) {
+                        return $("#edit_station_name").val() != '';
+                    }
+                }
+            },
             driver: 'required',
-            // driver_mobile: 'required',
+            odometer_at_refueling: {
+                number: true
+            },
             unit_taken: {
                 required: true,
                 min: 0
+            },
+            amount_per_unit: {
+                required: true,
+                min: 0
+            },
+            total_amount: {
+                required: true,
+                min: 0
+            },
+            max_unit: {
+                required: true,
+                min: 0
+            },
+            fuel_slip_scan_copy: {
+                validFileType: true,
+                validFileSize: true
             }
         },
         errorElement: 'div',
@@ -347,7 +388,7 @@ function reinitValidationForEditForm() {
                     }
                 },
                 error: function () {
-                    toastr.error("Error adding Refuel Setting. Please try again", '', { closeButton: true });
+                    toastr.error("Error Updating Refuel Setting. Please try again", '', { closeButton: true });
                 }
             });
         }
