@@ -119,6 +119,7 @@ class MaintenanceRequisitionController extends Controller
         $qty = $request->product_quantity;
         $rates = $request->product_rate;
         $total_prices = $request->total_price;
+        $warranty_dates = $request->product_warranty;
 
         $num_of_items = count($items);
         // dd($items, $qty, $rates, $qty, $total_prices, $item_names, count($items));
@@ -147,6 +148,17 @@ class MaintenanceRequisitionController extends Controller
         // $maintenRequisition->IS_SCHEDULED = $request->is_add_schedule ? 'Y' : 'N';
         $maintenRequisition->CREATED_BY = Auth::id();
 
+        // To upload scanned copy of invoice
+        if ($request->hasFile('mainten_invoice')) {
+            $invoice = $request->file('mainten_invoice');
+            $document = time() . '-' . date('Y') . '.' . $invoice->getClientOriginalExtension();
+            $destination = public_path('/upload/documents/maintenance/');
+            $invoice->move($destination, $document);
+
+            // Store filename in DB column:
+            $maintenRequisition->INVOICE_FILE = $document;
+        }
+
         // dd($items, $qty, $rates, $qty, $total_prices, $item_names, count($items), $maintenRequisition);
         $entrySaved = $maintenRequisition->save(); // Set to Boolean based on whether entry was saved
         $maintenReqId = $maintenRequisition->MAINTENANCE_REQ_ID; //->id did not work
@@ -155,12 +167,17 @@ class MaintenanceRequisitionController extends Controller
         $itemsSaved = false;
         if ($num_of_items) {
             for ($i = 0; $i < $num_of_items; $i++) {
+                $warranty = '1970-01-01'; # Since Warranty date is not null, set default date in case not given
+                if ($warranty_dates[$i])
+                    $warranty = date('Y-m-d', strtotime($warranty_dates[$i]));
+
                 $currentId = DB::table('maintenance_req_items')->insertGetId(
                     [
                         'MAINTENANCE_REQ_ID' => $maintenReqId,
                         'ITEM_TYPE_NAME' => $items[$i],
-                        'ITEM_NAME' => $item_names[$i],
+                        'ITEM_NAME' => $item_names[$i] ?? '',
                         'UNITS' => $qty[$i],
+                        'WARRANTY_DATE' => $warranty,
                         'UNIT_PRICE' => $rates[$i],
                         'TOTAL_AMOUNT' => $total_prices[$i],
                         // 'IS_ACTIVE' = 'Y',
@@ -171,17 +188,6 @@ class MaintenanceRequisitionController extends Controller
                 if ($currentId) $itemsSaved = true;
                 else $itemsSaved = false;
             }
-        }
-
-        // To upload scanned copy of invoice
-        if ($request->hasFile('mainten_invoice')) {
-            $invoice = $request->file('mainten_invoice');
-            $document = time() . '-' . date('Y') . '.' . $invoice->getClientOriginalExtension();
-            $destination = public_path('/upload/documents/maintenance/');
-            $invoice->move($destination, $document);
-
-            // Store filename in DB column:
-            $maintenRequisition->INVOICE_FILE = $document;
         }
 
         // To return successCode and message/data
@@ -352,11 +358,20 @@ class MaintenanceRequisitionController extends Controller
         $maintenRequisition->MAINTENANCE_SERVICE_NAME = $request->mainten_service_name;
         $maintenRequisition->SERVICE_DATE = date('Y-m-d', strtotime($request->service_date));
         $maintenRequisition->CHARGE = $request->charge ?? "";
-        $maintenRequisition->CHARGE_BEAR_BY = $request->charge_bear_by ?? "";
         $maintenRequisition->TOTAL_AMOUNT = $request->grand_total_price; // Or use session stored value
         $maintenRequisition->PRIORITY = $request->priority;
-        $maintenRequisition->IS_SCHEDULED = $request->is_add_schedule ? 'Y' : 'N';
         $maintenRequisition->MODIFIED_BY = Auth::id();
+
+        // To upload scanned copy of invoice
+        if ($request->hasFile('mainten_invoice')) {
+            $invoice = $request->file('mainten_invoice');
+            $document = time() . '-' . date('Y') . '.' . $invoice->getClientOriginalExtension();
+            $destination = public_path('/upload/documents/maintenance/');
+            $invoice->move($destination, $document);
+
+            // Store filename in DB column:
+            $maintenRequisition->INVOICE_FILE = $document;
+        }
 
         $maintenReqUpdated = $maintenRequisition->save(); // Set to Boolean based on whether entry was saved
 
@@ -371,18 +386,26 @@ class MaintenanceRequisitionController extends Controller
         $qty = $request->product_quantity;
         $rates = $request->product_rate;
         $total_prices = $request->total_price;
+        $warranties = $request->product_warranty;
 
         $num_items = count($items);
         // Update any items where details were changed
         for ($i = 0; $i < $num_items; $i++) {
+
+            // Change date format of warranty date for update
+            $warranty = '1970-01-01'; # Since Warranty date is not null, set default date in case not given
+            if ($warranties[$i])
+                $warranty = date('Y-m-d', strtotime($warranties[$i]));
+
             if ($itemIds[$i] != '' || $itemIds[$i] != null) {
                 // If ID for index (form row) is not null, that entry currently exists in DB table, has to be updated
                 DB::table('maintenance_req_items')->where('ITEM_ID', $itemIds[$i])
                     ->update([
                         'ITEM_TYPE_NAME' => $items[$i],
-                        'ITEM_NAME' => $item_names[$i],
+                        'ITEM_NAME' => $item_names[$i] ?? '',
                         'UNITS' => $qty[$i],
                         'UNIT_PRICE' => $rates[$i],
+                        'WARRANTY_DATE' => $warranty,
                         'TOTAL_AMOUNT' => $total_prices[$i],
                         'MODIFIED_BY' => Auth::id(),
                         'MODIFIED_ON' => date('Y-m-d H:i:s')
@@ -395,6 +418,7 @@ class MaintenanceRequisitionController extends Controller
                     'ITEM_NAME' => $item_names[$i],
                     'UNITS' => $qty[$i],
                     'UNIT_PRICE' => $rates[$i],
+                    'WARRANTY_DATE' => $warranty,
                     'TOTAL_AMOUNT' => $total_prices[$i],
                     'CREATED_BY' => Auth::id(),
                     'CREATED_ON' => date('Y-m-d H:i:s')

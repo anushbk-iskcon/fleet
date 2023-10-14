@@ -190,8 +190,8 @@
                                     <td class="text-right">
                                         <input type="number" required name="product_quantity[]" id="cartoon_1" class="form-control text-right pqty store_cal_1" onkeyup="calculate_store(1);" onchange="calculate_store(1);" placeholder="0.00" value min="0" tabindex="6">
                                     </td>
-                                    <td class="text-right">
-                                        <input type="text" name="product_warranty[]" id="warranty_1" class="form-control text-right">
+                                    <td class="">
+                                        <input type="text" name="product_warranty[]" id="warranty_1" class="form-control new-datepicker" placeholder="Warranty Date">
                                     </td>
                                     <td class="text-right">
                                         <input type="number" required name="product_rate[]" onkeyup="calculate_store(1);" onchange="calculate_store(1);" id="product_rate_1" class="form-control product_rate product_rate_1 text-right" placeholder="0.00" value min="0" tabindex="7">

@@ -41,6 +41,8 @@ class VehicleReqController extends Controller
         $employee = $hrApi->getEmployeeList($emp);
         $empData = $employee['data'];
         $departments = $hrApi->getDepartments();
+        $entities = $hrApi->getEntityList();
+        $entityData = $entities['data'];
 
         if ($request->ajax()) {
 
@@ -157,7 +159,7 @@ class VehicleReqController extends Controller
 
                 ->make(true);
         }
-        return view('vehicle-req.vehicle-requisition', compact('driver', 'vehicle_type', 'purpose', 'empData', 'departments', 'trip_types'));
+        return view('vehicle-req.vehicle-requisition', compact('driver', 'vehicle_type', 'purpose', 'empData', 'departments', 'trip_types', 'entityData'));
     }
     public function addRequisition(Request $request)
     {

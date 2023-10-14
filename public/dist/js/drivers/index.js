@@ -394,6 +394,12 @@ function loadUpdateDriverForm(driver_details) {
         </div>
     </div>
     <div class="form-group row">
+        <label for="update_mobile" class="col-sm-5 col-form-label">Mobile <i class="text-danger">*</i></label>
+        <div class="col-sm-7">
+            <input name="mobile" required="" class="form-control" type="number" placeholder="Mobile" id="update_mobile" value="${driver_details['MOBILE_NUMBER']}">
+        </div>
+    </div>
+    <div class="form-group row">
     <label for="newpicture" class="col-sm-5 col-form-label">Update Photograph </label>
     <div class="col-sm-7" style="display:flex;flex-wrap:wrap;">
         <input type="file" accept="image/*" name="picture" id="newpicture">
@@ -401,13 +407,6 @@ function loadUpdateDriverForm(driver_details) {
 </div>
 </div>
 <div class="col-md-12 col-lg-6">
-    <div class="form-group row">
-        <label for="update_mobile" class="col-sm-5 col-form-label">Mobile <i class="text-danger">*</i></label>
-        <div class="col-sm-7">
-            <input name="mobile" required="" class="form-control" type="number" placeholder="Mobile" id="update_mobile" value="${driver_details['MOBILE_NUMBER']}">
-        </div>
-    </div>
-
     <div class="form-group row">
         <label for="update_license_type" class="col-sm-5 col-form-label">License Type <i class="text-danger">*</i></label>
         <div class="col-sm-7">
@@ -572,7 +571,7 @@ function loadTable(table) {
                         actionBtns += `<button class="btn btn-danger" title="" data-toggle="tooltip" data-original-title="Deactivate" data-placement="left" onclick="deactivateDriver(this)" data-driver-id="${data.DRIVER_ID}">
                             <i class="ti-close"></i></button>`;
                     else
-                        actionBtns += `<button class="btn btn-danger" title="" data-toggle="tooltip" data-original-title="Activate" data-placement="left" onclick="deactivateDriver(this)" data-driver-id="${data.DRIVER_ID}">
+                        actionBtns += `<button class="btn btn-danger" title="" data-toggle="tooltip" data-original-title="Activate" data-placement="left" onclick="activateDriver(this)" data-driver-id="${data.DRIVER_ID}">
                             <i class="ti-reload"></i></button>`;
                     table.row.add([
                         i + 1,

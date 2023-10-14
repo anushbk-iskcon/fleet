@@ -79,4 +79,25 @@ class HrApi extends Model
         $responseData = json_decode($response, true);
         return $responseData;
     }
+
+    /**
+     * Get Entity List
+     */
+    public function getEntityList()
+    {
+        $client = new Client();
+
+        // Get Entity List
+        $url = $this->apiBaseURL . '/admin/get-entity-list';
+        $request = $client->post($url, [
+            'json' => [
+                'accessKey' => $this->accessKey
+            ],
+            'http_errors' => false
+        ]);
+
+        $response = $request->getBody();
+        $responseData = json_decode($response, true);
+        return $responseData;
+    }
 }

@@ -23,17 +23,17 @@
                 </div>
                 @endif
             </div>
-            <div class="form-card mb-5">
+            <div class="form-card mb-2">
                 <div class="form-card_body">
                     <div class="text-center mb-2">
-                        <img src="{{asset('public/img/Group 11681.png')}}" alt="" style="height:auto; width:300px;">
+                        <img src="{{asset('public/img/Group 11678.png')}}" alt="" style="height:auto; width:300px;">
                     </div>
                     <form action="" id="loginForm" novalidate method="post" accept-charset="utf-8">
                         @csrf
                         <div class="text-center">
                             <div class="mb-3">
                                 <h1 class="display-4 mt-0 font-weight-semi-bold">Sign In</h1>
-                                <p>Please Sign In Using Your Email & Password</p>
+                                <!-- <p>Please Sign In Using Your Email & Password</p> -->
                             </div>
                         </div>
                         <div class="form-group">

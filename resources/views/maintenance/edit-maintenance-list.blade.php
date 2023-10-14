@@ -179,6 +179,24 @@
                                 <textarea name="remarks" class="form-control" cols="30" rows="3" placeholder="Remarks"></textarea>
                             </div>
                         </div>
+                        <div class="from-group row">
+                            <label for="" class="col-sm-5 col-form-label">Current Invoice</label>
+                            <div class="col-sm-7">
+                                @if($maintenReqDetails['INVOICE_FILE'])
+                                <a href="{{asset('public/upload/documents/maintenance') . '/' . $maintenReqDetails['INVOICE_FILE']}}" target="_blank" class="btn btn-info">
+                                    <i class="fas fa-eye"></i> View Invoice
+                                </a>
+                                @else
+                                <div class="mt-3">No file uploaded</div>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group row mt-2">
+                            <label for="newInvoiceDocument" class="col-sm-5 col-form-label">Upload New Invoice</label>
+                            <div class="col-sm-7">
+                                <input type="file" name="mainten_invoice" id="newInvoiceDocument">
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-12 col-lg-12">
                         <div class="card-header p-2">
@@ -191,8 +209,10 @@
                                     <th class="text-center">Item Name</th>
                                     <th class="text-center">Item Unit <i class="text-danger">*</i>
                                     </th>
+                                    <th class="text-center">Warranty</th>
                                     <th class="text-center">Unit Price<i class="text-danger">*</i>
                                     </th>
+
                                     <th class="text-center">Total Amount</th>
                                     <th class="text-center">Action</th>
                                 </tr>
@@ -210,6 +230,11 @@
                                     </td>
                                     <td class="text-right">
                                         <input type="number" required name="product_quantity[]" id="cartoon_{{$i}}" class="form-control text-right pqty store_cal_{{$i}}" onkeyup="calculate_store({{$i}});" onchange="calculate_store({{$i}});" placeholder="0.00" value="{{$item->UNITS}}" min="0" tabindex="6">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="product_warranty[]" id="warranty_{{$i}}" @if($item->WARRANTY_DATE != '1970-01-01' && $item->WARRANTY_DATE != '0000-00-00') value="{{ date('d-M-Y', strtotime($item->WARRANTY_DATE))}}"
+                                        @else value="" @endif
+                                        class="form-control new-datepicker" placeholder="Warranty Date">
                                     </td>
                                     <td class="text-right">
                                         <input type="number" required name="product_rate[]" value="{{$item->UNIT_PRICE}}" onkeyup="calculate_store({{$i}});" onchange="calculate_store({{$i}});" id="product_rate_{{$i}}" class="form-control product_rate product_rate_{{$i}} text-right" placeholder="0.00" min="0" tabindex="7">
@@ -252,7 +277,8 @@
 @section('js-content')
 <!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/maintenance_edit.js"></script> -->
 <script>
-
+    let csrfToken = '{{csrf_token()}}';
+    let uploadDocumentsPath = "{{asset('public/upload/documents/maintenance/')}}";
 </script>
 <script src="{{asset('public/dist/js/maintenance/edit_mainten_req.js')}}"></script>
 @endsection

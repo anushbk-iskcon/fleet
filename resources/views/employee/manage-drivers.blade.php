@@ -43,12 +43,6 @@
                                 <input name="license_number" required="" class="form-control" type="text" placeholder="License Number" id="license_number" autocomplete="off">
                             </div>
                         </div>
-                        <!-- <div class="form-group row">
-                            <label for="national_id" class="col-sm-5 col-form-label">National ID <i class="text-danger">*</i></label>
-                            <div class="col-sm-7">
-                                <input name="national_id" required="" class="form-control" type="number" placeholder="National ID" id="national_id" autocomplete="off">
-                            </div>
-                        </div> -->
                         <div class="form-group row">
                             <label for="timeslot" required="" class="col-sm-5 col-form-label">Working Time Slot </label>
                             <div class="col-sm-3 pr-0">
@@ -96,6 +90,12 @@
                                 <input name="permanent_address" class="form-control" type="text" placeholder="Permanent Address" id="permanent_address">
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="mobile" class="col-sm-5 col-form-label">Mobile <i class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <input name="mobile" required="" class="form-control" type="number" placeholder="Mobile" id="mobile">
+                            </div>
+                        </div>
 
                         <div class="form-group row">
                             <label for="picture" class="col-sm-5 col-form-label">Photograph </label>
@@ -106,13 +106,6 @@
                         </div>
                     </div>
                     <div class="col-md-12 col-lg-6">
-                        <div class="form-group row">
-                            <label for="mobile" class="col-sm-5 col-form-label">Mobile <i class="text-danger">*</i></label>
-                            <div class="col-sm-7">
-                                <input name="mobile" required="" class="form-control" type="number" placeholder="Mobile" id="mobile">
-                            </div>
-                        </div>
-
                         <div class="form-group row">
                             <label for="license_type" class="col-sm-5 col-form-label">License Type <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
@@ -210,10 +203,6 @@
             </div>
 
         </div>
-        <div class="modal-footer">
-
-        </div>
-
     </div>
 
 </div>

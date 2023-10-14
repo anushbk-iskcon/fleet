@@ -8,12 +8,10 @@ $(document).ready(function () {
         showDropdowns: true,
         autoUpdateInput: false,
         minYear: 2000,
-        maxDate: '31-Dec-' + currentYear,
         "drops": "up",
         locale: {
             format: 'DD-MMM-YYYY'
-        },
-        maxYear: parseInt(moment().format('YYYY'), 10)
+        }
     }, function (start, end, label) {
         var years = moment().diff(start, 'years');
     });
@@ -150,7 +148,8 @@ function addmore(divName) {
             ')"></td><td class="text-right"><input type="number" name="product_quantity[]" tabindex="' + tab2 +
             '" required  id="cartoon_' + count + '" class="form-control pqty text-right store_cal_' + count +
             '" onkeyup="calculate_store(' + count + ');" onchange="calculate_store(' + count +
-            ');" placeholder="0.00" value="" min="0"/>  </td><td class="test text-right"><input type="number" name="product_rate[]" onkeyup="calculate_store(' +
+            ');" placeholder="0.00" value="" min="0"/>  </td> <td class=""><input type="text" name="product_warranty[]" id="warranty_' + count +
+            '" class="form-control datepicker2" placeholder="Warranty Date"></td> <td class="test text-right"><input type="number" name="product_rate[]" onkeyup="calculate_store(' +
             count + ');" onchange="calculate_store(' + count + ');" required id="product_rate_' + count +
             '" class="form-control product_rate product_rate_' + count +
             ' text-right" placeholder="0.00" value="" min="0" tabindex="' + tab3 +
@@ -161,6 +160,26 @@ function addmore(divName) {
         document.getElementById(tabin).focus();
         document.getElementById("add_invoice_item").setAttribute("tabindex", tab5);
         document.getElementById("add_purchase").setAttribute("tabindex", tab6);
+
+        $(".datepicker2").daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            autoUpdateInput: false,
+            minYear: 2000,
+            "drops": "up",
+            locale: {
+                format: 'DD-MMM-YYYY'
+            }
+        }, function (start, end, label) {
+            var years = moment().diff(start, 'years');
+        });
+        $('.datepicker2').on('apply.daterangepicker', function (ev, picker) {
+            $(this).val(picker.startDate.format('DD-MMM-YYYY'));
+            $(this).valid();
+        });
+        $('.datepicker2').on('cancel.daterangepicker', function (ev, picker) {
+            $(this).val('');
+        });
 
         count++;
 

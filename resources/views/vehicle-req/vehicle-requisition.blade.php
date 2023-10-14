@@ -87,6 +87,7 @@
                         <div class="form-group row  mb-1">
                             <label for="joining_d_to" class="col-sm-5 col-form-label">&nbsp;</label>
                             <div class="col-sm-7 text-right">
+
                                 <button type="button" class="btn btn-success" id="btn-filter">Search</button>&nbsp;
                             </div>
                         </div>
@@ -162,8 +163,11 @@
                         <div class="form-group row">
                             <label for="" class="col-sm-5 col-form-label">User Entity Code <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <select name="user_entity" id="userEntityCode" class="from-control basic-single">
+                                <select name="user_entity" id="userEntityCode" class="form-control basic-single">
                                     <option value="">Select User Entity Code</option>
+                                    @foreach($entityData as $entity)
+                                    <option value="{{$entity['entityCode']}}">{{$entity['entityCode'] . ' - ' . $entity['entityName']}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -333,8 +337,11 @@
                         <div class="form-group row">
                             <label for="userEntityCode2" class="col-sm-5 col-form-label">User Entity Code <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <select name="user_entity" id="userEntityCode2" class="from-control basic-single">
+                                <select name="user_entity" id="userEntityCode2" class="form-control basic-single">
                                     <option value="">Select User Entity Code</option>
+                                    @foreach($entityData as $entity)
+                                    <option value="{{$entity['entityCode']}}">{{$entity['entityCode'] . ' - ' . $entity['entityName']}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -489,8 +496,9 @@
                             <button type="submit" class="btn btn-success w-md m-b-5">Update</button>
                         </div>
                     </div>
+                </form>
             </div>
-            </form>
+
         </div>
     </div>
 </div>
@@ -519,8 +527,8 @@
                             <button type="submit" class="btn btn-success w-md m-b-5">Update</button>
                         </div>
                     </div>
+                </form>
             </div>
-            </form>
         </div>
     </div>
 </div>

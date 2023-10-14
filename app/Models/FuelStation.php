@@ -23,6 +23,8 @@ class FuelStation extends Model
         'STATION_CODE',
         'AUTHORIZE_PERSON',
         'CONTACT_NUMBER',
+        'ADVANCE_AMOUNT',
+        'FUEL_TYPE',
         'IS_AUTHORIZED',
         'IS_ACTIVE',
         'CREATED_BY',
