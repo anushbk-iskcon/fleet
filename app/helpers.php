@@ -52,7 +52,7 @@ if (!function_exists('getuserMenu')) {
     {
         $userMenu = Permissions::selectRaw('permissions.PERMISSION_ID,permissions.PARENT_ID, permissions.MENU_TITLE, group_concat(permissions.MENU_SUBTITLE) as subtitles, group_concat(permissions.SLUG) as urls')
             ->groupBy('permissions.PARENT_ID')->groupBy('permissions.MENU_TITLE')->groupBy('permissions.PERMISSION_ID')
-            ->where(['permissions.IS_ACTIVE' => 'Y','CHILD_ID'=>0])
+            ->where(['permissions.IS_ACTIVE' => 'Y', 'CHILD_ID' => 0])
             ->orderBy('permissions.PARENT_ID')
             ->get();
 
@@ -66,8 +66,8 @@ if (!function_exists('checkMenuExist')) {
         $userRoleId = UserRoles::where('USER_ID', Auth::user()->USER_ID)->value('ROLE_ID');
         $userRole = Role::find($userRoleId);
         $userRoleName = $userRole->ROLE_NAME;
-        $check = Rolepermissions::where(['ROLE_ID'=>$userRoleId,'PERMISSION_ID'=>$permission_id,'IS_ACTIVE' => 'Y'])->first();
-    
+        $check = Rolepermissions::where(['ROLE_ID' => $userRoleId, 'PERMISSION_ID' => $permission_id, 'IS_ACTIVE' => 'Y'])->first();
+
         return $check;
     }
 }
@@ -75,12 +75,12 @@ if (!function_exists('checkSubmenu')) {
 
     function checkSubmenu($permission_id)
     {
-       
-        $menu = Permissions::where(['PARENT_ID'=>$permission_id,'IS_ACTIVE' => 'Y'])
-        ->where('CHILD_ID','!=',0)
-        ->orderBy('CHILD_ID','asc')
-        ->get();
-    
+
+        $menu = Permissions::where(['PARENT_ID' => $permission_id, 'IS_ACTIVE' => 'Y'])
+            ->where('CHILD_ID', '!=', 0)
+            ->orderBy('CHILD_ID', 'asc')
+            ->get();
+
         return $menu;
     }
 }
@@ -104,7 +104,6 @@ if (!function_exists('getEmployeename')) {
         $response = $request->getBody();
         $responseData = json_decode($response, true);
         return ($responseData['data']) ? $responseData['data'][0]['employeeName'] : '';
-
     }
 }
 

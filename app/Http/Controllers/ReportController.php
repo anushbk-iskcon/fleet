@@ -28,18 +28,32 @@ class ReportController extends Controller
 {
     public function __construct()
     {
-        
     }
     public function debitNote(Request $request)
     {
         $hrApi = new HrApi;
         $departments = $hrApi->getDepartments();
-        return view('reports.debit-notes',compact('departments'));
+        return view('reports.debit-notes', compact('departments'));
     }
     public function generatePDF()
     {
         $data = [
-            'title' => 'Debit Report'
+            'title' => 'Debit Report',
+            'entityName' => 'National Institute of Value Education',
+            'entityCode' => 'CE 00',
+            'items' => [
+                [1, 'Gas', 'Kg', '', 68.58, 0],
+                [2, 'Petrol', 'Ltr', '', 102.18, 0],
+                [3, 'Diesel', 'Ltr', 200.53, 87.88, 17623],
+                [4, 'Lubricants', 'Rs', '', '', ''],
+                [5, 'Vehicle Maint. Expense', 'Rs', '', '', ''],
+                [6, 'Hire Charges', 'Rs', '', '', ''],
+                [7, 'Drivers\' Tour Bata', 'Rs', '', '', ''],
+                [8, 'Misc  Expense', 'Rs', '', '', ''],
+                [9, 'Driver Salary & OT', 'Rs', '', 21281, 21281],
+                [10, 'Other Dept drivers\' OT', 'Rs', 0, 160, 0],
+            ],
+            'amountDebitable' => 38904
         ];
         // return view('pdf.template',compact('data'));
         $pdf = PDF::loadView('pdf.template', $data);
@@ -49,7 +63,7 @@ class ReportController extends Controller
             'margin_bottom' => 0,
             'margin_left' => 0,
         ]);
-        return $pdf->stream('document.pdf');
+        return $pdf->stream('Debit_Note_.pdf');
 
         // return $pdf->download('sample.pdf');
     }

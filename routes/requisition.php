@@ -65,8 +65,9 @@ Route::middleware('auth')->group(function () {
     // Activate/de-activate Maintenance approval Authority
     Route::post('vehicle-requisition/approval-authorities/change-activation', [VehicleReqController::class, 'changeActivationOfApprovalAuthority'])
         ->name('vehicle-req-approval-auth.change-activation');
+
     // /////////////////////Debit Notes Report//////////////
-    Route::get('reports/debit-note', [ReportController::class, 'debitNote'])->name('debit.note');
+    Route::get('reports/debit-notes', [ReportController::class, 'debitNote'])->name('debit.note');
     Route::get('reports/generate-pdf', [ReportController::class, 'generatePDF'])->name('generate.pdf');
 
     // /////////////Salary/////////////////////
