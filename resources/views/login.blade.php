@@ -1,6 +1,6 @@
 @extends('layouts.login.app')
 
-@section('title','Login - Fleet')
+@section('title','Login - Vahan')
 
 @section('content')
 

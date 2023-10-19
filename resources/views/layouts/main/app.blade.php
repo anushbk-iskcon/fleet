@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title') - Fleet</title>
+    <title>@yield('title') - Vahan</title>
 
     <link rel="shortcut icon" href="{{asset('public/img/icons/favicon.ico')}}" type="image/x-icon">
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
@@ -70,7 +70,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 
     <script>
-        var baseurl = "http://localhost/fleet/public/";
+        var baseurl = "http://localhost/fleet/";
     </script>
 </head>
 
@@ -671,7 +671,7 @@
                     <div class="footer-text d-flex align-items-center justify-content-between">
                         <div class="copy">
                             <?= date('Y') ?>
-                            <a href="{{url('dashboard')}}">Fleet</a>
+                            <a href="{{url('dashboard')}}">Vahan</a>
                         </div>
                         <div class="credit"> ISKCON Bangalore </div>
                     </div>
