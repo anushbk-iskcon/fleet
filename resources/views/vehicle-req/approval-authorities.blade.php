@@ -335,10 +335,25 @@
     let authorityListURL = "{{route('vehicle-req-approval-auth.list')}}";
     let changeActivationStatusURL = "{{route('vehicle-req-approval-auth.change-activation')}}";
     let depts = JSON.parse(`{!! json_encode($departments['data']) !!}`);
+
+    let maintenAuthoritiesTable = {};
 </script>
 <script>
     $(document).ready(function() {
-        let maintenAuthoritiesTable = $("#authinfo").DataTable();
+        maintenAuthoritiesTable = $("#authinfo").DataTable({
+            "columnDefs": [{
+                "width": "80px",
+                "className": "text-center",
+                "orderable": false,
+                "targets": 5
+            }, {
+                "width": "50px",
+                "targets": 0
+            }],
+            "autoWidth": false
+        });
+
+        $("#authinfo").css('width', '100%');
 
         populateTable(maintenAuthoritiesTable);
 
@@ -492,7 +507,8 @@
 
     });
 
-    let maintenAuthoritiesTable = $("#authinfo").DataTable();
+    // let maintenAuthTable = $("#authinfo").DataTable();
+    // above line throwing error on DataTables re-initialization
 
     function populateTable(table) {
         $.ajax({

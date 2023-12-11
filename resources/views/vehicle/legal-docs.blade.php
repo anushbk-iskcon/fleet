@@ -275,6 +275,7 @@
                                 <th>Vehicle</th>
                                 <th>Last Issue Date</th>
                                 <th>Expire Date</th>
+                                <th>View</th>
                                 <th>Vendor</th>
                                 <th>Commission</th>
                                 <th>Notification Before</th>
@@ -282,18 +283,6 @@
                             </tr>
                         </thead>
                         <tbody>
-
-                            <!-- <tr role="row" class="odd">
-                                <td class="sorting_1" tabindex="0">1</td>
-                                <td>NID</td>
-                                <td>Nissan</td>
-                                <td>2021-02-01</td>
-                                <td>2021-02-24</td>
-                                <td>Abc</td>
-                                <td>6787</td>
-                                <td>1 Month</td>
-                                <td style="display: none;"><input name="url" type="hidden" id="url_3" value="https://vmsdemo.bdtask-demo.com/vehiclemgt/Vehicle_management/updatedocumentfrm"><a onclick="editinfo(3)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a href="https://vmsdemo.bdtask-demo.com/vehiclemgt/Vehicle_management/delete_documentation/3" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a></td>
-                            </tr> -->
 
                         </tbody>
 

@@ -1,5 +1,11 @@
 $(document).ready(function () {
-    let maintenReqTable = $("#mainreq").DataTable();
+    let maintenReqTable = $("#mainreq").DataTable({
+        "columnDefs": [{ "width": "40px", "targets": 0 },
+        { "max-width": "10%", "targets": 1 },
+        { "width": "140px", "orderable": false, targets: 6 }
+        ],
+        autoWidth: false
+    });
 
     $("#btn-filter").click(function () {
         populateTable(maintenReqTable);

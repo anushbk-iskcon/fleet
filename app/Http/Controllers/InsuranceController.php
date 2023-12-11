@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\Insurance;
 use App\Models\RecurringPeriod;
 use App\Models\Vehicle;
@@ -33,7 +34,8 @@ class InsuranceController extends Controller
             $insuranceList = DB::table('vehicle_insurance')
                 ->join('vehicles', 'vehicle_insurance.VEHICLE', '=', 'vehicles.VEHICLE_ID')
                 ->join('mstr_recurring_periods', 'vehicle_insurance.RECURRING_PERIOD', '=', 'mstr_recurring_periods.RECURRING_PERIOD_ID')
-                ->select('vehicle_insurance.*', 'vehicles.VEHICLE_NAME', 'mstr_recurring_periods.RECURRING_PERIOD_NAME')
+                ->join('mstr_companies', 'vehicle_insurance.COMPANY_NAME', '=', 'mstr_companies.COMPANY_ID')
+                ->select('vehicle_insurance.*', 'vehicles.VEHICLE_NAME', 'mstr_recurring_periods.RECURRING_PERIOD_NAME', 'mstr_companies.COMPANY_NAME as INS_PROVIDER')
                 ->when($vehicle, function ($query, $vehicle) {
                     return $query->where('vehicle_insurance.VEHICLE', '=', $vehicle);
                 })
@@ -53,9 +55,10 @@ class InsuranceController extends Controller
 
             return $insuranceList->toJson();
         } else {
-            $vehicles = Vehicle::select('VEHICLE_ID', 'VEHICLE_NAME')->where('IS_ACTIVE', 'Y')->get();
+            $vehicles = Vehicle::select('VEHICLE_ID', 'VEHICLE_NAME', 'LICENSE_PLATE')->where('IS_ACTIVE', 'Y')->get();
             $recurringPeriods = RecurringPeriod::select('RECURRING_PERIOD_ID', 'RECURRING_PERIOD_NAME')->where('IS_ACTIVE', 'Y')->get();
-            return view('vehicle.insurance-list', compact('vehicles', 'recurringPeriods'));
+            $insuranceCompanies = Company::select('COMPANY_ID', 'COMPANY_NAME')->where('IS_ACTIVE', 'Y')->get();
+            return view('vehicle.insurance-list', compact('vehicles', 'recurringPeriods', 'insuranceCompanies'));
         }
     }
 
@@ -77,7 +80,7 @@ class InsuranceController extends Controller
         $insurance->RECURRING_PERIOD_REMINDER = $request->add_reminder == 1 ? 'Y' : 'N';
         $insurance->STATUS = $request->status == 1 ? 'Y' : 'N';
         $insurance->REMARKS = $request->remarks ?? null;
-        $insurance->DEDUCTIBLE = $request->deductible;
+        $insurance->DEDUCTIBLE = $request->deductible ?? 0; # Asked to remove this field in form
 
         // To upload insurance policy document
         if ($request->hasFile('policy_document')) {

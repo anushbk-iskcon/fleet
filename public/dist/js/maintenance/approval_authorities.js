@@ -1,5 +1,14 @@
+let maintenAuthoritiesTable = {};
+
 $(document).ready(function () {
-    let maintenAuthoritiesTable = $("#authinfo").DataTable();
+    maintenAuthoritiesTable = $("#authinfo").DataTable({
+        "columnDefs": [
+            { "width": "40px", "targets": 0 },
+            { "width": "125px", "targets": 2 },
+            { "width": "80px", "orderable": false, "className": "text-center", "targets": 5 }
+        ],
+        "autoWidth": false
+    });
 
     populateTable(maintenAuthoritiesTable);
 
@@ -138,8 +147,6 @@ $(document).ready(function () {
     });
 
 });
-
-let maintenAuthoritiesTable = $("#authinfo").DataTable();
 
 function populateTable(table) {
     $.ajax({

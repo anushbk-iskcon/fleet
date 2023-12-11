@@ -19,7 +19,12 @@ $.validator.addMethod('validFileSize', function (val, element, params) {
 }, "Maximum allowed file size is 5 MB");
 
 $(document).ready(function () {
-    let refuelSettingTable = $("#refuelSettingTable").DataTable();
+    let refuelSettingTable = $("#refuelSettingTable").DataTable({
+        columnDefs: [{ "width": "60px", "targets": 0 },
+        { "max-width": "45%", "targets": 1 },
+        { "width": "90px", "orderable": false, "className": "text-center", "targets": 4 }],
+        autoWidth: false
+    });
 
     populateTable(refuelSettingTable);
 

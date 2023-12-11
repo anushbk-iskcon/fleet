@@ -2,6 +2,21 @@
 
 @section('title', 'Requisition Purposes')
 
+@section('css-content')
+<style>
+    .action-btns-container {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        gap: 20px;
+    }
+
+    #reqPurposeTable tr td:last-child .btn {
+        margin-right: 20px !important;
+    }
+</style>
+@endsection
+
 @section('breadcrumb-content')
 <li class="breadcrumb-item"><a href="{{url('home')}}">Home</a></li>
 <li class="breadcrumb-item active" id="moduleName">System Settings</li>
@@ -137,7 +152,20 @@
 @section('js-content')
 <script>
     $(document).ready(function() {
-        let reqPurposeTable = $("#reqPurposeTable").DataTable();
+        let reqPurposeTable = $("#reqPurposeTable").DataTable({
+            "columnDefs": [{
+                    "max-width": "10%",
+                    "targets": 0
+                },
+                {
+                    "orderable": false,
+                    "width": "160px",
+                    "className": "text-center",
+                    "targets": 2
+                }
+            ],
+            "autoWidth": false
+        });
 
         // To add serial numbers in data table on adding new item
         reqPurposeTable.on('draw.dt', function() {

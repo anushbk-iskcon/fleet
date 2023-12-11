@@ -259,7 +259,7 @@
                     <table id="driverinfo" class="table display table-bordered table-striped table-hover ">
                         <thead>
                             <tr>
-                                <th>Sl No.</th>
+                                <th>#</th>
                                 <th>Driver Name</th>
                                 <th>Mobile</th>
                                 <th>License Number</th>
@@ -333,6 +333,22 @@
     let driverProfileImgPath = "{{asset('public/upload/profile/drivers/')}}";
 
     let licenseTypes = JSON.parse(`{!! json_encode($licenseTypes) !!}`);
+
+    // Configuration options for DataTables
+    let dataTableOptions = {
+        "columnDefs": [{
+                "width": "5%",
+                "targets": 0
+            },
+            {
+                "width": "95px",
+                "orderable": false,
+                "className": "text-center",
+                "targets": 5
+            }
+        ],
+        "autoWidth": false
+    };
 </script>
 <!-- <script src="{{asset('public/dist/js/position_form.js')}}"></script> -->
 <script src="{{asset('public/dist/js/drivers/index.js')}}"></script>

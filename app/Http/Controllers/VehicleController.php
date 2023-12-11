@@ -73,6 +73,7 @@ class VehicleController extends Controller
                 'vehicles.DRIVER_ID',
                 'vehicles.OWNERSHIP_ID',
                 'vehicles.OWNERSHIP_NAME',
+                'vehicles.LICENSE_PLATE',
                 'drivers.DRIVER_NAME',
                 'mstr_vendor.VENDOR_NAME',
                 // 'mstr_ownership.OWNERSHIP_NAME',

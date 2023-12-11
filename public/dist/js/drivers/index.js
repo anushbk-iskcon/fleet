@@ -19,7 +19,7 @@ $.validator.addMethod('validFileSize', function (val, element, params) {
 }, "Maximum allowed file size is 5 MB");
 
 $(document).ready(function () {
-    let driversInfoTable = $("#driverinfo").DataTable();
+    let driversInfoTable = $("#driverinfo").DataTable(dataTableOptions);
 
     // Validate Form to Add Drivers
     $("#add_driver_form").validate({

@@ -19,7 +19,12 @@ $.validator.addMethod('validFileSize', function (val, element, params) {
 }, "Maximum allowed file size is 5 MB");
 
 $(document).ready(function () {
-    let legalDocumentsTable = $("#legalDocumentsTable").DataTable();
+    let legalDocumentsTable = $("#legalDocumentsTable").DataTable({
+        autoWidth: false,
+        columnDefs: [{ orderable: false, targets: [5] }]
+    });
+
+    $("#legalDocumentsTable").css('width', '100%');
 
     populateTable(legalDocumentsTable);
 
@@ -192,7 +197,7 @@ function populateTable(table) {
             $("#table-loader").show();
         },
         success: function (res) {
-            // console.log(res);
+            console.log(res);
             table.clear();
             if (res.length >= 1) {
                 $.each(res, function (i, data) {
@@ -200,6 +205,9 @@ function populateTable(table) {
 
                     let lastIssueDate = moment(data.LAST_ISSUE_DATE).format('DD-MMM-YYYY');
                     let expireDate = moment(data.EXPIRE_DATE).format('DD-MMM-YYYY');
+                    let viewDocumentBtn = '';
+                    if (data.DOCUMENT_ATTACHMENT != null)
+                        viewDocumentBtn = `<a href="${documentsPath + "/" + data.DOCUMENT_ATTACHMENT}" target="_blank" class="btn btn-sm btn-info"><i class="fas fa-eye"></i></a>`;
                     if (data.IS_ACTIVE == 'Y')
                         actionBtns += `<button class="btn btn-sm btn-danger mr-1" onclick="changeActivation(${data.LEGAL_DOCUMENT_ID}, 0)" title="Deactivate"><i class="ti-close"></i></button>`;
                     else
@@ -210,6 +218,7 @@ function populateTable(table) {
                         data.VEHICLE_NAME,
                         lastIssueDate,
                         expireDate,
+                        viewDocumentBtn,
                         data.VENDOR_NAME,
                         data.COMMISSION,
                         data.NOTIFICATION_TYPE_NAME,

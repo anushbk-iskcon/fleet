@@ -1,6 +1,13 @@
 /* Begin jQuery document.ready block */
 $(document).ready(function () {
-    let logInfoTable = $("#logInfoTable").DataTable();
+    let logInfoTable = $("#logInfoTable").DataTable({
+        "columnDefs": [
+            { "width": "50px", "targets": 0 },
+            { "max-width": "30%", "targets": 1 },
+            { "width": "60px", "orderable": false, "className": "text-center", "targets": 5 }
+        ],
+        "autoWidth": false
+    });
 
     // To enable datepicker on the filter date
     $("#filterDate").daterangepicker({

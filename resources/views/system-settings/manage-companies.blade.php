@@ -1,6 +1,21 @@
 @extends('layouts.main.app')
 
-@section('title', 'Manage Companies')
+@section('title', 'Insurance Providers')
+
+@section('css-content')
+<style>
+    .action-btns-container {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        gap: 20px;
+    }
+
+    #companiesTable tr td:last-child .btn {
+        margin-right: 20px !important;
+    }
+</style>
+@endsection
 
 @section('breadcrumb-content')
 <li class="breadcrumb-item"><a href="{{url('home')}}">Home</a></li>
@@ -9,7 +24,7 @@
 
 @section('header-title-media-body')
 <h1 class="font-weight-bold" id="moduleName1">System Settings</h1>
-<small id="controllerName">Manage Companies</small>
+<small id="controllerName">Manage Insurance Providers</small>
 @endsection
 
 @section('content')
@@ -79,7 +94,7 @@
     <div class="col-sm-12">
         <div class="card mb-3">
             <div class="card-header p-2">
-                <h4 class="pl-3">Manage Companies
+                <h4 class="pl-3">Manage Insurance Providers
                     <small class="float-right">
                         <button type="button" class="btn btn-primary btn-md" data-target="#add0" data-toggle="modal">
                             <i class="ti-plus" aria-hidden="true"></i>
@@ -133,7 +148,20 @@
 <!-- <script src="{{asset('dist/js/company_list.js')}}"></script> -->
 <script>
     $(document).ready(function() {
-        let companiesTable = $("#companiesTable").DataTable();
+        let companiesTable = $("#companiesTable").DataTable({
+            "columnDefs": [{
+                    "max-width": "10%",
+                    "targets": 0
+                },
+                {
+                    "orderable": false,
+                    "width": "160px",
+                    "className": "text-center",
+                    "targets": 2
+                }
+            ],
+            "autoWidth": false
+        });
 
         // To add serial numbers in data table on adding new item
         companiesTable.on('draw.dt', function() {

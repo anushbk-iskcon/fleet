@@ -26,7 +26,7 @@
             <div class="form-card mb-2">
                 <div class="form-card_body">
                     <div class="text-center mb-2">
-                        <img src="{{asset('public/img/Group 11678.png')}}" alt="" style="height:auto; width:300px;">
+                        <img src="{{asset('public/img/vahan-logo.png')}}" alt="" style="height:auto; width:300px;">
                     </div>
                     <form action="" id="loginForm" novalidate method="post" accept-charset="utf-8">
                         @csrf

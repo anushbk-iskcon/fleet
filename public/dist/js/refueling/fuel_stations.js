@@ -1,6 +1,7 @@
 $(document).ready(function () {
     let fuelStationsTable = $("#stationinfo").DataTable();
 
+    $("#stationinfo").css("width", "100%");
     populateTable(fuelStationsTable);
 
     // To add serial numbers in data table on adding new item

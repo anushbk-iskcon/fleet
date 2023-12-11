@@ -164,6 +164,12 @@ class VehicleReqController extends Controller
     public function addRequisition(Request $request)
     {
 
+        // To get Entity Name and code separately from request input
+        $userEntity = $request->user_entity;
+
+        $userEntityArray = explode(' - ', $userEntity);
+        $user_entity_code = $userEntityArray[0];
+        $user_entity_name = $userEntityArray[1];
         DB::beginTransaction();
 
         try {
@@ -171,7 +177,10 @@ class VehicleReqController extends Controller
             $dataInsert = VehicleRequisition::create([
                 'DEPT_ID' => $request->department,
                 'REQUISITION_FOR' => $request->req_for,
+                'USER_ENTITY_CODE' => $user_entity_code,
+                'USER_ENTITY_NAME' => $user_entity_name,
                 'VEHICLE_TYPE_ID' => $request->vehicle_type,
+                'TRIP_TYPE' => $request->trip_type,
                 'WHERE_FROM' => $request->where_fr,
                 'WHERE_TO' => $request->where_to,
                 'PICK_UP' => $request->pickup,
@@ -186,6 +195,8 @@ class VehicleReqController extends Controller
                 'DRIVER_ID' => ($getVehicle->DRIVER_ID) ? $getVehicle->DRIVER_ID : '',
                 'VEHICLE_ID' => $request->vehicle,
                 'IS_CHECK' => $request->checkValue,
+                'HOD_EMPLOYEE_ID' => $request->hod_employee_id,
+                'HOD_EMPLOYEE_NAME' => $request->hod_employee_name,
                 'CREATED_ON' => date('Y-m-d H:i:s'),
                 'CREATED_BY' => Auth::id(),
 
@@ -218,6 +229,13 @@ class VehicleReqController extends Controller
     public function editRequisition(Request $request)
     {
 
+        // To get Entity Name and code separately from request input
+        $userEntity = $request->user_entity;
+
+        $userEntityArray = explode(' - ', $userEntity);
+        $user_entity_code = $userEntityArray[0];
+        $user_entity_name = $userEntityArray[1];
+
         DB::beginTransaction();
 
         try {
@@ -226,7 +244,10 @@ class VehicleReqController extends Controller
             $data->update([
                 'DEPT_ID' => $request->department,
                 'REQUISITION_FOR' => $request->req_for,
+                'USER_ENTITY_CODE' => $user_entity_code,
+                'USER_ENTITY_NAME' => $user_entity_name,
                 'VEHICLE_TYPE_ID' => $request->vehicle_type,
+                'TRIP_TYPE' => $request->trip_type,
                 'WHERE_FROM' => $request->where_fr,
                 'WHERE_TO' => $request->where_to,
                 'PICK_UP' => $request->pickup,
@@ -240,6 +261,8 @@ class VehicleReqController extends Controller
                 'DRIVER_ID' => ($getVehicle->DRIVER_ID) ? $getVehicle->DRIVER_ID : '',
                 'VEHICLE_ID' => $request->vehicle,
                 'IS_CHECK' => $request->checkValue,
+                'HOD_EMPLOYEE_ID' => $request->hod_employee_id,
+                'HOD_EMPLOYEE_NAME' => $request->hod_employee_name,
                 'MODIFIED_ON' => date('Y-m-d H:i:s'),
                 'MODIFIED_BY' => Auth::id(),
             ]);

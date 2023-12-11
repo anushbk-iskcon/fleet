@@ -100,11 +100,12 @@ Route::middleware('auth')->group(function () {
     Route::post('drivers/get-data', [DriverController::class, 'getData']);
     Route::post('get-driver-details', [DriverController::class, 'getDriverDetails']);
 
-    Route::get('drivers/transactions', [DriverController::class, 'transactions'])->name('manage-transactions');
+    Route::get('drivers/transactions', [DriverController::class, 'transactions'])->name('manage-transactions'); # OverTime page
     Route::post('drivers/transactions/list', [DriverController::class, 'transactions'])->name('driver-transaction.list');
     Route::post('drivers/transactions/add', [DriverController::class, 'storeTransactionDetails'])->name('driver-transaction.add');
     Route::post('drivers/transactions/details', [DriverController::class, 'getTransactionDetails'])->name('driver-transaction.details');
     Route::post('drivers/transactions/update', [DriverController::class, 'updateTransactionDetails'])->name('driver-transaction.update');
+    Route::post('drivers/transactions/get-ot-rate', [DriverController::class, 'getOverTimeRate'])->name('driver-transaction.get-driver-ot');
 
     Route::get('drivers/information-log', [DriverInfoLogController::class, 'index'])->name('driver-info-log');
     Route::post('drivers/information-log/list', [DriverInfoLogController::class, 'index'])->name('driver-info-log.list');
@@ -371,10 +372,10 @@ Route::middleware('auth')->group(function () {
 
     /*** START System Settings Module ***/
     // Companies Master Data routes
-    Route::get('settings/manage-companies', [CompanyController::class, 'index'])->name('manage-companies');
-    Route::post('settings/manage-companies/add', [CompanyController::class, 'store'])->name('manage-companies.add');
-    Route::post('settings/manage-companies/update', [CompanyController::class, 'update'])->name('manage-companies.update');
-    Route::post('settings/manage-companies/update-status', [CompanyController::class, 'statusUpdate'])->name('manage-companies.update-status');
+    Route::get('settings/insurance-companies', [CompanyController::class, 'index'])->name('manage-companies');
+    Route::post('settings/insurance-companies/add', [CompanyController::class, 'store'])->name('manage-companies.add');
+    Route::post('settings/insurance-companies/update', [CompanyController::class, 'update'])->name('manage-companies.update');
+    Route::post('settings/insurance-companies/update-status', [CompanyController::class, 'statusUpdate'])->name('manage-companies.update-status');
 
     // Recurring Periods Data routes
     Route::get('settings/recurring-periods', [RecurringPeriodController::class, 'index'])->name('recurring-periods');

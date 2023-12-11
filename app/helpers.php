@@ -92,11 +92,11 @@ if (!function_exists('getEmployeename')) {
         $apiBaseURl = 'https://hr.iskconbangalore.net/v1/api';
         $client = new Client();
         // Get Employee Names by Department
-        $url = $apiBaseURl . '/admin/view-employee-detail';
+        $url = $apiBaseURl . '/profile/get-personal-details';
         $request = $client->post($url, [
             'json' => [
                 'accessKey' => $accessKey,
-                'employeeId' => $id
+                'hrEmployeeId' => $id
             ],
             'http_errors' => false
         ]);

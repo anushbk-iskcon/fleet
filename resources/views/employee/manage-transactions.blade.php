@@ -101,15 +101,21 @@
                     </div>
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
-                            <label for="durationForOvertime" class="col-form-label col-md-5">Duration (in minutes) <i class="text-danger">*</i></label>
+                            <label for="durationForOvertime" class="col-form-label col-md-5">Duration (in hours) <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" id="durationForOvertime" name="duration" placeholder="Enter duration">
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label for="transactionAmt" class="col-md-5 col-form-label">Bata Amount (INR) </label>
+                        <div class="form-group row" id="addDriverOTRate" style="display: none;">
+                            <label for="" class="col-form-label col-md-5">Driver Hourly OT (INR)</label>
                             <div class="col-sm-7">
-                                <input type="number" class="form-control" id="transactionAmt" name="amount" placeholder="Amount">
+                                <input type="number" class="form-control" id="driverOTRate" name="driver_hourly_ot" placeholder="Driver's OT" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="transactionAmt" class="col-md-5 col-form-label">OT Amount (INR) </label>
+                            <div class="col-sm-7">
+                                <input type="number" class="form-control" id="transactionAmt" name="amount" placeholder="Amount" readonly>
                             </div>
                         </div>
                         <div class="form-group text-right">
@@ -166,15 +172,21 @@
                     </div>
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
-                            <label for="editDurationForOvertime" class="col-form-label col-md-5">Duration (in minutes) <i class="text-danger">*</i></label>
+                            <label for="editDurationForOvertime" class="col-form-label col-md-5">Duration (in hours) <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" id="editDurationForOvertime" name="duration" placeholder="Enter duration">
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label for="editTransactionAmt" class="col-md-5 col-form-label">Bata Amount (INR) </label>
+                        <div class="form-group row" id="editDriverOTRateRow">
+                            <label for="" class="col-form-label col-md-5">Driver's Hourly OT (INR)</label>
                             <div class="col-sm-7">
-                                <input type="number" class="form-control" id="editTransactionAmt" name="amount" placeholder="Amount">
+                                <input type="number" class="form-control" id="editDriverOTRate" name="driver_hourly_ot" placeholder="Driver's OT" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="editTransactionAmt" class="col-md-5 col-form-label">OT Amount (INR) </label>
+                            <div class="col-sm-7">
+                                <input type="number" class="form-control" id="editTransactionAmt" name="amount" placeholder="Amount" readonly>
                             </div>
                         </div>
                         <div class="form-group text-right">
@@ -267,15 +279,15 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <div id="table-loader"></div>
-                    <table id="driverTransactionsTable" class="table table-striped table-bordered dataTable dt-responsive nowrap">
+                    <table id="driverTransactionsTable" class="table table-striped table-bordered dataTable nowrap">
                         <thead>
                             <tr>
                                 <th>Sl No.</th>
                                 <th>Date</th>
                                 <th>Driver</th>
                                 <th>Purpose</th>
-                                <th>Duration (minutes)</th>
-                                <th>Bata Amount (INR)</th>
+                                <th>Duration (hrs)</th>
+                                <th>OT Amount (INR)</th>
                                 <th>Date Recorded</th>
                                 <th>Action(s)</th>
                             </tr>
@@ -298,6 +310,7 @@
     let transactionsListURL = '{{route("driver-transaction.list")}}';
     let transactionDetailsURL = '{{route("driver-transaction.details")}}';
     let transactionDetailsUpdateURL = '{{route("driver-transaction.update")}}';
+    let getDriverOTRateURL = '{{route("driver-transaction.get-driver-ot")}}';
     let csrfToken = $('meta[name="csrf-token"]').attr("content");
 </script>
 <script src="{{asset('public/dist/js/drivers/transactions.js')}}"></script>

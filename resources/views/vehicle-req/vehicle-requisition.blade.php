@@ -154,7 +154,7 @@
                                 <select class="form-control basic-single" required="" name="req_for" id="req_for">
                                     <option value="" selected="selected">Select User</option>
                                     @foreach($empData as $val)
-                                    <option value="{{$val['employeeId']}}">{{$val['employeeName']}}
+                                    <option value="{{$val['hrEmployeeId']}}">{{$val['employeeName']}}
                                         ({{$val['department']}})</option>
                                     @endforeach
                                 </select>
@@ -166,17 +166,55 @@
                                 <select name="user_entity" id="userEntityCode" class="form-control basic-single">
                                     <option value="">Select User Entity Code</option>
                                     @foreach($entityData as $entity)
-                                    <option value="{{$entity['entityCode']}}">{{$entity['entityCode'] . ' - ' . $entity['entityName']}}</option>
+                                    <option value="{{$entity['entityCode'] . ' - ' . $entity['entityName']}}">{{$entity['entityCode'] . ' - ' . $entity['entityName']}}</option>
                                     @endforeach
                                 </select>
+                                <!-- <input type="hidden" name="user_entity_name" value="" id="addReqUserEntityName"> -->
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="" class="col-sm-5 col-form-label">User Department HOD <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <select name="user_hod" id="userDivisionHead" class="form-control basic-single">
+                                <select name="hod_employee_id" id="userDivisionHead" class="form-control basic-single">
                                     <option value="">Select HOD</option>
+                                    <option value="201">Acharya Ratna Dasa</option>
+                                    <option value="3">Chamari Mathaji</option>
+                                    <option value="4">Manjari Chandrashekar</option>
+                                    <option value="2018">Nandanandana Dasa</option>
+                                    <option value="5">Naveena Neerada Dasa</option>
+                                    <option value="1">Shyama Vallabha Dasa</option>
+                                    <option value="2">Sampati Dasa</option>
+                                    <option value="6">Anantha Kirthi Dasa</option>
+                                    <option value="7">Prahladeesha Dasa</option>
+                                    <option value="TSF-1172">Pradeep Narayan Kalal</option>
+                                    <option value="ISK-2302">Ayyappa Dasika</option>
+                                    <option value="2076">Bindu Madhava Dasa</option>
+                                    <option value="GST-0040">CHANDRA MOULESHWARAN C K</option>
+                                    <option value="NIVE-0108">Alok B</option>
+                                    <option value="1134">Mohana Chaitanya Dasa</option>
+                                    <option value="1402">Vrajeshwara Govinda Dasa</option>
+                                    <option value="1">Anirudha Balram Dasa</option>
+                                    <option value="1111111">Vaishnava Bandhu Dasa</option>
+                                    <option value="101804">Sharadendu Krishna Dasa</option>
+                                    <option value="SVST-007">Appanna S K</option>
+                                    <option value="111111">Gunabhadra Dasa</option>
+                                    <option value="440">Mahotsaha Chaitanya Dasa</option>
+                                    <option value="864">Akinchana Chaitanya Dasa</option>
+                                    <option value="865">Suguna Krishna Dasa</option>
+                                    <option value="868">Hari Bhakta Dasa</option>
+                                    <option value="905">Madhava Hari Dasa</option>
+                                    <option value="1110">Ratnangada Govinda Dasa</option>
+                                    <option value="1128">Kalanidhi Dasa</option>
+                                    <option value="ISK-2481">Sunny</option>
+                                    <option value="137">Arjuna Sakha Dasa</option>
+                                    <option value="102725">Srivigraha Dasa</option>
+                                    <option value="102770">Ajay Kavishwar</option>
+                                    <option value="102771">Bhakti Lata Devi Dasi</option>
+                                    <option value="102772">Mahaprabhu Gauranga Dasa</option>
+                                    <option value="102773">Raghukula Nandana Dasa</option>
+                                    <option value="102774">Sachi Tanaya Dasa</option>
                                 </select>
+                                <input type="hidden" name="hod_employee_name" value="" id="addReqUserHODName">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -225,7 +263,7 @@
                         <div class="form-group row">
                             <label for="req_date" class="col-sm-5 col-form-label">Requisition Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="req_date" class="form-control  vnewdatetimepicker" autocomplete="off" type="date" placeholder="Requisition Date" id="req_date">
+                                <input name="req_date" class="form-control vnewdatetimepicker" autocomplete="off" type="date" placeholder="Requisition Date" id="req_date">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -310,7 +348,7 @@
                     <input type="hidden" name="id" id="requsition_id" value="">
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
-                            <label for="department" class="col-sm-5 col-form-label">User Department <i class="text-danger">*</i></label>
+                            <label for="editDepartment" class="col-sm-5 col-form-label">User Department <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="department" id="editDepartment">
                                     <option value="">Please Select One</option>
@@ -323,12 +361,12 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="req_for" class="col-sm-5 col-form-label">Requisition For <i class="text-danger">*</i></label>
+                            <label for="req_for2" class="col-sm-5 col-form-label">Requisition For <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="req_for" id="req_for2">
                                     <option value="" selected="selected">Select User</option>
                                     @foreach($empData as $val)
-                                    <option value="{{$val['employeeId']}}">{{$val['employeeName']}}
+                                    <option value="{{$val['hrEmployeeId']}}">{{$val['employeeName']}}
                                         ({{$val['department']}})</option>
                                     @endforeach
                                 </select>
@@ -340,7 +378,7 @@
                                 <select name="user_entity" id="userEntityCode2" class="form-control basic-single">
                                     <option value="">Select User Entity Code</option>
                                     @foreach($entityData as $entity)
-                                    <option value="{{$entity['entityCode']}}">{{$entity['entityCode'] . ' - ' . $entity['entityName']}}</option>
+                                    <option value="{{$entity['entityCode'] . ' - ' . $entity['entityName']}}">{{$entity['entityCode'] . ' - ' . $entity['entityName']}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -348,9 +386,46 @@
                         <div class="form-group row">
                             <label for="userDivisionHead2" class="col-sm-5 col-form-label">User Department HOD <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <select name="user_hod" id="userDivisionHead2" class="form-control basic-single">
+                                <select name="hod_employee_id" id="userDivisionHead2" class="form-control basic-single">
                                     <option value="">Select HOD</option>
+                                    <option value="201">Acharya Ratna Dasa</option>
+                                    <option value="3">Chamari Mathaji</option>
+                                    <option value="4">Manjari Chandrashekar</option>
+                                    <option value="2018">Nandanandana Dasa</option>
+                                    <option value="5">Naveena Neerada Dasa</option>
+                                    <option value="1">Shyama Vallabha Dasa</option>
+                                    <option value="2">Sampati Dasa</option>
+                                    <option value="6">Anantha Kirthi Dasa</option>
+                                    <option value="7">Prahladeesha Dasa</option>
+                                    <option value="TSF-1172">Pradeep Narayan Kalal</option>
+                                    <option value="ISK-2302">Ayyappa Dasika</option>
+                                    <option value="2076">Bindu Madhava Dasa</option>
+                                    <option value="GST-0040">CHANDRA MOULESHWARAN C K</option>
+                                    <option value="NIVE-0108">Alok B</option>
+                                    <option value="1134">Mohana Chaitanya Dasa</option>
+                                    <option value="1402">Vrajeshwara Govinda Dasa</option>
+                                    <option value="1">Anirudha Balram Dasa</option>
+                                    <option value="1111111">Vaishnava Bandhu Dasa</option>
+                                    <option value="101804">Sharadendu Krishna Dasa</option>
+                                    <option value="SVST-007">Appanna S K</option>
+                                    <option value="111111">Gunabhadra Dasa</option>
+                                    <option value="440">Mahotsaha Chaitanya Dasa</option>
+                                    <option value="864">Akinchana Chaitanya Dasa</option>
+                                    <option value="865">Suguna Krishna Dasa</option>
+                                    <option value="868">Hari Bhakta Dasa</option>
+                                    <option value="905">Madhava Hari Dasa</option>
+                                    <option value="1110">Ratnangada Govinda Dasa</option>
+                                    <option value="1128">Kalanidhi Dasa</option>
+                                    <option value="ISK-2481">Sunny</option>
+                                    <option value="137">Arjuna Sakha Dasa</option>
+                                    <option value="102725">Srivigraha Dasa</option>
+                                    <option value="102770">Ajay Kavishwar</option>
+                                    <option value="102771">Bhakti Lata Devi Dasi</option>
+                                    <option value="102772">Mahaprabhu Gauranga Dasa</option>
+                                    <option value="102773">Raghukula Nandana Dasa</option>
+                                    <option value="102774">Sachi Tanaya Dasa</option>
                                 </select>
+                                <input type="hidden" name="hod_employee_name" value="" id="editReqUserHODName">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -376,19 +451,19 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="where_fr" class="col-sm-5 col-form-label">Where From <i class="text-danger">*</i></label>
+                            <label for="where_fr2" class="col-sm-5 col-form-label">Where From <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="where_fr" required="" class="form-control" type="text" placeholder="Where From" id="where_fr2">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="where_to" required="" class="col-sm-5 col-form-label">Where To <i class="text-danger">*</i></label>
+                            <label for="where_to2" required="" class="col-sm-5 col-form-label">Where To <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="where_to" required="" class="form-control" type="text" placeholder="Where To" id="where_to2">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="pickup" class="col-sm-5 col-form-label">Pick Up <i class="text-danger">*</i></label>
+                            <label for="pickup2" class="col-sm-5 col-form-label">Pick Up <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="pickup" class="form-control" type="text" placeholder="Pick Up" id="pickup2">
                             </div>
@@ -398,32 +473,32 @@
 
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
-                            <label for="req_date" class="col-sm-5 col-form-label">Requisition Date <i class="text-danger">*</i></label>
+                            <label for="req_date2" class="col-sm-5 col-form-label">Requisition Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="req_date" class="form-control vnewdatetimepicker" autocomplete="off" type="date" placeholder="Requisition Date" id="req_date2">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="time_fr" class="col-sm-5 col-form-label">Time From <i class="text-danger">*</i></label>
+                            <label for="time_fr2" class="col-sm-5 col-form-label">Time From <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="time_fr" class="form-control ttimepicker" type="time" placeholder="Time From" id="time_fr2">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="time_to" class="col-sm-5 col-form-label">Time To <i class="text-danger">*</i></label>
+                            <label for="time_to2" class="col-sm-5 col-form-label">Time To <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="time_to" class="form-control ttimepicker" type="time" placeholder="Time To" id="time_to2">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="tolerance" class="col-sm-5 col-form-label">Tolerance Duration <i class="text-danger">*</i></label>
+                            <label for="tolerance2" class="col-sm-5 col-form-label">Tolerance Duration <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="tolerance" required="" class="form-control" type="time" placeholder="Tolerance Duration" id="tolerance2">
                             </div>
                         </div>
                         <div class="form-group row justify-content-end">
-                            <label for="purpose" class="col-sm-5 col-form-label">Vehicle <i class="text-danger">*</i></label>
+                            <label for="vehicle2" class="col-sm-5 col-form-label">Vehicle <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="vehicle" id="vehicle2">
                                     <option value="" selected="selected">Please Select One</option>
@@ -437,13 +512,13 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="nunpassenger" class="col-sm-5 col-form-label">No of Passenger <i class="text-danger">*</i></label>
+                            <label for="nunpassenger2" class="col-sm-5 col-form-label">No of Passenger <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="nunpassenger" class="form-control" type="number" placeholder="No of Passenger" id="nunpassenger2">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="purpose" class="col-sm-5 col-form-label">Purpose <i class="text-danger">*</i></label>
+                            <label for="purpose2" class="col-sm-5 col-form-label">Purpose <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required="" name="purpose" id="purpose2">
                                     <option value="" selected="selected">Please Select One</option>
@@ -455,7 +530,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="details" class="col-sm-5 col-form-label">Details <i class="text-danger">*</i></label>
+                            <label for="details2" class="col-sm-5 col-form-label">Details <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="details" required="" class="form-control" type="text" placeholder="Details" id="details2">
                             </div>
@@ -627,6 +702,37 @@
             $('#req_id').val(id);
         });
 
+        $("#userDivisionHead").on('change', function() {
+            if ($(this).val() != '') {
+                let HODName = $(this).find(':selected').text();
+                $("#addReqUserHODName").val(HODName);
+            } else {
+                $("#addReqUserHODName").val('');
+            }
+        });
+
+        $("#userDivisionHead2").on('change', function() {
+            if ($(this).val() != '') {
+                let HODName = $(this).find(':selected').text();
+                $("#editReqUserHODName").val(HODName);
+            } else {
+                $("#editReqUserHODName").val('');
+            }
+        });
+
+        $("#add").on('hidden.bs.modal', function() {
+            $("#form").trigger('reset');
+            $("#form .basic-single").val('').change();
+            $("#addReqUserHODName").val('');
+            $("#form").data('validator').resetForm();
+            $("#form .form-control").removeClass('error');
+        });
+
+        $("#edit").on('hidden.bs.modal', function() {
+            $("#editReqUserHODName").val('');
+            $("#form2 .form-control").removeClass('error');
+        });
+
         $("#driverform").validate({
             rules: {
                 drivenby: {
@@ -702,6 +808,13 @@
                 });
             }
         });
+
+        // On changing User Entity in Add Req form, set entity name vlaue to send to server
+        $("#userEntityCode").change(function() {
+            if ($("#userEntityCode").val() != '')
+                $("#addReqUserEntityName").val();
+        });
+
         $("#form").validate({
             rules: {
                 department: {
@@ -861,9 +974,14 @@
                     req_id: id,
                 },
                 success: function(res) {
+                    let selectedUserEntityVal = res.USER_ENTITY_CODE + ' - ' + res.USER_ENTITY_NAME;
                     $('#requsition_id').val(res.VEHICLE_REQ_ID);
                     $('#editDepartment').val(res.DEPT_ID).trigger('change');
                     $('#req_for2').val(res.REQUISITION_FOR).trigger('change');
+                    $("#userEntityCode2").val(selectedUserEntityVal).trigger('change');
+                    $("#userDivisionHead2").val(res.HOD_EMPLOYEE_ID).trigger('change');
+                    $("#editReqUserHODName").val(res.HOD_EMPLOYEE_NAME);
+                    $("#tripType2").val(res.TRIP_TYPE);
                     $('#where_fr2').val(res.WHERE_FROM);
                     $('#where_to2').val(res.WHERE_TO);
                     $('#pickup2').val(res.PICK_UP);
@@ -945,8 +1063,14 @@
                     tot: tot,
                     checked: chk
                 },
+                beforeSend: function() {
+                    $(".customloader").show();
+                },
                 success: function(res) {
                     $('#vehicle').html(res);
+                },
+                complete: function() {
+                    $('.customloader').hide();
                 }
             });
         }
@@ -980,9 +1104,17 @@
                         data: {
                             req_id: id,
                         },
+                        beforeSend: function() {
+                            $('.customloader').show();
+                        },
                         success: function(res) {
                             $('#vehicle2').val(res.VEHICLE_ID).trigger('change');
                             $('.customloader').hide();
+                        },
+                        error: function() {
+                            toastr.error("Could not load vehicles. Please try again", '', {
+                                closeButton: true
+                            });
                         }
                     });
                 }

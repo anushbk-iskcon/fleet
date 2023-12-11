@@ -65,7 +65,13 @@
                         <div class="form-group row">
                             <label for="company_name" class="col-sm-5 col-form-label">Company Name <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input type="text" name="company_name" class="form-control" id="company_name" placeholder="Company Name">
+                                <!-- <input type="text" name="company_name" class="form-control" id="company_name" placeholder="Company Name"> -->
+                                <select name="company_name" id="company_name" class="formn-control basic-single">
+                                    <option value="">Please Select</option>
+                                    @foreach($insuranceCompanies as $company)
+                                    <option value="{{$company['COMPANY_ID']}}">{{$company['COMPANY_NAME']}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -123,7 +129,7 @@
                                 <select class="form-control basic-single" required="" name="vehicle" id="vehicle">
                                     <option value="" selected="selected">Please Select One</option>
                                     @foreach($vehicles as $vehicle)
-                                    <option value="{{$vehicle['VEHICLE_ID']}}">{{$vehicle['VEHICLE_NAME']}}</option>
+                                    <option value="{{$vehicle['VEHICLE_ID']}}">{{$vehicle['VEHICLE_NAME'] . ' (' . $vehicle['LICENSE_PLATE'] . ')'}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -146,16 +152,16 @@
                                 <input name="recurring_date" class="form-control new-datepicker" type="text" placeholder="Recurring Date" id="recurring_date">
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                             <label for="deductible" class="col-sm-5 col-form-label">Deductible <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="deductible" required="" class="form-control" type="number" placeholder="Deductible" id="deductible">
                             </div>
-                        </div>
+                        </div> -->
                         <div class="form-group row">
-                            <label for="policy_document" class="col-sm-5 col-form-label">Policy Document <i class="text-danger">*</i></label>
+                            <label for="policy_document" class="col-sm-5 col-form-label">Policy Document </label>
                             <div class="col-sm-7 file-upload-container">
-                                <input name="policy_document" type="file" accept="image/*,application/pdf,.doc,.docx" required="" />
+                                <input name="policy_document" type="file" accept="image/jpeg,image/png,application/pdf,.doc,.docx" />
                             </div>
                         </div>
 
@@ -209,7 +215,7 @@
                                 <select class="form-control basic-single" name="vehiclesr" id="vehiclesr">
                                     <option value="" selected="selected">Please Select One</option>
                                     @foreach($vehicles as $vehicle)
-                                    <option value="{{$vehicle['VEHICLE_ID']}}">{{$vehicle['VEHICLE_NAME']}}</option>
+                                    <option value="{{$vehicle['VEHICLE_ID']}}">{{$vehicle['VEHICLE_NAME'] . ' (' . $vehicle['LICENSE_PLATE'] . ')'}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -226,7 +232,13 @@
                         <div class="form-group row mb-1">
                             <label for="insurance_company" class="col-sm-5 col-form-label justify-content-start text-left">Insurance Company</label>
                             <div class="col-sm-7">
-                                <input class="form-control" name="insurance_company" id="insurance_company" type="text" placeholder="Company Name">
+                                <!-- <input class="form-control" name="insurance_company" id="insurance_company" type="text" placeholder="Company Name"> -->
+                                <select name="insurance_company" id="insurance_company" class="form-control basic-single">
+                                    <option value="">Please Select</option>
+                                    @foreach($insuranceCompanies as $company)
+                                    <option value="{{$company['COMPANY_ID']}}">{{$company['COMPANY_NAME']}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="form-group row mb-1">
@@ -305,6 +317,7 @@
     // console.log(recurringPeriods);
     let vehicles = JSON.parse(`{!! json_encode($vehicles) !!}`);
     // console.log(vehicles);
+    let insuranceCompanies = JSON.parse(`{!! json_encode($insuranceCompanies) !!}`);
 
     let documentsPath = "{{asset('public/upload/documents/insurance/')}}";
     // console.log(documentsPath);

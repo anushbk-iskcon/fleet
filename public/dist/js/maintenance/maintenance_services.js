@@ -1,5 +1,9 @@
 $(document).ready(function () {
-    let maintenServiceInfoTable = $("#maintenServiceInfoTable").DataTable();
+    let maintenServiceInfoTable = $("#maintenServiceInfoTable").DataTable({
+        columnDefs: [{ "width": "60px", "targets": 0 },
+        { "width": "100px", "orderable": false, "className": "text-center", "targets": 4 }],
+        autoWidth: false
+    });
 
     // Draw table on Page Load
     //On Clicking Filter button

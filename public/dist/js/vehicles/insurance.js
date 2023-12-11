@@ -1,9 +1,18 @@
+$.validator.addMethod('validDocumentFile', function (value, element, param) {
+    let fileName = ''; let fileExtn = '';
+    if (element.files[0]) { // If file is selected for upload
+        fileName = element.files[0].name;
+        fileExtn = fileName.substr(fileName.lastIndexOf('.') + 1).toLowerCase();
+    }
+    return (this.optional(element) || (fileExtn === 'jpg' || fileExtn === 'jpeg' || fileExtn === 'png' || fileExtn === 'pdf'));
+}, "Please upload only JPEG / PNG Images or PDF files");
+
 $(document).ready(function () {
     let insuranceTable = $("#insuranceInfoTable").DataTable();
 
-    let currentYear = moment().year();
+    $("#insuranceInfoTable").css('width', '100%');
 
-    console.log(vehicles);
+    let currentYear = moment().year();
 
     // Enable Datepickers in Filter Form
     $("#date_fr, #date_to").daterangepicker({
@@ -56,7 +65,7 @@ $(document).ready(function () {
             vehicle: 'required',
             policy_number: {
                 required: true,
-                maxlength: 10
+                maxlength: 20
             },
             charge_payable: {
                 required: true,
@@ -70,7 +79,8 @@ $(document).ready(function () {
                 min: 0
             },
             policy_document: {
-                required: true
+                // required: true
+                validDocumentFile: true
             },
             remarks: {
                 maxlength: 200
@@ -132,7 +142,7 @@ $(document).ready(function () {
             vehicle: 'required',
             policy_number: {
                 required: true,
-                maxlength: 10
+                maxlength: 15
             },
             charge_payable: {
                 required: true,
@@ -141,9 +151,8 @@ $(document).ready(function () {
             start_date: 'required',
             end_date: 'required',
             recurring_period: 'required',
-            deductible: {
-                required: true,
-                min: 0
+            policy_document: {
+                validDocumentFile: true
             },
             remarks: {
                 maxlength: 200
@@ -199,7 +208,7 @@ function populateTable(table) {
                     let recurringDate = moment(data.RECURRING_DATE).format('DD-MMM-YYYY');
                     table.row.add([
                         i + 1,
-                        data.COMPANY_NAME,
+                        data.INS_PROVIDER,
                         data.VEHICLE_NAME,
                         data.POLICY_NUMBER,
                         startDate,
@@ -247,8 +256,18 @@ function editInfo(id) {
                 <div class="form-group row">
                     <label for="edit_company_name" class="col-sm-5 col-form-label">Company Name <i class="text-danger">*</i></label>
                     <div class="col-sm-7">
-                        <input type="text" name="company_name" class="form-control" id="edit_company_name" placeholder="Company Name" value="${res.COMPANY_NAME}">
-                    </div>
+                        
+                        <select name="company_name" class="form-control basic-single" id="edit_company_name">
+                        <option value="">Please select</option>`;
+
+            $.each(insuranceCompanies, function (i, data) {
+                if (data.COMPANY_ID == res.COMPANY_NAME)
+                    editFormContent += '<option value="' + data.COMPANY_ID + '" selected>' + data.COMPANY_NAME + '</option>';
+                else
+                    editFormContent += '<option value="' + data.COMPANY_ID + '">' + data.COMPANY_NAME + '</option>';
+            });
+
+            editFormContent += `</select></div>
                 </div>
                 <div class="form-group row">
                     <label for="edit_policy_number" class="col-sm-5 col-form-label">Policy Number <i class="text-danger">*</i></label>
@@ -308,9 +327,9 @@ function editInfo(id) {
 
             $.each(vehicles, function (i, data) {
                 if (data.VEHICLE_ID == res.VEHICLE)
-                    editFormContent += '<option value="' + data.VEHICLE_ID + '" selected>' + data.VEHICLE_NAME + '</option>';
+                    editFormContent += '<option value="' + data.VEHICLE_ID + '" selected>' + data.VEHICLE_NAME + ' (' + data.LICENSE_PLATE + ')' + '</option>';
                 else
-                    editFormContent += '<option value="' + data.VEHICLE_ID + '">' + data.VEHICLE_NAME + '</option>';
+                    editFormContent += '<option value="' + data.VEHICLE_ID + '">' + data.VEHICLE_NAME + ' (' + data.LICENSE_PLATE + ')' + '</option>';
             });
             editFormContent += `</select>
                     </div>
@@ -351,7 +370,7 @@ function editInfo(id) {
                 <div class="form-group row">
                     <label for="policy_document" class="col-sm-5 col-form-label">Upload New Policy Document</label>
                     <div class="col-sm-7 file-upload-container">
-                        <input name="policy_document" type="file" accept="image/*,application/pdf,.doc,.docx" />
+                        <input name="policy_document" type="file" accept="image/jpeg,image/png,application/pdf,.doc,.docx" />
                     </div>
                 </div>
 
@@ -411,7 +430,7 @@ function reinitValidationForEditForm() {
             vehicle: 'required',
             policy_number: {
                 required: true,
-                maxlength: 10
+                maxlength: 20
             },
             charge_payable: {
                 required: true,
@@ -420,9 +439,9 @@ function reinitValidationForEditForm() {
             start_date: 'required',
             end_date: 'required',
             recurring_period: 'required',
-            deductible: {
-                required: true,
-                min: 0
+            // 
+            policy_document: {
+                validDocumentFile: true
             },
             remarks: {
                 maxlength: 200

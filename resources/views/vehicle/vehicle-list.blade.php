@@ -583,6 +583,7 @@
                                 <th>Sl No.</th>
                                 <th>Name</th>
                                 <th>Type</th>
+                                <th>Vehicle No.</th>
                                 <th>User Department</th>
                                 <th>Registration Date</th>
                                 <th>Ownership</th>
@@ -611,8 +612,10 @@
         var vehiclesTable = $("#vehicinfo").DataTable({
             paging: true,
             lengthMenu: [5, 10, 15, 20, 25],
-            pageLength: 5
+            pageLength: 5,
         });
+
+        $("#vehicinfo").css('width', '100%');
 
         // To enable datepickers for Filter Dates
         $("#registration_date_fr, #registration_date_to").daterangepicker({
@@ -1063,7 +1066,7 @@
             success: function(res) {
                 table.clear();
                 $.each(res, function(i, data) {
-                    // console.log(data);
+                    console.log(data);
                     let buttons = '<button class="btn btn-sm btn-primary mr-1" data-id="' + data.VEHICLE_ID + '" onclick="editInfo(this)" title="Edit"><i class="fa fa-edit"></i></button>';
                     let registrationDate = moment(data.REGISTRATION_DATE).format('DD-MMM-YYYY');
 
@@ -1085,6 +1088,7 @@
                         [i + 1,
                             data.VEHICLE_NAME,
                             data.VEHICLE_TYPE_NAME,
+                            data.LICENSE_PLATE,
                             data.DEPARTMENT_NAME,
                             registrationDate,
                             data.OWNERSHIP_NAME,

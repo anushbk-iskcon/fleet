@@ -294,6 +294,14 @@ class DriverController extends Controller
             return response()->json(['successCode' => 0, 'message' => 'Failed to save details']);
     }
 
+    public function getOverTimeRate(Request $request)
+    {
+        $driver_id = $request->driver_id;
+
+        $overTimeRate = DB::table('drivers')->where('DRIVER_ID', $driver_id)->value('OVT');
+        return $overTimeRate;
+    }
+
     /**
      * Deactivate the Specified Driver
      */

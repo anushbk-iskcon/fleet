@@ -7,6 +7,21 @@
 <li class="breadcrumb-item active" id="moduleName">System Settings</li>
 @endsection
 
+@section('css-content')
+<style>
+    .action-btns-container {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        gap: 20px;
+    }
+
+    #vendorsTable tr td:last-child .btn {
+        margin-right: 20px !important;
+    }
+</style>
+@endsection
+
 @section('header-title-media-body')
 <h1 class="font-weight-bold" id="moduleName1">System Settings</h1>
 <small id="controllerName">Manage Vendors</small>
@@ -131,7 +146,20 @@
 
 <script>
     $(document).ready(function() {
-        let vendorsTable = $("#vendorsTable").DataTable();
+        let vendorsTable = $("#vendorsTable").DataTable({
+            "columnDefs": [{
+                    "max-width": "10%",
+                    "targets": 0
+                },
+                {
+                    "orderable": false,
+                    "width": "160px",
+                    "className": "text-center",
+                    "targets": 2
+                }
+            ],
+            "autoWidth": false
+        });
 
         // To add serial numbers in data table on adding new item
         vendorsTable.on('draw.dt', function() {

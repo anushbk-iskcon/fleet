@@ -294,19 +294,6 @@
                         </thead>
 
                         <tbody>
-                            <!-- <tr role="row" class="odd">
-                                <td class="sorting_1" tabindex="0">1</td>
-                                <td>Maintenance Requisition</td>
-                                <td>Approved</td>
-                                <td>Administration</td>
-                                <td></td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_24" value="https://vmsdemo.bdtask-demo.com/maintenance/maintenance/updateapprovalfrm">
-                                <a onclick="editinfo(24)" style="cursor:pointer;color:#fff;" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                <a href="#" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                            </td>
-                            </tr> -->
-
                         </tbody>
 
                     </table> <!-- /.table-responsive -->

@@ -2,6 +2,21 @@
 
 @section('title', 'Divisions')
 
+@section('css-content')
+<style>
+    .action-btns-container {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        gap: 20px;
+    }
+
+    #example_division tr td:last-child .btn {
+        margin-right: 20px !important;
+    }
+</style>
+@endsection
+
 @section('breadcrumb-content')
 <li class="breadcrumb-item"><a href="{{url('home')}}">Home</a></li>
 <li class="breadcrumb-item active" id="moduleName">System Settings</li>
@@ -134,7 +149,20 @@
 <!-- <script src="{{asset('dist/js/division_list.js')}}"></script> -->
 <script>
     $(document).ready(function() {
-        let divisionsTable = $("#example_division").DataTable();
+        let divisionsTable = $("#example_division").DataTable({
+            "columnDefs": [{
+                    "width": "140px",
+                    "targets": 0
+                },
+                {
+                    "orderable": false,
+                    "width": "160px",
+                    "className": "text-center",
+                    "targets": 2
+                }
+            ],
+            "autoWidth": false
+        });
 
         // To add serial numbers in data table on adding new item
         divisionsTable.on('draw.dt', function() {

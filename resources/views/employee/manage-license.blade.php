@@ -226,7 +226,18 @@
 @endif
 <script>
     $(document).ready(function() {
-        $("#license_list").DataTable();
+        $("#license_list").DataTable({
+            "columnDefs": [{
+                "width": '10%',
+                'targets': 0
+            }, {
+                "width": "84px",
+                "orderable": false,
+                "className": "text-right",
+                "targets": 2
+            }],
+            "autoWidth": false
+        });
     });
 
     function editInfo(id, licenseTypeName) {

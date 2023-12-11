@@ -95,7 +95,7 @@
         <nav class="sidebar sidebar-bunker">
             <div class="sidebar-header text-center">
                 <a href="{{url('dashboard')}}" class="logo">
-                    <img src="{{asset('public/img/Group 11678.png')}}" alt="Home - Fleet">
+                    <img src="{{asset('public/img/vahan-logo.png')}}" alt="Home - Fleet">
                 </a>
             </div>
             <!-- 

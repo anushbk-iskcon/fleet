@@ -2,6 +2,21 @@
 
 @section('title', 'Recurring Periods')
 
+@section('css-content')
+<style>
+    .action-btns-container {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        gap: 20px;
+    }
+
+    #recurringPeriodTable tr td:last-child .btn {
+        margin-right: 20px !important;
+    }
+</style>
+@endsection
+
 @section('breadcrumb-content')
 <li class="breadcrumb-item"><a href="{{url('home')}}">Home</a></li>
 <li class="breadcrumb-item active" id="moduleName">System Settings</li>
@@ -120,42 +135,7 @@
                                 </td>
                             </tr>
                             @endforeach
-                            <!-- <tr>
-                                <td>1</td>
-                                <td>10 Days</td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_1" value="https://vmsdemo.bdtask-demo.com/setting/Setting/updateperiodfrm" />
-                                    <a onclick="editinfo(1)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_period/1" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>1 Month</td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_2" value="https://vmsdemo.bdtask-demo.com/setting/Setting/updateperiodfrm" />
-                                    <a onclick="editinfo(2)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_period/2" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>1 Year</td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_3" value="https://vmsdemo.bdtask-demo.com/setting/Setting/updateperiodfrm" />
-                                    <a onclick="editinfo(3)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_period/3" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>11</td>
-                                <td>
-                                    <input name="url" type="hidden" id="url_4" value="https://vmsdemo.bdtask-demo.com/setting/Setting/updateperiodfrm" />
-                                    <a onclick="editinfo(4)" class="btn btn-xs btn-success btn-sm mr-1 text-white" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a>
-                                    <a href="https://vmsdemo.bdtask-demo.com/setting/Setting/delete_period/4" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                </td>
-                            </tr> -->
+
                         </tbody>
                     </table> <!-- /.table-responsive -->
                 </div>
@@ -169,7 +149,20 @@
 <!-- <script src="{{asset('dist/js/recurringperiod_list.js')}}"></script> -->
 <script>
     $(document).ready(function() {
-        let recurringPeriodTable = $("#recurringPeriodTable").DataTable();
+        let recurringPeriodTable = $("#recurringPeriodTable").DataTable({
+            "columnDefs": [{
+                    "max-width": "10%",
+                    "targets": 0
+                },
+                {
+                    "orderable": false,
+                    "width": "160px",
+                    "className": "text-center",
+                    "targets": 2
+                }
+            ],
+            "autoWidth": false
+        });
 
         // To add serial numbers in data table on adding new item
         recurringPeriodTable.on('draw.dt', function() {

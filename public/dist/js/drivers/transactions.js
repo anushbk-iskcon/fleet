@@ -1,5 +1,13 @@
 $(document).ready(function () {
-    let transactionsTable = $("#driverTransactionsTable").DataTable();
+    let transactionsTable = $("#driverTransactionsTable").DataTable({
+        "columnDefs": [{
+            "orderable": false,
+            "width": "55px",
+            "className": "text-center",
+            "targets": 7
+        }],
+        "autoWidth": false
+    });
 
     loadTable(transactionsTable);
 
@@ -94,6 +102,94 @@ $(document).ready(function () {
     // On selecting driver in Add Form, validate to remove any existing error message
     $("#transactionForDriver").on('change', function () {
         $("#transactionForDriver").valid();
+    });
+
+    // On selecting driver in Add Form, Load OT rate for the driver
+    $("#transactionForDriver").on('change', function () {
+        if ($("#transactionForDriver").val()) {
+            $.ajax({
+                url: getDriverOTRateURL,
+                type: 'post',
+                data: {
+                    _token: csrfToken,
+                    driver_id: $("#transactionForDriver").val()
+                },
+                beforeSend: function () {
+                    $('.customloader').show();
+                },
+                success: function (res) {
+                    if (res != null && res != undefined)
+                        $("#driverOTRate").val(res);
+                    else
+                        $("#driverOTRate").val(0);
+                    $("#addDriverOTRate").css('display', 'flex');
+
+                    let totalOTVal = $("#driverOTRate").val() * $("#durationForOvertime").val();
+                    $("#transactionAmt").val(totalOTVal);
+                },
+                error: function () {
+                    toastr.error("Error getting details. Please try again", '', { closeButton: true });
+                    $("#addDriverOTRate").css('display', 'none');
+                },
+                complete: function () {
+                    $('.customloader').hide();
+                }
+            });
+        } else {
+            $("#addDriverOTRate").css('display', 'none');
+        }
+    });
+
+    // On selecting driver in Edit Form, Load OT rate for the driver
+    $("#editTransactionForDriver").on('change', function () {
+        if ($("#editTransactionForDriver").val()) {
+            $.ajax({
+                url: getDriverOTRateURL,
+                type: 'post',
+                data: {
+                    _token: csrfToken,
+                    driver_id: $("#editTransactionForDriver").val()
+                },
+                beforeSend: function () {
+                    $('.customloader').show();
+                },
+                success: function (res) {
+                    if (res != null && res != undefined)
+                        $("#editDriverOTRate").val(res);
+                    else
+                        $("#editDriverOTRate").val(0);
+                    $("#editDriverOTRateRow").css('display', 'flex');
+
+                    let totalOTVal = $("#editDriverOTRate").val() * $("#editDurationForOvertime").val();
+                    $("#editTransactionAmt").val(totalOTVal);
+                },
+                error: function () {
+                    toastr.error("Error getting details. Please try again", '', { closeButton: true });
+                    $("#editDriverOTRateRow").css('display', 'none');
+                },
+                complete: function () {
+                    $('.customloader').hide();
+                }
+            });
+        } else {
+            $("#editDriverOTRateRow").css('display', 'none');
+        }
+    });
+
+    // On entering number of hours worked in add transaction form, update total overtime
+    $("#durationForOvertime").on('input', function () {
+        if ($("#transactionForDriver").val()) {
+            let totalOTVal = $("#driverOTRate").val() * $("#durationForOvertime").val();
+            $("#transactionAmt").val(totalOTVal);
+        }
+    });
+
+    // On entering number of hours worked in EDIT transaction form, update total overtime
+    $("#editDurationForOvertime").on('input', function () {
+        if ($("#editTransactionForDriver").val()) {
+            let totalOTVal = $("#editDriverOTRate").val() * $("#editDurationForOvertime").val();
+            $("#editTransactionAmt").val(totalOTVal);
+        }
     });
 
     // On closing Add details Form modal, reset validations
