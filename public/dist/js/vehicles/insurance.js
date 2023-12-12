@@ -272,7 +272,7 @@ function editInfo(id) {
                 <div class="form-group row">
                     <label for="edit_policy_number" class="col-sm-5 col-form-label">Policy Number <i class="text-danger">*</i></label>
                     <div class="col-sm-7">
-                        <input name="policy_number" required="" class="form-control" type="number" placeholder="Policy Number" id="edit_policy_number" value="${res.POLICY_NUMBER}">
+                        <input name="policy_number" required="" maxlength="20" class="form-control" type="number" placeholder="Policy Number" id="edit_policy_number" value="${res.POLICY_NUMBER}">
                     </div>
                 </div>
                 <div class="form-group row">
