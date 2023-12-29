@@ -26,13 +26,13 @@ class RefuelSettingController extends Controller
                 ->join('drivers', 'refuel_setting.DRIVER', '=', 'drivers.DRIVER_ID')
                 ->join('mstr_fuel', 'refuel_setting.FUEL_TYPE', '=', 'mstr_fuel.FUEL_ID')
                 ->join('mstr_fuel_station', 'refuel_setting.FUEL_STATION', '=', 'mstr_fuel_station.FUEL_STATION_ID')
-                ->select('refuel_setting.*', 'vehicles.VEHICLE_NAME as VEHICLE_NAME', 'drivers.DRIVER_NAME', 'mstr_fuel.FUEL_TYPE_NAME')
+                ->select('refuel_setting.*', 'vehicles.VEHICLE_NAME as VEHICLE_NAME', 'vehicles.LICENSE_PLATE as VEHICLE_NUMBER', 'drivers.DRIVER_NAME', 'mstr_fuel.FUEL_TYPE_NAME')
                 ->get();
 
             return $refuelSettings->toJson();
         } else {
             // In case of GET request, return listing page
-            $vehicles = Vehicle::where('IS_ACTIVE', 'Y')->get(['VEHICLE_ID', 'VEHICLE_NAME']);
+            $vehicles = Vehicle::where('IS_ACTIVE', 'Y')->get(['VEHICLE_ID', 'VEHICLE_NAME', 'LICENSE_PLATE']);
             $fuelTypes = Fuel::where('IS_ACTIVE', 'Y')->get(['FUEL_ID', 'FUEL_TYPE_NAME']);
             $fuelStations = FuelStation::where('IS_ACTIVE', 'Y')->get(['FUEL_STATION_ID', 'VENDOR_NAME', 'FUEL_STATION_NAME']);
             $drivers = Driver::where('IS_ACTIVE', 'Y')->get(['DRIVER_ID', 'DRIVER_NAME']);
@@ -83,7 +83,7 @@ class RefuelSettingController extends Controller
     public function edit(Request $request)
     {
         # Get all master data for the form
-        $vehicles = Vehicle::where('IS_ACTIVE', 'Y')->get(['VEHICLE_ID', 'VEHICLE_NAME']);
+        $vehicles = Vehicle::where('IS_ACTIVE', 'Y')->get(['VEHICLE_ID', 'VEHICLE_NAME', 'LICENSE_PLATE']);
         $fuelTypes = Fuel::where('IS_ACTIVE', 'Y')->get(['FUEL_ID', 'FUEL_TYPE_NAME']);
         $fuelStations = FuelStation::where('IS_ACTIVE', 'Y')->get(['FUEL_STATION_ID', 'VENDOR_NAME', 'FUEL_STATION_NAME']);
         $drivers = Driver::where('IS_ACTIVE', 'Y')->get(['DRIVER_ID', 'DRIVER_NAME']);
@@ -109,9 +109,9 @@ class RefuelSettingController extends Controller
                 <option value="">Please Select One</option>';
         foreach ($vehicles as $vehicle) {
             if ($refuelSetting->VEHICLE == $vehicle['VEHICLE_ID'])
-                $editFormContent .= '<option value="' . $vehicle['VEHICLE_ID'] . '" selected="selected">' . $vehicle['VEHICLE_NAME'] . '</option>';
+                $editFormContent .= '<option value="' . $vehicle['VEHICLE_ID'] . '" selected="selected">' . $vehicle['VEHICLE_NAME'] . ' (' . $vehicle['LICENSE_PLATE'] . ')' . '</option>';
             else
-                $editFormContent .= '<option value="' . $vehicle['VEHICLE_ID'] . '">' . $vehicle['VEHICLE_NAME'] . '</option>';
+                $editFormContent .= '<option value="' . $vehicle['VEHICLE_ID'] . '">' . $vehicle['VEHICLE_NAME'] . ' (' . $vehicle['LICENSE_PLATE'] . ')' . '</option>';
         }
         $editFormContent .= '</select></div></div>';
 

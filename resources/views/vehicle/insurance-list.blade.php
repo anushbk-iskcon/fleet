@@ -77,7 +77,7 @@
                         <div class="form-group row">
                             <label for="policy_number" class="col-sm-5 col-form-label">Policy Number <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="policy_number" required="" maxlength="20" class="form-control" type="number" placeholder="Policy Number" id="policy_number">
+                                <input name="policy_number" required="" maxlength="20" class="form-control" type="text" placeholder="Policy Number" id="policy_number">
                             </div>
                         </div>
                         <div class="form-group row">

@@ -497,6 +497,7 @@
             </div>
             <div class="card-body">
                 <form id="filterVehiclesForm" action="" method="post" class="row">
+                    {{-- Form is currently not submitted using jQuery form.serialize, but by sending each filed individually --}}
                     <div class="col-sm-12 col-xl-4">
                         <div class="form-group row mb-1">
                             <label for="search_department" class="col-sm-4 col-form-label justify-content-start text-left">User Dept </label>
@@ -558,8 +559,18 @@
                         </div>
                     </div>
                     <div class="col-sm-12 col-xl-3">
-                        <div class="form-group row mb-1">
+                        <div class="form-group row mb-2">
+                            <label for="filterIsActive" class="col-sm-4 col-form-label justify-content-start text-left">Status </label>
                             <div class="col-sm-8 text-right">
+                                <select name="is_activesr" id="filterIsActive" class="form-control">
+                                    <option value="">Select Is Active</option>
+                                    <option value="Y" selected>Active</option>
+                                    <option value="N">Deactivated</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-1">
+                            <div class="col-sm-12 text-right">
                                 <button type="submit" class="btn btn-success" id="btn-filter">Search</button>&nbsp;
                                 <button type="reset" class="btn btn-inverse" id="btn-reset">Reset</button>
                             </div>
@@ -1057,8 +1068,10 @@
                 ownershipsr: $("#ownershipsr").val(),
                 registration_date_fr: $("#registration_date_fr").val(),
                 registration_date_to: $("#registration_date_to").val(),
-                vendorsr: $("#vendorsr").val()
+                vendorsr: $("#vendorsr").val(),
+                is_activesr: $("#filterIsActive").val()
             },
+            // data: $("#filterVehiclesForm").serialize() + '&_token=' + '{{csrf_token()}}',
             dataType: 'json',
             beforeSend: function() {
                 $("#table-loader").show();

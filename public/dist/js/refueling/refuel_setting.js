@@ -212,6 +212,7 @@ function populateTable(table) {
                     table.row.add([
                         i + 1,
                         data.VEHICLE_NAME,
+                        data.VEHICLE_NUMBER,
                         data.LAST_READING,
                         // data.STRICT_CONSUMPTION == 'Y' ? 'Yes' : 'No',
                         // data.DRIVER_MOBILE,

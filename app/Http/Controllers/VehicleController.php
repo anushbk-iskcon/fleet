@@ -44,6 +44,7 @@ class VehicleController extends Controller
         $ownership = $request->ownershipsr;
         $registration_date_from = $request->registration_date_fr;
         $reg_date_from = null;
+        $isActive = $request->is_activesr;
         # To convert date from 01-Jan-2023 format to 2023-01-01 format for storing in DB:
         if ($registration_date_from)
             $reg_date_from = date('Y-m-d', strtotime($registration_date_from));
@@ -79,7 +80,6 @@ class VehicleController extends Controller
                 // 'mstr_ownership.OWNERSHIP_NAME',
                 'vehicles.IS_ACTIVE'
             )
-            // ->where('vehicles.IS_ACTIVE', '=', 'Y')
             ->when($dept, function ($query, $dept) {
                 return $query->where('vehicles.DEPARTMENT_ID', '=', $dept);
             })
@@ -97,6 +97,9 @@ class VehicleController extends Controller
             })
             ->when($vendor, function ($query, $vendor) {
                 return $query->where('vehicles.VENDOR_ID', '=', $vendor);
+            })
+            ->when($isActive, function ($query, $isActive) {
+                return $query->where('vehicles.IS_ACTIVE', '=', $isActive);
             })
             ->get();
 

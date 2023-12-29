@@ -64,7 +64,7 @@
                                 <select class="form-control basic-single" required name="vehicle" id="vehicle_name">
                                     <option value="" selected="selected">Please Select One</option>
                                     @foreach($vehicles as $vehicle)
-                                    <option value="{{$vehicle['VEHICLE_ID']}}">{{$vehicle['VEHICLE_NAME']}}</option>
+                                    <option value="{{$vehicle['VEHICLE_ID']}}">{{$vehicle['VEHICLE_NAME'] . ' (' . $vehicle['LICENSE_PLATE'] . ')'}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -262,10 +262,9 @@
                             <tr>
                                 <th>Sl No.</th>
                                 <th>Vehicle Name</th>
+                                <th>Vehicle Number</th>
                                 <th>Last Reading</th>
-
                                 <th>Fuel Type</th>
-
                                 <th>Action(s)</th>
                             </tr>
                         </thead>
