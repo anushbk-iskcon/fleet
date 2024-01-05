@@ -69,8 +69,15 @@ function populateTable(table) {
                 $.each(res, function (i, data) {
                     let reqStatus = '';
                     let reqDate = moment(data.SERVICE_DATE).format('DD-MMM-YYYY');
+
+                    // To set the URL used to load the Edit Page for the specific maintenance requisition
                     let editURL = editRequisitionPlaceholderURL;
-                    editURL = editURL.replace('0', data.MAINTENANCE_REQ_ID);
+                    // editURL = editURL.replace('0', data.MAINTENANCE_REQ_ID);
+
+                    editURL = editURL.substring(0, editURL.lastIndexOf('0'));
+                    editURL += data.MAINTENANCE_REQ_ID;
+                    editURL += '/edit';
+
                     if (data.APPROVAL_STATUS == 'P')
                         reqStatus = 'Pending';
                     else if (data.APPROVAL_STATUS == 'A')

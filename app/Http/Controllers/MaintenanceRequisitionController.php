@@ -440,16 +440,16 @@ class MaintenanceRequisitionController extends Controller
             }
         }
 
-        // To upload scanned copy of invoice if updated invoice is provided
-        if ($request->hasFile('mainten_invoice')) {
-            $invoice = $request->file('mainten_invoice');
-            $document = time() . '-' . date('Y') . '.' . $invoice->getClientOriginalExtension();
-            $destination = public_path('/upload/documents/maintenance/');
-            $invoice->move($destination, $document);
+        // // To upload scanned copy of invoice if updated invoice is provided
+        // if ($request->hasFile('mainten_invoice')) {
+        //     $invoice = $request->file('mainten_invoice');
+        //     $document = time() . '-' . date('Y') . '.' . $invoice->getClientOriginalExtension();
+        //     $destination = public_path('/upload/documents/maintenance/');
+        //     $invoice->move($destination, $document);
 
-            // Change filename in DB column:
-            $maintenRequisition->INVOICE_FILE = $document;
-        }
+        //     // Change filename in DB column:
+        //     $maintenRequisition->INVOICE_FILE = $document;
+        // }
 
         // Return to Maintenance Requisitions Listing if update successful
         return redirect()->route('maintenance-requisitions')->with('message', "Requisition details successfully updated");

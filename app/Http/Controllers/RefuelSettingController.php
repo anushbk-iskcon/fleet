@@ -211,7 +211,7 @@ class RefuelSettingController extends Controller
         <div class="form-group row">
             <label for="edit_total_amount" class="col-sm-5 col-form-label">Total Amount (INR) <i class="text-danger">*</i></label>
             <div class="col-sm-7">
-                <input type="number" name="total_amount" class="form-control" placeholder="Total Amount (INR)" id="edit_total_amount" value="' . $totalAmount . '">
+                <input type="number" name="total_amount" class="form-control" placeholder="Total Amount (INR)" id="edit_total_amount" value="' . $totalAmount . '" readonly>
             </div>
         </div>
         <div class="form-group row">
@@ -248,7 +248,6 @@ class RefuelSettingController extends Controller
         $refuelSetting->ODOMETER_AT_REFUEL = $request->odometer_at_refueling ?? null;
         $refuelSetting->UNIT_TAKEN = $request->unit_taken ?? 0;
 
-        // Newly added fields OCT 3 2023
         $refuelSetting->AMOUNT_PER_UNIT = $request->amount_per_unit ?? 0;
         $refuelSetting->TOTAL_AMOUNT = $request->total_amount ?? 0;
         $refuelSetting->SECURITY_NAME = $request->security_name ?? "";

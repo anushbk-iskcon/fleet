@@ -240,6 +240,24 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label for="odometer_start_reading" class="col-sm-5 col-form-label">Odometer at Trip Start </label>
+                            <div class="col-sm-7">
+                                <input name="odometer_start" class="form-control" type="number" placeholder="Odometer Start KM" id="odometer_start_reading">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="odometer_end_reading" class="col-sm-5 col-form-label">Odometer at Trip End </label>
+                            <div class="col-sm-7">
+                                <input name="odometer_end" class="form-control" type="number" placeholder="Odometer End KM" id="odometer_end_reading">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="total_trip_distance" class="col-sm-5 col-form-label">Total Distance (km) </label>
+                            <div class="col-sm-7">
+                                <input name="total_km" class="form-control" type="number" placeholder="Total Distance (km)" id="total_trip_distance" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label for="where_fr" class="col-sm-5 col-form-label">Where From <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="where_fr" required="" class="form-control" type="text" placeholder="Where From" id="where_fr">
@@ -251,15 +269,15 @@
                                 <input name="where_to" required="" class="form-control" type="text" placeholder="Where To" id="where_to">
                             </div>
                         </div>
+
+                    </div>
+                    <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
                             <label for="pickup" class="col-sm-5 col-form-label">Pick Up <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="pickup" class="form-control" type="text" placeholder="Pick Up" id="pickup">
                             </div>
                         </div>
-
-                    </div>
-                    <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
                             <label for="req_date" class="col-sm-5 col-form-label">Requisition Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
@@ -300,7 +318,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="nunpassenger" class="col-sm-5 col-form-label">No of Passenger <i class="text-danger">*</i></label>
+                            <label for="nunpassenger" class="col-sm-5 col-form-label">No of Passenger(s) <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="nunpassenger" class="form-control" type="number" placeholder="No of Passenger" id="nunpassenger">
                             </div>
@@ -451,6 +469,24 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label for="edit_odometer_start_reading" class="col-sm-5 col-form-label">Odometer at Trip Start </label>
+                            <div class="col-sm-7">
+                                <input name="odometer_start" class="form-control" type="text" placeholder="Odometer Start KM" id="edit_odometer_start_reading">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="edit_odometer_end_reading" class="col-sm-5 col-form-label">Odometer at Trip End </label>
+                            <div class="col-sm-7">
+                                <input name="odometer_end" class="form-control" type="text" placeholder="Odometer End KM" id="edit_odometer_end_reading">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="edit_total_trip_distance" class="col-sm-5 col-form-label">Total Distance (km) </label>
+                            <div class="col-sm-7">
+                                <input name="total_km" class="form-control" type="text" placeholder="Total distance (KM)" id="edit_total_trip_distance" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label for="where_fr2" class="col-sm-5 col-form-label">Where From <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="where_fr" required="" class="form-control" type="text" placeholder="Where From" id="where_fr2">
@@ -462,16 +498,17 @@
                                 <input name="where_to" required="" class="form-control" type="text" placeholder="Where To" id="where_to2">
                             </div>
                         </div>
+
+
+                    </div>
+
+                    <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
                             <label for="pickup2" class="col-sm-5 col-form-label">Pick Up <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="pickup" class="form-control" type="text" placeholder="Pick Up" id="pickup2">
                             </div>
                         </div>
-
-                    </div>
-
-                    <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
                             <label for="req_date2" class="col-sm-5 col-form-label">Requisition Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
@@ -635,6 +672,18 @@
     }
 </style>
 <script>
+    // For validating that Odometer Start is Less than Odometer End
+    $.validator.addMethod('lessThan', function(value, element, param) {
+        if (!$(param).val()) return true;
+        return parseInt(value) < parseInt($(param).val());
+    }, "Should be Less than Ending Odometer Reading");
+
+    // For validating that Odometer End is Greater than Odometer Start
+    $.validator.addMethod('greaterThan', function(value, element, param) {
+        if (!$(param).val()) return true;
+        return parseInt(value) > parseInt($(param).val());
+    }, "Should be Greater than starting Odometer Reading");
+
     $(document).ready(function() {
         var table = $("#dataTable");
         getdata();
@@ -809,10 +858,33 @@
             }
         });
 
-        // On changing User Entity in Add Req form, set entity name vlaue to send to server
+        // On changing User Entity in Add Req form, set entity name value to send to server
         $("#userEntityCode").change(function() {
             if ($("#userEntityCode").val() != '')
                 $("#addReqUserEntityName").val();
+        });
+
+        // On changing/entering Odometer start reading in ADD req. form, check if Odometer End value is present 
+        // and calculate distance
+        $("#odometer_start_reading").on('change', function() {
+            $(this).valid();
+            if ($("#odometer_end_reading").val() && $("#odometer_end_reading").valid()) {
+                let totalKm = ($("#odometer_end_reading").val() - $("#odometer_start_reading").val());
+                $("#total_trip_distance").val(totalKm);
+            } else {
+                $("#total_trip_distance").val(0);
+            }
+        });
+
+        // On changing Odometer Ending Reading in ADD Req. Form, check if Start Reading is Present and calculate distance
+        $("#odometer_end_reading").on('change', function() {
+            $(this).valid();
+            if ($("#odometer_start_reading").val() && $("#odometer_start_reading").valid()) {
+                let totalKm = ($("#odometer_end_reading").val() - $("#odometer_start_reading").val());
+                $("#total_trip_distance").val(totalKm);
+            } else {
+                $("#total_trip_distance").val(0);
+            }
         });
 
         $("#form").validate({
@@ -858,6 +930,14 @@
                 },
                 details: {
                     required: true,
+                },
+                odometer_start: {
+                    lessThan: '#odometer_end_reading',
+                    number: true,
+                },
+                odometer_end: {
+                    greaterThan: '#odometer_start_reading',
+                    number: true,
                 }
             },
             submitHandler: function(form, ev) {
@@ -932,6 +1012,14 @@
                 },
                 details: {
                     required: true,
+                },
+                odometer_start: {
+                    lessThan: '#edit_odometer_end_reading',
+                    number: true,
+                },
+                odometer_end: {
+                    greaterThan: '#edit_odometer_start_reading',
+                    number: true,
                 }
             },
             submitHandler: function(form, ev) {
@@ -1001,6 +1089,33 @@
                     $('#vehicle_type2').val(res.VEHICLE_TYPE_ID).trigger('change');
                     $('#vehicle2').val(res.VEHICLE_ID).trigger('change');
                     $('#nunpassenger2').attr('max', res.max_num);
+
+                    $("#edit_odometer_start_reading").val(res.ODOMETER_START ? res.ODOMETER_START : '');
+                    $("#edit_odometer_end_reading").val(res.ODOMETER_END ? res.ODOMETER_END : '');
+                    $("#edit_total_trip_distance").val(res.TOTAL_KM ? res.TOTAL_KM : '');
+
+                    // On changing/entering Odometer start reading in EDIT req. form, check if Odometer End value is present 
+                    // and calculate distance
+                    $("#edit_odometer_start_reading").on('change', function() {
+                        $(this).valid();
+                        if ($("#edit_odometer_end_reading").val() && $("#edit_odometer_end_reading").valid()) {
+                            let totalKm = ($("#edit_odometer_end_reading").val() - $("#edit_odometer_start_reading").val());
+                            $("#edit_total_trip_distance").val(totalKm);
+                        } else {
+                            $("#edit_total_trip_distance").val(0);
+                        }
+                    });
+
+                    // On changing Odometer Ending Reading in EDIT Req. Form, check if Start Reading is Present and calculate distance
+                    $("#edit_odometer_end_reading").on('change', function() {
+                        $(this).valid();
+                        if ($("#edit_odometer_start_reading").val() && $("#edit_odometer_start_reading").valid()) {
+                            let totalKm = ($("#edit_odometer_end_reading").val() - $("#edit_odometer_start_reading").val());
+                            $("#edit_total_trip_distance").val(totalKm);
+                        } else {
+                            $("#edit_total_trip_distance").val(0);
+                        }
+                    });
 
                 }
             });
@@ -1130,13 +1245,13 @@
             var newLimit = parseInt(selectedOption.attr('data-limit'));
             $('#nunpassenger2').attr('max', newLimit);
         });
-        // Remove validations, errors and reset add vehicle type form on closing modal
+        // Remove validations, errors and reset ADD form on closing modal
         $("#add").on('hidden.bs.modal', function(ev) {
             $("#form").trigger('reset');
             $("#form").validate().resetForm();
         });
 
-        // Remove validations, errors and reset add vehicle type form on closing modal
+        // Remove validations, errors and reset EDIT form on closing modal
         $("#edit").on('hidden.bs.modal', function(ev) {
             $("#form2").trigger('reset');
             $("#form2").validate().resetForm();

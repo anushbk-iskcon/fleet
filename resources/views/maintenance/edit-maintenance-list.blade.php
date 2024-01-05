@@ -46,7 +46,7 @@
                 </h6>
             </div>
             <div class="card-body">
-                <form action="{{route('maintenance-requisitions.update')}}" id="editMaintenRequisitionForm" class="row" method="post" accept-charset="utf-8">
+                <form action="{{route('maintenance-requisitions.update')}}" id="editMaintenRequisitionForm" class="row" method="post" enctype="multipart/form-data" accept-charset="utf-8">
                     @csrf
                     <div class="col-md-12 col-lg-12">
                         <input type="hidden" name="mainten_req_id" value="{{$maintenReqDetails['MAINTENANCE_REQ_ID']}}">
@@ -194,7 +194,7 @@
                         <div class="form-group row mt-2">
                             <label for="newInvoiceDocument" class="col-sm-5 col-form-label">Upload New Invoice</label>
                             <div class="col-sm-7">
-                                <input type="file" name="mainten_invoice" id="newInvoiceDocument">
+                                <input type="file" name="mainten_invoice" id="newInvoiceDocument" accept="application/pdf, image/jpeg, image/png">
                             </div>
                         </div>
                     </div>

@@ -314,8 +314,10 @@ function loadUpdateDriverForm(driver_details) {
     // To set Driver ID For Update Form Action by replacing placeholder 0 or current Driver ID which previously 
     // replaced 0 in formaction by driver_id
     let formAction = updateForm.attr('action');
-    let currentId = formAction.substring(formAction.lastIndexOf('/') + 1);
-    formAction = formAction.replace(currentId, driver_details['DRIVER_ID']);
+    // let currentId = formAction.substring(formAction.lastIndexOf('/') + 1);
+    formAction = formAction.substring(0, formAction.lastIndexOf('/') + 1);
+    // formAction = formAction.replace(currentId, driver_details['DRIVER_ID']);
+    formAction += driver_details['DRIVER_ID'];
     updateForm.attr('action', formAction);
 
     let workStartTime = driver_details['WORKING_TIME_START'] ? driver_details['WORKING_TIME_START'] : '';

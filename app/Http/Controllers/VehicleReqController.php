@@ -197,6 +197,9 @@ class VehicleReqController extends Controller
                 'IS_CHECK' => $request->checkValue,
                 'HOD_EMPLOYEE_ID' => $request->hod_employee_id,
                 'HOD_EMPLOYEE_NAME' => $request->hod_employee_name,
+                'ODOMETER_START' => ($request->odometer_start ?? 0),
+                'ODOMETER_END' => ($request->odometer_end ?? 0),
+                'TOTAL_KM' => ($request->total_km ?? 0),
                 'CREATED_ON' => date('Y-m-d H:i:s'),
                 'CREATED_BY' => Auth::id(),
 
@@ -263,6 +266,9 @@ class VehicleReqController extends Controller
                 'IS_CHECK' => $request->checkValue,
                 'HOD_EMPLOYEE_ID' => $request->hod_employee_id,
                 'HOD_EMPLOYEE_NAME' => $request->hod_employee_name,
+                'ODOMETER_START' => ($request->odometer_start ?? 0),
+                'ODOMETER_END' => ($request->odometer_end ?? 0),
+                'TOTAL_KM' => ($request->total_km ?? 0),
                 'MODIFIED_ON' => date('Y-m-d H:i:s'),
                 'MODIFIED_BY' => Auth::id(),
             ]);

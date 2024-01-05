@@ -203,7 +203,7 @@
                                 Total Amount (INR) <i class="text-danger">*</i>
                             </label>
                             <div class="col-sm-7">
-                                <input type="number" name="total_amount" class="form-control" placeholder="Total Amount (INR)" id="total_amount">
+                                <input type="number" name="total_amount" class="form-control" placeholder="Total Amount (INR)" id="total_amount" readonly>
                             </div>
                         </div>
                         <div class="form-group row">

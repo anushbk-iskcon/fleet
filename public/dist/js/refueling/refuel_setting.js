@@ -10,7 +10,7 @@ $.validator.addMethod('validFileType', function (val, element, params) {
 
 // For validating file size before upload
 $.validator.addMethod('validFileSize', function (val, element, params) {
-    let maxFileSize = 5 * 1024 * 1024; // 5 MB
+    let maxFileSize = 10 * 1024 * 1024; // 10 MB
     let fileSize = 0;
     if (element.files[0]) {
         fileSize = element.files[0].size;
@@ -154,6 +154,33 @@ $(document).ready(function () {
         $('#addRefuelSettingForm .basic-single').trigger('change');
     });
 
+    // On change of Units taken or Amount per Unit Fields in ADD Form, calculate Total Amount
+    $("#unit_taken").on('input', function () {
+        let totalAmount = $("#unit_taken").val() * $("#amount_per_unit").val();
+        totalAmount = totalAmount.toFixed(2);
+        $("#total_amount").val(totalAmount);
+    });
+
+    $("#amount_per_unit").on('input', function () {
+        let totalAmount = $("#unit_taken").val() * $("#amount_per_unit").val();
+        totalAmount = totalAmount.toFixed(2);
+        $("#total_amount").val(totalAmount);
+    });
+
+    // On change of Units taken or Amount per Unit Fields in EDIT Form, calculate Total Amount
+    // Below code not working, so moved it to after EDIT form is loaded, might be better with event delegation
+    // $("#edit_unit_taken").on('input', function () {
+    //     let totalAmount = $("#edit_unit_taken").val() * $("#edit_amount_per_unit").val();
+    //     totalAmount = totalAmount.toFixed(2);
+    //     $("#edit_total_amount").val(totalAmount);
+    // });
+
+    // $("#edit_amount_per_unit").on('input', function () {
+    //     let totalAmount = $("#edit_unit_taken").val() * $("#edit_amount_per_unit").val();
+    //     totalAmount = totalAmount.toFixed(2);
+    //     $("#edit_total_amount").val(totalAmount);
+    // });
+
     // To validate and submit Edit Refuel Setting form
     $("#editRefuelSettingForm").validate({
         rules: {
@@ -250,6 +277,19 @@ function editInfo(refuelSettingId) {
             $("#edit .modal-body").empty();
             $("#edit .modal-body").html(res);
             $("#edit .basic-single").select2();
+
+            // On change of Units taken or Amount per Unit Fields in EDIT Form, calculate Total Amount
+            $("#edit_unit_taken").on('input', function () {
+                let totalAmount = $("#edit_unit_taken").val() * $("#edit_amount_per_unit").val();
+                totalAmount = totalAmount.toFixed(2);
+                $("#edit_total_amount").val(totalAmount);
+            });
+
+            $("#edit_amount_per_unit").on('input', function () {
+                let totalAmount = $("#edit_unit_taken").val() * $("#edit_amount_per_unit").val();
+                totalAmount = totalAmount.toFixed(2);
+                $("#edit_total_amount").val(totalAmount);
+            });
 
             // For Date picker functionality
             $('#edit .edit-datepicker').daterangepicker({
