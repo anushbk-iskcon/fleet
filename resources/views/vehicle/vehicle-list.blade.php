@@ -882,9 +882,13 @@
             submitHandler: function(form, ev) {
                 ev.preventDefault();
                 let url = form.action;
-                url = url.replace('0', $("#editVehicleId").val());
-                console.log(url);
-                console.log($(form).serializeArray());
+
+                url = url.substring(0, url.lastIndexOf('/') + 1);
+                // url = url.replace('0', $("#editVehicleId").val());
+
+                url += $("#editVehicleId").val();
+                // console.log(url);
+                // console.log($(form).serializeArray());
 
                 $.ajax({
                     url: url,
@@ -940,7 +944,7 @@
             setTimeout(() => {
                 $('#filterVehiclesForm .basic-single').val('').trigger('change');
                 populateVehiclesTable(vehiclesTable);
-            });
+            }, 10);
         });
 
         $("#resetAssignVehicleToDriverFormBtn").click(function() {

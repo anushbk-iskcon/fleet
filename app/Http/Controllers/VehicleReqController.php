@@ -96,7 +96,7 @@ class VehicleReqController extends Controller
                         $drv = Driver::where(['DRIVER_ID' => $row['DRIVER_ID']])->first();
                         $driver = ($drv) ? $drv->DRIVER_NAME : '';
                     } else {
-                        $driver = 'NULL';
+                        $driver = '';
                     }
                     return $driver;
                 })
@@ -192,11 +192,11 @@ class VehicleReqController extends Controller
                 'REQUISITION_PURPOSE_ID' => $request->purpose,
                 'DETAILS' => $request->details,
                 'STATUS' => 'P',
-                'DRIVER_ID' => ($getVehicle->DRIVER_ID) ? $getVehicle->DRIVER_ID : '',
+                'DRIVER_ID' => ($getVehicle->DRIVER_ID) ? $getVehicle->DRIVER_ID : null,
                 'VEHICLE_ID' => $request->vehicle,
                 'IS_CHECK' => $request->checkValue,
-                'HOD_EMPLOYEE_ID' => $request->hod_employee_id,
-                'HOD_EMPLOYEE_NAME' => $request->hod_employee_name,
+                'HOD_EMPLOYEE_ID' => $request->hod_employee_id ?? '',
+                'HOD_EMPLOYEE_NAME' => $request->hod_employee_name ?? '',
                 'ODOMETER_START' => ($request->odometer_start ?? 0),
                 'ODOMETER_END' => ($request->odometer_end ?? 0),
                 'TOTAL_KM' => ($request->total_km ?? 0),
@@ -261,11 +261,11 @@ class VehicleReqController extends Controller
                 'NUMBER_OF_PASSENGER' => $request->nunpassenger,
                 'REQUISITION_PURPOSE_ID' => $request->purpose,
                 'DETAILS' => $request->details,
-                'DRIVER_ID' => ($getVehicle->DRIVER_ID) ? $getVehicle->DRIVER_ID : '',
+                'DRIVER_ID' => ($getVehicle->DRIVER_ID) ? $getVehicle->DRIVER_ID : null,
                 'VEHICLE_ID' => $request->vehicle,
                 'IS_CHECK' => $request->checkValue,
-                'HOD_EMPLOYEE_ID' => $request->hod_employee_id,
-                'HOD_EMPLOYEE_NAME' => $request->hod_employee_name,
+                'HOD_EMPLOYEE_ID' => $request->hod_employee_id ?? '',
+                'HOD_EMPLOYEE_NAME' => $request->hod_employee_name ?? '',
                 'ODOMETER_START' => ($request->odometer_start ?? 0),
                 'ODOMETER_END' => ($request->odometer_end ?? 0),
                 'TOTAL_KM' => ($request->total_km ?? 0),
@@ -300,10 +300,14 @@ class VehicleReqController extends Controller
     public function getData(Request $request)
     {
         $data = VehicleRequisition::where(['VEHICLE_REQ_ID' => $request->req_id])->first();
+
+        if ($data->DRIVER_ID != null && $data->DRIVER_ID != '')
+            $driver = Driver::where(['DRIVER_ID' => $data->DRIVER_ID])->first();
+        $driver_name = $driver->DRIVER_NAME ?? "-";
         // $type=($data->VEHICLE_TYPE_ID) ? $data->VEHICLE_TYPE_ID : '';
         // $rdate=($data->REQUISITION_DATE) ? $data->REQUISITION_DATE : '';
         // $frmt=($data->TIME_FROM) ? $data->TIME_FROM : '';
-        // $tot=($data->TIME_TO) ? $data->TIME_TO : '';
+        // $tot=($data->TIME_TO) ? $data->TIME_TO : ''; 
         // $checked = ($data->IS_CHECK=='1') ? 'true' : 'false';
         // if($checked == 'true')
         // {
@@ -335,6 +339,7 @@ class VehicleReqController extends Controller
         $getVehicle = Vehicle::where('VEHICLE_ID', $data->VEHICLE_ID)
             ->first();
         $data['max_num'] = $getVehicle->SEAT_CAPACITY;
+        $data['driver_name'] = $driver_name;
         return json_encode($data);
     }
     public function addDriver(Request $request)
@@ -407,7 +412,10 @@ class VehicleReqController extends Controller
         $tot = ($request->tot) ? $request->tot : '';
         $checked = $request->checked;
         if ($checked == 'true') {
-            $getVehicle = Vehicle::where(['VEHICLE_TYPE_ID' => $type, 'IS_ACTIVE' => 'Y'])->get();
+            $getVehicle = Vehicle::where(['VEHICLE_TYPE_ID' => $type, 'vehicles.IS_ACTIVE' => 'Y'])
+                ->leftJoin('drivers', 'vehicles.DRIVER_ID', '=', 'drivers.DRIVER_ID')
+                ->select('drivers.DRIVER_NAME', 'vehicles.*')
+                ->get();
         } else {
             $existingVehicleIds = VehicleRequisition::where('VEHICLE_TYPE_ID', $type)
                 ->when($rdate, function ($query, $rdate) {
@@ -428,17 +436,23 @@ class VehicleReqController extends Controller
                 ->pluck('VEHICLE_ID')
                 ->toArray();
             $getVehicle = Vehicle::where('VEHICLE_TYPE_ID', $type)
-                ->where(['IS_ACTIVE' => 'Y'])
+                ->where(['vehicles.IS_ACTIVE' => 'Y'])
                 ->whereNotIn('VEHICLE_ID', $existingVehicleIds)
+                ->leftJoin('drivers', 'vehicles.DRIVER_ID', '=', 'drivers.DRIVER_ID')
+                ->select('drivers.DRIVER_NAME', 'vehicles.*')
                 ->get();
         }
 
         $html = '<option value="" selected="selected">Please Select Vehicle</option>';
         foreach ($getVehicle as $val) {
-            $html .= '<option value="' . $val->VEHICLE_ID . '" data-limit="' . $val->SEAT_CAPACITY . '">' . $val->VEHICLE_NAME . '</option>';
+            if ($val->DRIVER_ID != null)
+                $html .= '<option value="' . $val->VEHICLE_ID . '" data-limit="' . $val->SEAT_CAPACITY . '" data-driver-id="' . $val->DRIVER_ID . '" data-driver-name="' . $val->DRIVER_NAME . '">' . $val->VEHICLE_NAME . ' (' . $val->LICENSE_PLATE . ')' . '</option>';
+            else
+                $html .= '<option value="' . $val->VEHICLE_ID . '" data-limit="' . $val->SEAT_CAPACITY . '" data-driver-id="" data-driver-name="">' . $val->VEHICLE_NAME . ' (' . $val->LICENSE_PLATE . ')' . '</option>';
         }
         echo $html;
     }
+
     public function getEditVehicleData(Request $request)
     {
         DB::enableQueryLog();
@@ -448,7 +462,10 @@ class VehicleReqController extends Controller
         $tot = ($request->tot) ? $request->tot : '';
         $checked = $request->checked;
         if ($checked == 'true') {
-            $getVehicle = Vehicle::where(['VEHICLE_TYPE_ID' => $type])->get();
+            $getVehicle = Vehicle::where(['VEHICLE_TYPE_ID' => $type])
+                ->leftJoin('drivers', 'vehicles.DRIVER_ID', '=', 'drivers.DRIVER_ID')
+                ->select('drivers.DRIVER_NAME', 'vehicles.*')
+                ->get();
         } else {
             $existingVehicleIds = VehicleRequisition::where('VEHICLE_TYPE_ID', $type)
                 ->where('VEHICLE_REQ_ID', "!=", $request->id)
@@ -469,12 +486,17 @@ class VehicleReqController extends Controller
             // exit;
             $getVehicle = Vehicle::where('VEHICLE_TYPE_ID', $type)
                 ->whereNotIn('VEHICLE_ID', $existingVehicleIds)
+                ->leftJoin('drivers', 'vehicles.DRIVER_ID', '=', 'drivers.DRIVER_ID')
+                ->select('drivers.DRIVER_NAME', 'vehicles.*')
                 ->get();
         }
 
         $html = '<option value="" selected="selected">Please Select Vehicle</option>';
         foreach ($getVehicle as $val) {
-            $html .= '<option value="' . $val->VEHICLE_ID . '" data-limit="' . $val->SEAT_CAPACITY . '">' . $val->VEHICLE_NAME . '</option>';
+            if ($val->DRIVER_ID != null)
+                $html .= '<option value="' . $val->VEHICLE_ID . '" data-limit="' . $val->SEAT_CAPACITY . '" data-driver-id="' . $val->DRIVER_ID . '" data-driver-name="' . $val->DRIVER_NAME . '">' . $val->VEHICLE_NAME . ' (' . $val->LICENSE_PLATE . ')' . '</option>';
+            else
+                $html .= '<option value="' . $val->VEHICLE_ID . '" data-limit="' . $val->SEAT_CAPACITY . '" data-driver-id="" data-driver-name="">' . $val->VEHICLE_NAME . ' (' . $val->LICENSE_PLATE . ')' . '</option>';
         }
         echo $html;
     }

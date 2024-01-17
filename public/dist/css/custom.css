@@ -1546,9 +1546,11 @@ code {
         opacity: 1
     }
 }
-.header-image{
+
+.header-image {
     width: 26px;
 }
+
 .sidebar-header {
     flex-shrink: 0;
     height: 70px;
@@ -7737,21 +7739,32 @@ pre .arg {
     color: #37a000;
     font-weight: 700
 }
+
 .select2-container--default .select2-selection--single {
     height: 39px;
 }
+
 .select2-container--default .select2-selection--single .select2-selection__rendered {
-    line-height: 38px!important;
+    line-height: 38px !important;
 }
+
 .select2-container--default .select2-selection--single .select2-selection__arrow {
-    height: 37px!important;
+    height: 37px !important;
 }
-.footer-content{
+
+.footer-content {
     position: absolute;
     width: 100%;
     bottom: 0;
 }
-.menuList{
+
+.menuList {
     left: -189px;
     display: block;
+}
+
+.daterangepicker .drp-calendar .calendar-time .hourselect,
+.daterangepicker .drp-calendar .calendar-time .minuteselect,
+.daterangepicker .drp-calendar .calendar-time .ampmselect {
+    font-size: 14px !important;
 }

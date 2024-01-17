@@ -45,7 +45,7 @@
                     <div class="form-group row">
                         <label for="email" class="col-sm-3 col-form-label">Email <i class="text-danger">*</i></label>
                         <div class="col-sm-9">
-                            <input name="email" required class="form-control" type="email" placeholder="Email" id="email" value="{{$user['EMAIL']}}">
+                            <input name="email" required class="form-control" type="email" placeholder="Email" id="email" value="{{$user['EMAIL']}}" readonly>
                         </div>
                     </div>
                     <div class="form-group row">

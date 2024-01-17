@@ -12,16 +12,21 @@
 <small id="controllerName">Manage Vehicle Requisitions</small>
 @endsection
 
+@section('css-content')
+
+@endsection
+
 @section('content')
 <div class="row mb-3">
     <div class="col-sm-12">
         <div class="card mb-3">
             <div class="card-header p-2">
                 <h4 class="pl-3">Search Here<small class="float-right">
-
                         <button type="button" class="btn btn-primary btn-md" data-target="#add" data-toggle="modal"><i class="ti-plus" aria-hidden="true"></i>
-                            Add Requisition</button>
-                    </small></h4>
+                            Add Requisition
+                        </button>
+                    </small>
+                </h4>
             </div>
             <form id="searchform" method="get">
                 <div class="card-body row">
@@ -83,6 +88,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="col-sm-12">
                         <div class="form-group row  mb-1">
                             <label for="joining_d_to" class="col-sm-5 col-form-label">&nbsp;</label>
@@ -287,20 +293,34 @@
                         <div class="form-group row">
                             <label for="time_fr" class="col-sm-5 col-form-label">Time From <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="time_fr" class="form-control ttimepicker" type="time" placeholder="Time From" id="time_fr">
+                                <div class="input-group">
+                                    <input name="time_fr" class="form-control input-small ttimepicker" type="text" placeholder="Time From" id="time_fr" value="" aria-describedby="from_time_clock">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="from_time_clock">
+                                            <i class="fas fa-clock"></i>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="time_to" class="col-sm-5 col-form-label">Time To <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="time_to" class="form-control ttimepicker" type="time" placeholder="Time To" id="time_to">
+                                <div class="input-group">
+                                    <input name="time_to" class="form-control ttimepicker" type="text" placeholder="Time To" id="time_to" value="" aria-describedby="to_time_clock">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="to_time_clock">
+                                            <i class="fas fa-clock"></i>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label for="tolerance" class="col-sm-5 col-form-label">Tolerance Duration <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="tolerance" required="" class="form-control" type="time" placeholder="Tolerance Duration" id="tolerance">
+                                <input name="tolerance" required="" class="form-control" type="text" placeholder="Tolerance Duration" id="tolerance" readonly>
                             </div>
                         </div>
                         <div class="form-group row justify-content-end">
@@ -315,6 +335,12 @@
                                 <input type="hidden" name="checkValue" id="checkValue" value="0">
                                 <span class="mt-2"><input type="checkbox" id="aloc_checkbox"> &nbsp;Add Allocated
                                     Vehicles</span>
+                            </div>
+                        </div>
+                        <div class="form-group row" id="vehicle_driver" style="display:none;">
+                            <label for="vehicle_driver_name" class="col-sm-5 col-form-label">Driver</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="vehicle_driver_name" value="" disabled>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -518,20 +544,34 @@
                         <div class="form-group row">
                             <label for="time_fr2" class="col-sm-5 col-form-label">Time From <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="time_fr" class="form-control ttimepicker" type="time" placeholder="Time From" id="time_fr2">
+                                <div class="input-group">
+                                    <input name="time_fr" class="form-control ttimepicker" type="text" placeholder="Time From" id="time_fr2">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-clock"></i>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="time_to2" class="col-sm-5 col-form-label">Time To <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="time_to" class="form-control ttimepicker" type="time" placeholder="Time To" id="time_to2">
+                                <div class="input-group">
+                                    <input name="time_to" class="form-control ttimepicker" type="text" placeholder="Time To" id="time_to2">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-clock"></i>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label for="tolerance2" class="col-sm-5 col-form-label">Tolerance Duration <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="tolerance" required="" class="form-control" type="time" placeholder="Tolerance Duration" id="tolerance2">
+                                <input name="tolerance" required="" class="form-control" type="text" placeholder="Tolerance Duration" id="tolerance2" readonly>
                             </div>
                         </div>
                         <div class="form-group row justify-content-end">
@@ -546,6 +586,12 @@
                                 <input type="hidden" name="checkValue" id="checkValue2" value="0">
                                 <span class="mt-2"><input type="checkbox" id="aloc_checkbox2"> &nbsp;Add Allocated
                                     Vehicles</span>
+                            </div>
+                        </div>
+                        <div class="form-group row" id="vehicle_driver2">
+                            <label for="vehicle_driver_name2" class="col-sm-5 col-form-label">Driver</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="vehicle_driver_name2" disabled>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -658,7 +704,7 @@
         border: 3px solid #ddd;
         border-top-color: #28a745;
         animation: rotate 1s infinite;
-        position: absolute;
+        position: fixed;
         top: 33%;
         right: 56%;
         display: none;
@@ -675,17 +721,98 @@
     // For validating that Odometer Start is Less than Odometer End
     $.validator.addMethod('lessThan', function(value, element, param) {
         if (!$(param).val()) return true;
-        return parseInt(value) < parseInt($(param).val());
+        return this.optional(element) || parseInt(value) < parseInt($(param).val());
     }, "Should be Less than Ending Odometer Reading");
 
     // For validating that Odometer End is Greater than Odometer Start
     $.validator.addMethod('greaterThan', function(value, element, param) {
         if (!$(param).val()) return true;
-        return parseInt(value) > parseInt($(param).val());
+        return this.optional(element) || parseInt(value) > parseInt($(param).val());
     }, "Should be Greater than starting Odometer Reading");
+
+    // For validating that Requistion Time From is Less than Requisition Time To
+    $.validator.addMethod('timeLessThan', function(value, elem, param) {
+        if (!$(param).val()) return true;
+        return moment(value, 'LT').isBefore(moment($(param).val(), 'LT'));
+    }, 'Should be less than Time To');
+
+    // For validating that Requistion Time To is Greater than Requistion Time From
+    $.validator.addMethod('timeGreaterThan', function(value, elem, param) {
+        if (!$(param).val()) return true;
+        return moment(value, 'LT').isAfter(moment($(param).val(), 'LT'));
+    }, 'Should be greater than Time From');
 
     $(document).ready(function() {
         var table = $("#dataTable");
+
+        $("#add").on('shown.bs.modal', function() {
+            $("#time_fr").val('');
+            $("#time_to").val('');
+            $("#form").trigger('reset');
+            // $("#time_fr").timepicker({
+            //     // minuteStep: 1,
+            //     showInputs: false,
+            //     // defaultTime: 'current',
+            //     icons: {
+            //         up: 'fas fa-chevron-up',
+            //         down: 'fas fa-chevron-down'
+            //     }
+            // });
+            // $("#time_to").timepicker({
+            //     // minuteStep: 1,
+            //     showInputs: false,
+            //     // defaultTime: 'cu
+            //     icons: {
+            //         up: 'fas fa-chevron-up',
+            //         down: 'fas fa-chevron-down'
+            //     }
+            // });
+
+            $("#time_fr").daterangepicker({
+                singleDatePicker: true,
+                timePicker: true,
+                timePicker24Hour: false,
+                timePickerIncrement: 1,
+                autoUpdateInput: false,
+                "locale": {
+                    "format": "hh:mm A",
+                    cancelLabel: 'Clear'
+                }
+            }).on('show.daterangepicker', function(ev, picker) {
+                picker.container.find(".calendar-table").hide();
+                picker.container.find('.calendar-time').css('margin-right', '15px');
+            });
+
+            $('#time_fr').on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('hh:mm A')).trigger('change');
+            });
+            $('#time_fr').on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val('').trigger('change');
+            });
+
+            $("#time_to").daterangepicker({
+                singleDatePicker: true,
+                timePicker: true,
+                timePicker24Hour: false,
+                timePickerIncrement: 1,
+                autoUpdateInput: false,
+                "locale": {
+                    "format": "hh:mm A",
+                    cancelLabel: 'Clear'
+                }
+            }).on('show.daterangepicker', function(ev, picker) {
+                picker.container.find(".calendar-table").hide();
+                picker.container.find('.calendar-time').css('margin-right', '15px');
+            });
+
+            $('#time_to').on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('hh:mm A')).trigger('change');
+            });
+            $('#time_to').on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val('').trigger('change');
+            });
+        });
+
         getdata();
         $(document).on('click', '#btn-filter', function(e) {
             $('#dataTable').DataTable().ajax.reload(null, false);
@@ -744,6 +871,18 @@
             });
         }
 
+        // To show Driver Name coonected to vehicle on changing vehicle
+        $("#vehicle").change(function() {
+            // console.log($("#vehicle").find(":selected").attr('data-driver-name'));
+
+            let driverName = $("#vehicle").find(":selected").attr('data-driver-name');
+            if (driverName !== '')
+                $("#vehicle_driver_name").val(driverName);
+            else
+                $("#vehicle_driver_name").val('-');
+            $("#vehicle_driver").show();
+        });
+
         $('body').on('click', '.driver-modal', function() {
             var val = $(this).data('driverid');
             var id = $(this).data('id');
@@ -775,6 +914,7 @@
             $("#addReqUserHODName").val('');
             $("#form").data('validator').resetForm();
             $("#form .form-control").removeClass('error');
+            $("#vehicle_driver").hide();
         });
 
         $("#edit").on('hidden.bs.modal', function() {
@@ -887,6 +1027,28 @@
             }
         });
 
+        // On changing Requisition From Time in ADD Form, if To Time is also present, calculate and set Total Tolerance Duration
+        $("#time_fr").change(function() {
+            if ($("#time_to").val() && $(this).valid() && $("#time_to").valid()) {
+                let toleranceDur = calculateToleranceDuration(moment($("#time_fr").val(), 'LT'), moment($("#time_to").val(), 'LT'));
+                toleranceHours = toleranceDur.hours();
+                toleranceMinutes = toleranceDur.minutes();
+                let toleranceDurString = padZero(toleranceHours) + ':' + padZero(toleranceMinutes);
+                $("#tolerance").val(toleranceDurString);
+            }
+        });
+
+        // On changing Requistion To Time in ADD Form, if Time From is present, calculate the tolerance duration as above
+        $("#time_to").change(function() {
+            if ($("#time_fr").val() && $(this).valid() && $("#time_fr").valid()) {
+                let toleranceDur = calculateToleranceDuration(moment($("#time_fr").val(), 'LT'), moment($("#time_to").val(), 'LT'));
+                toleranceHours = toleranceDur.hours();
+                toleranceMinutes = toleranceDur.minutes();
+                let toleranceDurString = padZero(toleranceHours) + ':' + padZero(toleranceMinutes);
+                $("#tolerance").val(toleranceDurString);
+            }
+        });
+
         $("#form").validate({
             rules: {
                 department: {
@@ -915,9 +1077,11 @@
                 },
                 time_fr: {
                     required: true,
+                    timeLessThan: '#time_to'
                 },
                 time_to: {
                     required: true,
+                    timeGreaterThan: '#time_fr'
                 },
                 tolerance: {
                     required: true,
@@ -939,6 +1103,9 @@
                     greaterThan: '#odometer_start_reading',
                     number: true,
                 }
+            },
+            errorPlacement: function(error, element) {
+                $(element).closest('div[class*=col-sm-]').append(error);
             },
             submitHandler: function(form, ev) {
                 ev.preventDefault();
@@ -972,6 +1139,28 @@
             }
         });
 
+        // On changing Requisition From Time in EDIT Form, if To Time is also present, calculate and set Total Tolerance Duration
+        $("#time_fr2").change(function() {
+            if ($("#time_to2").val() && $(this).valid() && $("#time_to2").valid()) {
+                let toleranceDur = calculateToleranceDuration(moment($("#time_fr2").val(), 'LT'), moment($("#time_to2").val(), 'LT'));
+                toleranceHours = toleranceDur.hours();
+                toleranceMinutes = toleranceDur.minutes();
+                let toleranceDurString = padZero(toleranceHours) + ':' + padZero(toleranceMinutes);
+                $("#tolerance2").val(toleranceDurString);
+            }
+        });
+
+        // On changing Requistion To Time in EDIT Form, if Time From is present, calculate the tolerance duration as above
+        $("#time_to2").change(function() {
+            if ($("#time_fr2").val() && $(this).valid() && $("#time_fr2").valid()) {
+                let toleranceDur = calculateToleranceDuration(moment($("#time_fr2").val(), 'LT'), moment($("#time_to2").val(), 'LT'));
+                toleranceHours = toleranceDur.hours();
+                toleranceMinutes = toleranceDur.minutes();
+                let toleranceDurString = padZero(toleranceHours) + ':' + padZero(toleranceMinutes);
+                $("#tolerance2").val(toleranceDurString);
+            }
+        });
+
         $("#form2").validate({
             rules: {
                 department: {
@@ -997,9 +1186,11 @@
                 },
                 time_fr: {
                     required: true,
+                    timeLessThan: '#time_to2'
                 },
                 time_to: {
                     required: true,
+                    timeGreaterThan: '#time_fr2'
                 },
                 tolerance: {
                     required: true,
@@ -1021,6 +1212,9 @@
                     greaterThan: '#edit_odometer_start_reading',
                     number: true,
                 }
+            },
+            errorPlacement: function(error, element) {
+                $(element).closest('div[class*=col-sm-]').append(error);
             },
             submitHandler: function(form, ev) {
                 ev.preventDefault();
@@ -1062,6 +1256,7 @@
                     req_id: id,
                 },
                 success: function(res) {
+                    console.log(res);
                     let selectedUserEntityVal = res.USER_ENTITY_CODE + ' - ' + res.USER_ENTITY_NAME;
                     $('#requsition_id').val(res.VEHICLE_REQ_ID);
                     $('#editDepartment').val(res.DEPT_ID).trigger('change');
@@ -1074,9 +1269,12 @@
                     $('#where_to2').val(res.WHERE_TO);
                     $('#pickup2').val(res.PICK_UP);
                     $('#req_date2').val(res.REQUISITION_DATE);
-                    $('#time_fr2').val(res.TIME_FROM);
-                    $('#time_to2').val(res.TIME_TO);
-                    $('#tolerance2').val(res.TOLERANCE_DURATION);
+                    let reqTimeFrom = moment(res.TIME_FROM, 'HH:mm:ss');
+                    $('#time_fr2').val(moment(res.TIME_FROM, 'HH:mm:ss').format('LT'));
+                    let reqTimeTo = moment(res.TIME_TO, 'HH:mm:ss');
+                    $('#time_to2').val(moment(reqTimeTo).format('LT'));
+                    let toleranceDur = moment(res.TOLERANCE_DURATION, 'HH:mm:ss');
+                    $('#tolerance2').val(moment(toleranceDur).format('HH:mm'));
                     $('#nunpassenger2').val(res.NUMBER_OF_PASSENGER);
                     $('#purpose2').val(res.REQUISITION_PURPOSE_ID).trigger('change');
                     $('#details2').val(res.DETAILS);
@@ -1088,11 +1286,15 @@
                     }
                     $('#vehicle_type2').val(res.VEHICLE_TYPE_ID).trigger('change');
                     $('#vehicle2').val(res.VEHICLE_ID).trigger('change');
+                    $("#vehicle2").attr('data-og-selection', res.VEHICLE_ID);
                     $('#nunpassenger2').attr('max', res.max_num);
 
                     $("#edit_odometer_start_reading").val(res.ODOMETER_START ? res.ODOMETER_START : '');
                     $("#edit_odometer_end_reading").val(res.ODOMETER_END ? res.ODOMETER_END : '');
                     $("#edit_total_trip_distance").val(res.TOTAL_KM ? res.TOTAL_KM : '');
+
+                    $("#vehicle_driver_name2").val(res.driver_name);
+                    $("#vehicle_driver_name2").attr('data-og-val', res.driver_name);
 
                     // On changing/entering Odometer start reading in EDIT req. form, check if Odometer End value is present 
                     // and calculate distance
@@ -1116,6 +1318,37 @@
                             $("#edit_total_trip_distance").val(0);
                         }
                     });
+
+                    // If Value is changed, change driver accordingly if different from original selection
+                    $("#vehicle2").change(function() {
+                        if ($(this).val() != $(this).attr('data-og-selection')) {
+                            let driverName = $("#vehicle2").find(":selected").attr('data-driver-name');
+                            if (driverName !== '')
+                                $("#vehicle_driver_name2").val(driverName);
+                            else
+                                $("#vehicle_driver_name2").val('-');
+                        } else {
+                            let originalDriver = $("#vehicle_driver_name2").attr("data-og-val");
+                            $("#vehicle_driver_name2").val(originalDriver);
+                        }
+                    });
+
+                    // $("#time_fr2").timepicker({
+                    //     showInputs: false,
+                    //     minuteStep: 1,
+                    //     icons: {
+                    //         up: 'fas fa-chevron-up',
+                    //         down: 'fas fa-chevron-down'
+                    //     }
+                    // });
+                    // $("#time_to2").timepicker({
+                    //     showInputs: false,
+                    //     minuteStep: 1,
+                    //     icons: {
+                    //         up: 'fas fa-chevron-up',
+                    //         down: 'fas fa-chevron-down'
+                    //     }
+                    // });
 
                 }
             });
@@ -1159,6 +1392,64 @@
         });
         $('body').on('click', '#time_to2', function() {
             geteditVehicle();
+        });
+
+        $("#edit").on('shown.bs.modal', function() {
+            $("#time_fr2").daterangepicker({
+                singleDatePicker: true,
+                timePicker: true,
+                timePicker24Hour: false,
+                timePickerIncrement: 1,
+                autoUpdateInput: false,
+                "locale": {
+                    "format": "hh:mm A",
+                    cancelLabel: 'Clear'
+                }
+            }).on('show.daterangepicker', function(ev, picker) {
+                picker.container.find(".calendar-table").hide();
+                picker.container.find('.calendar-time').css('margin-right', '15px');
+            });
+
+            $('#time_fr2').on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('hh:mm A')).trigger('change');
+            });
+            $('#time_fr2').on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val('').trigger('change');
+            });
+
+            $("#time_to2").daterangepicker({
+                singleDatePicker: true,
+                timePicker: true,
+                timePicker24Hour: false,
+                timePickerIncrement: 1,
+                autoUpdateInput: false,
+                "locale": {
+                    "format": "hh:mm A",
+                    cancelLabel: 'Clear'
+                }
+            }).on('show.daterangepicker', function(ev, picker) {
+                picker.container.find(".calendar-table").hide();
+                picker.container.find('.calendar-time').css('margin-right', '15px');
+            });
+
+            $('#time_to2').on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('hh:mm A')).trigger('change');
+            });
+            $('#time_to2').on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val('').trigger('change');
+            });
+
+            // For Previous Bootstrap Timepicker library
+            // $("#time_fr2").timepicker('setTime', $("#time_fr2").val());
+            // $("#time_to2").timepicker('setTime', $("#time_to2").val());
+
+            // $("#vehicle2").change(function() {
+            //     let driverName = $("#vehicle2").find(":selected").attr('data-driver-name');
+            //     if (driverName !== '')
+            //         $("#vehicle_driver_name2").val(driverName);
+            //     else
+            //         $("#vehicle_driver_name2").val('-');
+            // });
         });
 
         function getVehicle() {
@@ -1259,5 +1550,16 @@
 
 
     });
+
+    // To calculate Total Tolerance Duration in Add/Edit Requistion Forms
+    function calculateToleranceDuration(startTime, endTime) {
+        let dur = moment.duration(endTime.diff(startTime));
+        return dur;
+    }
+
+    // To Pad numbers with 0 if less than 10 and return the string
+    function padZero(num) {
+        return (num < 10) ? ('0' + num) : '' + num;
+    }
 </script>
 @endsection

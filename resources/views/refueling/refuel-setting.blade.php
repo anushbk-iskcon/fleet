@@ -207,9 +207,17 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label for="invoice_bill_num" class="col-sm-5 col-form-label">
+                                Invoice Bill Number
+                            </label>
+                            <div class="col-sm-7">
+                                <input type="text" name="invoice_bill_number" class="form-control" placeholder="Invoice Bill Number" id="invoice_bill_num" maxlength="30">
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label for="picture" class="col-sm-5 col-form-label">Fuel Slip Scan Copy </label>
                             <div class="col-sm-7" style="display:flex;flex-wrap:wrap;">
-                                <input type="file" accept="image/*, application/pdf" name="fuel_slip_scan_copy">
+                                <input type="file" accept="image/jpeg, image/png, application/pdf, .doc, .docx" name="fuel_slip_scan_copy">
                             </div>
                         </div>
 

@@ -52,6 +52,13 @@
     <link href="{{asset('public/dist/css/vehiclereq.css')}}" rel="stylesheet">
     <!-- Multiselected JS -->
     <link href="{{asset('public/plugins/multiselectedjs/jquery.multiselect.css')}}" rel="stylesheet">
+
+    <!-- Bootstrap Tiempicker -->
+    <link href="{{asset('public/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css')}}" rel="stylesheet">
+
+    <!-- Tempus Dominus - Bootstrap DateTimepicker -->
+    <!-- <link href="{{asset('public/plugins/tempus-dominus-6.0.0/dist/css/tempus-dominus.min.css')}}" rel="stylesheet"> -->
+
     <style>
         .sidebar-nav ul li a i.fa,
         .sidebar-nav ul li a i.fas,
@@ -733,6 +740,9 @@
 
     <!-- Toastr -->
     <script src="{{asset('public/plugins/toastr/toastr.min.js')}}"></script>
+
+    <!-- Bootstrap Timepicker -->
+    <script src="{{asset('public/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js')}}"></script>
 
     <script src="{{asset('public/dist/js/sidebar.js')}}"></script>
     <script src="{{asset('public/dist/js/driver_performance.js')}}"></script>

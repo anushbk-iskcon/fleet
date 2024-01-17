@@ -60,6 +60,8 @@ class RefuelSettingController extends Controller
         $refuelSetting->TOTAL_AMOUNT = $request->total_amount ?? 0;
         $refuelSetting->SECURITY_NAME = $request->security_name ?? "";
 
+        $refuelSetting->INVOICE_BILL_NUMBER = $request->invoice_bill_number;
+
         // For uploading Fuel Slip Image or PDF and storing file path
         if ($request->hasFile('fuel_slip_scan_copy')) {
             $file = $request->file('fuel_slip_scan_copy');
@@ -215,9 +217,15 @@ class RefuelSettingController extends Controller
             </div>
         </div>
         <div class="form-group row">
+            <label for="edit_invoice_bill_num" class="col-sm-5 col-form-label">Invoice Bill Number<i class="text-danger">*</i></label>
+            <div class="col-sm-7">
+                <input type="number" name="invoice_bill_number" class="form-control" placeholder="Invoice Bill Number" id="edit_invoice_bill_num" value="' . $refuelSetting->INVOICE_BILL_NUMBER . '">
+            </div>
+        </div>
+        <div class="form-group row">
         <label for="edit_picture" class="col-sm-5 col-form-label">Fuel Slip Scan Copy</label>
         <div class="col-sm-7">
-            <input type="file" accept="image/*" name="fuel_slip_scan_copy">
+            <input type="file" accept="image/jpeg, image/png, application/pdf, .doc, .docx" name="fuel_slip_scan_copy">
         </div></div>';
 
         $editFormContent .= '<div class="form-group text-right">
@@ -251,6 +259,8 @@ class RefuelSettingController extends Controller
         $refuelSetting->AMOUNT_PER_UNIT = $request->amount_per_unit ?? 0;
         $refuelSetting->TOTAL_AMOUNT = $request->total_amount ?? 0;
         $refuelSetting->SECURITY_NAME = $request->security_name ?? "";
+
+        $refuelSetting->INVOICE_BILL_NUMBER = $request->invoice_bill_number;
 
         // For uploading Fuel Slip Image or PDF and storing file path
         if ($request->hasFile('invoice_copy')) {
