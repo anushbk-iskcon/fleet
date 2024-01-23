@@ -235,7 +235,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="tripType" class="col-sm-5 col-form-label">Trip Type</label>
+                            <label for="tripType" class="col-sm-5 col-form-label">Trip Type <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select name="trip_type" id="tripType" class="form-control">
                                     <option value="">Please Select One</option>
@@ -484,7 +484,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="tripType2" class="col-sm-5 col-form-label">Trip Type</label>
+                            <label for="tripType2" class="col-sm-5 col-form-label">Trip Type <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select name="trip_type" id="tripType2" class="form-control">
                                     <option value="">Please Select One</option>
@@ -1063,6 +1063,9 @@
                 vehicle: {
                     required: true,
                 },
+                trip_type: {
+                    required: true
+                },
                 where_fr: {
                     required: true,
                 },
@@ -1170,6 +1173,9 @@
                     required: true,
                 },
                 vehicle_type: {
+                    required: true,
+                },
+                trip_type: {
                     required: true,
                 },
                 where_fr: {

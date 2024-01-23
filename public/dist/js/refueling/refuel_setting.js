@@ -22,7 +22,8 @@ $(document).ready(function () {
     let refuelSettingTable = $("#refuelSettingTable").DataTable({
         columnDefs: [{ "width": "60px", "targets": 0 },
         { "max-width": "45%", "targets": 1 },
-        { "width": "90px", "orderable": false, "className": "text-center", "targets": 4 }],
+        { "width": "90px", "orderable": false, "className": "text-center", "targets": 4 },
+        { "width": "115px", "orderable": false, "targets": 5 }],
         autoWidth: false
     });
 
@@ -234,6 +235,11 @@ function populateTable(table) {
                     else
                         actionBtns += `<button class="btn btn-sm btn-danger mr-1" onclick="changeActivationstatus(1, ${data.REFUEL_SETTING_ID})" title="Activate">
                     <i class="ti-reload"></i></button> `;
+
+                    if (data.FUEL_SLIP_SCAN_COPY)
+                        actionBtns += `<a href="${documentPath + '/' + data.FUEL_SLIP_SCAN_COPY}" class="btn btn-sm btn-primary mr-1" target="_blank">
+                        <i class="fas fa-paperclip"></i>
+                        </a>`;
 
                     // Add row
                     table.row.add([

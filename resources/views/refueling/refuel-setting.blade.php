@@ -299,6 +299,10 @@
     // To update refuel setting details after form submission:
     let refuelSettingUpdateURL = "{{route('refuel-setting.update')}}";
     let activationStatusChangeURL = "{{route('refuel-setting.change-activation')}}";
+
+    // For Downloading / Viewing Uploaded Document
+    let documentPath = '{{asset("public/upload/documents/refueling")}}';
+    // NOTE: final '/' not included in asset URL output above - to be added when using the URL
 </script>
 <!-- <script src="{{asset('dist/js/refuel_setting.js')}}"></script> -->
 <script src="{{asset('public/dist/js/refueling/refuel_setting.js')}}"></script>

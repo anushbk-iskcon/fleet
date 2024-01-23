@@ -327,6 +327,9 @@ Route::middleware('auth')->group(function () {
         ->name('refuel-approval-authorities.change-activation');
     /*** END Refueling Module ***/
 
+    /*** START Transaction Module ***/
+    /*** END Transaction Module ***/
+
     /*** START Reports Module ***/
     Route::get('reports/employees', function () {
         return view('reports.employee-reports');
