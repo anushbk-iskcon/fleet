@@ -56,6 +56,7 @@ class MaintenanceRequisitionController extends Controller
                 ->select(
                     'maintenance_requisitions.*',
                     'vehicles.VEHICLE_NAME as VEHICLE_NAME',
+                    'vehicles.LICENSE_PLATE as LICENSE_PLATE',
                     'mstr_maintenance.MAINTENANCE_NAME as MAINTENANCE_NAME',
                     'maintenance_services.MAINTENANCE_SERVICE_NAME as SERVICE_NAME',
                     'mstr_priority.PRIORITY_NAME as PRIORITY'
@@ -101,7 +102,7 @@ class MaintenanceRequisitionController extends Controller
         $vehicles = Vehicle::where('IS_ACTIVE', 'Y')->get();
         $priorities = Priority::all();
 
-        // Get Employee Names and Departments for slecting employee requisition is done for
+        // Get Employee Names and Departments for selecting employee / department
         $hrApi = new HrApi;
 
         $employeeData = $hrApi->getEmployeeList(""); // No parameters sent (dept = "")
@@ -146,6 +147,15 @@ class MaintenanceRequisitionController extends Controller
         $maintenRequisition->TOTAL_AMOUNT = $request->grand_total_price; // Or use session stored value
         $maintenRequisition->PRIORITY = $request->priority;
         // $maintenRequisition->IS_SCHEDULED = $request->is_add_schedule ? 'Y' : 'N';
+
+        # New Fields added 25-01-2024
+        $maintenRequisition->BILL_NUMBER = $request->bill_number;
+        $maintenRequisition->VENDOR_NAME = $request->vendor_name;
+        $maintenRequisition->JOB_CARD_NUMBER = $request->job_card_number;
+
+        if (isset($request->odometer_reading))
+            $maintenRequisition->PRESENT_ODOMETER_READING = $request->odometer_reading;
+
         $maintenRequisition->CREATED_BY = Auth::id();
 
         // To upload scanned copy of invoice
@@ -312,6 +322,7 @@ class MaintenanceRequisitionController extends Controller
             ->select(
                 'maintenance_requisitions.*',
                 'vehicles.VEHICLE_NAME as VEHICLE_NAME',
+                'vehicles.LICENSE_PLATE as LICENSE_PLATE',
                 'mstr_maintenance.MAINTENANCE_NAME as MAINTENANCE_NAME',
                 'maintenance_services.MAINTENANCE_SERVICE_NAME as SERVICE_NAME',
                 'mstr_priority.PRIORITY_NAME as REQ_PRIORITY'
@@ -360,6 +371,14 @@ class MaintenanceRequisitionController extends Controller
         $maintenRequisition->CHARGE = $request->charge ?? "";
         $maintenRequisition->TOTAL_AMOUNT = $request->grand_total_price; // Or use session stored value
         $maintenRequisition->PRIORITY = $request->priority;
+
+        # New Fields added 25-01-2024
+        $maintenRequisition->BILL_NUMBER = $request->bill_number;
+        $maintenRequisition->VENDOR_NAME = $request->vendor_name;
+        $maintenRequisition->JOB_CARD_NUMBER = $request->job_card_number;
+        if (isset($request->odometer_reading))
+            $maintenRequisition->PRESENT_ODOMETER_READING = $request->odometer_reading;
+
         $maintenRequisition->MODIFIED_BY = Auth::id();
 
         // To upload scanned copy of invoice

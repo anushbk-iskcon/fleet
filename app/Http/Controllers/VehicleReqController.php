@@ -23,6 +23,7 @@ use App\Models\TripType;
 use DataTables;
 use Str;
 use App\Models\User;
+use Carbon\Carbon;
 
 class VehicleReqController extends Controller
 {
@@ -40,6 +41,16 @@ class VehicleReqController extends Controller
         $hrApi = new HrApi;
         $employee = $hrApi->getEmployeeList($emp);
         $empData = $employee['data'];
+        // dd($empData);
+
+        # Create an array of HR Employee ID mapped to Employee Name to show in DataTable
+        # Employee Name column is not in table
+        $empArray = [];
+        foreach ($empData as $data) {
+            $empArray[$data['hrEmployeeId']] = $data['employeeName'];
+        }
+        // dd($empArray);
+
         $departments = $hrApi->getDepartments();
         $entities = $hrApi->getEntityList();
         $entityData = $entities['data'];
@@ -83,13 +94,15 @@ class VehicleReqController extends Controller
                         });
                     }
                 })
-                ->addColumn('req_for', function ($row) {
-                    $req_for = getEmployeename($row['REQUISITION_FOR']);
+                ->addColumn('req_for', function ($row) use ($empArray) {
+                    // $req_for = getEmployeename($row['REQUISITION_FOR']);
+                    $req_for = $empArray[$row['REQUISITION_FOR']] ?? "";
+                    // dd($req_for);
                     return $req_for;
                 })
                 ->addColumn('req_date', function ($row) {
-                    $req_for = date('j-F-Y', strtotime($row['REQUISITION_DATE']));
-                    return $req_for;
+                    $req_for_date = date('j-F-Y', strtotime($row['REQUISITION_DATE']));
+                    return $req_for_date;
                 })
                 ->addColumn('driver', function ($row) {
                     if ($row['DRIVER_ID']) {
@@ -159,7 +172,7 @@ class VehicleReqController extends Controller
 
                 ->make(true);
         }
-        return view('vehicle-req.vehicle-requisition', compact('driver', 'vehicle_type', 'purpose', 'empData', 'departments', 'trip_types', 'entityData'));
+        return view('vehicle-req.vehicle-requisition', compact('driver', 'vehicle_type', 'purpose', 'empData', 'empArray', 'departments', 'trip_types', 'entityData'));
     }
     public function addRequisition(Request $request)
     {
@@ -408,8 +421,8 @@ class VehicleReqController extends Controller
     {
         $type = ($request->type) ? $request->type : '';
         $rdate = ($request->rdate) ? $request->rdate : '';
-        $frmt = ($request->frmt) ? $request->frmt : '';
-        $tot = ($request->tot) ? $request->tot : '';
+        $frmt = ($request->frmt) ?  \Carbon\Carbon::parse($request->frmt)->toTimeString() : '';
+        $tot = ($request->tot) ?  \Carbon\Carbon::parse($request->tot)->toTimeString() : '';
         $checked = $request->checked;
         if ($checked == 'true') {
             $getVehicle = Vehicle::where(['VEHICLE_TYPE_ID' => $type, 'vehicles.IS_ACTIVE' => 'Y'])
@@ -458,8 +471,9 @@ class VehicleReqController extends Controller
         DB::enableQueryLog();
         $type = ($request->type) ? $request->type : '';
         $rdate = ($request->rdate) ? $request->rdate : '';
-        $frmt = ($request->frmt) ? $request->frmt : '';
-        $tot = ($request->tot) ? $request->tot : '';
+        $frmt = ($request->frmt) ? \Carbon\Carbon::parse($request->frmt)->toTimeString() : '';
+        $tot = ($request->tot) ? \Carbon\Carbon::parse($request->tot)->toTimeString() : '';
+        // dd($frmt);
         $checked = $request->checked;
         if ($checked == 'true') {
             $getVehicle = Vehicle::where(['VEHICLE_TYPE_ID' => $type])
@@ -481,9 +495,9 @@ class VehicleReqController extends Controller
                 })
                 ->pluck('VEHICLE_ID')
                 ->toArray();
-            // print_r(DB::getQueryLog());
+            print_r(DB::getQueryLog());
             // print_r($existingVehicleIds);
-            // exit;
+            exit;
             $getVehicle = Vehicle::where('VEHICLE_TYPE_ID', $type)
                 ->whereNotIn('VEHICLE_ID', $existingVehicleIds)
                 ->leftJoin('drivers', 'vehicles.DRIVER_ID', '=', 'drivers.DRIVER_ID')

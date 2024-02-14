@@ -227,7 +227,7 @@ class RefuelSettingController extends Controller
             <div class="col-sm-7">';
 
         if ($refuelSetting->FUEL_SLIP_SCAN_COPY) {
-            $editFormContent .= '<a href="' . asset('public/upload/documents/refueling') . '/' . $refuelSetting->FUEL_SLIP_SCAN_COPY . '" target+"_blank" class="btn btn-primary">
+            $editFormContent .= '<a href="' . asset('public/upload/documents/refueling') . '/' . $refuelSetting->FUEL_SLIP_SCAN_COPY . '" target="_blank" class="btn btn-primary">
                 <i class="fas fa-paperclip mr-2"></i> View File
                 </a>';
         } else {
@@ -237,7 +237,7 @@ class RefuelSettingController extends Controller
         </div>
         <div class="form-group row">
         <label for="edit_picture" class="col-sm-5 col-form-label">Update Fuel Slip Scan Copy</label>
-        <div class="col-sm-7">
+        <div class="col-sm-7 d-flex">
             <input type="file" accept="image/jpeg, image/png, application/pdf, .doc, .docx" name="fuel_slip_scan_copy">
         </div></div>';
 
@@ -276,7 +276,7 @@ class RefuelSettingController extends Controller
         $refuelSetting->INVOICE_BILL_NUMBER = $request->invoice_bill_number;
 
         // For uploading Fuel Slip Image or PDF and storing file path
-        if ($request->hasFile('invoice_copy')) {
+        if ($request->hasFile('fuel_slip_scan_copy')) {
             $file = $request->file('fuel_slip_scan_copy');
             $fileName = time() . '-' . date('Y') . '.' . $file->getClientOriginalExtension();
             $uploadDestination = public_path('/upload/documents/refueling/');

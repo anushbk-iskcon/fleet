@@ -192,6 +192,15 @@ $(document).ready(function () {
         }
     });
 
+    // On selecting department in dropdown in Add From, set department name also to be sent to server
+    $("#addTransactionDeptCode").change(function () {
+        let deptName = $(this).find(':selected').text();
+        if ($(this).val())
+            $("#addTransactionDeptName").val(deptName);
+        else
+            $("#addTransactionDeptName").val('');
+    });
+
     // On closing Add details Form modal, reset validations
     $("#add0").on('hidden.bs.modal', function () {
         $("#addTransactionDetailsForm").trigger('reset');
@@ -207,6 +216,16 @@ $(document).ready(function () {
             $("#addTransactionDetailsForm").data('validator').resetForm();
             $("#addTransactionDetailsForm .form-control").removeClass('error').removeAttr('aria-invalid');
         }, 10);
+    });
+
+
+    // On selecting department in dropdown in EDIT From, set department name also to be sent to server
+    $("#editTransactionDeptCode").change(function () {
+        let deptName = $(this).find(':selected').text();
+        if ($(this).val())
+            $("#editTransactionDeptName").val(deptName);
+        else
+            $("#editTransactionDeptName").val('');
     });
 
     $("#updateTransactionDetailsForm").validate({
@@ -390,6 +409,8 @@ function editInfo(transaction_id) {
             $("#editDurationForOvertime").attr('value', res.DURATION);
             $("#editTransactionAmt").val(res.AMOUNT);
             $("#editTransactionAmt").attr('value', res.AMOUNT);
+            $("#editDevoteeName").val(res.DEVOTEE_NAME);
+            $("#editTransactionDeptCode").val(res.DEVOTEE_DEPARTMENT_CODE).change();
             $("#edit").modal('show');
 
             // $("#resetUpdateFormBtn").click(function () {

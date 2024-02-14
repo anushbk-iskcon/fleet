@@ -44,7 +44,18 @@ $(document).ready(function () {
                 required: true,
                 number: true
             },
-            priority: 'required'
+            priority: 'required',
+            bill_number: {
+                required: true,
+                maxlength: 50
+            },
+            vendor_name: {
+                required: true,
+                maxlength: 100
+            },
+            job_card_number: {
+                maxlength: 50
+            }
         },
         errorElement: 'div',
         errorPlacement: function (error, element) {

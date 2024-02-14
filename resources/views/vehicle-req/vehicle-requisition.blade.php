@@ -264,13 +264,13 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="where_fr" class="col-sm-5 col-form-label">Where From <i class="text-danger">*</i></label>
+                            <label for="where_fr" class="col-sm-5 col-form-label">Where From </label>
                             <div class="col-sm-7">
                                 <input name="where_fr" required="" class="form-control" type="text" placeholder="Where From" id="where_fr">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="where_to" required="" class="col-sm-5 col-form-label">Where To <i class="text-danger">*</i></label>
+                            <label for="where_to" required="" class="col-sm-5 col-form-label">Where To </label>
                             <div class="col-sm-7">
                                 <input name="where_to" required="" class="form-control" type="text" placeholder="Where To" id="where_to">
                             </div>
@@ -513,13 +513,13 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="where_fr2" class="col-sm-5 col-form-label">Where From <i class="text-danger">*</i></label>
+                            <label for="where_fr2" class="col-sm-5 col-form-label">Where From </label>
                             <div class="col-sm-7">
                                 <input name="where_fr" required="" class="form-control" type="text" placeholder="Where From" id="where_fr2">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="where_to2" required="" class="col-sm-5 col-form-label">Where To <i class="text-danger">*</i></label>
+                            <label for="where_to2" required="" class="col-sm-5 col-form-label">Where To </label>
                             <div class="col-sm-7">
                                 <input name="where_to" required="" class="form-control" type="text" placeholder="Where To" id="where_to2">
                             </div>
@@ -1067,10 +1067,10 @@
                     required: true
                 },
                 where_fr: {
-                    required: true,
+                    maxlength: 100,
                 },
                 where_to: {
-                    required: true,
+                    maxlength: 100,
                 },
                 pickup: {
                     required: true,
@@ -1179,10 +1179,10 @@
                     required: true,
                 },
                 where_fr: {
-                    required: true,
+                    maxlength: 100,
                 },
                 where_to: {
-                    required: true,
+                    maxlength: 100,
                 },
                 pickup: {
                     required: true,

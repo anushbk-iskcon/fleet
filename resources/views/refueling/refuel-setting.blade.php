@@ -9,7 +9,6 @@
         color: #f66;
     }
 
-
     select.error~.select2 .select2-selection {
         border: 1px solid #f99;
     }
@@ -304,6 +303,6 @@
     let documentPath = '{{asset("public/upload/documents/refueling")}}';
     // NOTE: final '/' not included in asset URL output above - to be added when using the URL
 </script>
-<!-- <script src="{{asset('dist/js/refuel_setting.js')}}"></script> -->
+
 <script src="{{asset('public/dist/js/refueling/refuel_setting.js')}}"></script>
 @endsection

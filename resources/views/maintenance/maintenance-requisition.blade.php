@@ -85,7 +85,7 @@
                             <select class="form-control basic-single" name="vehicle" id="vehicle">
                                 <option value="" selected="selected">Please Select One</option>
                                 @foreach($vehicles as $vehicle)
-                                <option value="{{$vehicle['VEHICLE_ID']}}">{{$vehicle['VEHICLE_NAME']}}</option>
+                                <option value="{{$vehicle['VEHICLE_ID']}}">{{$vehicle['VEHICLE_NAME'] . ' (' . $vehicle['LICENSE_PLATE'] . ')'}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -152,7 +152,7 @@
                             <tr>
                                 <th>Sl No.</th>
                                 <th>Requisition Date</th>
-                                <th>Vehicle Name</th>
+                                <th>Vehicle</th>
                                 <th>Maintenance Type</th>
                                 <th>Requested By </th>
                                 <th>Status</th>
@@ -161,27 +161,7 @@
                         </thead>
                         <tbody>
 
-                            <!-- <tr role="row" class="odd">
-                                <td class="sorting_1" tabindex="0">1</td>
-                                <td>2019-09-03</td>
-                                <td>Test Express 1</td>
-                                <td>Repair</td>
-                                <td>Kumar</td>
-                                <td>Denied</td>
-                                <td><a href="#" class="btn btn-xs btn-success btn-sm mr-1" data-toggle="tooltip" data-placement="left" title="Update"><i class="ti-pencil"></i></a><a onclick="editinfo(1)" style="cursor:pointer;color:#fff;" class="btn btn-primary btn-sm mr-1"><i class="far fa-eye"></i></a><a href="#" onclick="return confirm('Are you sure ?') " class="btn btn-xs btn-danger btn-sm mr-1"><i class="ti-trash"></i></a>
-                                    <div class="text-right" style="display:inline-block;">
-                                        <div class="actions" style="display:inline-block;">
-                                            <div class="dropdown action-item" data-toggle="dropdown">
-                                                <a href="#" class="action-item"><i class="ti-more-alt"></i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a onclick="changestatus2(0,'tbl_maintenance',1,'maintenanceid')" class="dropdown-item">Accept</a>
-                                                    <a onclick="changestatus2(1,'tbl_maintenance',1,'maintenanceid')" class="dropdown-item">Denied</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>  -->
+
                         </tbody>
                     </table> <!-- /.table-responsive -->
                 </div>

@@ -68,7 +68,7 @@
                             <label for="requested_by" class="col-sm-5 col-form-label">Requisition By <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required name="requested_by" id="requested_by">
-                                    <option value selected="selected">Select User</option>
+                                    <option value="" selected="selected">Select User</option>
                                     @foreach($employeeData['data'] as $employee)
                                     <option value="{{$employee['employeeId'] . '|' . $employee['employeeName']}}">
                                         {{$employee['employeeName'] . ' (' . $employee['department'] . ')'}}
@@ -83,7 +83,7 @@
                                 <select class="form-control basic-single" required name="vehicle_name" id="vehicle_name">
                                     <option value selected="selected">Please Select One</option>
                                     @foreach($vehicles as $vehicle)
-                                    <option value="{{$vehicle['VEHICLE_ID']}}">{{$vehicle['VEHICLE_NAME']}}</option>
+                                    <option value="{{$vehicle['VEHICLE_ID']}}">{{$vehicle['VEHICLE_NAME'] . ' ('. $vehicle['LICENSE_PLATE'] . ')'}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -114,6 +114,18 @@
                             <label for="service_date" class="col-sm-5 col-form-label">Service Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input name="service_date" required class="form-control new-datepicker" type="text" placeholder="Service Date" id="service_date">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="maintenVendorName" class="col-sm-5 col-form-label">Vendor Name <i class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" name="vendor_name" id="maintenVendorName" maxlength="50" placeholder="Vendor">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="jobCardNumber" class="col-sm-5 col-form-label">Job Card Number</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" name="job_card_number" id="jobCardNumber" maxlength="50" placeholder="Job Card Number">
                             </div>
                         </div>
 
@@ -153,6 +165,19 @@
                             <label for="remarks" class="col-sm-5 col-form-label">Remarks</label>
                             <div class="col-sm-7">
                                 <textarea name="remarks" id="remarks" class="form-control" cols="30" rows="3" placeholder="Remarks"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="" class="col-sm-5 col-form-label">Bill Number <i class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" name="bill_number" id="billNumber" maxlength="50" placeholder="Bill Number">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="odometerReading" class="col-sm-5 col-form-label">Present Odometer Reading </label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" name="odometer_reading" id="odometerReading" maxlength="50" placeholder="Odometer Reading">
                             </div>
                         </div>
                         <div class="form-group row">

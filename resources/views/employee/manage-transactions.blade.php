@@ -98,26 +98,47 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="devoteeName" class="col-sm-5 col-form-label">Devotee Name</label>
+                            <div class="col-sm-7">
+                                <input name="devotee_name" id="devoteeName" class="form-control" placeholder="Devotee name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="addTransactionDepartment" class="col-sm-5 col-form-label">Department</label>
+                            <div class="col-sm-7">
+                                <select name="dept_code" id="addTransactionDeptCode" class="form-control basic-single">
+                                    <option value="">Please Select Department</option>
+                                    @foreach($departments as $department)
+                                    <option value="{{$department['deptCode']}}">{{$department['deptName']}}</option>
+                                    @endforeach
+                                </select>
+                                <input type="hidden" name="department_name" id="addTransactionDeptName" value="">
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
-                            <label for="durationForOvertime" class="col-form-label col-md-5">Duration (in hours) <i class="text-danger">*</i></label>
+                            <label for="durationForOvertime" class="col-form-label col-sm-5">Duration (in hours) <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" id="durationForOvertime" name="duration" placeholder="Enter duration">
                             </div>
                         </div>
                         <div class="form-group row" id="addDriverOTRate" style="display: none;">
-                            <label for="" class="col-form-label col-md-5">Driver Hourly OT (INR)</label>
+                            <label for="" class="col-form-label col-sm-5">Driver Hourly OT (INR)</label>
                             <div class="col-sm-7">
                                 <input type="number" class="form-control" id="driverOTRate" name="driver_hourly_ot" placeholder="Driver's OT" disabled>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="transactionAmt" class="col-md-5 col-form-label">OT Amount (INR) </label>
+                            <label for="transactionAmt" class="col-sm-5 col-form-label">OT Amount (INR) </label>
                             <div class="col-sm-7">
                                 <input type="number" class="form-control" id="transactionAmt" name="amount" placeholder="Amount" readonly>
                             </div>
                         </div>
+
+                    </div>
+                    <div class="col-12">
                         <div class="form-group text-right">
                             <button type="reset" id="resetAddFormBtn" class="btn btn-primary w-md m-b-5">Clear</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
@@ -169,6 +190,24 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="editDevoteeName" class="col-sm-5 col-form-label">Devotee Name</label>
+                            <div class="col-sm-7">
+                                <input name="devotee_name" id="editDevoteeName" class="form-control" placeholder="Devotee name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="editTransactionDeptCode" class="col-sm-5 col-form-label">Department</label>
+                            <div class="col-sm-7">
+                                <select name="dept_code" id="editTransactionDeptCode" class="form-control basic-single">
+                                    <option value="">Please Select Department</option>
+                                    @foreach($departments as $department)
+                                    <option value="{{$department['deptCode']}}">{{$department['deptName']}}</option>
+                                    @endforeach
+                                </select>
+                                <input type="hidden" name="department_name" id="editTransactionDeptName" value="">
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-12 col-lg-6">
                         <div class="form-group row">
@@ -189,6 +228,8 @@
                                 <input type="number" class="form-control" id="editTransactionAmt" name="amount" placeholder="Amount" readonly>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-12">
                         <div class="form-group text-right">
                             <button type="reset" id="resetUpdateFormBtn" class="btn btn-primary w-md m-b-5">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Save</button>
@@ -254,7 +295,7 @@
                                 <select name="purpose_sr" id="filterPurpose" class="form-control">
                                     <option value="">Select Purpose</option>
                                     <option value="1">Over Time</option>
-                                    {{-- Add Any other purposes --}}
+                                    {{-- To Add Any other purposes, if needed --}}
                                 </select>
                             </div>
                         </div>

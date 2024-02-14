@@ -33,6 +33,7 @@ use App\Http\Controllers\Masters\VehicleTypeController;
 use App\Http\Controllers\Masters\VendorController;
 use App\Http\Controllers\RefuelRequisitionController;
 use App\Http\Controllers\RefuelSettingController;
+use App\Http\Controllers\TransactionController;
 use App\Models\Role;
 use App\Models\Vehicle;
 use Illuminate\Support\Facades\Route;
@@ -328,6 +329,11 @@ Route::middleware('auth')->group(function () {
     /*** END Refueling Module ***/
 
     /*** START Transaction Module ***/
+    Route::get('transactions', [TransactionController::class, 'index'])->name('transactions.index');
+    Route::post('transactions', [TransactionController::class, 'index'])->name('transactions.list');
+    Route::post('transactions/add', [TransactionController::class, 'addTransaction'])->name('transactions.add');
+    Route::post('transactions/get-details', [TransactionController::class, 'getDetails'])->name('transactions.get-details');
+    Route::post('transactions/update', [TransactionController::class, 'updateTransaction'])->name('transactions.update');
     /*** END Transaction Module ***/
 
     /*** START Reports Module ***/

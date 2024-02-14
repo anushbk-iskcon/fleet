@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Driver;
 use App\Models\DriverTransaction;
+use App\Models\HrApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -233,7 +234,12 @@ class DriverController extends Controller
         } else {
             // Return the page
             $drivers = Driver::where('IS_ACTIVE', 'Y')->get();
-            return view('employee.manage-transactions', compact('drivers'));
+
+            $hrApi = new HrApi;
+            $departmentData = $hrApi->getDepartments();
+            $departments = $departmentData['data'];
+
+            return view('employee.manage-transactions', compact('drivers', 'departments'));
         }
     }
 
@@ -251,6 +257,10 @@ class DriverController extends Controller
         $transaction->DRIVER_ID = $request->driver;
         $transaction->DURATION = $request->duration ?? "";
         $transaction->AMOUNT = $request->amount;
+
+        $transaction->DEVOTEE_NAME = $request->devotee_name;
+        $transaction->DEVOTEE_DEPARTMENT_CODE = $request->dept_code;
+        $transaction->DEVOTEE_DEPARTMENT_NAME = $request->department_name;
 
         $transaction->CREATED_BY = Auth::id();
 
@@ -284,6 +294,10 @@ class DriverController extends Controller
         $transaction->DRIVER_ID = $request->driver;
         $transaction->DURATION = $request->duration ?? "";
         $transaction->AMOUNT = $request->amount;
+
+        $transaction->DEVOTEE_NAME = $request->devotee_name;
+        $transaction->DEVOTEE_DEPARTMENT_CODE = $request->dept_code;
+        $transaction->DEVOTEE_DEPARTMENT_NAME = $request->department_name;
 
         $transaction->MODIFIED_BY = Auth::id();
 

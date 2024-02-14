@@ -89,12 +89,12 @@
                             <label for="vehicle_name" class="col-sm-5 col-form-label">Vehicle Name <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <select class="form-control basic-single" required name="vehicle_name" id="vehicle_name">
-                                    <option value selected="selected">Please Select One</option>
+                                    <option value="" selected>Please Select One</option>
                                     @foreach($vehicles as $vehicle)
                                     @if($maintenReqDetails['VEHICLE_ID'] == $vehicle['VEHICLE_ID'])
-                                    <option value="{{$vehicle['VEHICLE_ID']}}" selected>{{$vehicle['VEHICLE_NAME']}}</option>
+                                    <option value="{{$vehicle['VEHICLE_ID']}}" selected>{{$vehicle['VEHICLE_NAME'] . ' (' . $vehicle['LICENSE_PLATE'] .')'}}</option>
                                     @else
-                                    <option value="{{$vehicle['VEHICLE_ID']}}">{{$vehicle['VEHICLE_NAME']}}</option>
+                                    <option value="{{$vehicle['VEHICLE_ID']}}">{{$vehicle['VEHICLE_NAME'] . ' (' . $vehicle['LICENSE_PLATE'] .')'}}</option>
                                     @endif
                                     @endforeach
                                 </select>
@@ -136,6 +136,18 @@
                                 <input name="service_date" required class="form-control new-datepicker" type="text" placeholder="Service Date" id="service_date" value="{{date('d-M-Y', strtotime($maintenReqDetails['SERVICE_DATE']))}}">
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="maintenVendorName" class="col-sm-5 col-form-label">Vendor Name <i class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" name="vendor_name" id="maintenVendorName" maxlength="50" value="{{$maintenReqDetails['VENDOR_NAME']}}" placeholder="Vendor">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="jobCardNumber" class="col-sm-5 col-form-label">Job Card Number</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" name="job_card_number" id="jobCardNumber" maxlength="50" value="{{$maintenReqDetails['JOB_CARD_NUMBER']}}" placeholder="Job Card Number">
+                            </div>
+                        </div>
 
                     </div>
                     <div class="col-md-12 col-lg-6">
@@ -174,9 +186,21 @@
                             </div>
                         </div> -->
                         <div class="form-group row">
-                            <label for="service_data" class="col-sm-5 col-form-label">Remarks</label>
+                            <label for="remarks" class="col-sm-5 col-form-label">Remarks</label>
                             <div class="col-sm-7">
-                                <textarea name="remarks" class="form-control" cols="30" rows="3" placeholder="Remarks"></textarea>
+                                <textarea name="remarks" class="form-control" id="remarks" cols="30" rows="3" placeholder="Remarks" value="{{$maintenReqDetails['REMARKS']}}"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="" class="col-sm-5 col-form-label">Bill Number <i class="text-danger">*</i></label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" name="bill_number" id="billNumber" maxlength="50" placeholder="Bill Number" value="{{$maintenReqDetails['BILL_NUMBER']}}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="odometerReading" class="col-sm-5 col-form-label">Present Odometer Reading </label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" name="odometer_reading" id="odometerReading" maxlength="50" value="{{$maintenReqDetails['PRESENT_ODOMETER_READING']}}" placeholder="Odometer Reading">
                             </div>
                         </div>
                         <div class="from-group row">
@@ -187,7 +211,7 @@
                                     <i class="fas fa-eye"></i> View Invoice
                                 </a>
                                 @else
-                                <div class="mt-3">No file uploaded</div>
+                                <div class="mt-2">No file uploaded</div>
                                 @endif
                             </div>
                         </div>

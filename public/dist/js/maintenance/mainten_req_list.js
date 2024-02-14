@@ -28,7 +28,7 @@ $(document).ready(function () {
         autoUpdateInput: false,
         autoApply: false,
         minYear: 2000,
-        maxDate: '31-Dec' + currentYear,
+        maxDate: '31-Dec' + (currentYear + 1),
         drops: "down",
         locale: {
             format: 'DD-MMM-YYYY'
@@ -108,7 +108,7 @@ function populateTable(table) {
                     table.row.add([
                         i + 1,
                         reqDate,
-                        data.VEHICLE_NAME,
+                        data.VEHICLE_NAME + ' (' + data.LICENSE_PLATE + ')',
                         data.MAINTENANCE_NAME,
                         data.EMPLOYEE_NAME,
                         reqStatus,
