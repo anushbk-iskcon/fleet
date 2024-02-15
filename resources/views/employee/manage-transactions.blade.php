@@ -101,7 +101,7 @@
                         <div class="form-group row">
                             <label for="devoteeName" class="col-sm-5 col-form-label">Devotee Name</label>
                             <div class="col-sm-7">
-                                <input name="devotee_name" id="devoteeName" class="form-control" placeholder="Devotee name">
+                                <input name="devotee_name" id="devoteeName" class="form-control" placeholder="Devotee Name">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -193,7 +193,7 @@
                         <div class="form-group row">
                             <label for="editDevoteeName" class="col-sm-5 col-form-label">Devotee Name</label>
                             <div class="col-sm-7">
-                                <input name="devotee_name" id="editDevoteeName" class="form-control" placeholder="Devotee name">
+                                <input name="devotee_name" id="editDevoteeName" class="form-control" placeholder="Devotee Name">
                             </div>
                         </div>
                         <div class="form-group row">
