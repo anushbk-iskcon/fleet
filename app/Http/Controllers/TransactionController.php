@@ -31,21 +31,22 @@ class TransactionController extends Controller
             $date_to = null;
             # To convert date times to required fromat as in DB (YYYY-MM-DD)
             if (isset($filterDateFrom))
-                $date_from = date('Y-md-d', strtotime($filterDateFrom));
+                $date_from = date('Y-m-d', strtotime($filterDateFrom));
             if (isset($filterDateTo))
                 $date_to = date('Y-m-d', strtotime($filterDateTo));
 
-            $transactionList = DB::table('transactions')
-                ->join('lkp_transaction_types', 'transactions.TRANSACTION_TYPE', '=', 'lkp_transaction_types.TRANSACTION_TYPE_ID')
-                ->select('transactions.*', 'lkp_transaction_types.TRANSACTION_TYPE as TRANS_TYPE')
+            $transactionList = DB::table('other_transaction')
+                ->join('lkp_transaction_types', 'other_transaction.TRANSACTION_TYPE', '=', 'lkp_transaction_types.TRANSACTION_TYPE_ID')
+                ->leftJoin('vehicles', 'other_transaction.VEHICLE_ID', '=', 'vehicles.VEHICLE_ID')
+                ->select('other_transaction.*', 'lkp_transaction_types.TRANSACTION_TYPE as TRANS_TYPE', 'vehicles.VEHICLE_NAME', 'vehicles.LICENSE_PLATE')
                 ->when($transactionType, function ($query, $transactionType) {
-                    return $query->where('transactions.TRANSACTION_TYPE', '=', $transactionType);
+                    return $query->where('other_transaction.TRANSACTION_TYPE', '=', $transactionType);
                 })
                 ->when($date_from, function ($query, $date_from) {
-                    return $query->where('transactions.BILL_DATE', '>=', $date_from);
+                    return $query->where('other_transaction.BILL_DATE', '>=', $date_from);
                 })
                 ->when($date_to, function ($query, $date_to) {
-                    return $query->where('transactions.BILL_DATE', '<=', $date_to);
+                    return $query->where('other_transaction.BILL_DATE', '<=', $date_to);
                 })
                 ->get();
 
@@ -71,10 +72,11 @@ class TransactionController extends Controller
         $transaction = new Transaction();
         $transactionType = $request->transaction_type;
 
-        if ($transactionType == 1 || $transactionType == 2 || $transactionType == 6) {
+        if ($transactionType == 1 || $transactionType == 2 || $transactionType == 6 || $transactionType == 7) {
             # 1 = Puncture Charges
             # 2 = Parking Cahrges
             # 6 = Miscellaneous Charges
+            # 7 = Emissions Test Charges
 
             $transaction->TRANSACTION_TYPE = $transactionType;
             $transaction->BILL_NUMBER = $request->bill_number;

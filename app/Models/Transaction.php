@@ -9,7 +9,7 @@ class Transaction extends Model
 {
     use HasFactory;
 
-    protected $table = 'transactions';
+    protected $table = 'other_transaction';
     protected $primaryKey = 'TRANSACTION_ID';
 
     // Timestamps

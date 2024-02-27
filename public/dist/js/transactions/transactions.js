@@ -24,7 +24,7 @@ $(document).ready(function () {
         autoWidth: false,
         columnDefs: [
             { width: '45px', targets: 0 },
-            { width: '90px', orderable: false, targets: 4 }
+            { width: '90px', orderable: false, targets: 7 }
         ]
     });
 
@@ -110,7 +110,7 @@ $(document).ready(function () {
                 </div>
             </div>
             <div class="form-group row">
-                <label for="" class="col-sm-5 col-form-label">Bill Amount (INR) <i class="text-danger">*</i></label>
+                <label for="billAmount" class="col-sm-5 col-form-label">Bill Amount (INR) <i class="text-danger">*</i></label>
                 <div class="col-sm-7">
                     <input type="number" class="form-control" name="bill_amount" id="billAmount" placeholder="Bill Amount">
                 </div>
@@ -123,6 +123,7 @@ $(document).ready(function () {
             departments.forEach((department) => {
                 additionalFields += `<option value="${department['deptCode']}">${department['deptName']}</option>`;
             });
+            additionalFields += '<option value="TSF">Touchstone Foundation</option>';
             additionalFields += `</select>
                 </div>
             <input type="hidden" name="debit_to_dept_name" id="debitToDeptName" value="">
@@ -130,7 +131,7 @@ $(document).ready(function () {
             <div class="form-group row">
                 <label for="transactionInvoiceUpload" class="col-sm-5 col-form-label">Invoice upload</label>
                 <div class="col-sm-7 d-flex flex-wrap">
-                    <input type="file" id="transactionInvoiceUpload" name="invoice_upload">
+                    <input type="file" id="transactionInvoiceUpload" name="invoice_upload" accept="image/jpeg, image/png, .doc, .docx, .pdf">
                 </div>
             </div>
             </div>
@@ -217,7 +218,7 @@ $(document).ready(function () {
                 </div>
             </div>
             <div class="form-group row">
-                <label for="" class="col-sm-5 col-form-label">Bill Amount (INR) <i class="text-danger">*</i></label>
+                <label for="billAmount" class="col-sm-5 col-form-label">Bill Amount (INR) <i class="text-danger">*</i></label>
                 <div class="col-sm-7">
                     <input type="number" class="form-control" name="bill_amount" id="billAmount" placeholder="Bill Amount">
                 </div>
@@ -238,7 +239,7 @@ $(document).ready(function () {
             <div class="form-group row">
                 <label for="transactionInvoiceUpload" class="col-sm-5 col-form-label">Invoice upload</label>
                 <div class="col-sm-7 d-flex flex-wrap">
-                    <input type="file" id="transactionInvoiceUpload" name="invoice_upload">
+                    <input type="file" id="transactionInvoiceUpload" name="invoice_upload" accept="image/jpeg, image/png, .doc, .docx, .pdf">
                 </div>
             </div>
             </div>
@@ -292,6 +293,15 @@ $(document).ready(function () {
                 </div>
             </div>
             <div class="form-group row">
+            <label for="editTransactionVehicle" class="col-sm-5 col-form-label">Vehicle </label>
+            <div class="col-sm-7">
+                <select name="vehicle" class="form-control basic-single" id="editTransactionVehicle"><option value="">Please select</option>`;
+            vehicles.forEach((vehicle) => {
+                additionalFields += `<option value="${vehicle['VEHICLE_ID']}">${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
+            });
+            additionalFields += `</select></div>
+            </div>
+            <div class="form-group row">
                 <label for="vehicleType" class="col-sm-5 col-form-label">Type of vehicle <i class="text-danger">*</i></label>
                 <div class="col-sm-7">
                     <select name="vehicle_type" class="form-control basic-single" id="vehicleType">
@@ -312,7 +322,7 @@ $(document).ready(function () {
                 </div>
             </div>
             <div class="form-group row">
-                <label for="" class="col-sm-5 col-form-label">Bill Amount (INR) <i class="text-danger">*</i></label>
+                <label for="billAmount" class="col-sm-5 col-form-label">Bill Amount (INR) <i class="text-danger">*</i></label>
                 <div class="col-sm-7">
                     <input type="number" class="form-control" name="bill_amount" id="billAmount" placeholder="Bill Amount">
                 </div>
@@ -332,7 +342,7 @@ $(document).ready(function () {
             <div class="form-group row">
                 <label for="transactionInvoiceUpload" class="col-sm-5 col-form-label">Invoice upload</label>
                 <div class="col-sm-7 d-flex flex-wrap">
-                    <input type="file" id="transactionInvoiceUpload" name="invoice_upload">
+                    <input type="file" id="transactionInvoiceUpload" name="invoice_upload" accept="image/jpeg, image/png, .doc, .docx, .pdf">
                 </div>
             </div>
             </div>
@@ -382,6 +392,26 @@ $(document).ready(function () {
                 </div>
             </div>
             <div class="form-group row">
+        <label for="editTransactionVehicle" class="col-sm-5 col-form-label">Vehicle </label>
+            <div class="col-sm-7">
+                <select name="vehicle" class="form-control basic-single" id="editTransactionVehicle"><option value="">Please select</option>`;
+            vehicles.forEach((vehicle) => {
+                additionalFields += `<option value="${vehicle['VEHICLE_ID']}">${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
+            });
+            additionalFields += `</select></div>
+        </div>
+        <div class="form-group row">
+                <label for="vehicleType" class="col-sm-5 col-form-label">Type of vehicle </label>
+                <div class="col-sm-7">
+                    <select name="vehicle_type" class="form-control basic-single" id="vehicleType">
+                        <option value="">Please select</option>`;
+            vehicleTypes.forEach((vehicleType) => {
+                additionalFields += `<option value="${vehicleType['VEHICLE_TYPE_ID']}">${vehicleType['VEHICLE_TYPE_NAME']}</option>`;
+            });
+            additionalFields += `</select>
+                </div>
+            </div>
+            <div class="form-group row">
                 <label for="devoteeName" class="col-sm-5 col-form-label">Devotee Name <i class="text-danger">*</i></label>
                 <div class="col-sm-7">
                     <input type="text" class="form-control" name="devotee_name" id="devoteeName" maxlength="50" placeholder="Devotee name">
@@ -414,7 +444,7 @@ $(document).ready(function () {
                 </div>
             </div>
             <div class="form-group row">
-                <label for="" class="col-sm-5 col-form-label">Bill Amount (INR) <i class="text-danger">*</i></label>
+                <label for="billAmount" class="col-sm-5 col-form-label">Bill Amount (INR) <i class="text-danger">*</i></label>
                 <div class="col-sm-7">
                     <input type="number" class="form-control" name="bill_amount" id="billAmount" placeholder="Bill Amount">
                 </div>
@@ -434,7 +464,7 @@ $(document).ready(function () {
             <div class="form-group row">
                 <label for="transactionInvoiceUpload" class="col-sm-5 col-form-label">Invoice upload</label>
                 <div class="col-sm-7 d-flex flex-wrap">
-                    <input type="file" id="transactionInvoiceUpload" name="invoice_upload">
+                    <input type="file" id="transactionInvoiceUpload" name="invoice_upload" accept="image/jpeg, image/png, .doc, .docx, .pdf">
                 </div>
             </div>
             </div>
@@ -460,6 +490,115 @@ $(document).ready(function () {
                     $("#debitToDeptName").val(debitToDeptName);
                 }
             });
+        }
+        else if (transType == 7) {
+            // Transaction type is for Emission Test charges
+            additionalFields += `<div class="row">
+            <div class="col-md-12 col-lg-6">
+            <div class="form-group row">
+                <label for="billNumber" class="col-sm-5 col-form-label">Invoice Number <i class="text-danger">*</i></label>
+                <div class="col-sm-7">
+                    <input type="text" name="bill_number" id="billNumber" class="form-control" placeholder="Invoice Number" maxlength="40">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="billDate" class="col-sm-5 col-form-label">Date <i class="text-danger">*</i></label>
+                <div class="col-sm-7">
+                    <input type="text" name="bill_date" class="form-control" id="billDate" placeholder="Date" autocomplete="off">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="driverName" class="col-sm-5 col-form-label">Driver <i class="text-danger">*</i></label>
+                <div class="col-sm-7">
+                <select name="driver_name" class="form-control basic-single" id="driverName">
+                    <option value="">Please Select</option>`;
+            drivers.forEach((driver) => {
+                additionalFields += `<option value="${driver['DRIVER_ID']}">${driver['DRIVER_NAME']}</option>`;
+            });
+
+            additionalFields += `</select>
+            </div></div>
+            <div class="form-group row">
+                <label for="devoteeName" class="col-form-label col-sm-5">Devotee Name <i class="text-danger">*</i></label>
+                <div class="col-sm-7">
+                    <input type="text" name="devotee_name" class="form-control" id="devoteeName" maxlength="50" placeholder="Devotee Name">
+                </div>
+            </div>
+            <div class="form-group row">
+            <label for="transactionVehicle" class="col-form-label col-sm-5">Vehicle </label>
+            <div class="col-sm-7">
+            <select name="vehicle" class="form-control basic-single" id="transactionVehicle">
+            <option value="">Please Select</option>`;
+
+            vehicles.forEach((vehicle) => {
+                additionalFields += `<option value="${vehicle['VEHICLE_ID']}">${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
+            });
+            additionalFields += `</select>
+            </div></div>
+            <div class="form-group row">
+            <label for="vehicleType" class="col-sm-5 col-form-label">Type of Vehicle</label>
+            <div class="col-sm-7">
+                <select name="vehicle_type" class="form-control basic-single" id="vehicleType">
+                    <option value="">Please Select</option>`;
+            vehicleTypes.forEach((vehicleType) => {
+                additionalFields += `<option value="${vehicleType['VEHICLE_TYPE_ID']}">${vehicleType['VEHICLE_TYPE_NAME']}</option>`;
+            });
+            additionalFields += `</select>
+            </div></div>
+            </div>
+            <div class="col-md-12 col-lg-6">
+            <div class="form-group row">
+                <label for="transactionDescription" class="col-sm-5 col-form-label">Description</label>
+            <div class="col-sm-7">
+            <textarea rows="3" name="description" class="form-control" id="transactionDescription" placeholder="Description"></textarea>
+            </div></div>
+            <div class="form-group row">
+            <label for="billAmount" class="col-sm-5 col-form-label">Amount <i class="text-danger">*</i></label>
+            <div class="col-sm-7">
+                <input type="number" class="form-control" name="bill_amount" id="billAmount" placeholder="Bill Amount">
+            </div></div>
+            <div class="form-group row">
+            <label for="transactionDebitTo" class="col-form-label col-sm-5">Debit to Whom <i class="text-danger">*</i></label>
+            <div class="col-sm-7">
+            <select name="debit_to" class="form-control basic-single" id="transactionDebitTo">
+                <option value="">Please Select</option>`;
+            departments.forEach((department) => {
+                additionalFields += `<option value="${department['deptCode']}">${department['deptName']}</option>`;
+            });
+            additionalFields += `</select>
+            </div>
+            <input type="hidden" name="debit_to_dept_name" id="debitToDeptName" value="">
+            </div>
+            <div class="form-group row">
+                <label for="transactionInvoiceUpload" class="col-sm-5 col-form-label">Invoice upload</label>
+                <div class="col-sm-7 d-flex flex-wrap">
+                    <input type="file" id="transactionInvoiceUpload" name="invoice_upload" accept="image/jpeg, image/png, .doc, .docx, .pdf">
+                </div>
+            </div>`;
+
+            $("#addFormAdditionalFields").empty().html(additionalFields);
+
+            $('.basic-single').select2();
+
+            // to enable date picker on Bill Date
+            $("#billDate").daterangepicker({
+                singleDatePicker: true,
+                autoUpdateInput: false
+            });
+            $("#billDate").on('apply.daterangepicker', function (ev, picker) {
+                $(this).val(picker.startDate.format('DD-MMM-YYYY'));
+            });
+
+            // On selecting dept in debit to whom, set name field to send to server
+            $("#transactionDebitTo").change(function (e) {
+                if ($(this).val() == '') {
+                    $("#debitToDeptName").val('');
+                } else {
+                    let debitToDeptName = $(this).find(':selected').text();
+                    $("#debitToDeptName").val(debitToDeptName);
+                }
+            });
+
         }
 
         else {
@@ -494,8 +633,18 @@ $(document).ready(function () {
             },
             driver_name: 'required',
             devotee_name: 'required',
-            vehicle: 'required',
-            vehicle_type: 'required',
+            vehicle: {
+                required: function (element) {
+                    if ($("#transactionType").val() == 1 || $("#transactionType").val() == 2 || $("#transactionType").val() == 3)
+                        return true;
+                }
+            },
+            vehicle_type: {
+                required: function (element) {
+                    if ($("#transactionType").val() == 1 || $("#transactionType").val() == 2 || $("#transactionType").val() == 3 || $("#transactionType").val() == 4)
+                        return true;
+                }
+            },
             debit_to: 'required',
             devotee_name: 'required',
             description: {
@@ -605,10 +754,17 @@ function loadTable(table) {
                     let actionBtns = `<button class="btn btn-sm btn-info mr-1" onclick="editInfo(${data.TRANSACTION_ID})" title="Edit"><i class="ti-pencil"></i></button>`;
 
                     let transactionDate = moment(data.BILL_DATE).format('DD-MMM-YYYY');
+                    let vehicleDetail = '';
+                    if (data.VEHICLE_NAME)
+                        vehicleDetail += (data.VEHICLE_NAME + ' (' + data.LICENSE_PLATE + ')');
+
                     table.row.add([
                         i + 1,
                         data.TRANS_TYPE,
                         transactionDate,
+                        data.BILL_NUMBER,
+                        vehicleDetail,
+                        data.BILL_AMOUNT,
                         data.DEVOTEE_NAME,
                         actionBtns
                     ]);
@@ -618,7 +774,7 @@ function loadTable(table) {
             table.draw();
         },
         error: function (jqXHR, status, err) {
-            toastr.error("Error fetching data. Please try again", '', { closeButton: true });
+            toastr.error("Error fetching data. Please try again", '', { closeButton: true, timeOut: 0 });
         },
         complete: function () {
             $("#table-loader").hide();
@@ -757,7 +913,7 @@ function loadEditForm(transactionDetails) {
         formContent += `<div class="form-group row">
         <label for="newTransactionInvoiceUpload" class="col-sm-5 col-form-label">Invoice upload</label>
         <div class="col-sm-7 d-flex flex-wrap">
-            <input type="file" id="newTransactionInvoiceUpload" name="invoice_upload">
+            <input type="file" id="newTransactionInvoiceUpload" name="invoice_upload" accept="image/jpeg, image/png, .doc, .docx, .pdf">
         </div>
         </div>
         </div></div></div>`;
@@ -892,7 +1048,7 @@ function loadEditForm(transactionDetails) {
         formContent += `<div class="form-group row">
         <label for="newTransactionInvoiceUpload" class="col-sm-5 col-form-label">Invoice upload</label>
         <div class="col-sm-7 d-flex flex-wrap">
-            <input type="file" id="newTransactionInvoiceUpload" name="invoice_upload">
+            <input type="file" id="newTransactionInvoiceUpload" name="invoice_upload" accept="image/jpeg, image/png, .doc, .docx, .pdf">
         </div>
         </div>
         </div></div></div>`;
@@ -959,6 +1115,18 @@ function loadEditForm(transactionDetails) {
             <div class="col-sm-7">
                 <input type="text" class="form-control" name="devotee_name" value="${transactionDetails.DEVOTEE_NAME}" id="editDevoteeName" maxlength="50" placeholder="Devotee name">
             </div>
+        </div>
+        <div class="form-group row">
+            <label for="editTransactionVehicle" class="col-sm-5 col-form-label">Vehicle </label>
+            <div class="col-sm-7">
+                <select name="vehicle" class="form-control basic-single" id="editTransactionVehicle"><option value="">Please select</option>`;
+        vehicles.forEach((vehicle) => {
+            if (vehicle.VEHICLE_ID == transactionDetails.VEHICLE_ID)
+                formContent += `<option value="${vehicle['VEHICLE_ID']}" selected>${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
+            else
+                formContent += `<option value="${vehicle['VEHICLE_ID']}">${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
+        });
+        formContent += `</select></div>
         </div>
         <div class="form-group row">
             <label for="editVehicleType" class="col-sm-5 col-form-label">Type of vehicle <i class="text-danger">*</i></label>
@@ -1085,6 +1253,30 @@ function loadEditForm(transactionDetails) {
         formContent += `</select></div>
         </div>
         <div class="form-group row">
+        <label for="editTransactionVehicle" class="col-sm-5 col-form-label">Vehicle </label>
+            <div class="col-sm-7">
+                <select name="vehicle" class="form-control basic-single" id="editTransactionVehicle"><option value="">Please select</option>`;
+        vehicles.forEach((vehicle) => {
+            if (vehicle.VEHICLE_ID == transactionDetails.VEHICLE_ID)
+                formContent += `<option value="${vehicle['VEHICLE_ID']}" selected>${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
+            else
+                formContent += `<option value="${vehicle['VEHICLE_ID']}">${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
+        });
+        formContent += `</select></div>
+        </div>
+        <div class="form-group row">
+            <label for="editVehicleType" class="col-sm-5 col-form-label">Type of vehicle <i class="text-danger">*</i></label>
+            <div class="col-sm-7">
+                <select name="vehicle_type" class="form-control basic-single" id="editVehicleType"><option value="">Please select</option>`;
+        vehicleTypes.forEach((vehicleType) => {
+            if (vehicleType.VEHICLE_TYPE_ID == transactionDetails.VEHICLE_TYPE_ID)
+                formContent += `<option value="${vehicleType.VEHICLE_TYPE_ID}" selected>${vehicleType.VEHICLE_TYPE_NAME}</option>`;
+            else
+                formContent += `<option value="${vehicleType.VEHICLE_TYPE_ID}">${vehicleType.VEHICLE_TYPE_NAME}</option>`;
+        });
+        formContent += `</select></div>
+        </div>
+        <div class="form-group row">
             <label for="editDevoteeName" class="col-sm-5 col-form-label">Devotee Name <i class="text-danger">*</i></label>
             <div class="col-sm-7">
                 <input type="text" class="form-control" name="devotee_name" value="${transactionDetails.DEVOTEE_NAME}" id="editDevoteeName" maxlength="50" placeholder="Devotee name">
@@ -1176,9 +1368,152 @@ function loadEditForm(transactionDetails) {
         $("#editBillDate").on('apply.daterangepicker', function (ev, picker) {
             $(this).val(picker.startDate.format('DD-MMM-YYYY'));
         });
+    } else if (transType == 7) {
+        // 7 For Emission test Charges
+        // Add CSRF token and Transaction Type
+        formContent = `<input type="hidden" name="_token" value="${csrfToken}">`;
+        formContent += `<div class="row">
+        <div class="col-md-12 col-lg-6">
+        <div class="form-group row">
+        <label for="updateTransactionType" class="col-sm-5 col-form-label">Transaction Type <i class="text-danger">*</i></label>
+        <div class="col-sm-7">
+        <select name="transaction_type" id="updateTransactionType" class="form-control" disabled>
+            <option value="">Please select</option>`;
+
+        transactionTypes.forEach((transactionType) => {
+            if (transactionType['TRANSACTION_TYPE_ID'] == transType)
+                formContent += `<option value="${transactionType['TRANSACTION_TYPE_ID']}" selected>${transactionType['TRANSACTION_TYPE']}</option>`;
+            else
+                formContent += `<option value="${transactionType['TRANSACTION_TYPE_ID']}">${transactionType['TRANSACTION_TYPE']}</option>`;
+        });
+        formContent += `</select></div></div></div></div>`;
+        formContent += `<div class="row"><div class="col-md-12 col-lg-6">
+        <div class="form-group row">
+            <label for="editInvoiceNumber" class="col-sm-5 col-form-label">Invoice Number <i class="text-danger">*</i></label>
+            <div class="col-sm-7">
+                <input type="text" name="bill_number" value="${transactionDetails.BILL_NUMBER}" id="editInvoiceNumber" class="form-control" placeholder="Invoice Number">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="editBillDate" class="col-form-label col-sm-5">Date <i class="text-danger">*</i></label>
+            <div class="col-sm-7">
+                <input type="text" name="bill_date" value="${billDate}" class="form-control" id="editBillDate" autocomplete="off">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="editDriverName" class="col-sm-5 col-form-label">Driver <i class="text-danger">*</i></label>
+            <div class="col-sm-7">
+            <select name="driver_name" id="editDriverName" class="form-control basic-single">
+                <option value="">Please Select</option>`;
+        drivers.forEach((driver) => {
+            if (driver.DRIVER_ID == transactionDetails.DRIVER_ID)
+                formContent += `<option value="${driver['DRIVER_ID']}" selected="selected">${driver['DRIVER_NAME']}</option>`;
+            else
+                formContent += `<option value="${driver['DRIVER_ID']}">${driver['DRIVER_NAME']}</option>`;
+        });
+        formContent += `</select></div>
+    </div>
+    <div class="form-group row">
+            <label for="editDevoteeName" class="col-sm-5 col-form-label">Devotee Name <i class="text-danger">*</i></label>
+            <div class="col-sm-7">
+                <input type="text" class="form-control" name="devotee_name" value="${transactionDetails.DEVOTEE_NAME}" id="editDevoteeName" maxlength="50" placeholder="Devotee name">
+            </div>
+    </div>
+    <div class="form-group row">
+            <label for="editTransactionVehicle" class="col-sm-5 col-form-label">Vehicle <i class="text-danger">*</i></label>
+            <div class="col-sm-7">
+                <select name="vehicle" class="form-control basic-single" id="editTransactionVehicle"><option value="">Please select</option>`;
+        vehicles.forEach((vehicle) => {
+            if (vehicle.VEHICLE_ID == transactionDetails.VEHICLE_ID)
+                formContent += `<option value="${vehicle['VEHICLE_ID']}" selected>${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
+            else
+                formContent += `<option value="${vehicle['VEHICLE_ID']}">${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
+        });
+        formContent += `</select></div>
+        </div>
+        <div class="form-group row">
+            <label for="editVehicleType" class="col-sm-5 col-form-label">Type of vehicle <i class="text-danger">*</i></label>
+            <div class="col-sm-7">
+                <select name="vehicle_type" class="form-control basic-single" id="editVehicleType"><option value="">Please select</option>`;
+        vehicleTypes.forEach((vehicleType) => {
+            if (vehicleType.VEHICLE_TYPE_ID == transactionDetails.VEHICLE_TYPE_ID)
+                formContent += `<option value="${vehicleType.VEHICLE_TYPE_ID}" selected>${vehicleType.VEHICLE_TYPE_NAME}</option>`;
+            else
+                formContent += `<option value="${vehicleType.VEHICLE_TYPE_ID}">${vehicleType.VEHICLE_TYPE_NAME}</option>`;
+        });
+        formContent += `</select></div>
+        </div></div>`; // End col-md-12 col-lg-6 half of form, begin new`;
+
+        formContent += `<div class="col-md-12 col-lg-6">
+        <div class="form-group row">
+            <label for="editTransactionDescription" class="col-sm-5 col-form-label">Description</label>
+            <div class="col-sm-7">
+                <textarea rows="3" name="description" class="form-control" id="editTransactionDescription" value="${transactionDetails.DESCRIPTION}" placeholder="Description"></textarea>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="editBillAmount" class="col-sm-5 col-form-label">Bill Amount (INR) <i class="text-danger">*</i></label>
+            <div class="col-sm-7">
+                <input type="number" class="form-control" name="bill_amount" value="${transactionDetails.BILL_AMOUNT}" id="editBillAmount" placeholder="Bill Amount">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="editDebitTo" class="col-sm-5 col-form-label">Debit to Whom <i class="text-danger">*</i></label>
+            <div class="col-sm-7">
+                <select name="debit_to" class="form-control basic-single" id="editDebitTo"><option value="">Please select</option>`;
+        departments.forEach((department) => {
+            if (department.deptCode == transactionDetails.DEBIT_TO_DEPT)
+                formContent += `<option value="${department.deptCode}" selected>${department.deptName}</option>`;
+            else
+                formContent += `<option value="${department.deptCode}">${department.deptName}</option>`;
+        });
+        formContent += `</select></div>
+        <input type="hidden" name="debit_to_dept_name" id="editDebitToDeptName" value="${transactionDetails.DEPARTMENT_NAME}">
+        </div>`;
+
+        if (transactionDetails.INVOICE_DOCUMENT) {
+            formContent += `<div class="form-group row">
+            <label class="col-form-label col-sm-5">Current Invoice File </label>
+            <div class="col-sm-7">
+            <a href="${uploadedFilePath + '/' + transactionDetails.INVOICE_DOCUMENT}" target="_blank" class="btn btn-primary btn-block"><i class="fa fa-file"></i>&nbsp;View File</a>
+            </div></div>`;
+        } else {
+            formContent += `<div class="form-group row">
+            <label class="col-form-label col-sm-5">Current Invoice File </label>
+            <div class="col-sm-7">
+            <div class="mt-2">No file uploaded</div>
+            </div></div>`;
+        }
+
+        formContent += `<div class="form-group row">
+        <label for="newTransactionInvoiceUpload" class="col-sm-5 col-form-label">Invoice upload</label>
+        <div class="col-sm-7 d-flex flex-wrap">
+            <input type="file" id="newTransactionInvoiceUpload" name="invoice_upload">
+        </div>
+        </div>
+        </div></div></div>`;
+
+        formContent += `<div class="row">
+        <div class="col-12 text-right">
+        <button type="submit" class="btn btn-success">Update</button>
+        </div>
+        </div>`;
+
+        $("#updateTransactionForm").empty().append(formContent);
     }
     $("#edit").modal('show');
     $('.basic-single').select2();
+
+    $("#editBillDate").daterangepicker({
+        singleDatePicker: true,
+        locale: {
+            format: 'DD-MMM-YYYY'
+        },
+        autoUpdateInput: false
+    });
+    $("#editBillDate").on('apply.daterangepicker', function (ev, picker) {
+        $(this).val(picker.startDate.format('DD-MMM-YYYY'));
+    });
 
     // initialize Validation for the Edit Form generated above
     initValidationForEditForm();
@@ -1199,8 +1534,18 @@ function initValidationForEditForm() {
             },
             driver_name: 'required',
             devotee_name: 'required',
-            vehicle: 'required',
-            vehicle_type: 'required',
+            vehicle: {
+                required: function (element) {
+                    if ($("#updateTransactionType").val() == 1 || $("#updateTransactionType").val() == 2 || $("#updateTransactionType").val() == 3)
+                        return true;
+                }
+            },
+            vehicle_type: {
+                required: function (element) {
+                    if ($("#updateTransactionType").val() == 1 || $("#updateTransactionType").val() == 2 || $("#updateTransactionType").val() == 3 || $("#updateTransactionType").val() == 4)
+                        return true;
+                }
+            },
             debit_to: 'required',
             devotee_name: 'required',
             description: {

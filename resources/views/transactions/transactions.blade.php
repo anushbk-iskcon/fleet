@@ -201,6 +201,9 @@
                                 <th>Sl No.</th>
                                 <th>Type</th>
                                 <th>Bill Date</th>
+                                <th>Bill Number</th>
+                                <th>Vehicle</th>
+                                <th>Amount</th>
                                 <th>Devotee Name</th>
                                 <th>Action(s)</th>
                             </tr>
