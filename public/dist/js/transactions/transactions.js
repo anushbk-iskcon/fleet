@@ -79,17 +79,6 @@ $(document).ready(function () {
                 </div>
             </div>
             <div class="form-group row">
-                <label for="transactionVehicle" class="col-sm-5 col-form-label">Vehicle <i class="text-danger">*</i></label>
-                <div class="col-sm-7">
-                    <select name="vehicle" class="form-control basic-single" id="transactionVehicle">
-                        <option value="">Please select</option>`;
-            vehicles.forEach((vehicle) => {
-                additionalFields += `<option value="${vehicle['VEHICLE_ID']}">${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
-            });
-            additionalFields += `</select>
-                </div>
-            </div>
-            <div class="form-group row">
                 <label for="vehicleType" class="col-sm-5 col-form-label">Type of vehicle <i class="text-danger">*</i></label>
                 <div class="col-sm-7">
                     <select name="vehicle_type" class="form-control basic-single" id="vehicleType">
@@ -97,6 +86,17 @@ $(document).ready(function () {
             vehicleTypes.forEach((vehicleType) => {
                 additionalFields += `<option value="${vehicleType['VEHICLE_TYPE_ID']}">${vehicleType['VEHICLE_TYPE_NAME']}</option>`;
             });
+            additionalFields += `</select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="transactionVehicle" class="col-sm-5 col-form-label">Vehicle <i class="text-danger">*</i></label>
+                <div class="col-sm-7">
+                    <select name="vehicle" class="form-control basic-single" id="transactionVehicle">
+                        <option value="">Please select</option>`;
+            // vehicles.forEach((vehicle) => {
+            //     additionalFields += `<option value="${vehicle['VEHICLE_ID']}">${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
+            // });
             additionalFields += `</select>
                 </div>
             </div>
@@ -159,25 +159,18 @@ $(document).ready(function () {
                 }
             });
 
+            // On changing vehicle type, load vehciles of tht type into vehicle select box
+            $("#vehicleType").change(function () {
+                loadFilteredVehicles(this);
+            });
+
         }
 
         else if (transType == 3) {
             // Transaction Type is for Toll Fees
             additionalFields = `<div class="row">
             <div class="col-md-12 col-lg-6">
-                <div class="form-group row">
-                <label for="transactionVehicle" class="col-sm-5 col-form-label">Vehicle Number <i class="text-danger">*</i></label>
-                <div class="col-sm-7">
-                    <select name="vehicle" class="form-control basic-single" id="transactionVehicle">
-                        <option value="">Please select</option>`;
-
-            vehicles.forEach((vehicle) => {
-                additionalFields += `<option value="${vehicle['VEHICLE_ID']}">${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
-            });
-
-            additionalFields += `</select>
-                </div>
-            </div>
+                
             <div class="form-group row">
                 <label for="vehicleType" class="col-sm-5 col-form-label">Type of vehicle <i class="text-danger">*</i></label>
                 <div class="col-sm-7">
@@ -186,6 +179,19 @@ $(document).ready(function () {
             vehicleTypes.forEach((vehicleType) => {
                 additionalFields += `<option value="${vehicleType['VEHICLE_TYPE_ID']}">${vehicleType['VEHICLE_TYPE_NAME']}</option>`;
             });
+            additionalFields += `</select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="transactionVehicle" class="col-sm-5 col-form-label">Vehicle Number <i class="text-danger">*</i></label>
+                <div class="col-sm-7">
+                    <select name="vehicle" class="form-control basic-single" id="transactionVehicle">
+                        <option value="">Please select</option>`;
+
+            // vehicles.forEach((vehicle) => {
+            //     additionalFields += `<option value="${vehicle['VEHICLE_ID']}">${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
+            // });
+
             additionalFields += `</select>
                 </div>
             </div>
@@ -268,6 +274,11 @@ $(document).ready(function () {
                 }
             });
 
+            // On changing vehicle type, load vehciles of tht type into vehicle select box
+            $("#vehicleType").change(function () {
+                loadFilteredVehicles(this);
+            });
+
         }
 
         else if (transType == 4) {
@@ -292,15 +303,7 @@ $(document).ready(function () {
                     <input type="text" class="form-control" name="devotee_name" id="devoteeName" maxlength="50" placeholder="Devotee name">
                 </div>
             </div>
-            <div class="form-group row">
-            <label for="editTransactionVehicle" class="col-sm-5 col-form-label">Vehicle </label>
-            <div class="col-sm-7">
-                <select name="vehicle" class="form-control basic-single" id="editTransactionVehicle"><option value="">Please select</option>`;
-            vehicles.forEach((vehicle) => {
-                additionalFields += `<option value="${vehicle['VEHICLE_ID']}">${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
-            });
-            additionalFields += `</select></div>
-            </div>
+
             <div class="form-group row">
                 <label for="vehicleType" class="col-sm-5 col-form-label">Type of vehicle <i class="text-danger">*</i></label>
                 <div class="col-sm-7">
@@ -312,6 +315,17 @@ $(document).ready(function () {
             additionalFields += `</select>
                 </div>
             </div>
+
+            <div class="form-group row">
+            <label for="editTransactionVehicle" class="col-sm-5 col-form-label">Vehicle </label>
+            <div class="col-sm-7">
+                <select name="vehicle" class="form-control basic-single" id="editTransactionVehicle"><option value="">Please select</option>`;
+            // vehicles.forEach((vehicle) => {
+            //     additionalFields += `<option value="${vehicle['VEHICLE_ID']}">${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
+            // });
+            additionalFields += `</select></div>
+            </div>
+
             </div>
 
             <div class="col-md-12 col-lg-6">
@@ -368,6 +382,12 @@ $(document).ready(function () {
                     $("#debitToDeptName").val(debitToDeptName);
                 }
             });
+
+            // On changing vehicle type, load vehciles of tht type into vehicle select box
+            $("#vehicleType").change(function () {
+                loadFilteredVehicles(this);
+            });
+
         }
 
         else if (transType == 5) {
@@ -391,15 +411,7 @@ $(document).ready(function () {
             additionalFields += `</select>
                 </div>
             </div>
-            <div class="form-group row">
-        <label for="editTransactionVehicle" class="col-sm-5 col-form-label">Vehicle </label>
-            <div class="col-sm-7">
-                <select name="vehicle" class="form-control basic-single" id="editTransactionVehicle"><option value="">Please select</option>`;
-            vehicles.forEach((vehicle) => {
-                additionalFields += `<option value="${vehicle['VEHICLE_ID']}">${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
-            });
-            additionalFields += `</select></div>
-        </div>
+            
         <div class="form-group row">
                 <label for="vehicleType" class="col-sm-5 col-form-label">Type of vehicle </label>
                 <div class="col-sm-7">
@@ -411,6 +423,16 @@ $(document).ready(function () {
             additionalFields += `</select>
                 </div>
             </div>
+            <div class="form-group row">
+        <label for="editTransactionVehicle" class="col-sm-5 col-form-label">Vehicle </label>
+            <div class="col-sm-7">
+                <select name="vehicle" class="form-control basic-single" id="editTransactionVehicle"><option value="">Please select</option>`;
+            vehicles.forEach((vehicle) => {
+                additionalFields += `<option value="${vehicle['VEHICLE_ID']}">${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
+            });
+            additionalFields += `</select></div>
+        </div>
+
             <div class="form-group row">
                 <label for="devoteeName" class="col-sm-5 col-form-label">Devotee Name <i class="text-danger">*</i></label>
                 <div class="col-sm-7">
@@ -490,6 +512,11 @@ $(document).ready(function () {
                     $("#debitToDeptName").val(debitToDeptName);
                 }
             });
+
+            // On changing vehicle type, load vehciles of tht type into vehicle select box
+            $("#vehicleType").change(function () {
+                loadFilteredVehicles(this);
+            });
         }
         else if (transType == 7) {
             // Transaction type is for Emission Test charges
@@ -524,6 +551,17 @@ $(document).ready(function () {
                     <input type="text" name="devotee_name" class="form-control" id="devoteeName" maxlength="50" placeholder="Devotee Name">
                 </div>
             </div>
+            
+            <div class="form-group row">
+            <label for="vehicleType" class="col-sm-5 col-form-label">Type of Vehicle</label>
+            <div class="col-sm-7">
+                <select name="vehicle_type" class="form-control basic-single" id="vehicleType">
+                    <option value="">Please Select</option>`;
+            vehicleTypes.forEach((vehicleType) => {
+                additionalFields += `<option value="${vehicleType['VEHICLE_TYPE_ID']}">${vehicleType['VEHICLE_TYPE_NAME']}</option>`;
+            });
+            additionalFields += `</select>
+            </div></div>
             <div class="form-group row">
             <label for="transactionVehicle" class="col-form-label col-sm-5">Vehicle </label>
             <div class="col-sm-7">
@@ -532,16 +570,6 @@ $(document).ready(function () {
 
             vehicles.forEach((vehicle) => {
                 additionalFields += `<option value="${vehicle['VEHICLE_ID']}">${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
-            });
-            additionalFields += `</select>
-            </div></div>
-            <div class="form-group row">
-            <label for="vehicleType" class="col-sm-5 col-form-label">Type of Vehicle</label>
-            <div class="col-sm-7">
-                <select name="vehicle_type" class="form-control basic-single" id="vehicleType">
-                    <option value="">Please Select</option>`;
-            vehicleTypes.forEach((vehicleType) => {
-                additionalFields += `<option value="${vehicleType['VEHICLE_TYPE_ID']}">${vehicleType['VEHICLE_TYPE_NAME']}</option>`;
             });
             additionalFields += `</select>
             </div></div>
@@ -597,6 +625,11 @@ $(document).ready(function () {
                     let debitToDeptName = $(this).find(':selected').text();
                     $("#debitToDeptName").val(debitToDeptName);
                 }
+            });
+
+            // On changing vehicle type, load vehciles of tht type into vehicle select box
+            $("#vehicleType").change(function () {
+                loadFilteredVehicles(this);
             });
 
         }
@@ -708,6 +741,7 @@ $(document).ready(function () {
     $("#btn-reset").click(function (ev) {
         setTimeout(() => {
             loadTable(transactionTable);
+            $('#filterForm .basic-single').val('').change();
         }, 10);
     });
 });
@@ -845,6 +879,19 @@ function loadEditForm(transactionDetails) {
                 <input type="text" class="form-control" name="devotee_name" value="${transactionDetails.DEVOTEE_NAME}" id="editDevoteeName" maxlength="50" placeholder="Devotee name">
             </div>
         </div>
+        
+        <div class="form-group row">
+            <label for="editVehicleType" class="col-sm-5 col-form-label">Type of vehicle <i class="text-danger">*</i></label>
+            <div class="col-sm-7">
+                <select name="vehicle_type" class="form-control basic-single" id="editVehicleType"><option value="">Please select</option>`;
+        vehicleTypes.forEach((vehicleType) => {
+            if (vehicleType.VEHICLE_TYPE_ID == transactionDetails.VEHICLE_TYPE_ID)
+                formContent += `<option value="${vehicleType.VEHICLE_TYPE_ID}" selected>${vehicleType.VEHICLE_TYPE_NAME}</option>`;
+            else
+                formContent += `<option value="${vehicleType.VEHICLE_TYPE_ID}">${vehicleType.VEHICLE_TYPE_NAME}</option>`;
+        });
+        formContent += `</select></div></div>
+        
         <div class="form-group row">
             <label for="editTransactionVehicle" class="col-sm-5 col-form-label">Vehicle <i class="text-danger">*</i></label>
             <div class="col-sm-7">
@@ -857,18 +904,8 @@ function loadEditForm(transactionDetails) {
         });
         formContent += `</select></div>
         </div>
-        <div class="form-group row">
-            <label for="editVehicleType" class="col-sm-5 col-form-label">Type of vehicle <i class="text-danger">*</i></label>
-            <div class="col-sm-7">
-                <select name="vehicle_type" class="form-control basic-single" id="editVehicleType"><option value="">Please select</option>`;
-        vehicleTypes.forEach((vehicleType) => {
-            if (vehicleType.VEHICLE_TYPE_ID == transactionDetails.VEHICLE_TYPE_ID)
-                formContent += `<option value="${vehicleType.VEHICLE_TYPE_ID}" selected>${vehicleType.VEHICLE_TYPE_NAME}</option>`;
-            else
-                formContent += `<option value="${vehicleType.VEHICLE_TYPE_ID}">${vehicleType.VEHICLE_TYPE_NAME}</option>`;
-        });
-        formContent += `</select></div>
-        </div></div>`; // End col-md-12 col-lg-6 half of form, begin new
+
+        </div>`; // End col-md-12 col-lg-6 half of form, begin new
         formContent += `<div class="col-md-12 col-lg-6">
         <div class="form-group row">
             <label for="editTransactionDescription" class="col-sm-5 col-form-label">Description</label>
@@ -936,6 +973,11 @@ function loadEditForm(transactionDetails) {
         $("#editBillDate").on('apply.daterangepicker', function (ev, picker) {
             $(this).val(picker.startDate.format('DD-MMM-YYYY'));
         });
+
+        // On changing vehicle type, load vehciles of tht type into vehicle select box
+        $("#editVehicleType").change(function () {
+            loadFilteredVehicles(this);
+        });
     }
     else if (transType == 3) {
         // 3 for Toll Fee
@@ -960,18 +1002,6 @@ function loadEditForm(transactionDetails) {
         formContent += `<div class="row">
         <div class="col-md-12 col-lg-6">
         <div class="form-group row">
-        <label for="editTransactionVehicle" class="col-sm-5 col-form-label">Vehicle <i class="text-danger">*</i></label>
-            <div class="col-sm-7">
-                <select name="vehicle" class="form-control basic-single" id="editTransactionVehicle"><option value="">Please select</option>`;
-        vehicles.forEach((vehicle) => {
-            if (vehicle.VEHICLE_ID == transactionDetails.VEHICLE_ID)
-                formContent += `<option value="${vehicle['VEHICLE_ID']}" selected>${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
-            else
-                formContent += `<option value="${vehicle['VEHICLE_ID']}">${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
-        });
-        formContent += `</select></div>
-        </div>
-        <div class="form-group row">
             <label for="editVehicleType" class="col-sm-5 col-form-label">Type of vehicle <i class="text-danger">*</i></label>
             <div class="col-sm-7">
                 <select name="vehicle_type" class="form-control basic-single" id="editVehicleType"><option value="">Please select</option>`;
@@ -980,6 +1010,18 @@ function loadEditForm(transactionDetails) {
                 formContent += `<option value="${vehicleType.VEHICLE_TYPE_ID}" selected>${vehicleType.VEHICLE_TYPE_NAME}</option>`;
             else
                 formContent += `<option value="${vehicleType.VEHICLE_TYPE_ID}">${vehicleType.VEHICLE_TYPE_NAME}</option>`;
+        });
+        formContent += `</select></div>
+        </div>
+        <div class="form-group row">
+        <label for="editTransactionVehicle" class="col-sm-5 col-form-label">Vehicle <i class="text-danger">*</i></label>
+            <div class="col-sm-7">
+                <select name="vehicle" class="form-control basic-single" id="editTransactionVehicle"><option value="">Please select</option>`;
+        vehicles.forEach((vehicle) => {
+            if (vehicle.VEHICLE_ID == transactionDetails.VEHICLE_ID)
+                formContent += `<option value="${vehicle['VEHICLE_ID']}" selected>${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
+            else
+                formContent += `<option value="${vehicle['VEHICLE_ID']}">${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
         });
         formContent += `</select></div>
         </div>
@@ -1073,6 +1115,10 @@ function loadEditForm(transactionDetails) {
             $(this).val(picker.startDate.format('DD-MMM-YYYY'));
         });
 
+        // On changing vehicle type, load vehciles of tht type into vehicle select box
+        $("#editVehicleType").change(function () {
+            loadFilteredVehicles(this);
+        });
 
     }
 
@@ -1116,18 +1162,7 @@ function loadEditForm(transactionDetails) {
                 <input type="text" class="form-control" name="devotee_name" value="${transactionDetails.DEVOTEE_NAME}" id="editDevoteeName" maxlength="50" placeholder="Devotee name">
             </div>
         </div>
-        <div class="form-group row">
-            <label for="editTransactionVehicle" class="col-sm-5 col-form-label">Vehicle </label>
-            <div class="col-sm-7">
-                <select name="vehicle" class="form-control basic-single" id="editTransactionVehicle"><option value="">Please select</option>`;
-        vehicles.forEach((vehicle) => {
-            if (vehicle.VEHICLE_ID == transactionDetails.VEHICLE_ID)
-                formContent += `<option value="${vehicle['VEHICLE_ID']}" selected>${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
-            else
-                formContent += `<option value="${vehicle['VEHICLE_ID']}">${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
-        });
-        formContent += `</select></div>
-        </div>
+       
         <div class="form-group row">
             <label for="editVehicleType" class="col-sm-5 col-form-label">Type of vehicle <i class="text-danger">*</i></label>
             <div class="col-sm-7">
@@ -1139,7 +1174,20 @@ function loadEditForm(transactionDetails) {
                 formContent += `<option value="${vehicleType.VEHICLE_TYPE_ID}">${vehicleType.VEHICLE_TYPE_NAME}</option>`;
         });
         formContent += `</select></div>
-        </div></div>`;
+        </div>
+        <div class="form-group row">
+        <label for="editTransactionVehicle" class="col-sm-5 col-form-label">Vehicle </label>
+        <div class="col-sm-7">
+            <select name="vehicle" class="form-control basic-single" id="editTransactionVehicle"><option value="">Please select</option>`;
+        vehicles.forEach((vehicle) => {
+            if (vehicle.VEHICLE_ID == transactionDetails.VEHICLE_ID)
+                formContent += `<option value="${vehicle['VEHICLE_ID']}" selected>${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
+            else
+                formContent += `<option value="${vehicle['VEHICLE_ID']}">${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
+        });
+        formContent += `</select></div>
+        </div>
+        </div>`;
 
         formContent += `<div class="col-md-12 col-lg-6">
         <div class="form-group row">
@@ -1210,6 +1258,10 @@ function loadEditForm(transactionDetails) {
             $(this).val(picker.startDate.format('DD-MMM-YYYY'));
         });
 
+        // On changing vehicle type, load vehciles of tht type into vehicle select box
+        $("#editVehicleType").change(function () {
+            loadFilteredVehicles(this);
+        });
     }
 
     else if (transType == 5) {
@@ -1252,18 +1304,7 @@ function loadEditForm(transactionDetails) {
         });
         formContent += `</select></div>
         </div>
-        <div class="form-group row">
-        <label for="editTransactionVehicle" class="col-sm-5 col-form-label">Vehicle </label>
-            <div class="col-sm-7">
-                <select name="vehicle" class="form-control basic-single" id="editTransactionVehicle"><option value="">Please select</option>`;
-        vehicles.forEach((vehicle) => {
-            if (vehicle.VEHICLE_ID == transactionDetails.VEHICLE_ID)
-                formContent += `<option value="${vehicle['VEHICLE_ID']}" selected>${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
-            else
-                formContent += `<option value="${vehicle['VEHICLE_ID']}">${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
-        });
-        formContent += `</select></div>
-        </div>
+        
         <div class="form-group row">
             <label for="editVehicleType" class="col-sm-5 col-form-label">Type of vehicle <i class="text-danger">*</i></label>
             <div class="col-sm-7">
@@ -1273,6 +1314,18 @@ function loadEditForm(transactionDetails) {
                 formContent += `<option value="${vehicleType.VEHICLE_TYPE_ID}" selected>${vehicleType.VEHICLE_TYPE_NAME}</option>`;
             else
                 formContent += `<option value="${vehicleType.VEHICLE_TYPE_ID}">${vehicleType.VEHICLE_TYPE_NAME}</option>`;
+        });
+        formContent += `</select></div>
+        </div>
+        <div class="form-group row">
+        <label for="editTransactionVehicle" class="col-sm-5 col-form-label">Vehicle </label>
+            <div class="col-sm-7">
+                <select name="vehicle" class="form-control basic-single" id="editTransactionVehicle"><option value="">Please select</option>`;
+        vehicles.forEach((vehicle) => {
+            if (vehicle.VEHICLE_ID == transactionDetails.VEHICLE_ID)
+                formContent += `<option value="${vehicle['VEHICLE_ID']}" selected>${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
+            else
+                formContent += `<option value="${vehicle['VEHICLE_ID']}">${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
         });
         formContent += `</select></div>
         </div>
@@ -1368,6 +1421,11 @@ function loadEditForm(transactionDetails) {
         $("#editBillDate").on('apply.daterangepicker', function (ev, picker) {
             $(this).val(picker.startDate.format('DD-MMM-YYYY'));
         });
+        // On changing vehicle type, load vehciles of tht type into vehicle select box
+        $("#editVehicleType").change(function () {
+            loadFilteredVehicles(this);
+        });
+
     } else if (transType == 7) {
         // 7 For Emission test Charges
         // Add CSRF token and Transaction Type
@@ -1419,18 +1477,7 @@ function loadEditForm(transactionDetails) {
                 <input type="text" class="form-control" name="devotee_name" value="${transactionDetails.DEVOTEE_NAME}" id="editDevoteeName" maxlength="50" placeholder="Devotee name">
             </div>
     </div>
-    <div class="form-group row">
-            <label for="editTransactionVehicle" class="col-sm-5 col-form-label">Vehicle <i class="text-danger">*</i></label>
-            <div class="col-sm-7">
-                <select name="vehicle" class="form-control basic-single" id="editTransactionVehicle"><option value="">Please select</option>`;
-        vehicles.forEach((vehicle) => {
-            if (vehicle.VEHICLE_ID == transactionDetails.VEHICLE_ID)
-                formContent += `<option value="${vehicle['VEHICLE_ID']}" selected>${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
-            else
-                formContent += `<option value="${vehicle['VEHICLE_ID']}">${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
-        });
-        formContent += `</select></div>
-        </div>
+    
         <div class="form-group row">
             <label for="editVehicleType" class="col-sm-5 col-form-label">Type of vehicle <i class="text-danger">*</i></label>
             <div class="col-sm-7">
@@ -1442,7 +1489,20 @@ function loadEditForm(transactionDetails) {
                 formContent += `<option value="${vehicleType.VEHICLE_TYPE_ID}">${vehicleType.VEHICLE_TYPE_NAME}</option>`;
         });
         formContent += `</select></div>
-        </div></div>`; // End col-md-12 col-lg-6 half of form, begin new`;
+        </div>
+        <div class="form-group row">
+            <label for="editTransactionVehicle" class="col-sm-5 col-form-label">Vehicle <i class="text-danger">*</i></label>
+            <div class="col-sm-7">
+                <select name="vehicle" class="form-control basic-single" id="editTransactionVehicle"><option value="">Please select</option>`;
+        vehicles.forEach((vehicle) => {
+            if (vehicle.VEHICLE_ID == transactionDetails.VEHICLE_ID)
+                formContent += `<option value="${vehicle['VEHICLE_ID']}" selected>${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
+            else
+                formContent += `<option value="${vehicle['VEHICLE_ID']}">${vehicle['VEHICLE_NAME'] + ' (' + vehicle['LICENSE_PLATE'] + ')'}</option>`;
+        });
+        formContent += `</select></div>
+        </div>
+        </div>`; // End col-md-12 col-lg-6 half of form, begin new;
 
         formContent += `<div class="col-md-12 col-lg-6">
         <div class="form-group row">
@@ -1500,20 +1560,25 @@ function loadEditForm(transactionDetails) {
         </div>`;
 
         $("#updateTransactionForm").empty().append(formContent);
+        // On changing vehicle type, load vehciles of tht type into vehicle select box
+        $("#editVehicleType").change(function () {
+            loadFilteredVehicles(this);
+        });
+        $('.basic-single').select2();
+
+        $("#editBillDate").daterangepicker({
+            singleDatePicker: true,
+            locale: {
+                format: 'DD-MMM-YYYY'
+            },
+            autoUpdateInput: false
+        });
+        $("#editBillDate").on('apply.daterangepicker', function (ev, picker) {
+            $(this).val(picker.startDate.format('DD-MMM-YYYY'));
+        });
     }
     $("#edit").modal('show');
-    $('.basic-single').select2();
 
-    $("#editBillDate").daterangepicker({
-        singleDatePicker: true,
-        locale: {
-            format: 'DD-MMM-YYYY'
-        },
-        autoUpdateInput: false
-    });
-    $("#editBillDate").on('apply.daterangepicker', function (ev, picker) {
-        $(this).val(picker.startDate.format('DD-MMM-YYYY'));
-    });
 
     // initialize Validation for the Edit Form generated above
     initValidationForEditForm();
@@ -1597,6 +1662,44 @@ function initValidationForEditForm() {
                     toastr.error('Error updating. Please try again', '', { closeButton: true });
                 }
             });
+        }
+    });
+}
+
+// Load filterd vehciles list to Vehicle Select Dropdown in either Add or Edit Form
+function loadFilteredVehicles(el) {
+    $.ajax({
+        url: filteredVehiclesListURL,
+        type: 'post',
+        data: {
+            _token: csrfToken,
+            vehicle_type: $(el).val()
+        },
+        dataType: 'json',
+        beforeSend: function () {
+            $('.custom-loader').show();
+        },
+        success: function (res) {
+            let vehicleSelectBox = $(el).closest('form').find('select[name=vehicle]');
+            if (res.length >= 1) {
+                vehicleSelectBox.empty().append('<option value="">Please Select</option>');
+
+                $.each(res, function (i, data) {
+                    // console.log(i, data);
+                    vehicleSelectBox.append(`<option value="${data.VEHICLE_ID}">
+                    ${data.VEHICLE_NAME + ' (' + data.LICENSE_PLATE + ')'}
+                    </option>`);
+                });
+            } else {
+                vehicleSelectBox.empty().append('<option value="">Please Select</option>');
+                toastr.error("No vehicles found", '', { closeButton: true });
+            }
+        },
+        error: function () {
+            toastr.error("Error getting data. Please try again", "", { closeButton: true });
+        },
+        complete: function () {
+            $('.custom-loader').hide();
         }
     });
 }

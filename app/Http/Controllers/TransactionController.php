@@ -26,6 +26,9 @@ class TransactionController extends Controller
             $transactionType = $request->filter_transaction_type;
             $filterDateFrom = $request->filter_date_from;
             $filterDateTo = $request->filter_date_to;
+            $driver = $request->filter_driver;
+            $department = $request->filter_department;
+            $devoteeName = $request->filter_devotee_name;
 
             $date_from = null;
             $date_to = null;
@@ -48,6 +51,15 @@ class TransactionController extends Controller
                 ->when($date_to, function ($query, $date_to) {
                     return $query->where('other_transaction.BILL_DATE', '<=', $date_to);
                 })
+                ->when($driver, function ($query, $driver) {
+                    return $query->where('other_transaction.DRIVER_ID', '=', $driver);
+                })
+                ->when($department, function ($query, $department) {
+                    return $query->where('other_transaction.DEBIT_TO_DEPT', '=', $department);
+                })
+                ->when($devoteeName, function ($query, $devoteeName) {
+                    return $query->where('other_transaction.DEVOTEE_NAME', 'like', '%' . $devoteeName . '%');
+                })
                 ->get();
 
             return $transactionList->toJson();
@@ -65,6 +77,16 @@ class TransactionController extends Controller
     }
 
     /**
+     * Get a list of vehicles filterd by vehicle type for use in add/edit forms
+     */
+    public function getfilteredVehicleList(Request $request)
+    {
+        $vehicleType = $request->vehicle_type;
+        $vehicleList = Vehicle::where('VEHICLE_TYPE_ID', $vehicleType)->where('IS_ACTIVE', 'Y')->get();
+        return $vehicleList->toJson();
+    }
+
+    /**
      * To add Transaction details
      */
     public function addTransaction(Request $request)
@@ -74,7 +96,7 @@ class TransactionController extends Controller
 
         if ($transactionType == 1 || $transactionType == 2 || $transactionType == 6 || $transactionType == 7) {
             # 1 = Puncture Charges
-            # 2 = Parking Cahrges
+            # 2 = Parking Charges
             # 6 = Miscellaneous Charges
             # 7 = Emissions Test Charges
 
@@ -153,6 +175,11 @@ class TransactionController extends Controller
             $transaction->DEBIT_TO_DEPT = $request->debit_to;
             $transaction->DEPARTMENT_NAME = $request->debit_to_dept_name;
 
+            # If vehicle details are present, add them
+            if (isset($request->vehicle)) {
+                $transaction->VEHICLE_ID = $request->vehicle;
+            }
+
             # For uploading invoice file if present
             if ($request->hasFile('invoice_upload')) {
                 $file = $request->file('invoice_upload');
@@ -184,6 +211,14 @@ class TransactionController extends Controller
             $transaction->BILL_AMOUNT = $request->bill_amount;
             $transaction->DEBIT_TO_DEPT = $request->debit_to;
             $transaction->DEPARTMENT_NAME = $request->debit_to_dept_name;
+
+            # If vehicle details are present, add them
+            if (isset($request->vehicle)) {
+                $transaction->VEHICLE_ID = $request->vehicle;
+            }
+            if (isset($request->vehicle_type)) {
+                $transaction->VEHICLE_TYPE_ID = $request->vehicle_type;
+            }
 
             # For uploading invoice file if present
             if ($request->hasFile('invoice_upload')) {

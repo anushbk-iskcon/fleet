@@ -35,7 +35,7 @@ class InsuranceController extends Controller
                 ->join('vehicles', 'vehicle_insurance.VEHICLE', '=', 'vehicles.VEHICLE_ID')
                 ->join('mstr_recurring_periods', 'vehicle_insurance.RECURRING_PERIOD', '=', 'mstr_recurring_periods.RECURRING_PERIOD_ID')
                 ->join('mstr_companies', 'vehicle_insurance.COMPANY_NAME', '=', 'mstr_companies.COMPANY_ID')
-                ->select('vehicle_insurance.*', 'vehicles.VEHICLE_NAME', 'mstr_recurring_periods.RECURRING_PERIOD_NAME', 'mstr_companies.COMPANY_NAME as INS_PROVIDER')
+                ->select('vehicle_insurance.*', 'vehicles.VEHICLE_NAME', 'vehicles.LICENSE_PLATE', 'mstr_recurring_periods.RECURRING_PERIOD_NAME', 'mstr_companies.COMPANY_NAME as INS_PROVIDER')
                 ->when($vehicle, function ($query, $vehicle) {
                     return $query->where('vehicle_insurance.VEHICLE', '=', $vehicle);
                 })

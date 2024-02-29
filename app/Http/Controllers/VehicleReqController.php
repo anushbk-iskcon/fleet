@@ -435,14 +435,16 @@ class VehicleReqController extends Controller
                     $query->where('REQUISITION_DATE', date('Y-m-d', strtotime($rdate)));
                 })
                 ->when($frmt, function ($query, $frmt) {
-                    $query->where(function ($subQuery) use ($frmt) {
-                        $subQuery->whereTime('TIME_FROM', '>=', $frmt);
-                    });
+                    // $query->where(function ($subQuery) use ($frmt) {
+                    //     $subQuery->whereTime('TIME_FROM', '>=', $frmt);
+                    // });
+                    $query->whereTime('TIME_FROM', '>=', $frmt);
                 })
                 ->when($tot, function ($query, $tot) {
-                    $query->orWhere(function ($subQuery) use ($tot) {
-                        $subQuery->whereTime('TIME_TO', '<=', $tot);
-                    });
+                    // $query->orWhere(function ($subQuery) use ($tot) {
+                    //     $subQuery->whereTime('TIME_TO', '<=', $tot);
+                    // });
+                    $query->whereTime('TIME_TO', '<=', $tot);
                 })
 
                 ->where('STATUS', '!=', 'R')
@@ -495,9 +497,9 @@ class VehicleReqController extends Controller
                 })
                 ->pluck('VEHICLE_ID')
                 ->toArray();
-            print_r(DB::getQueryLog());
+            // print_r(DB::getQueryLog());
             // print_r($existingVehicleIds);
-            exit;
+            // exit;
             $getVehicle = Vehicle::where('VEHICLE_TYPE_ID', $type)
                 ->whereNotIn('VEHICLE_ID', $existingVehicleIds)
                 ->leftJoin('drivers', 'vehicles.DRIVER_ID', '=', 'drivers.DRIVER_ID')
@@ -566,7 +568,7 @@ class VehicleReqController extends Controller
             return;
         $deptArray = explode('|', $dept); # Since option values are in form: deptCode|deptName
         // dd($deptArray);
-        $data = new stdClass;
+        $data = new \stdClass;
         $data->department = $deptArray[1]; # Send deptName to API method to get employee list
         $hrApi = new HrApi;
 

@@ -34,6 +34,7 @@ use App\Http\Controllers\Masters\VendorController;
 use App\Http\Controllers\RefuelRequisitionController;
 use App\Http\Controllers\RefuelSettingController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\VehicleComplaintsController;
 use App\Models\Role;
 use App\Models\Vehicle;
 use Illuminate\Support\Facades\Route;
@@ -232,6 +233,9 @@ Route::middleware('auth')->group(function () {
     Route::post('maintenance/approval-authorities/change-activation', [MaintenanceRequisitionController::class, 'changeActivationOfApprovalAuthority'])
         ->name('maintenance-approval-authorities.change-activation');
 
+    // Maintenance Complaints Routes
+    Route::get('maintenance/complaints', [VehicleComplaintsController::class, 'index']);
+
     // Maintenance Services Master routes
     Route::get('maintenance/service-list', [MaintenanceServiceController::class, 'index'])->name('maintenance-service-list');
     Route::post('maintenance/service-list', [MaintenanceServiceController::class, 'index'])->name('maintenance-service-list.list');
@@ -334,6 +338,7 @@ Route::middleware('auth')->group(function () {
     Route::post('transactions/add', [TransactionController::class, 'addTransaction'])->name('transactions.add');
     Route::post('transactions/get-details', [TransactionController::class, 'getDetails'])->name('transactions.get-details');
     Route::post('transactions/update', [TransactionController::class, 'updateTransaction'])->name('transactions.update');
+    Route::post('transactions/filtered-vehicles', [TransactionController::class, 'getfilteredVehicleList'])->name('transactions.filtered-vehicles');
     /*** END Transaction Module ***/
 
     /*** START Reports Module ***/

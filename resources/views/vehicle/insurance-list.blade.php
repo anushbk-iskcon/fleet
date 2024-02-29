@@ -66,7 +66,7 @@
                             <label for="company_name" class="col-sm-5 col-form-label">Company Name <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
                                 <!-- <input type="text" name="company_name" class="form-control" id="company_name" placeholder="Company Name"> -->
-                                <select name="company_name" id="company_name" class="formn-control basic-single">
+                                <select name="company_name" id="company_name" class="form-control basic-single">
                                     <option value="">Please Select</option>
                                     @foreach($insuranceCompanies as $company)
                                     <option value="{{$company['COMPANY_ID']}}">{{$company['COMPANY_NAME']}}</option>
@@ -283,7 +283,7 @@
                             <tr>
                                 <th>Sl No.</th>
                                 <th>Policy Vendor Name</th>
-                                <th>Vehicle Name</th>
+                                <th>Vehicle</th>
                                 <th>Policy Number</th>
                                 <th>Start Date</th>
                                 <th>End Date</th>

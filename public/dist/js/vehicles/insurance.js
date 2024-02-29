@@ -209,7 +209,7 @@ function populateTable(table) {
                     table.row.add([
                         i + 1,
                         data.INS_PROVIDER,
-                        data.VEHICLE_NAME,
+                        data.VEHICLE_NAME + ' (' + data.LICENSE_PLATE + ')',
                         data.POLICY_NUMBER,
                         startDate,
                         endDate,

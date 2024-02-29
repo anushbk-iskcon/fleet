@@ -141,7 +141,7 @@
                 <form action="" id="filterForm" class="row">
                     @csrf
                     <div class="col-sm-12 col-lg-4">
-                        <div class="form-group row mb-1">
+                        <div class="form-group row mb-2">
                             <label for="filterTransactionType" class="col-sm-5 col-form-label text-left">Type</label>
                             <div class="col-sm-7">
                                 <select name="filter_transaction_type" id="filterTransactionType" class="form-control">
@@ -154,25 +154,53 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group row mb-1">
+                            <label for="filterDriverName" class="col-sm-5 col-form-label text-left">Driver</label>
+                            <div class="col-sm-7">
+                                <select name="filter_driver" id="filterDriverName" class="form-control basic-single">
+                                    <option value="">Please select</option>
+                                    @foreach($drivers as $driver)
+                                    <option value="{{$driver['DRIVER_ID']}}">{{$driver['DRIVER_NAME']}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-sm-12 col-lg-4">
-                        <div class="form-group row mb-1">
+                        <div class="form-group row mb-2">
                             <label for="filterTransactionDateFrom" class="col-sm-5 col-form-label text-left">Bill Date From</label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" id="filterTransactionDateFrom" name="filter_date_from" placeholder="Date From" autocomplete="off">
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="filterDepartment" class="col-sm-5 col-form-label text-left">Department</label>
+                            <div class="col-sm-7">
+                                <select name="filter_department" class="form-control basic-single" id="filterDepartment">
+                                    <option value="">Please select</option>
+                                    @foreach($departments['data'] as $department)
+                                    <option value="{{$department['deptCode']}}">{{$department['deptName']}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-sm-12 col-lg-4">
-                        <div class="form-group row mb-1">
+                        <div class="form-group row mb-2">
                             <label for="filterTransactionDateTo" class="col-sm-5 col-form-label text-left">Bill Date Till</label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control" id="filterTransactionDateTo" name="filter_date_to" placeholder="Date To" autocomplete="off">
                             </div>
                         </div>
+                        <div class="form-group row mb-2">
+                            <label for="filterTransactionDevoteeName" class="col-sm-5 col-form-label text-left">Devotee Name</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="filterTransactionDevoteeName" name="filter_devotee_name" placeholder="Devotee Name">
+                            </div>
+                        </div>
                         <div class="form-group row mb-1 mt-2">
                             <div class="col-12 text-right">
-                                <button type="submit" class="btn btn-success w-md m-b-5" id="btn-filter">Submit</button>
+                                <button type="submit" class="btn btn-success w-md m-b-5 mr-2" id="btn-filter">Submit</button>
                                 <button type="reset" class="btn btn-danger w-md m-b-5" id="btn-reset">Reset</button>
                             </div>
                         </div>
@@ -239,6 +267,7 @@
     const listURL = '{{route("transactions.list")}}';
     const getDetailsURL = '{{route("transactions.get-details")}}';
     const updateURL = '{{route("transactions.update")}}';
+    const filteredVehiclesListURL = '{{route("transactions.filtered-vehicles")}}';
 </script>
 <script src="{{asset('public/dist/js/transactions/transactions.js')}}"></script>
 @endsection
