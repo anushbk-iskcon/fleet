@@ -23,7 +23,7 @@ $(document).ready(function () {
     let transactionTable = $("#transactionTable").DataTable({
         autoWidth: false,
         columnDefs: [
-            { width: '45px', targets: 0 },
+            { width: '50px', targets: 0 },
             { width: '90px', orderable: false, targets: 7 }
         ]
     });
@@ -1666,7 +1666,7 @@ function initValidationForEditForm() {
     });
 }
 
-// Load filterd vehciles list to Vehicle Select Dropdown in either Add or Edit Form
+// Load filterd vehicles list to Vehicle Select Dropdown in either Add or Edit Form
 function loadFilteredVehicles(el) {
     $.ajax({
         url: filteredVehiclesListURL,

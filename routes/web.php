@@ -234,7 +234,15 @@ Route::middleware('auth')->group(function () {
         ->name('maintenance-approval-authorities.change-activation');
 
     // Maintenance Complaints Routes
-    Route::get('maintenance/complaints', [VehicleComplaintsController::class, 'index']);
+    Route::get('maintenance/complaints', [VehicleComplaintsController::class, 'index'])->name('complaints.index');
+    Route::post('maintenance/complaints', [VehicleComplaintsController::class, 'index'])->name('complaints.list');
+    Route::post('maintenance/complaints/get-filtered-vehicles', [VehicleComplaintsController::class, 'getFilteredVehicles'])->name('complaints.vehicle-list');
+    Route::post('maintenance/complaints/add', [VehicleComplaintsController::class, 'add'])->name('complaints.add');
+    Route::post('maintenance/complaints/get-details', [VehicleComplaintsController::class, 'getDetails'])->name('complaints.get-details');
+    Route::post('maintenance/complaints/view-details', [VehicleComplaintsController::class, 'getDetailsToView'])->name('complaints.view-details');
+    Route::post('maintenance/complaints/update', [VehicleComplaintsController::class, 'update'])->name('complaints.update');
+    Route::post('maintenance/complaints/update-approval', [VehicleComplaintsController::class, 'updateApprovalStatus'])->name('complaints.update-approval');
+    Route::post('maintenance/complaints/update-completion', [VehicleComplaintsController::class, 'updateCompletionStatus'])->name('complaints.close-complaint');
 
     // Maintenance Services Master routes
     Route::get('maintenance/service-list', [MaintenanceServiceController::class, 'index'])->name('maintenance-service-list');
