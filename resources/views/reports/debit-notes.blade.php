@@ -25,8 +25,8 @@
                     <div class="col-sm-3">
                         <div class="form-group row mb-1">
                             <div class="col-sm-12">
-                            <label for="mainte_type" class="form-label justify-content-start text-left">Depertment </label>
-                                <select class="form-control basic-single" name="driver_list" id="driver_list">
+                                <label for="debitNoteDept" class="form-label justify-content-start text-left">Department </label>
+                                <select class="form-control basic-single" name="department" id="debitNoteDept">
                                     <option value="" selected="selected">Please Select One</option>
                                     @foreach($departments['data'] as $department)
                                     <option value="{{$department['deptCode']}}">
@@ -41,9 +41,12 @@
                     <div class="col-sm-3">
                         <div class="form-group row mb-1">
                             <div class="col-sm-12">
-                                <label for="vehicle_name" class="form-label justify-content-start text-left">Year </label>
-                                <select class="form-control basic-single" name="vehicle_name" id="vehicle_name">
-                                    <option value="" selected="selected">Please Select One</option>
+                                <label for="debit_note_year" class="form-label justify-content-start text-left">Year </label>
+                                <select class="form-control basic-single" name="year" id="debit_note_year">
+                                    <option value="">Please Select One</option>
+                                    @for($year = date('Y'); $year >=2023 ; $year--)
+                                    <option value="{{$year}}" @if($year==date('Y')) {{'selected'}} @endif>{{$year}}</option>
+                                    @endfor
                                 </select>
                             </div>
                         </div>
@@ -51,9 +54,19 @@
                     <div class="col-sm-3">
                         <div class="form-group row mb-1">
                             <div class="col-sm-12">
-                                <label for="vehicle_name" class="form-label justify-content-start text-left">Month </label>
-                                <select class="form-control basic-single" name="vehicle_name" id="vehicle_name">
+                                <label for="debit_note_month" class="form-label justify-content-start text-left">Month </label>
+                                <select class="form-control basic-single" name="debit_note_month" id="debit_note_month">
                                     <option value="" selected="selected">Please Select One</option>
+                                    @php
+                                    $monthsArray = ['January', 'February', 'March',
+                                    'April', 'May', 'June',
+                                    'July', 'August', 'September',
+                                    'October', 'November', 'December'];
+                                    @endphp
+                                    @foreach($monthsArray as $month)
+                                    <option value="{{$loop->iteration}}">{{$month}}</option>
+                                    @if(date('m') == $loop->iteration) @break @endif
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -79,44 +92,44 @@
                 <div id="pdf">
                     <div class="row justify-content-center">
                         <div class="col-md-9 mb-1 text-right">
-                            <a href="{{route('generate.pdf')}}" class="btn btn-primary" target="_blank"><i class="fa fa-download"></i></a>
+                            <form action="{{route('generate.pdf')}}" method="post" target="_blank">
+                                @csrf
+                                <input type="hidden" name="dept_code" id="deptCode" value="">
+                                <input type="hidden" name="dept_name" id="deptName" value="">
+                                <input type="hidden" name="debit_note_month" id="debitNoteMonth" value="">
+                                <input type="hidden" name="debit_note_year" id="debitNoteYear" value="">
+                                <button type="submit" class="btn btn-primary" target="_blank"><i class="fa fa-download"></i></button>
+                            </form>
                         </div>
                         <div class="col-md-9">
                             <div class="custom-border" style="border: 3px solid black;padding: 15px 0 100px 0;">
                                 <div class="row pl-3 pr-5" style="padding-left:10px;padding-right:10px;">
-                                    <div class="col-md-12 text-center mb-5"
-                                        style="text-align:center;margin-bottom:30px;">
-                                        <p
-                                            style="display: inline-block;border-bottom: 2px solid black;font-weight: 700;font-size:25px!important;margin-bottom: 0!important;">
+                                    <div class="col-md-12 text-center mb-5" style="text-align:center;margin-bottom:30px;">
+                                        <p style="display: inline-block;border-bottom: 2px solid black;font-weight: 700;font-size:25px!important;margin-bottom: 0!important;">
                                             International Society for Krishna Consciousness</p>
-                                        <p
-                                            style="margin-bottom: 0;margin-top: 1px;font-weight: 500;font-size:13px!important;">
+                                        <p style="margin-bottom: 0;margin-top: 1px;font-weight: 500;font-size:13px!important;">
                                             Hare Krishna
                                             Hill, Chord Road, Rajaji Nagar, Bangalore
                                             -10</p>
-                                        <span
-                                            style="border-bottom: 1px solid black;font-weight: 700;font-size:14px!important;">Supplier
+                                        <span style="border-bottom: 1px solid black;font-weight: 700;font-size:14px!important;">Supplier
                                             Entity code:- FM 00</span>
                                     </div>
                                     <div class="col-md-6" style="width:100%;display:inline-block;">
                                         <p style="font-size:14px;">Date:- 05 May 2024</p>
                                     </div>
-                                    <div class="col-md-6 text-right"
-                                        style="width:100%;display:inline-block;text-align:right;">
+                                    <div class="col-md-6 text-right" style="width:100%;display:inline-block;text-align:right;">
                                         <p style="font-size:14px;">Interunit transfer No:- T pt/Apr 2024</p>
                                     </div>
                                     <div class="col-md-6" style="width:100%;display:inline-block;">
                                         <p style="font-size:14px;">To,<br>
                                             <b>Entity:- National Institute of Value Education</b><br>
-                                            Hare Krishna Hill,Bangalore- 10
+                                            Hare Krishna Hill, Bangalore- 10
                                         </p>
                                     </div>
-                                    <div class="col-md-6 my-auto"
-                                        style="width:100%;display:inline-block;text-align:right;">
+                                    <div class="col-md-6 my-auto" style="width:100%;display:inline-block;text-align:right;">
                                         <p style="font-size:14px;">Entity Code:- CE 00</p>
                                     </div>
-                                    <div class="col-md-12 mb-5 mt-5"
-                                        style="text-align:left;padding-left:20px;padding-right:20px;">
+                                    <div class="col-md-12 mb-5 mt-5" style="text-align:left;padding-left:20px;padding-right:20px;">
                                         <h5 style="border-bottom:1px solid;display:inline-block;font-size:16px;font-weight:bold;">Sub:- Inter dept
                                             transfer for
                                             the month of Apr 2024</h5>
@@ -140,63 +153,45 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td
-                                                        style="border: 1px solid #ddd; padding: 4px;text-align:center;font-size:14px;">
+                                                    <td style="border: 1px solid #ddd; padding: 4px;text-align:center;font-size:14px;">
                                                         1</td>
-                                                    <td
-                                                        style="border: 1px solid #ddd; padding: 4px;text-align:left;font-size:14px;">
+                                                    <td style="border: 1px solid #ddd; padding: 4px;text-align:left;font-size:14px;">
                                                         Gas</td>
-                                                    <td
-                                                        style="border: 1px solid #ddd; padding: 4px;text-align:left;font-size:14px;">
+                                                    <td style="border: 1px solid #ddd; padding: 4px;text-align:left;font-size:14px;">
                                                         Kg</td>
-                                                    <td
-                                                        style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">
+                                                    <td style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">
                                                         -</td>
-                                                    <td
-                                                        style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">
+                                                    <td style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">
                                                         68.65</td>
-                                                    <td
-                                                        style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">
+                                                    <td style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">
                                                         0</td>
                                                 </tr>
                                                 <tr>
-                                                    <td
-                                                        style="border: 1px solid #ddd; padding: 4px;text-align:center;font-size:14px;">
+                                                    <td style="border: 1px solid #ddd; padding: 4px;text-align:center;font-size:14px;">
                                                         2</td>
-                                                    <td
-                                                        style="border: 1px solid #ddd; padding: 4px;text-align:left;font-size:14px;">
+                                                    <td style="border: 1px solid #ddd; padding: 4px;text-align:left;font-size:14px;">
                                                         Petrol</td>
-                                                    <td
-                                                        style="border: 1px solid #ddd; padding: 4px;text-align:left;font-size:14px;">
+                                                    <td style="border: 1px solid #ddd; padding: 4px;text-align:left;font-size:14px;">
                                                         Ltr</td>
-                                                    <td
-                                                        style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">
+                                                    <td style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">
                                                         -</td>
-                                                    <td
-                                                        style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">
+                                                    <td style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">
                                                         102.65</td>
-                                                    <td
-                                                        style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">
+                                                    <td style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">
                                                         0</td>
                                                 </tr>
                                                 <tr>
-                                                    <td
-                                                        style="border: 1px solid #ddd; padding: 4px;text-align:center;font-size:14px;">
+                                                    <td style="border: 1px solid #ddd; padding: 4px;text-align:center;font-size:14px;">
                                                         3</td>
-                                                    <td
-                                                        style="border: 1px solid #ddd; padding: 4px;text-align:left;font-size:14px;">
+                                                    <td style="border: 1px solid #ddd; padding: 4px;text-align:left;font-size:14px;">
                                                         Diesel</td>
-                                                    <td
-                                                        style="border: 1px solid #ddd; padding: 4px;text-align:left;font-size:14px;">
+                                                    <td style="border: 1px solid #ddd; padding: 4px;text-align:left;font-size:14px;">
                                                         Ltr</td>
-                                                    <td
-                                                        style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">
+                                                    <td style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">
                                                         200.53</td>
-                                                    <td
-                                                        style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">
+                                                    <td style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">
                                                         87.65</td>
-                                                    <td
-                                                        style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">
+                                                    <td style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">
                                                         17623.25</td>
                                                 </tr>
                                                 <tr>
@@ -206,10 +201,8 @@
                                                     </td>
                                                     <td style="border: 1px solid #ddd; padding: 4px;text-align:center;">
                                                     </td>
-                                                    <td style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;"
-                                                        colspan="2"><b>Amount Debitable</b></td>
-                                                    <td
-                                                        style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">
+                                                    <td style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;" colspan="2"><b>Amount Debitable</b></td>
+                                                    <td style="border: 1px solid #ddd; padding: 4px;text-align:right;font-size:14px;">
                                                         <b>3245,00</b>
                                                     </td>
                                                 </tr>
@@ -222,17 +215,14 @@
                                             Supplier Dept
                                         </p>
                                     </div>
-                                    <div class="col-md-6"
-                                        style="width:100%;display:inline-block;text-align:right;">
+                                    <div class="col-md-6" style="width:100%;display:inline-block;text-align:right;">
                                         <p style="font-size:14px;">
                                             Division Head<br>
                                             User Dept
                                         </p>
                                     </div>
-                                    <div class="col-md-12 text-center mb-5"
-                                        style="text-align:center;margin-top:30px;padding-left:20px;padding-right:20px;">
-                                        <span
-                                            style="border-bottom: 1px solid black;font-weight: 700;font-size:14px!important;">Transfer
+                                    <div class="col-md-12 text-center mb-5" style="text-align:center;margin-top:30px;padding-left:20px;padding-right:20px;">
+                                        <span style="border-bottom: 1px solid black;font-weight: 700;font-size:14px!important;">Transfer
                                             Declaration</span>
                                         <p style="text-align:left;font-size:15px!important;">We acknowledge the receipt
                                             of the
@@ -249,17 +239,47 @@
     </div>
 </div>
 <style>
-#dvrport {
-    width: 100%;
-}
-.basic-single{
-    width:100%!important;
-}
+    #dvrport {
+        width: 100%;
+    }
+
+    .basic-single {
+        width: 100% !important;
+    }
 </style>
 <!-- <script src="{{asset('dist/js/driver_report.js')}}"></script> -->
 <script>
-$(document).ready(function() {
-    $("#dvrport").DataTable();
-});
+    $(document).ready(function() {
+        $("#dvrport").DataTable();
+
+        $("#btn-filter").click(function(e) {
+            $("#deptCode").val($('#debitNoteDept').val());
+            $("#deptName").val($('#debitNoteDept').find(':selected').text().trim());
+            $("#debitNoteMonth").val($("#debit_note_month").val());
+            $("#debitNoteYear").val($("#debit_note_year").val());
+        });
+
+        $("#debit_note_year").change(function() {
+            if ($(this).val() != currentYear) {
+                $("#debit_note_month").empty();
+                $("#debit_note_month").append(`<option value="">Please Select One</option>`);
+                for (let i = 0; i <= 11; i++) {
+                    $("#debit_note_month").append(`<option value="${i+1}">${monthsArray[i]}</option>`);
+                }
+            } else {
+                $("#debit_note_month").empty();
+                $("#debit_note_month").append(`<option value="">Please Select One</option>`);
+                for (let i = 0; i <= 11; i++) {
+                    $("#debit_note_month").append(`<option value="${i+1}">${monthsArray[i]}</option>`);
+                    if (i == currentMonth) break;
+                }
+            }
+        })
+    });
+
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth();
+    const monthsArray = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 </script>
 @endsection

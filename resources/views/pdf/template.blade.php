@@ -26,22 +26,22 @@
                         Entity code:- FM 00</span>
                 </div>
                 <div class="col-md-6" style="width:100%;display:inline-block;">
-                    <p style="font-size:14px;">Date:- 05 May 2024</p>
+                    <p style="font-size:14px;">Date:- {{date('d-F-Y')}}</p>
                 </div>
                 <div class="col-md-6 text-right" style="width:100%;display:inline-block;margin-top:-48px;text-align:right;">
-                    <p style="font-size:14px;">Interunit transfer No:- T pt/Apr 2024</p>
+                    <p style="font-size:14px;">Interunit transfer No:- Tpt/{{$displayMonthShortName . ' ' . $displayYear}}</p>
                 </div>
                 <div class="col-md-6" style="width:100%;display:inline-block;">
                     <p style="font-size:14px;">To,<br>
                         <b>Entity:- {{$entityName}}</b><br>
-                        Hare Krishna Hill, Bangalore- 10
+                        Hare Krishna Hill, Bangalore - 10
                     </p>
                 </div>
                 <div class="col-md-6" style="width:100%;display:inline-block;margin-top:-62px;text-align:right;">
                     <p style="font-size:14px;">Entity Code:- {{$entityCode}}</p>
                 </div>
                 <div class="col-md-12 text-center mb-5" style="text-align:left;margin-top:5px;padding-left:20px;padding-right:20px;margin-bottom:30px;">
-                    <h5 style="border-bottom:1px solid;display:inline-block;">Sub:- Inter dept transfer for the month of Apr 2024</h5>
+                    <h5 style="border-bottom:1px solid;display:inline-block;">Sub:- Inter dept transfer for the month of {{$displayMonthFullName . ' '. $displayYear}}</h5>
                     <table style="width: 100%; border-collapse: collapse;">
                         <thead>
                             <tr style="background-color: #f2f2f2;">
