@@ -107,7 +107,7 @@ class ReportController extends Controller
 
         $currentDate = date('Y-m-d');
 
-        // To get the total gas charges
+        // QUERY To get the total gas charges
         $gasCharges = DB::table('refuel_setting')
             ->join('vehicles', 'refuel_setting.VEHICLE', '=', 'vehicles.VEHICLE_ID')
             // ->selectRaw('SUM(refuel_setting.TOTAL_AMOUNT)')
@@ -124,7 +124,7 @@ class ReportController extends Controller
             $slNo++;
         }
 
-        // To get total petrol charges
+        // QUERY To get total petrol charges
         $petrolCostRes = DB::table('refuel_setting')
             ->join('vehicles', 'refuel_setting.VEHICLE', '=', 'vehicles.VEHICLE_ID')
             ->selectRaw('SUM(refuel_setting.UNIT_TAKEN) as QTY, SUM(refuel_setting.TOTAL_AMOUNT) as COST')
@@ -148,7 +148,7 @@ class ReportController extends Controller
             $slNo++;
         }
 
-        // To get total diesel charges
+        // QUERY To get total diesel charges
         $dieselCostRes = DB::table('refuel_setting')
             ->join('vehicles', 'refuel_setting.VEHICLE', '=', 'vehicles.VEHICLE_ID')
             ->selectRaw('SUM(refuel_setting.UNIT_TAKEN) as QTY, SUM(refuel_setting.TOTAL_AMOUNT) as COST')
@@ -168,7 +168,7 @@ class ReportController extends Controller
             $slNo++;
         }
 
-        // To get total maintenance charges
+        // QUERY To get total maintenance charges
         $maintenanceCost = DB::table('maintenance_requisitions')
             ->join('vehicles', 'maintenance_requisitions.VEHICLE_ID', '=', 'vehicles.VEHICLE_ID')
             ->where('vehicles.DEPARTMENT_ID', $entityCode)
@@ -182,7 +182,7 @@ class ReportController extends Controller
             $slNo++;
         }
 
-        // To get Hire Charges Data
+        // QUERY To get Hire Charges Data
         $hireCharges = DB::table('other_transaction')
             ->where('other_transaction.DEBIT_TO_DEPT', $entityCode)
             ->where('other_transaction.TRANSACTION_TYPE', 4)  # Transaction type 4 for Hire Charges
@@ -197,7 +197,7 @@ class ReportController extends Controller
             $slNo++;
         }
 
-        // To get total Drivers Tour Bata
+        // QUERY to get total Drivers Tour Bata
         $driverTourBata = DB::table('other_transaction')
             ->where('other_transaction.DEBIT_TO_DEPT', $entityCode)
             ->where('other_transaction.TRANSACTION_TYPE', 5)  # Transaction type 5 for Drivers' Tour Batas Expenses
@@ -210,7 +210,7 @@ class ReportController extends Controller
             $slNo++;
         }
 
-        // To get miscellaneous expenses data
+        // QUERY To get miscellaneous expenses data
         $miscellaneousCostsRes = DB::table('other_transaction')
             ->where('other_transaction.DEBIT_TO_DEPT', $entityCode)
             ->where('other_transaction.TRANSACTION_TYPE', 6)  # Transaction type 6 for Miscellaneous Charges
@@ -224,16 +224,16 @@ class ReportController extends Controller
         }
 
         // To calculate Drivers Salary and overtime costs
-        // To select drivers associated with a department
+        // Query To select drivers associated with a department
         $driversArray = DB::table('vehicles')
             ->where('DEPARTMENT_ID', $entityCode)
             ->pluck('DRIVER_ID')->toArray();
 
-        // Drivers Salary calculation
+        // Query for Drivers Salary calculation
         $driverSalary = DB::table('drivers')->whereIn('drivers.DRIVER_ID', $driversArray)->selectRaw('SUM(drivers.CTC/12) as total_salary')->first();
         $totalDriversSalary = number_format((float)$driverSalary->total_salary, 2, '.', '');
 
-        // Drivers' OT calculation for the Same Department
+        // Query for Drivers' OT calculation for the Same Department
         $totalDriversOT = DB::table('driver_transaction')->whereIn('driver_transaction.DRIVER_ID', $driversArray)
             ->where('driver_transaction.DEVOTEE_DEPARTMENT_CODE', $entityCode)
             ->sum('driver_transaction.AMOUNT');
@@ -247,7 +247,7 @@ class ReportController extends Controller
 
         // dd($totalDriverSalaryPlusOT);
 
-        // Drivers OT calculation debited to other departments
+        // Query for Drivers OT calculation debited to other departments
         $otherDeptOT = DB::table('driver_transaction')->whereIn('driver_transaction.DRIVER_ID', $driversArray)
             ->where('driver_transaction.DEVOTEE_DEPARTMENT_CODE', '<>', $entityCode)
             ->sum('driver_transaction.AMOUNT');
