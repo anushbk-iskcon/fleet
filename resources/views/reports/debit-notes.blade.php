@@ -12,6 +12,20 @@
 <small id="controllerName">Debit Notes</small>
 @endsection
 
+@section('css-content')
+<style>
+    #debitNoteViewWrapper {
+        min-height: 3rem;
+    }
+
+    #reportLoader {
+        position: absolute;
+        left: 50%;
+        z-index: 999;
+    }
+</style>
+@endsection
+
 @section('content')
 
 <div class="row">
@@ -21,7 +35,8 @@
                 <h4 class="pl-3">Search Here</h4>
             </div>
             <div class="card-body">
-                <form action="" class="form-inline row" id="validate" method="post" accept-charset="utf-8">
+                <form action="" class="form-inline row" id="getDebitNoteViewForm" method="post" accept-charset="utf-8">
+                    @csrf
                     <div class="col-sm-3">
                         <div class="form-group row mb-1">
                             <div class="col-sm-12">
@@ -33,8 +48,9 @@
                                         {{$department['deptName']}}
                                     </option>
                                     @endforeach
-
                                 </select>
+                                <input type="hidden" name="dept_code" id="filterDeptCode" value="">
+                                <input type="hidden" name="dept_name" id="filterDeptName" value="">
                             </div>
                         </div>
                     </div>
@@ -42,7 +58,7 @@
                         <div class="form-group row mb-1">
                             <div class="col-sm-12">
                                 <label for="debit_note_year" class="form-label justify-content-start text-left">Year </label>
-                                <select class="form-control basic-single" name="year" id="debit_note_year">
+                                <select class="form-control basic-single" name="debit_note_year" id="debit_note_year">
                                     <option value="">Please Select One</option>
                                     @for($year = date('Y'); $year >=2023 ; $year--)
                                     <option value="{{$year}}" @if($year==date('Y')) {{'selected'}} @endif>{{$year}}</option>
@@ -74,7 +90,7 @@
                     <div class="col-sm-3">
                         <div class="form-group row mb-1">
                             <div class="col-sm-12 text-right">
-                                <button type="button" class="btn btn-success" id="btn-filter">Search</button>&nbsp;
+                                <button type="button" class="btn btn-success" id="btn-filter" disabled>Search</button>&nbsp;
                                 <button type="button" class="btn btn-inverse" id="btn-reset">Reset</button>
                             </div>
                         </div>
@@ -98,11 +114,18 @@
                                 <input type="hidden" name="dept_name" id="deptName" value="">
                                 <input type="hidden" name="debit_note_month" id="debitNoteMonth" value="">
                                 <input type="hidden" name="debit_note_year" id="debitNoteYear" value="">
-                                <button type="submit" class="btn btn-primary" target="_blank"><i class="fa fa-download"></i></button>
+                                <button type="submit" class="btn btn-primary" target="_blank" id="downloadPDFButton" style="display: none;">
+                                    <i class="fa fa-download"></i>
+                                </button>
                             </form>
                         </div>
                         <div class="col-md-9">
-                            <div class="custom-border" style="border: 3px solid black;padding: 15px 0 100px 0;">
+                            <div class="spinner-border text-success" role="status" id="reportLoader" style="display: none;">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <div id="debitNoteViewWrapper" class="position-relative">
+                            </div>
+                            <!-- <div class="custom-border" style="border: 3px solid black;padding: 15px 0 100px 0;">
                                 <div class="row pl-3 pr-5" style="padding-left:10px;padding-right:10px;">
                                     <div class="col-md-12 text-center mb-5" style="text-align:center;margin-bottom:30px;">
                                         <p style="display: inline-block;border-bottom: 2px solid black;font-weight: 700;font-size:25px!important;margin-bottom: 0!important;">
@@ -230,7 +253,7 @@
                                             materials and hereby request finance to transfer the sum of Rs. 3522/-</p>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -238,6 +261,7 @@
         </div>
     </div>
 </div>
+
 <style>
     #dvrport {
         width: 100%;
@@ -252,11 +276,48 @@
     $(document).ready(function() {
         $("#dvrport").DataTable();
 
+        $("#debitNoteDept").change(function() {
+            if (!$("#debitNoteDept").val() == '') {
+                $("#filterDeptCode").val($("#debitNoteDept").val());
+                $("#filterDeptName").val($("#debitNoteDept").find(':selected').text().trim());
+                $('#btn-filter').removeAttr('disabled');
+            } else {
+                $("#filterDeptCode").val('');
+                $("#filterDeptName").val('');
+                $('#btn-filter').attr('disabled', 'disabled');
+            }
+        });
+
         $("#btn-filter").click(function(e) {
             $("#deptCode").val($('#debitNoteDept').val());
             $("#deptName").val($('#debitNoteDept').find(':selected').text().trim());
             $("#debitNoteMonth").val($("#debit_note_month").val());
             $("#debitNoteYear").val($("#debit_note_year").val());
+
+            // Refresh the Debit note View
+            $.ajax({
+                url: '{{route("debit-note.view")}}',
+                type: 'post',
+                data: $("#getDebitNoteViewForm").serialize(),
+                beforeSend: function() {
+                    $("#reportLoader").show();
+                    $("#debitNoteViewWrapper").html('');
+                    $("#downloadPDFButton").hide();
+                },
+                success: function(res) {
+                    console.log(res);
+                    $("#debitNoteViewWrapper").html(res);
+                    $("#downloadPDFButton").show();
+                },
+                error: function() {
+                    toastr.error("Error getting details. Please try again", '', {
+                        closeButton: true
+                    });
+                },
+                complete: function() {
+                    $("#reportLoader").hide();
+                }
+            });
         });
 
         $("#debit_note_year").change(function() {
@@ -274,7 +335,7 @@
                     if (i == currentMonth) break;
                 }
             }
-        })
+        });
     });
 
     const currentDate = new Date();

@@ -247,7 +247,53 @@
     </div>
 
 </div>
+
 <div class="row">
+    <div class="col-sm-12">
+        <div class="card mb-3">
+            <div class="card-header p-2">
+                <h4 class="pl-3">Search Here</h4>
+            </div>
+            <form action="" method="post" id="filterForm" accept-charset="utf-8">
+                @csrf
+                <div class="card-body row">
+                    <div class="col-sm-12 col-lg-4">
+                        <div class="form-group row mb-2">
+                            <label for="filterFuelType" class="col-sm-5 col-form-label justify-content-start text-left">Fuel Type</label>
+                            <div class="col-sm-7">
+                                <select name="fuel_type" id="filterFuelType" class="form-control">
+                                    <option value="">Please Select</option>
+                                    @foreach($fuelTypes as $fuelType)
+                                    <option value="{{$fuelType['FUEL_ID']}}">{{$fuelType['FUEL_TYPE_NAME']}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-lg-4">
+                        <div class="form-group row mb-2">
+                            <label for="filterDateFrom" class="col-sm-5 col-form-label">Date From</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="date_from" class="form-control" id="filterDateFrom" placeholder="Date From" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-lg-4">
+                        <div class="form-group row mb-2">
+                            <label for="filterDateTo" class="col-sm-5 col-form-label">Date Till</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="date_to" class="form-control" id="filterDateTo" placeholder="Date Till" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 text-right">
+                        <button type="reset" class="btn btn-info mr-2" id="filterFromResetBtn">Reset</button>
+                        <button type="submit" class="btn btn-success" id="filterFormSubmitBtn">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
     <div class="col-sm-12">
         <div class="card mb-3">
             <div class="card-header p-2">

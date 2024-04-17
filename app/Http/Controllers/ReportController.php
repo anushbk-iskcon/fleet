@@ -22,6 +22,7 @@ use App\Models\ApprovalAuthority;
 use DataTables;
 use Str;
 use App\Models\User;
+use Illuminate\Support\Facades\View;
 use PDF;
 
 class ReportController extends Controller
@@ -35,7 +36,7 @@ class ReportController extends Controller
         $departments = $hrApi->getDepartments();
         return view('reports.debit-notes', compact('departments'));
     }
-    public function generatePDF(Request $request)
+    public function getDebitNoteData(Request $request)
     {
         $entityCode = $request->dept_code;
         $entityName = $request->dept_name;
@@ -54,20 +55,16 @@ class ReportController extends Controller
 
         if (!isset($debitNoteYear) && !isset($debitNoteMonth)) {
             $startDate = date('Y-m-01');
-            $currentMonth = date('m');
-            $nextMonth = $currentMonth + 1;
-
-            $nextMonth = $nextMonth < 10 ? '0' . $nextMonth : $nextMonth;
-            $endDate = date('Y-') . $nextMonth . '-01';
+            $endDate = date('Y-m-t'); // t gives no. of days in a month
 
             $displayMonthShortName = date('M');
             $displayMonthFullName = date('F');
             $displayYear = date('Y');
         } else if (!isset($debitNoteYear) && isset($debitNoteMonth)) {
             $zeroPaddedMonth = $debitNoteMonth < 10 ? '0' . $debitNoteMonth : $debitNoteMonth;
-            $nextMonth = ($debitNoteMonth + 1) < 10 ? '0' . ($debitNoteMonth + 1) : ($debitNoteMonth + 1);
-            $startDate = date('Y') . '-' . $zeroPaddedMonth . '-01';
-            $endDate = date('Y') . '-' . $nextMonth . '-01';
+            // $nextMonth = ($debitNoteMonth + 1) < 10 ? '0' . ($debitNoteMonth + 1) : ($debitNoteMonth + 1);
+            $startDate = date('Y-' . $zeroPaddedMonth . '-01');
+            $endDate = date('Y-m-t', strtotime($startDate));
 
             $displayMonthShortName = date('M', strtotime($startDate));
             $displayMonthFullName = date('F', strtotime($startDate));
@@ -75,18 +72,15 @@ class ReportController extends Controller
         } else if (!isset($debitNoteMonth) && isset($debitNoteYear)) {
             if ($debitNoteYear == date('Y')) { // For the current year, show current month
                 $startDate = date('Y-m-01');
+                $endDate = date('Y-m-t', strtotime($startDate));
+
                 $currentMonth = date('m');
-                $nextMonth = $currentMonth + 1;
-
-                $nextMonth = $nextMonth < 10 ? '0' . $nextMonth : $nextMonth;
-                $endDate = date('Y-') . $nextMonth . '-01';
-
                 $displayMonthShortName = date('M');
                 $displayMonthFullName = date('F');
                 $displayYear = date('Y');
             } else {
                 $startDate = $debitNoteYear . '-01-01';
-                $endDate = $debitNoteYear . '-02-01';
+                $endDate = $debitNoteYear . '-01-31';
 
                 $displayMonthShortName = date('M', strtotime($startDate));
                 $displayMonthFullName = date('F', strtotime($startDate));
@@ -94,11 +88,9 @@ class ReportController extends Controller
             }
         } else {
             // Both year and month are set
-            $nextMonth = $debitNoteMonth + 1;
-            $nextMonth = $nextMonth < 10 ? 0 . $nextMonth : $nextMonth;
             $currentMonth = $debitNoteMonth < 10 ? 0 . $debitNoteMonth : $debitNoteMonth;
             $startDate = $debitNoteYear . '-' . $currentMonth . '-01';
-            $endDate = $debitNoteYear . '-' . $nextMonth . '-01';
+            $endDate = date('Y-m-t', strtotime($startDate));
 
             $displayMonthShortName = date('M', strtotime($startDate));
             $displayMonthFullName = date('F', strtotime($startDate));
@@ -119,6 +111,8 @@ class ReportController extends Controller
 
         $gasCharges = number_format((float)$gasCharges, 2, '.', '');
         // Add line item to gas charges if not zero
+        // print_r($gasCharges);
+        // exit;
         if (intval($gasCharges) != 0) {
             $lineItems[] = [$slNo, 'Gas', 'Kg', '', '', $gasCharges];
             $slNo++;
@@ -205,8 +199,59 @@ class ReportController extends Controller
             ->sum('other_transaction.BILL_AMOUNT');
         $driversTourBataAmt = number_format((float)$driverTourBata, 2, '.', '');
 
+        // Add entry to Debit Note if total amount for the month & dept. is not zero
         if (intval($driversTourBataAmt) != 0) {
             $lineItems[] = [$slNo, 'Driver\'s Tour Bata', 'Rs', '', '', $driversTourBataAmt];
+            $slNo++;
+        }
+
+        // QUERY to get Puncture Charges
+        $punctureChargesData = DB::table('other_transaction')
+            ->where('other_transaction.DEBIT_TO_DEPT', $entityCode)
+            ->where('other_transaction.TRANSACTION_TYPE', 1)  #Transaction type 1 for Puncture Charges
+            ->whereBetween('other_transaction.BILL_DATE', [$startDate, $endDate])
+            ->sum('other_transaction.BILL_AMOUNT');
+        $punctureCharges = number_format((float)$punctureChargesData, 2, '.', '');
+
+        if (intval($punctureCharges) != 0) {
+            $lineItems[] = [$slNo, 'Puncher Charges', 'Rs', '', '', $punctureCharges];
+            $slNo++;
+        }
+
+        // QUERY to get parking charges
+        $parkingChargesData = DB::table('other_transaction')
+            ->where('other_transaction.DEBIT_TO_DEPT', $entityCode)
+            ->where('other_transaction.TRANSACTION_TYPE', 2)  #Transaction type 2 for Parking Charges
+            ->whereBetween('other_transaction.BILL_DATE', [$startDate, $endDate])
+            ->sum('other_transaction.BILL_AMOUNT');
+
+        $parkingCharges = number_format((float)$parkingChargesData, 2, '.', '');
+        if (intval($parkingCharges) != 0) {
+            $lineItems[] = [$slNo, 'Parking Charges', 'Rs', '', '', $parkingCharges];
+            $slNo++;
+        }
+
+        // QUERY to get Total Toll Fee charges
+        $tollFeeChargesData = DB::table('other_transaction')
+            ->where('other_transaction.DEBIT_TO_DEPT', $entityCode)
+            ->where('other_transaction.TRANSACTION_TYPE', 3)  #Transaction type 3 for Toll Fee charges
+            ->whereBetween('other_transaction.BILL_DATE', [$startDate, $endDate])
+            ->sum('other_transaction.BILL_AMOUNT');
+        $tollFeeCharges = number_format((float)$tollFeeChargesData, 2, '.', '');
+        if (intval($tollFeeCharges) != 0) {
+            $lineItems[] = [$slNo, 'Toll Fee Charges', 'Rs', '', '', $tollFeeCharges];
+            $slNo++;
+        }
+
+        // QUERY to get Total Emission Test Charges
+        $emissionsChargesData = DB::table('other_transaction')
+            ->where('other_transaction.DEBIT_TO_DEPT', $entityCode)
+            ->where('other_transaction.TRANSACTION_TYPE', 7)  #Transaction type 7 for Emission charges
+            ->whereBetween('other_transaction.BILL_DATE', [$startDate, $endDate])
+            ->sum('other_transaction.BILL_AMOUNT');
+        $emissionsCharges = number_format((float)$emissionsChargesData, 2, '.', '');
+        if (intval($emissionsCharges) != 0) {
+            $lineItems[] = [$slNo, 'Emission Charges', 'Rs', '', '', $emissionsCharges];
             $slNo++;
         }
 
@@ -227,29 +272,42 @@ class ReportController extends Controller
         // Query To select drivers associated with a department
         $driversArray = DB::table('vehicles')
             ->where('DEPARTMENT_ID', $entityCode)
+            ->whereNotNull('DRIVER_ID')
             ->pluck('DRIVER_ID')->toArray();
 
+        $driversArray = array_unique($driversArray);
+        // In some cases drivers array also has the ID 0, whether to not select this ID
+
         // Query for Drivers Salary calculation
-        $driverSalary = DB::table('drivers')->whereIn('drivers.DRIVER_ID', $driversArray)->selectRaw('SUM(drivers.CTC/12) as total_salary')->first();
+        $driverSalary = DB::table('drivers')->whereIn('drivers.DRIVER_ID', $driversArray)->selectRaw('SUM(drivers.CTC) as total_salary')->first();
         $totalDriversSalary = number_format((float)$driverSalary->total_salary, 2, '.', '');
+
+        if ($totalDriversSalary != 0) {
+            $lineItems[] = [$slNo, 'Drivers\' salary', 'Rs', '', '', $totalDriversSalary];
+            $slNo++;
+        }
 
         // Query for Drivers' OT calculation for the Same Department
         $totalDriversOT = DB::table('driver_transaction')->whereIn('driver_transaction.DRIVER_ID', $driversArray)
             ->where('driver_transaction.DEVOTEE_DEPARTMENT_CODE', $entityCode)
+            ->whereBetween('driver_transaction.TRANSACTION_DATE', [$startDate, $endDate])
             ->sum('driver_transaction.AMOUNT');
+
+        $totalDriversOT = number_format((float)$totalDriversOT, 2, '.', '');
 
         $totalDriverSalaryPlusOT = floatval($totalDriversSalary) + floatval($totalDriversOT);
         $totalDriverSalaryPlusOT = number_format((float)$totalDriverSalaryPlusOT, 2, '.', '');
-        if (intval($totalDriverSalaryPlusOT) != 0) {
-            $lineItems[] = [$slNo, 'Driver salary & OT', 'Rs', '', '', $totalDriverSalaryPlusOT];
+        if (intval($totalDriversOT) != 0) {
+            $lineItems[] = [$slNo, 'Drivers\' OT', 'Rs', '', '', $totalDriversOT];
             $slNo++;
         }
 
         // dd($totalDriverSalaryPlusOT);
 
         // Query for Drivers OT calculation debited to other departments
-        $otherDeptOT = DB::table('driver_transaction')->whereIn('driver_transaction.DRIVER_ID', $driversArray)
-            ->where('driver_transaction.DEVOTEE_DEPARTMENT_CODE', '<>', $entityCode)
+        $otherDeptOT = DB::table('driver_transaction')->whereNotIn('driver_transaction.DRIVER_ID', $driversArray)
+            ->where('driver_transaction.DEVOTEE_DEPARTMENT_CODE', '=', $entityCode)
+            ->whereBetween('driver_transaction.TRANSACTION_DATE', [$startDate, $endDate])
             ->sum('driver_transaction.AMOUNT');
 
         $otherDeptOT = number_format((float)$otherDeptOT, 2, '.', '');
@@ -258,9 +316,32 @@ class ReportController extends Controller
             $slNo++;
         }
 
+        // Query for adding Insurance Costs
+        $insuranceCostRes = DB::table('vehicle_insurance')->join('vehicles', 'vehicle_insurance.VEHICLE', '=', 'vehicles.VEHICLE_ID')
+            ->where('vehicles.DEPARTMENT_ID', $entityCode)
+            ->where('vehicle_insurance.IS_ACTIVE', 'Y')
+            ->where(function ($query) use ($startDate, $endDate) { // To generate where conditions within brackets
+                $query->whereBetween('vehicle_insurance.START_DATE', [$startDate, $endDate]);
+                // ->orWhereBetween('vehicle_insurance.RECURRING_DATE', [$startDate, $endDate]);
+            })
+            ->selectRaw('SUM(vehicle_insurance.CHARGE_PAYABLE) as INSURANCE_TOTAL_COST')
+            ->first();
+
+        // dd($insuranceCostRes);
+
+        $insuranceCost = number_format((float)$insuranceCostRes->INSURANCE_TOTAL_COST, 2, '.', '');
+
+        // dd($insuranceCost);
+
+        if ($insuranceCost != 0) {
+            $lineItems[] = [$slNo, 'Insurance', 'Rs', '', '', $insuranceCost];
+            $slNo++;
+        }
+
         $grandTotal = floatval($gasCharges) + floatval($petrolCost) + floatval($dieselCost) + floatval($maintenanceCost) +
             floatval($totalHireCharges) + floatval($driversTourBataAmt) + floatval($miscCharges) + floatval($totalDriverSalaryPlusOT) +
-            floatval($otherDeptOT);
+            floatval($otherDeptOT) + floatval($insuranceCost) + floatval($punctureCharges) + floatval($parkingCharges) +
+            floatval($tollFeeCharges) + floatval($emissionsCharges);
 
         $grandTotal = number_format((float)$grandTotal, 2, '.', '');
 
@@ -276,16 +357,50 @@ class ReportController extends Controller
         ];
 
         $data['items'] = $lineItems;
-        // return view('pdf.template',compact('data'));
+
+        return $data;
+
+        // $pdf = PDF::loadView('pdf.template', $data);
+        // $pdf->setOptions([
+        //     'margin_top' => 0,
+        //     'margin_right' => 0,
+        //     'margin_bottom' => 0,
+        //     'margin_left' => 0,
+        // ]);
+        // return $pdf->stream('Vahan_Debit_Note_' . $entityCode . '_' . $currentDate . '.pdf');
+
+        // return $pdf->download('sample.pdf');
+    }
+
+    function viewDebitNoteHTML(Request $request)
+    {
+        $data = $this->getDebitNoteData($request);
+
+        if ($data['amountDebitable'] == 0) {
+            $htmlContent = '<div class="info"><i class="fas fa-exclamation-circle"></i> No data found for ' .
+                $data['displayMonthFullName'] . ' ' . $data['displayYear'] .
+                ' for ' . $data['entityName'] . '</div>';
+            return $htmlContent;
+        }
+
+        $htmlContent = View::make('reports.debit-note-view', compact('data'))->render();
+        return $htmlContent;
+    }
+
+    public function generatePDF(Request $request)
+    {
+        $data = $this->getDebitNoteData($request);
+
+        $currentDate = date('Y-m-d');
+
         $pdf = PDF::loadView('pdf.template', $data);
         $pdf->setOptions([
             'margin_top' => 0,
             'margin_right' => 0,
             'margin_bottom' => 0,
-            'margin_left' => 0,
+            'margin_left' => 0
         ]);
-        return $pdf->stream('Vahan_Debit_Note_' . $entityCode . '_' . $currentDate . '.pdf');
 
-        // return $pdf->download('sample.pdf');
+        return $pdf->stream('Vahan_Debit_Note_' . $request->dept_code . '_' . $currentDate . '.pdf');
     }
 }

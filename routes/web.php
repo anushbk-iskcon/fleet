@@ -4,6 +4,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\DriverInfoLogController;
+use App\Http\Controllers\FuelRateLogController;
 use App\Http\Controllers\InsuranceController;
 use App\Http\Controllers\LegalDocumentsController;
 use App\Http\Controllers\LoginController;
@@ -318,6 +319,14 @@ Route::middleware('auth')->group(function () {
     Route::post('refueling/fuel-stations/update', [FuelStationController::class, 'update'])->name('fuel-stations.update');
     Route::post('refueling/fuel-stations/update-status', [FuelStationController::class, 'statusUpdate'])->name('fuel-stations.update-status');
     Route::post('refueling/fuel-stations/get-details', [FuelStationController::class, 'getDetails'])->name('fuel-stations.get-details');
+
+    // fuel Rate Log Sub-module routes
+    Route::get('refueling/fuel-rate-log', [FuelRateLogController::class, 'index'])->name('fuel-rate-log');
+    Route::post('refueling/fuel-rate-log', [FuelRateLogController::class, 'index'])->name('fuel-rate-log.list');
+    Route::post('refueling/fuel-rate-log/add', [FuelRateLogController::class, 'add'])->name('fuel-rate-log.add');
+    Route::post('refueling/fuel-rate-log/update', [FuelRateLogController::class, 'update'])->name('fuel-rate-log.update');
+    Route::post('refueling/fuel-rate-log/change-activation', [FuelRateLogController::class, 'updateActivation'])->name('fuel-rate-log.change-activation');
+    Route::post('refueling/fuel-rate-log/get-details', [FuelRateLogController::class, 'getDetails'])->name('fuel-rate-log.get-details');
 
     // Refueling Requisitions sub-module Routes
     Route::get('refueling/requisitions', [RefuelRequisitionController::class, 'index'])->name('refuel-requisitions');

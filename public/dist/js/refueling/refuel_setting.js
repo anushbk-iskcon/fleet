@@ -29,6 +29,37 @@ $(document).ready(function () {
 
     populateTable(refuelSettingTable);
 
+    // Enable datepickers on the Filter Date inputs
+    $("#filterDateFrom, #filterDateTo").daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        autoUpdateInput: false,
+        autoApply: false,
+        minYear: 2000,
+        drops: "down",
+        locale: {
+            format: 'DD-MMM-YYYY'
+        }
+    });
+    $('#filterDateFrom, #filterDateTo').on('apply.daterangepicker', function (ev, picker) {
+        $(this).val(picker.startDate.format('DD-MMM-YYYY'));
+    });
+    $('#filterDateFrom, #filterDateTo').on('cancel.daterangepicker', function (ev, picker) {
+        $(this).val('');
+    });
+
+    // To enable the rest and filter buttons to work properly
+    $("#filterFromResetBtn").click(function (ev) {
+        setTimeout(() => {
+            populateTable(refuelSettingTable);
+        }, 10);
+    });
+
+    $("#filterFormSubmitBtn").click(function (ev) {
+        ev.preventDefault();
+        populateTable(refuelSettingTable);
+    });
+
     $("#add0").on('shown.bs.modal', function (ev) {
         // To enable datepickers on Add Refuel Setting Form
         $("#addRefuelSettingForm .new-datepicker").daterangepicker({
@@ -218,7 +249,10 @@ function populateTable(table) {
         url: refuelSettingListURL,
         type: 'post',
         data: {
-            _token: csrfToken
+            _token: csrfToken,
+            fuel_type: $("#filterFuelType").val(),
+            date_from: $("#filterDateFrom").val(),
+            date_to: $("#filterDateTo").val()
         },
         dataType: 'json',
         beforeSend: function () {

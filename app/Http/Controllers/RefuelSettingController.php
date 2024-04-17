@@ -21,12 +21,33 @@ class RefuelSettingController extends Controller
     public function index(Request $request)
     {
         if (request()->isMethod('post')) {
+            $fuelType = $request->fuel_type;
+            $date_from = null;
+            $date_to = null;
+
+            if (isset($request->date_from)) {
+                $date_from = date('Y-m-d', strtotime($request->date_from));
+            }
+
+            if (isset($request->date_to)) {
+                $date_to = date('Y-m-d', strtotime($request->date_to));
+            }
+
             $refuelSettings = DB::table('refuel_setting')
                 ->join('vehicles', 'refuel_setting.VEHICLE', '=', 'vehicles.VEHICLE_ID')
                 ->join('drivers', 'refuel_setting.DRIVER', '=', 'drivers.DRIVER_ID')
                 ->join('mstr_fuel', 'refuel_setting.FUEL_TYPE', '=', 'mstr_fuel.FUEL_ID')
                 ->join('mstr_fuel_station', 'refuel_setting.FUEL_STATION', '=', 'mstr_fuel_station.FUEL_STATION_ID')
                 ->select('refuel_setting.*', 'vehicles.VEHICLE_NAME as VEHICLE_NAME', 'vehicles.LICENSE_PLATE as VEHICLE_NUMBER', 'drivers.DRIVER_NAME', 'mstr_fuel.FUEL_TYPE_NAME')
+                ->when($fuelType, function ($query, $fuelType) {
+                    return $query->where('refuel_setting.FUEL_TYPE', $fuelType);
+                })
+                ->when($date_from, function ($query, $date_from) {
+                    return $query->where('refuel_setting.REFUELED_DATE', '>=', $date_from);
+                })
+                ->when($date_to, function ($query, $date_to) {
+                    return $query->where('refuel_setting.REFUELED_DATE', '<=', $date_to);
+                })
                 ->get();
 
             return $refuelSettings->toJson();

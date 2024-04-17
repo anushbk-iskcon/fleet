@@ -69,6 +69,7 @@ Route::middleware('auth')->group(function () {
     // /////////////////////Debit Notes Report//////////////
     Route::get('reports/debit-notes', [ReportController::class, 'debitNote'])->name('debit.note');
     Route::post('reports/generate-pdf', [ReportController::class, 'generatePDF'])->name('generate.pdf');
+    Route::post('reports/debit-note-view', [ReportController::class, 'viewDebitNoteHTML'])->name('debit-note.view');
 
     // /////////////Salary/////////////////////
     Route::get('manage-salary', [SalaryController::class, 'index'])->name('manage-salary');
