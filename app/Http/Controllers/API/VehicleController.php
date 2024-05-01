@@ -37,10 +37,11 @@ class VehicleController extends Controller
             $data = [];
             $checkvehicle = Vehicle::where('LICENSE_PLATE', 'LIKE', '%' . $request->vehicle_number)->first();
             if ($checkvehicle) {
-                // TO DO: Add vehicle type after checking and comparing against master table
+                // TO DO: Add vehicle type if needed after checking and comparing against master table
                 $data[] = [
                     'VEHICLE_TYPE' => 'CAR',
-                    'VEHICLE_NUMBER' => $request->vehicle_number,
+                    'VEHICLE_NUMBER' => strlen($request->vehicle_number) > 4 ? substr($request->vehicle_number, -4) : $request->vehicle_number,
+                    'FULL_VEHICLE_NUMBER' => $checkvehicle->LICENSE_PLATE
                 ];
                 $this->apiResponse['successCode'] = 1;
                 $this->apiResponse['message'] = 'Successful';
