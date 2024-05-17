@@ -100,21 +100,24 @@ class ReportController extends Controller
         $currentDate = date('Y-m-d');
 
         // QUERY To get the total gas charges
-        $gasCharges = DB::table('refuel_setting')
+        $gasChargesRes = DB::table('refuel_setting')
             ->join('vehicles', 'refuel_setting.VEHICLE', '=', 'vehicles.VEHICLE_ID')
-            // ->selectRaw('SUM(refuel_setting.TOTAL_AMOUNT)')
+            ->selectRaw('SUM(refuel_setting.TOTAL_AMOUNT) as COST, SUM(refuel_setting.UNIT_TAKEN) as QTY')
             ->where('vehicles.DEPARTMENT_ID', $entityCode)
             ->where('refuel_setting.FUEL_TYPE', '=', 5) //5 - Fuel Type ID for LPG
             # Should CNG also be included?
             ->whereBetween('refuel_setting.REFUELED_DATE', [$startDate, $endDate])
-            ->sum('refuel_setting.TOTAL_AMOUNT');
+            ->first();
+        $gasQty = $gasChargesRes->QTY;
+        $gasCost = $gasChargesRes->COST;
 
-        $gasCharges = number_format((float)$gasCharges, 2, '.', '');
+        $gasQty = number_format((float)$gasQty, 2, '.', '');
+        $gasCharges = number_format((float)$gasCost, 2, '.', '');
         // Add line item to gas charges if not zero
         // print_r($gasCharges);
         // exit;
         if (intval($gasCharges) != 0) {
-            $lineItems[] = [$slNo, 'Gas', 'Kg', '', '', $gasCharges];
+            $lineItems[] = [$slNo, 'Gas', 'Kg', $gasQty, '', $gasCharges];
             $slNo++;
         }
 
@@ -194,7 +197,7 @@ class ReportController extends Controller
         // QUERY to get total Drivers Tour Bata
         $driverTourBata = DB::table('other_transaction')
             ->where('other_transaction.DEBIT_TO_DEPT', $entityCode)
-            ->where('other_transaction.TRANSACTION_TYPE', 5)  # Transaction type 5 for Drivers' Tour Batas Expenses
+            ->where('other_transaction.TRANSACTION_TYPE', 5)  # Transaction type 5 for Drivers' Tour Bata Expenses
             ->whereBetween('other_transaction.BILL_DATE', [$startDate, $endDate])
             ->sum('other_transaction.BILL_AMOUNT');
         $driversTourBataAmt = number_format((float)$driverTourBata, 2, '.', '');
@@ -338,10 +341,57 @@ class ReportController extends Controller
             $slNo++;
         }
 
+        // Query to get Amount charged for Fitness Certificates/Road Taxes/Permits
+        $fitnessCertChargesAmount = DB::table('charges')->join('vehicles', 'charges.VEHICLE_ID', '=', 'vehicles.VEHICLE_ID')
+            ->where('vehicles.DEPARTMENT_ID', $entityCode)
+            ->where('charges.CHARGE_TYPE', 1)   # Charge Type = 1 for FC
+            ->whereBetween('charges.START_DATE', [$startDate, $endDate])
+            ->selectRaw('SUM(charges.AMOUNT) as FC_CHARGES')
+            ->first();
+
+        $fcCharges = number_format((float)$fitnessCertChargesAmount->FC_CHARGES, 2, '.', '');
+
+        if (intval($fcCharges) != 0) {
+            $lineItems[] = [$slNo, 'FC Charges', 'Rs', '', '', $fcCharges];
+            $slNo++;
+        }
+
+        // Query to get Amount charged for Fitness Certificates/Road Taxes/Permits
+        $roadTaxChargesAmount = DB::table('charges')->join('vehicles', 'charges.VEHICLE_ID', '=', 'vehicles.VEHICLE_ID')
+            ->where('vehicles.DEPARTMENT_ID', $entityCode)
+            ->where('charges.CHARGE_TYPE', 2)   # Charge Type = 2 for Road Tax
+            ->whereBetween('charges.START_DATE', [$startDate, $endDate])
+            ->selectRaw('SUM(charges.AMOUNT) as RT_CHARGES')
+            ->first();
+
+        $roadTaxCharges = number_format((float)$roadTaxChargesAmount->RT_CHARGES, 2, '.', '');
+
+        if ($roadTaxCharges != 0) {
+            $lineItems[] = [$slNo, 'Road Tax Charges', 'Rs', '', '', $roadTaxCharges];
+            $slNo++;
+        }
+
+        // Query to get Amount charged for Permits
+        $vehiclePermitChargesAmount = DB::table('charges')->join('vehicles', 'charges.VEHICLE_ID', '=', 'vehicles.VEHICLE_ID')
+            ->where('vehicles.DEPARTMENT_ID', $entityCode)
+            ->where('charges.CHARGE_TYPE', 3)   # Charge Type = 3 for Permit
+            ->whereBetween('charges.START_DATE', [$startDate, $endDate])
+            ->selectRaw('SUM(charges.AMOUNT) as PERMIT_CHARGES')
+            ->first();
+
+        $permitCharges = number_format((float)$vehiclePermitChargesAmount->PERMIT_CHARGES, 2, '.', '');
+
+        if ($permitCharges != 0) {
+            $lineItems[] = [$slNo, 'Permit Charges', 'Rs', '', '', $permitCharges];
+            $slNo++;
+        }
+
+
         $grandTotal = floatval($gasCharges) + floatval($petrolCost) + floatval($dieselCost) + floatval($maintenanceCost) +
             floatval($totalHireCharges) + floatval($driversTourBataAmt) + floatval($miscCharges) + floatval($totalDriverSalaryPlusOT) +
             floatval($otherDeptOT) + floatval($insuranceCost) + floatval($punctureCharges) + floatval($parkingCharges) +
-            floatval($tollFeeCharges) + floatval($emissionsCharges);
+            floatval($tollFeeCharges) + floatval($emissionsCharges) + floatval($fcCharges) + floatval($roadTaxCharges) +
+            floatval($permitCharges);
 
         $grandTotal = number_format((float)$grandTotal, 2, '.', '');
 

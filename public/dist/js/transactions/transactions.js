@@ -495,7 +495,12 @@ $(document).ready(function () {
             $("#addFormAdditionalFields").empty().html(additionalFields);
 
             $('.basic-single').select2();
-            $("#billDate, #journeyStartDate, #journeyReturnDate").daterangepicker({
+            $("#journeyStartDate, #journeyReturnDate").daterangepicker({
+                singleDatePicker: true,
+                autoUpdateInput: false,
+                drops: 'up'
+            });
+            $("#billDate").daterangepicker({
                 singleDatePicker: true,
                 autoUpdateInput: false
             });
@@ -517,6 +522,29 @@ $(document).ready(function () {
             $("#vehicleType").change(function () {
                 loadFilteredVehicles(this);
             });
+
+            // To automatically calculate Number of days of journey
+            $("#journeyStartDate, #journeyReturnDate").on('apply.daterangepicker', function (ev, picker) {
+                if ($("#journeyStartDate").val() && $("#journeyReturnDate").val()) {
+                    let journeyStartDate = moment($("#journeyStartDate").val(), 'DD-MMM-YYYY');
+                    let journeyReturnDate = moment($("#journeyReturnDate").val(), 'DD-MMM-YYYY');
+                    let journeyNumOfDays = journeyReturnDate.diff(journeyStartDate, 'days') + 1;
+                    $("#journeyNumberOfDays").val(journeyNumOfDays).change();
+                } else {
+                    $("#journeyNumberOfDays").val('').change();
+                }
+            });
+
+            // To auto-calculate bill amount based on number of days and rate
+            $("#ratePerDay, #journeyNumberOfDays").change(function () {
+                if ($("#journeyNumberOfDays").val() && $("#ratePerDay").val()) {
+                    let totalAmount = parseInt($("#journeyNumberOfDays").val()) * parseFloat($("#ratePerDay").val());
+                    $("#billAmount").val(totalAmount).change();
+                } else {
+                    $("#billAmount").val('').change();
+                }
+            });
+
         }
         else if (transType == 7) {
             // Transaction type is for Emission Test charges
@@ -1411,8 +1439,17 @@ function loadEditForm(transactionDetails) {
 
         $("#updateTransactionForm").empty().append(formContent);
 
-        $("#editJourneyStartDate, #editJourneyReturnDate, #editBillDate").daterangepicker({
+        $("#editJourneyStartDate, #editJourneyReturnDate").daterangepicker({
             singleDatePicker: true,
+            drops: 'up',
+            locale: {
+                format: 'DD-MMM-YYYY'
+            },
+            autoUpdateInput: false
+        });
+        $("#editBillDate").daterangepicker({
+            singleDatePicker: true,
+            // drops: 'up',
             locale: {
                 format: 'DD-MMM-YYYY'
             },
@@ -1424,6 +1461,28 @@ function loadEditForm(transactionDetails) {
         // On changing vehicle type, load vehciles of tht type into vehicle select box
         $("#editVehicleType").change(function () {
             loadFilteredVehicles(this);
+        });
+
+        // To automatically calculate Number of days of journey
+        $("#editJourneyStartDate, #editJourneyReturnDate").on('apply.daterangepicker', function (ev, picker) {
+            if ($("#editJourneyStartDate").val() && $("#editJourneyReturnDate").val()) {
+                let journeyStartDate = moment($("#editJourneyStartDate").val(), 'DD-MMM-YYYY');
+                let journeyReturnDate = moment($("#editJourneyReturnDate").val(), 'DD-MMM-YYYY');
+                let journeyNumOfDays = journeyReturnDate.diff(journeyStartDate, 'days') + 1;
+                $("#editJourneyNumberOfDays").val(journeyNumOfDays).change();
+            } else {
+                $("#editJourneyNumberOfDays").val('').change();
+            }
+        });
+
+        // To auto-calculate bill amount based on number of days and rate
+        $("#editRatePerDay, #editJourneyNumberOfDays").change(function () {
+            if ($("#editJourneyNumberOfDays").val() && $("#editRatePerDay").val()) {
+                let totalAmount = parseInt($("#editJourneyNumberOfDays").val()) * parseFloat($("#editRatePerDay").val());
+                $("#editBillAmount").val(totalAmount).change();
+            } else {
+                $("#editBillAmount").val('').change();
+            }
         });
 
     } else if (transType == 7) {

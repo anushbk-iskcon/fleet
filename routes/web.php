@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChargesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\DriverController;
@@ -357,6 +358,15 @@ Route::middleware('auth')->group(function () {
     Route::post('transactions/update', [TransactionController::class, 'updateTransaction'])->name('transactions.update');
     Route::post('transactions/filtered-vehicles', [TransactionController::class, 'getfilteredVehicleList'])->name('transactions.filtered-vehicles');
     /*** END Transaction Module ***/
+
+    /*** START: Charges (FC, Road Tax, Permit) Module ***/
+    Route::get('charges', [ChargesController::class, 'index'])->name('charges.index');
+    Route::post('charges', [ChargesController::class, 'index'])->name('charges.list');
+    Route::post('charges/details', [ChargesController::class, 'getDetails'])->name('charges.details');
+    Route::post('charges/add', [ChargesController::class, 'addCharge'])->name('charges.add');
+    Route::post('charges/update', [ChargesController::class, 'updateCharge'])->name('charges.update');
+    Route::post('charges/filtered-vehicles', [ChargesController::class, 'getFilteredVehicles'])->name('charges.get-filtered-vehicles');
+    /*** END: Charges (FC, Road Tax, Permit) Module ***/
 
     /*** START Reports Module ***/
     Route::get('reports/employees', function () {

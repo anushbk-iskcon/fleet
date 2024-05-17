@@ -32,7 +32,7 @@ class TransactionController extends Controller
 
             $date_from = null;
             $date_to = null;
-            # To convert date times to required fromat as in DB (YYYY-MM-DD)
+            # To convert date times to required format as in DB (YYYY-MM-DD)
             if (isset($filterDateFrom))
                 $date_from = date('Y-m-d', strtotime($filterDateFrom));
             if (isset($filterDateTo))

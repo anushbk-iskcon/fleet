@@ -142,6 +142,13 @@
                             </a>
                         </li>
                         @endif
+                        @if($menuItem->urls == 'charges.index')
+                        <li class="{{Route::is('charges.index') ? 'mm-active' : ''}}">
+                            <a href="{{route($menuItem->urls)}}" class="has-arrow material-ripple">
+                                {!! $menuItem->MENU_TITLE !!}
+                            </a>
+                        </li>
+                        @endif
                         @else
                         @if($checkMenuExist && $checkMenuExist->CAN_READ == 'Y')
                         <li class="">
