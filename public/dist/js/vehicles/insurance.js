@@ -353,19 +353,25 @@ function editInfo(id) {
                         <input name="recurring_date" class="form-control new-datepicker" type="text" placeholder="Recurring Date" id="edit_recurring_date" value="${currentRecurringDate}">
                     </div>
                 </div>
-                <div class="form-group row">
+                <!-- <div class="form-group row">
                     <label for="deductible" class="col-sm-5 col-form-label">Deductible <i class="text-danger">*</i></label>
                     <div class="col-sm-7">
                         <input name="deductible" required="" class="form-control" type="number" placeholder="Deductible" id="deductible" value="${res.DEDUCTIBLE}">
                     </div>
-                </div>
+                </div> -->
                 <div class="form-group row">
                     <label class="col-sm-5 col-form-label">Uploaded Document</label>
-                    <div class="col-sm-7">
-                        <a href="${documentsPath + '/' + res.POLICY_DOCUMENT}" target="_blank" class="btn btn-info">
-                        <i class="fas fa-eye"></i> View Current Document
-                        </a>
-                    </div>
+                    <div class="col-sm-7">`;
+
+            if (res.POLICY_DOCUMENT) {
+                editFormContent += `<a href="${documentsPath + '/' + res.POLICY_DOCUMENT}" target="_blank" class="btn btn-info">
+                    <i class="fas fa-eye"></i> View Current Document
+                </a>`;
+            } else {
+                editFormContent += `<div class="mt-2">No document uploaded</div>`;
+            }
+
+            editFormContent += `</div>
                 </div>
                 <div class="form-group row">
                     <label for="policy_document" class="col-sm-5 col-form-label">Upload New Policy Document</label>
@@ -378,8 +384,8 @@ function editInfo(id) {
                     <button type="reset" class="btn btn-primary w-md m-b-5" id="resetEditInsFormBtn">Reset</button>
                     <button type="submit" class="btn btn-success w-md m-b-5">Save</button>
                 </div>
-            </div>
-            </form>`;
+            </div >
+            </form > `;
 
             $("#edit .modal-body").html(editFormContent);
             $("#editInsuranceDetailsForm .basic-single").select2();

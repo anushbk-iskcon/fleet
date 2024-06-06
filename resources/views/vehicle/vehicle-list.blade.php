@@ -205,6 +205,12 @@
                                 <input type="text" placeholder="CC" name="cc" id="cc" class="form-control">
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="cc" class="col-sm-5 col-form-label">Rate per KM (INR)</label>
+                            <div class="col-sm-7">
+                                <input type="number" placeholder="Rate per KM (INR)" name="rate_per_km" id="ratePerKm" class="form-control">
+                            </div>
+                        </div>
                         <div class="form-group text-right">
                             <button type="reset" id="resetAddVehicleBtn" class="btn btn-primary w-md m-b-5">Reset</button>
                             <button type="submit" class="btn btn-success w-md m-b-5">Add</button>
@@ -361,6 +367,12 @@
                             <label for="" class="col-sm-5 col-form-label">CC</label>
                             <div class="col-sm-7">
                                 <input type="text" name="cc" id="new_cc" class="form-control" placeholder="CC">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="" class="col-sm-5 col-form-label">Rate per KM (INR)</label>
+                            <div class="col-sm-7">
+                                <input type="text" name="rate_per_km" id="newRatePerKM" class="form-control" placeholder="Rate per KM (INR)">
                             </div>
                         </div>
                         <div class="form-group text-right">
@@ -685,6 +697,38 @@
             });
         });
 
+        // On selecting vehicle type in Add Form, set rate
+        $("#vehicle_type").change(function() {
+            let vehicle_type = $("#vehicle_type").val();
+            let ratePerKM = '';
+            // The switch case values are select option values. Since they are strings and switch does strict comparison (===),
+            // string values are used for each case
+            // CURRENTLY: For Auto (1): INR 20 per KM, For Car (2, 3, 4, 5, 8): INR 25 per KM
+            switch (vehicle_type) {
+                case '1':
+                    ratePerKM = 20;
+                    break;
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '8':
+                    ratePerKM = 25;
+                    break;
+                default:
+                    ratePerKM = '';
+            }
+
+            $("#ratePerKm").val(ratePerKM);
+            // if ($("#vehicle_type").val() == 1)
+            //     $("#ratePerKm").val(20);
+
+            // else if ($("#vehicle_type").val() == 2 || $("#vehicle_type").val() == 3 || $("#vehicle_type").val() == 4 || $("#vehicle_type").val() == 5)
+            //     $("#ratePerKm").val(25);
+            // else
+            //     $("#ratePerKm").val('');
+        });
+
         // Validate and submit Add Vehicle Form
         $("#addVehicleForm").validate({
             rules: {
@@ -821,6 +865,33 @@
                 $(this).val('');
             });
         });
+
+        // On selecting vehicle type in EDIT Form, set rate
+        $("#new_vehicle_type").change(function() {
+            let vehicle_type = $("#new_vehicle_type").val();
+            let ratePerKM = '';
+
+            // The variable used for switch case is the select value of the selected option. Since switch does strict comparison,
+            // The case values are strings
+            // CURRENTLY: For Auto (1): INR 20 per KM, For Car (2, 3, 4, 5, 8): INR 25 per KM
+            switch (vehicle_type) {
+                case '1':
+                    ratePerKM = 20;
+                    break;
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '8':
+                    ratePerKM = 25;
+                    break;
+                default:
+                    ratePerKM = '';
+            }
+
+            $("#newRatePerKM").val(ratePerKM);
+        });
+
 
         // Validate and submit Edit Vehicle Form for Updating Details
         $("#editVehicleForm").validate({
@@ -1144,6 +1215,8 @@
                     let uvw = res.data.UVW ? res.data.UVW : '';
                     let cc = res.data.CC ? res.data.CC : '';
                     let vehicleValue = res.data.VEHICLE_VALUE ? res.data.VEHICLE_VALUE : '';
+                    let ratePerKm = res.data.RATE_PER_KM ? res.data.RATE_PER_KM : '';
+
                     $("#new_vehicle_name").val(res.data.VEHICLE_NAME);
                     $("#new_vehicle_type").val(res.data.VEHICLE_TYPE_ID);
 
@@ -1169,6 +1242,7 @@
                     $("#new_vehicle_value").val(vehicleValue);
                     $("#new_uvw").val(uvw);
                     $("#new_cc").val(cc);
+                    $("#newRatePerKM").val(ratePerKm);
                 } else {
                     console.log("Could not fetch details");
                     $("#edit").modal('hide');

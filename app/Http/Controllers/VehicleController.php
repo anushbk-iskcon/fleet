@@ -117,6 +117,8 @@ class VehicleController extends Controller
     {
         $vehicle = new Vehicle;
 
+        // dd($request->all());
+
         $vehicle->VEHICLE_NAME = $request->vehicle_name;
         $vehicle->VEHICLE_TYPE_ID = $request->vehicle_type;
 
@@ -149,6 +151,9 @@ class VehicleController extends Controller
         $vehicle->OWNERSHIP_NAME = $ownershipArray[1];
         $vehicle->EMPLOYEE_ID = '';
         $vehicle->EMPLOYEE_NAME = '';
+
+        $vehicle->RATE_PER_KM = $request->rate_per_km ?? 0.00;
+
         $vehicle->CREATED_BY = Auth::user()->USER_ID;
 
         $added = $vehicle->save();
@@ -221,6 +226,9 @@ class VehicleController extends Controller
         $vehicle->VEHICLE_VALUE = $request->vehicle_value;
         $vehicle->UVW = $request->uvw ?? 0;
         $vehicle->CC = $request->cc ?? 0;
+
+        if (isset($request->rate_per_km) && (!empty($request->rate_per_km)))
+            $vehicle->RATE_PER_KM = $request->rate_per_km;
 
         // $vehicle->IS_ACTIVE = 'Y';
         $vehicle->MODIFIED_BY = Auth::user()->USER_ID;

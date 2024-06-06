@@ -89,6 +89,8 @@ class InsuranceController extends Controller
             $uploadDestination = public_path('/upload/documents/insurance/');
             $file->move($uploadDestination, $fileName);
             $insurance->POLICY_DOCUMENT = $fileName;
+        } else {
+            $insurance->POLICY_DOCUMENT = '';
         }
 
         $insurance->CREATED_BY = Auth::user()->USER_ID;
@@ -136,7 +138,9 @@ class InsuranceController extends Controller
 
         if ($request->has('remarks'))
             $insurance->REMARKS = $request->remarks;
-        $insurance->DEDUCTIBLE = $request->deductible;
+
+        if ($request->has('deductible'))
+            $insurance->DEDUCTIBLE = $request->deductible; # Have Been Asked to remove this filed in the form
 
         // To upload insurance policy document if new document is attached
         if ($request->hasFile('policy_document')) {

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use stdClass;
 
 class VehicleController extends Controller
 {
@@ -34,15 +35,14 @@ class VehicleController extends Controller
                 return response()->json($this->apiResponse);
             }
 
-            $data = [];
+            $data = new stdClass;
             $checkvehicle = Vehicle::where('LICENSE_PLATE', 'LIKE', '%' . $request->vehicle_number)->first();
             if ($checkvehicle) {
                 // TO DO: Add vehicle type if needed after checking and comparing against master table
-                $data[] = [
-                    'VEHICLE_TYPE' => 'CAR',
-                    'VEHICLE_NUMBER' => strlen($request->vehicle_number) > 4 ? substr($request->vehicle_number, -4) : $request->vehicle_number,
-                    'FULL_VEHICLE_NUMBER' => $checkvehicle->LICENSE_PLATE
-                ];
+                $data->VEHICLE_TYPE = 'CAR';
+                $data->VEHICLE_NUMBER = strlen($request->vehicle_number) > 4 ? substr($request->vehicle_number, -4) : $request->vehicle_number;
+                $data->FULL_VEHICLE_NUMBER = $checkvehicle->LICENSE_PLATE;
+
                 $this->apiResponse['successCode'] = 1;
                 $this->apiResponse['message'] = 'Successful';
                 $this->apiResponse['data'] = $data;
@@ -57,7 +57,7 @@ class VehicleController extends Controller
         } catch (\Exception $e) {
             $this->apiResponse['successCode'] = 0;
             $this->apiResponse['message'] = 'Error! Please Try Again';
-            $this->apiResponse['data'] = [];
+            $this->apiResponse['data'] = $data;
 
             return response()->json($this->apiResponse);
         }

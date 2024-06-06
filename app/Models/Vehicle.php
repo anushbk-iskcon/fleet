@@ -39,6 +39,7 @@ class Vehicle extends Model
         'VEHICLE_VALUE',
         'UVW',
         'CC',
+        'RATE_PER_KM',
         'IS_ACTIVE',
         'CREATED_BY',
         'CREATED_ON',

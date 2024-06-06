@@ -991,6 +991,9 @@ function loadEditForm(transactionDetails) {
 
         $("#updateTransactionForm").empty().append(formContent);
 
+        // Enable Select2 on Edit Form
+        $("#updateTransactionForm .basic-single").select2();
+
         $("#editBillDate").daterangepicker({
             singleDatePicker: true,
             locale: {
@@ -1130,6 +1133,9 @@ function loadEditForm(transactionDetails) {
         </div>`;
 
         $("#updateTransactionForm").empty().append(formContent);
+
+        // Enable Select2 on Edit Form
+        $("#updateTransactionForm .basic-single").select2();
 
         // Enable Date picker
         $("#editBillDate").daterangepicker({
@@ -1273,6 +1279,9 @@ function loadEditForm(transactionDetails) {
         </div>`;
 
         $("#updateTransactionForm").empty().append(formContent);
+
+        // Enable Select2 on Edit Form
+        $("#updateTransactionForm .basic-single").select2();
 
         // Enable Date picker
         $("#editBillDate").daterangepicker({
@@ -1439,6 +1448,9 @@ function loadEditForm(transactionDetails) {
 
         $("#updateTransactionForm").empty().append(formContent);
 
+        // Enable Select2 on Edit Form
+        $("#updateTransactionForm .basic-single").select2();
+
         $("#editJourneyStartDate, #editJourneyReturnDate").daterangepicker({
             singleDatePicker: true,
             drops: 'up',
@@ -1446,6 +1458,9 @@ function loadEditForm(transactionDetails) {
                 format: 'DD-MMM-YYYY'
             },
             autoUpdateInput: false
+        });
+        $("#editJourneyStartDate, #editJourneyReturnDate").on('apply.daterangepicker', function (ev, picker) {
+            $(this).val(picker.startDate.format('DD-MMM-YYYY'));
         });
         $("#editBillDate").daterangepicker({
             singleDatePicker: true,
