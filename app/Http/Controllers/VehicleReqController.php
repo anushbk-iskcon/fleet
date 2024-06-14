@@ -134,11 +134,11 @@ class VehicleReqController extends Controller
                     if ($row['DRIVER_ID']) {
                         $btn .= '<a data-driverid="' . $row['DRIVER_ID'] . '" data-id="' . $row['VEHICLE_REQ_ID'] . '" data-toggle="modal" data-target="#driverModal" style="cursor:pointer;color:#fff;"
                         class="btn btn-success btn-sm mr-1 driver-modal" data-toggle="tooltip"
-                        data-placement="left" title="Update"><i class="ti-user"></i></a>';
+                        data-placement="left" title="Update Driver"><i class="ti-user"></i></a>';
                     } else {
                         $btn .= '<a data-driverid="" data-id="' . $row['VEHICLE_REQ_ID'] . '" data-toggle="modal" data-target="#driverModal" style="cursor:pointer;color:#fff;"
                         class="btn  btn-danger btn-sm mr-1 driver-modal" data-toggle="tooltip"
-                        data-placement="left" title="Update"><i class="ti-user"></i></a>';
+                        data-placement="left" title="Update Driver"><i class="ti-user"></i></a>';
                     }
                     if ($row['STATUS'] == 'P') {
                         $btn .= '<div class="text-right" style="display:inline-block;">
@@ -194,8 +194,8 @@ class VehicleReqController extends Controller
                 'USER_ENTITY_NAME' => $user_entity_name,
                 'VEHICLE_TYPE_ID' => $request->vehicle_type,
                 'TRIP_TYPE' => $request->trip_type,
-                'WHERE_FROM' => $request->where_fr,
-                'WHERE_TO' => $request->where_to,
+                'WHERE_FROM' => $request->where_fr ?? '',
+                'WHERE_TO' => $request->where_to ?? '',
                 'PICK_UP' => $request->pickup,
                 'REQUISITION_DATE' => date('Y-m-d', strtotime($request->req_date)),
                 'TIME_FROM' => date('H:i', strtotime($request->time_fr)),
@@ -264,8 +264,8 @@ class VehicleReqController extends Controller
                 'USER_ENTITY_NAME' => $user_entity_name,
                 'VEHICLE_TYPE_ID' => $request->vehicle_type,
                 'TRIP_TYPE' => $request->trip_type,
-                'WHERE_FROM' => $request->where_fr,
-                'WHERE_TO' => $request->where_to,
+                'WHERE_FROM' => $request->where_fr ?? '',
+                'WHERE_TO' => $request->where_to ?? '',
                 'PICK_UP' => $request->pickup,
                 'REQUISITION_DATE' => date('Y-m-d', strtotime($request->req_date)),
                 'TIME_FROM' => date('H:i', strtotime($request->time_fr)),

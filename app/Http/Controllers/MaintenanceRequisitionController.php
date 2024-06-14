@@ -434,7 +434,7 @@ class MaintenanceRequisitionController extends Controller
                 DB::table('maintenance_req_items')->insert([
                     'MAINTENANCE_REQ_ID' => $mainten_req_id,
                     'ITEM_TYPE_NAME' => $items[$i],
-                    'ITEM_NAME' => $item_names[$i],
+                    'ITEM_NAME' => $item_names[$i] ?? '',
                     'UNITS' => $qty[$i],
                     'UNIT_PRICE' => $rates[$i],
                     'WARRANTY_DATE' => $warranty,

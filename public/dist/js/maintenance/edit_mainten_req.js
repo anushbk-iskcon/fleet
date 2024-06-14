@@ -61,7 +61,18 @@ $(document).ready(function () {
         },
         submitHandler: function (form, ev) {
             ev.preventDefault();
-            form.submit();
+
+            let formFullyValid = true;
+
+            $("#editMaintenRequisitionForm input[id^=product_name_], #editMaintenRequisitionForm input[id^=cartoon_], #editMaintenRequisitionForm input[id^=product_rate_]")
+                .each(function () {
+                    if (!$(this).valid())
+                        formFullyValid = false;
+                });
+
+            if (formFullyValid)
+                form.submit();
+
         }
     });
 
@@ -143,20 +154,20 @@ function addmore(divName) {
         newdiv.innerHTML =
             '<td class="span3 supplier" style="position:relative">' +
             '<input type="hidden" name="item_id[]" value="">' +
-            '<input type="text" name="product_name[]" required class="form-control product_name productSelection" onkeypress="getexpenceitem(' +
+            '<input type="text" name="product_name[]" required data-rule-required="true" class="form-control product_name productSelection required" onkeypress="getexpenceitem(' +
             count + ');" placeholder="Item Type Name" id="product_name_' + count + '" tabindex="' + tab1 +
             '" autocomplete="off" > <input type="hidden" class="autocomplete_hidden_value product_id_' + count +
             '" name="product_id[]" id="SchoolHiddenId"/>  <input type="hidden" class="sl" value="' + count +
             '">  </td><td class="wt" style="position:relative;"><input type="text" id="itemname_' + count +
             '" class="form-control text-right pitem" name="pitem[]" onkeypress="getpitem(' + count +
-            ')"></td><td class="text-right"><input type="number" name="product_quantity[]" tabindex="' + tab2 +
-            '" required  id="cartoon_' + count + '" class="form-control pqty text-right store_cal_' + count +
+            ')"></td><td class="text-right"><input type="number" name="product_quantity[]" data-rule-required="true" tabindex="' + tab2 +
+            '" required  id="cartoon_' + count + '" class="form-control pqty required text-right store_cal_' + count +
             '" onkeyup="calculate_store(' + count + ');" onchange="calculate_store(' + count +
             ');" placeholder="0.00" value="" min="0"/>  </td>' +
             '<td class=""><input type="text" class="form-control datepicker2" name="product_warranty[]" placeholder="Warranty Date"></td>' +
             '<td class="test text-right"><input type="number" name="product_rate[]" onkeyup="calculate_store(' +
-            count + ');" onchange="calculate_store(' + count + ');" required id="product_rate_' + count +
-            '" class="form-control product_rate product_rate_' + count +
+            count + ');" onchange="calculate_store(' + count + ');" required data-rule-required="true" id="product_rate_' + count +
+            '" class="form-control required product_rate product_rate_' + count +
             ' text-right" placeholder="0.00" value="" min="0" tabindex="' + tab3 +
             '"/></td><td class="text-right"><input class="form-control total_price text-right total_price_' + count +
             '" type="text" name="total_price[]" id="total_price_' + count +
@@ -185,6 +196,14 @@ function addmore(divName) {
         $('.datepicker2').on('cancel.daterangepicker', function (ev, picker) {
             $(this).val('');
         });
+
+        let productName = "#product_name_" + count;
+        let productQty = "#cartoon_" + count;
+        let unitPrice = "#product_rate_" + count;
+        $(productName).rules('add', { required: true });
+        $(productQty).rules('add', { required: true });
+        $(unitPrice).rules('add', { required: true });
+        // $(productName).valid();
 
         count++;
 
@@ -247,3 +266,16 @@ function getexpenceitem(i) {
 }
 
 function getpitem(i) { }
+
+// function resetFormValidator(formId) {
+//     $(formId).removeData('validator');
+//     $(formId).removeData('unobtrusiveValidation');
+//     $.validator.unobtrusive.parse(formId);
+// }
+
+// function reinitFormValidation() {
+//     var validator = $("#editMaintenRequisitionForm").validate();
+//     validator.destroy();
+//     $("#editMaintenRequisitionForm").validate();
+//     console.log("Re-initialized");
+// }

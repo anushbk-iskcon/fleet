@@ -299,7 +299,6 @@
 @endsection
 
 @section('js-content')
-<!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/maintenance_edit.js"></script> -->
 <script>
     let csrfToken = '{{csrf_token()}}';
     let uploadDocumentsPath = "{{asset('public/upload/documents/maintenance/')}}";

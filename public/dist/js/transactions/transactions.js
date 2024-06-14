@@ -1158,7 +1158,7 @@ function loadEditForm(transactionDetails) {
 
     else if (transType == 4) {
         // 4 for Hire Charges
-        // Add CSRF token and Transaction Type
+        // Add CSRF token and Transaction ID & Type
         formContent = `<input type="hidden" name="_token" value="${csrfToken}">`;
         formContent += `<input type="hidden" name="transaction_id" value="${transactionDetails.TRANSACTION_ID}">`;
         formContent += `<div class="row">
@@ -1303,8 +1303,9 @@ function loadEditForm(transactionDetails) {
 
     else if (transType == 5) {
         // 5 For Tour Bata Expenses
-        // Add CSRF token and Transaction Type
+        // Add CSRF token and Transaction ID to update & Type
         formContent = `<input type="hidden" name="_token" value="${csrfToken}">`;
+        formContent += `<input type="hidden" name="transaction_id" value="${transactionDetails.TRANSACTION_ID}">`;
         formContent += `<div class="row">
         <div class="col-md-12 col-lg-6">
         <div class="form-group row">
@@ -1502,8 +1503,9 @@ function loadEditForm(transactionDetails) {
 
     } else if (transType == 7) {
         // 7 For Emission test Charges
-        // Add CSRF token and Transaction Type
+        // Add CSRF token and Transaction ID, Type
         formContent = `<input type="hidden" name="_token" value="${csrfToken}">`;
+        formContent += `<input type="hidden" name="transaction_id" value="${transactionDetails.TRANSACTION_ID}">`;
         formContent += `<div class="row">
         <div class="col-md-12 col-lg-6">
         <div class="form-group row">

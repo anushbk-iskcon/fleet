@@ -315,8 +315,7 @@ function editInfo(id) {
                         <textarea name="remarks" id="edit_remarks" class="form-control" placeholder="Remarks" cols="30" rows="3" value="${res.REMARKS}"></textarea>
                     </div>
                 </div>
-            </div>
-            `;
+            </div>`;
 
             editFormContent += `<div class="col-md-12 col-lg-6">
                 <div class="form-group row">
@@ -384,8 +383,8 @@ function editInfo(id) {
                     <button type="reset" class="btn btn-primary w-md m-b-5" id="resetEditInsFormBtn">Reset</button>
                     <button type="submit" class="btn btn-success w-md m-b-5">Save</button>
                 </div>
-            </div >
-            </form > `;
+            </div>
+            </form>`;
 
             $("#edit .modal-body").html(editFormContent);
             $("#editInsuranceDetailsForm .basic-single").select2();

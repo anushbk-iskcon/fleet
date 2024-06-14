@@ -266,13 +266,13 @@
                         <div class="form-group row">
                             <label for="where_fr" class="col-sm-5 col-form-label">Where From </label>
                             <div class="col-sm-7">
-                                <input name="where_fr" required="" class="form-control" type="text" placeholder="Where From" id="where_fr">
+                                <input name="where_fr" class="form-control" type="text" placeholder="Where From" id="where_fr">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="where_to" required="" class="col-sm-5 col-form-label">Where To </label>
                             <div class="col-sm-7">
-                                <input name="where_to" required="" class="form-control" type="text" placeholder="Where To" id="where_to">
+                                <input name="where_to" class="form-control" type="text" placeholder="Where To" id="where_to">
                             </div>
                         </div>
 
@@ -287,7 +287,7 @@
                         <div class="form-group row">
                             <label for="req_date" class="col-sm-5 col-form-label">Requisition Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="req_date" class="form-control vnewdatetimepicker" autocomplete="off" type="date" placeholder="Requisition Date" id="req_date">
+                                <input name="req_date" class="form-control vnewdatetimepicker" autocomplete="off" type="text" placeholder="Requisition Date" id="req_date">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -515,13 +515,13 @@
                         <div class="form-group row">
                             <label for="where_fr2" class="col-sm-5 col-form-label">Where From </label>
                             <div class="col-sm-7">
-                                <input name="where_fr" required="" class="form-control" type="text" placeholder="Where From" id="where_fr2">
+                                <input name="where_fr" class="form-control" type="text" placeholder="Where From" id="where_fr2">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="where_to2" required="" class="col-sm-5 col-form-label">Where To </label>
                             <div class="col-sm-7">
-                                <input name="where_to" required="" class="form-control" type="text" placeholder="Where To" id="where_to2">
+                                <input name="where_to" class="form-control" type="text" placeholder="Where To" id="where_to2">
                             </div>
                         </div>
 
@@ -538,7 +538,7 @@
                         <div class="form-group row">
                             <label for="req_date2" class="col-sm-5 col-form-label">Requisition Date <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <input name="req_date" class="form-control vnewdatetimepicker" autocomplete="off" type="date" placeholder="Requisition Date" id="req_date2">
+                                <input name="req_date" class="form-control vnewdatetimepicker" autocomplete="off" type="text" placeholder="Requisition Date" id="req_date2">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -768,12 +768,30 @@
             //     }
             // });
 
+            // Enable datepicker for Requisition Date
+            $("#req_date").daterangepicker({
+                singleDatePicker: true,
+                autoUpdateInput: false,
+                parentEl: '#add',
+                showDropdowns: true,
+                locale: {
+                    format: 'DD-MMM-YYYY'
+                }
+            });
+            $("#req_date").on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('DD-MMM-YYYY')).change();
+            });
+            $("#req_date").on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val('').change();
+            });
+
             $("#time_fr").daterangepicker({
                 singleDatePicker: true,
                 timePicker: true,
                 timePicker24Hour: false,
                 timePickerIncrement: 1,
                 autoUpdateInput: false,
+                parentEl: '#add',
                 "locale": {
                     "format": "hh:mm A",
                     cancelLabel: 'Clear'
@@ -796,6 +814,7 @@
                 timePicker24Hour: false,
                 timePickerIncrement: 1,
                 autoUpdateInput: false,
+                parentEl: '#add',
                 "locale": {
                     "format": "hh:mm A",
                     cancelLabel: 'Clear'
@@ -1274,7 +1293,7 @@
                     $('#where_fr2').val(res.WHERE_FROM);
                     $('#where_to2').val(res.WHERE_TO);
                     $('#pickup2').val(res.PICK_UP);
-                    $('#req_date2').val(res.REQUISITION_DATE);
+                    $('#req_date2').val(moment(res.REQUISITION_DATE).format('DD-MMM-YYYY'));
                     let reqTimeFrom = moment(res.TIME_FROM, 'HH:mm:ss');
                     $('#time_fr2').val(moment(res.TIME_FROM, 'HH:mm:ss').format('LT'));
                     let reqTimeTo = moment(res.TIME_TO, 'HH:mm:ss');
@@ -1401,12 +1420,31 @@
         });
 
         $("#edit").on('shown.bs.modal', function() {
+            // Enable datepicker for Requisition Date
+            $("#req_date2").daterangepicker({
+                singleDatePicker: true,
+                autoUpdateInput: true,
+                parentEl: '#edit',
+                showDropdowns: true,
+                locale: {
+                    format: 'DD-MMM-YYYY'
+                }
+            });
+
+            $("#req_date2").on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('DD-MMM-YYYY')).change();
+            });
+            $("#req_date2").on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val('').change();
+            });
+
             $("#time_fr2").daterangepicker({
                 singleDatePicker: true,
                 timePicker: true,
                 timePicker24Hour: false,
                 timePickerIncrement: 1,
                 autoUpdateInput: false,
+                parentEl: '#edit',
                 "locale": {
                     "format": "hh:mm A",
                     cancelLabel: 'Clear'
@@ -1429,6 +1467,7 @@
                 timePicker24Hour: false,
                 timePickerIncrement: 1,
                 autoUpdateInput: false,
+                parentEl: '#edit',
                 "locale": {
                     "format": "hh:mm A",
                     cancelLabel: 'Clear'
