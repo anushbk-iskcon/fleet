@@ -326,7 +326,7 @@
                         <div class="form-group row justify-content-end">
                             <label for="purpose" class="col-sm-5 col-form-label">Vehicle <i class="text-danger">*</i></label>
                             <div class="col-sm-7">
-                                <select class="form-control basic-single" required="" name="vehicle" id="vehicle">
+                                <select class="form-control basic-single" required="" name="vehicle" id="vehicle" disabled>
                                     <option value="" selected="selected">Please Select One</option>
 
                                 </select>
@@ -890,7 +890,7 @@
             });
         }
 
-        // To show Driver Name coonected to vehicle on changing vehicle
+        // To show Driver Name connected to vehicle on changing vehicle
         $("#vehicle").change(function() {
             // console.log($("#vehicle").find(":selected").attr('data-driver-name'));
 
@@ -1046,6 +1046,16 @@
             }
         });
 
+        $("#req_date").change(function() {
+            if ($("#req_date").val() && $("#time_fr").val() && $("#time_to").val() && $("#vehicle_type").val()) {
+                $("#vehicle").prop('disabled', false);
+            } else {
+                $("#vehicle").prop('disabled', true);
+            }
+
+            getVehicle();
+        })
+
         // On changing Requisition From Time in ADD Form, if To Time is also present, calculate and set Total Tolerance Duration
         $("#time_fr").change(function() {
             if ($("#time_to").val() && $(this).valid() && $("#time_to").valid()) {
@@ -1055,6 +1065,15 @@
                 let toleranceDurString = padZero(toleranceHours) + ':' + padZero(toleranceMinutes);
                 $("#tolerance").val(toleranceDurString);
             }
+
+            // To enable/disable vehicle selection
+            if ($("#req_date").val() && $("#time_fr").val() && $("#time_to").val() && $("#vehicle_type").val()) {
+                $("#vehicle").prop('disabled', false);
+            } else {
+                $("#vehicle").prop('disabled', true);
+            }
+
+            getVehicle();
         });
 
         // On changing Requistion To Time in ADD Form, if Time From is present, calculate the tolerance duration as above
@@ -1066,6 +1085,15 @@
                 let toleranceDurString = padZero(toleranceHours) + ':' + padZero(toleranceMinutes);
                 $("#tolerance").val(toleranceDurString);
             }
+
+            // To enable/disable vehicle selection
+            if ($("#req_date").val() && $("#time_fr").val() && $("#time_to").val() && $("#vehicle_type").val()) {
+                $("#vehicle").prop('disabled', false);
+            } else {
+                $("#vehicle").prop('disabled', true);
+            }
+
+            getVehicle();
         });
 
         $("#form").validate({
@@ -1289,6 +1317,7 @@
                     $("#userEntityCode2").val(selectedUserEntityVal).trigger('change');
                     $("#userDivisionHead2").val(res.HOD_EMPLOYEE_ID).trigger('change');
                     $("#editReqUserHODName").val(res.HOD_EMPLOYEE_NAME);
+                    $('#vehicle_type2').val(res.VEHICLE_TYPE_ID).trigger('change');
                     $("#tripType2").val(res.TRIP_TYPE);
                     $('#where_fr2').val(res.WHERE_FROM);
                     $('#where_to2').val(res.WHERE_TO);
@@ -1309,8 +1338,10 @@
                     } else {
                         $('#aloc_checkbox2').prop('checked', false);
                     }
-                    $('#vehicle_type2').val(res.VEHICLE_TYPE_ID).trigger('change');
-                    $('#vehicle2').val(res.VEHICLE_ID).trigger('change');
+
+                    setTimeout(() => {
+                        $('#vehicle2').val(res.VEHICLE_ID).trigger('change');
+                    }, 100);
                     $("#vehicle2").attr('data-og-selection', res.VEHICLE_ID);
                     $('#nunpassenger2').attr('max', res.max_num);
 
@@ -1358,38 +1389,20 @@
                         }
                     });
 
-                    // $("#time_fr2").timepicker({
-                    //     showInputs: false,
-                    //     minuteStep: 1,
-                    //     icons: {
-                    //         up: 'fas fa-chevron-up',
-                    //         down: 'fas fa-chevron-down'
-                    //     }
-                    // });
-                    // $("#time_to2").timepicker({
-                    //     showInputs: false,
-                    //     minuteStep: 1,
-                    //     icons: {
-                    //         up: 'fas fa-chevron-up',
-                    //         down: 'fas fa-chevron-down'
-                    //     }
-                    // });
-
                 }
             });
         });
         $('body').on('change', '#vehicle_type', function() {
             getVehicle();
+
+            // To enable/disable vehicle selection
+            if ($("#req_date").val() && $("#time_fr").val() && $("#time_to").val() && $("#vehicle_type").val()) {
+                $("#vehicle").prop('disabled', false);
+            } else {
+                $("#vehicle").prop('disabled', true);
+            }
         });
-        $('body').on('click', '#req_date', function() {
-            getVehicle();
-        });
-        $('body').on('click', '#time_fr', function() {
-            getVehicle();
-        });
-        $('body').on('click', '#time_to', function() {
-            getVehicle();
-        });
+
         $('body').on('click', '#aloc_checkbox', function() {
             if ($('#aloc_checkbox').is(':checked') == true) {
                 $('#checkValue').val('1');
@@ -1409,15 +1422,7 @@
         $('body').on('change', '#vehicle_type2', function() {
             geteditVehicle();
         });
-        $('body').on('click', '#req_date2', function() {
-            geteditVehicle();
-        });
-        $('body').on('click', '#time_fr2', function() {
-            geteditVehicle();
-        });
-        $('body').on('click', '#time_to2', function() {
-            geteditVehicle();
-        });
+
 
         $("#edit").on('shown.bs.modal', function() {
             // Enable datepicker for Requisition Date
@@ -1433,6 +1438,8 @@
 
             $("#req_date2").on('apply.daterangepicker', function(ev, picker) {
                 $(this).val(picker.startDate.format('DD-MMM-YYYY')).change();
+
+                geteditVehicle();
             });
             $("#req_date2").on('cancel.daterangepicker', function(ev, picker) {
                 $(this).val('').change();
@@ -1456,6 +1463,8 @@
 
             $('#time_fr2').on('apply.daterangepicker', function(ev, picker) {
                 $(this).val(picker.startDate.format('hh:mm A')).trigger('change');
+
+                geteditVehicle();
             });
             $('#time_fr2').on('cancel.daterangepicker', function(ev, picker) {
                 $(this).val('').trigger('change');
@@ -1479,6 +1488,8 @@
 
             $('#time_to2').on('apply.daterangepicker', function(ev, picker) {
                 $(this).val(picker.startDate.format('hh:mm A')).trigger('change');
+
+                geteditVehicle();
             });
             $('#time_to2').on('cancel.daterangepicker', function(ev, picker) {
                 $(this).val('').trigger('change');
@@ -1548,26 +1559,35 @@
                 },
                 success: function(res) {
                     $('#vehicle2').html(res);
-                    $.ajax({
-                        url: '{{route("get.req.data")}}',
-                        type: 'get',
-                        dataType: 'json',
-                        data: {
-                            req_id: id,
-                        },
-                        beforeSend: function() {
-                            $('.customloader').show();
-                        },
-                        success: function(res) {
-                            $('#vehicle2').val(res.VEHICLE_ID).trigger('change');
-                            $('.customloader').hide();
-                        },
-                        error: function() {
-                            toastr.error("Could not load vehicles. Please try again", '', {
-                                closeButton: true
-                            });
-                        }
-                    });
+
+                    let ogSelection = $("#vehicle2").attr('data-og-selection');
+
+                    if ($("#vehicle2 option[value='" + ogSelection + "']").length > 0) {
+                        $('#vehicle2').val(ogSelection).change();
+                    }
+                    // $.ajax({
+                    //     url: '{{route("get.req.data")}}',
+                    //     type: 'get',
+                    //     dataType: 'json',
+                    //     data: {
+                    //         req_id: id,
+                    //     },
+                    //     beforeSend: function() {
+                    //         $('.customloader').show();
+                    //     },
+                    //     success: function(res) {
+                    //         $('#vehicle2').val(res.VEHICLE_ID).trigger('change');
+                    //         $('.customloader').hide();
+                    //     },
+                    //     error: function() {
+                    //         toastr.error("Could not load vehicles. Please try again", '', {
+                    //             closeButton: true
+                    //         });
+                    //     }
+                    // });
+                },
+                complete: function() {
+                    $('.customloader').hide();
                 }
             });
         }

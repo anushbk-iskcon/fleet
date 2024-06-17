@@ -424,35 +424,69 @@ class VehicleReqController extends Controller
         $frmt = ($request->frmt) ?  \Carbon\Carbon::parse($request->frmt)->toTimeString() : '';
         $tot = ($request->tot) ?  \Carbon\Carbon::parse($request->tot)->toTimeString() : '';
         $checked = $request->checked;
+
         if ($checked == 'true') {
             $getVehicle = Vehicle::where(['VEHICLE_TYPE_ID' => $type, 'vehicles.IS_ACTIVE' => 'Y'])
                 ->leftJoin('drivers', 'vehicles.DRIVER_ID', '=', 'drivers.DRIVER_ID')
                 ->select('drivers.DRIVER_NAME', 'vehicles.*')
                 ->get();
         } else {
-            $existingVehicleIds = VehicleRequisition::where('VEHICLE_TYPE_ID', $type)
-                ->when($rdate, function ($query, $rdate) {
-                    $query->where('REQUISITION_DATE', date('Y-m-d', strtotime($rdate)));
-                })
-                ->when($frmt, function ($query, $frmt) {
-                    // $query->where(function ($subQuery) use ($frmt) {
-                    //     $subQuery->whereTime('TIME_FROM', '>=', $frmt);
-                    // });
-                    $query->whereTime('TIME_FROM', '>=', $frmt);
-                })
-                ->when($tot, function ($query, $tot) {
-                    // $query->orWhere(function ($subQuery) use ($tot) {
-                    //     $subQuery->whereTime('TIME_TO', '<=', $tot);
-                    // });
-                    $query->whereTime('TIME_TO', '<=', $tot);
-                })
+            if (empty($frmt) && empty($tot)) {
+                $existingVehicleIds = VehicleRequisition::where('VEHICLE_TYPE_ID', $type)
+                    ->where('REQUISITION_DATE', date('Y-m-d', strtotime($rdate)))
+                    ->where('STATUS', '!=', 'R')
+                    ->pluck('VEHICLE_ID')
+                    ->toArray();
+            } else {
+                $existingVehicleIds = VehicleRequisition::where('VEHICLE_TYPE_ID', $type)
+                    ->where('REQUISITION_DATE', date('Y-m-d', strtotime($rdate)))
+                    ->where(function ($query) use ($frmt, $tot) {
+                        $query->where(function ($subQuery) use ($frmt, $tot) {
+                            $subQuery->whereTime('TIME_FROM', '<=', $frmt)
+                                ->whereTime('TIME_TO', '>=', $frmt);
+                        })
+                            ->orWhere(function ($subQuery) use ($frmt, $tot) {
+                                $subQuery->whereTime('TIME_FROM', '<=', $tot)
+                                    ->whereTime('TIME_TO', '>=', $tot);
+                            });
+                    })
+                    ->where('STATUS', '!=', 'R')
+                    // ->toSql();
+                    // dd($existingVehicleIds);
+                    ->pluck('VEHICLE_ID')
+                    ->toArray();
 
-                ->where('STATUS', '!=', 'R')
-                ->pluck('VEHICLE_ID')
-                ->toArray();
+                //dd($existingVehicleIds);
+                // $existingVehicleIds = VehicleRequisition::where('VEHICLE_TYPE_ID', $type)
+                //     ->when($rdate, function ($query, $rdate) {
+                //         $query->where('REQUISITION_DATE', date('Y-m-d', strtotime($rdate)));
+                //     })
+                //     ->when($frmt, function ($query, $frmt) {
+                //         $query->where(function ($subQuery) use ($frmt) {
+                //             $subQuery->whereTime('TIME_FROM', '>=', $frmt);
+                //         });
+                //         // $query->whereTime('TIME_FROM', '>=', $frmt)->orWhereTime('TIME_TO', '>=', $frmt);
+                //     })
+                //     ->when($tot, function ($query, $tot) {
+                //         $query->where(function ($subQuery) use ($tot) {
+                //             $subQuery->orWhereTime('TIME_TO', '<=', $tot);
+                //         });
+                //         // $query->whereTime('TIME_FROM', '<=', $tot)->whereTime('TIME_FROM', '<=', $tot);
+                //     })
+
+                //     ->where('STATUS', '!=', 'R')
+                // ->toSql();
+                // dd($existingVehicleIds);
+                // ->pluck('VEHICLE_ID')
+                // ->toArray();
+            }
+
+            $existingVehicleIds = array_unique($existingVehicleIds);
+
+            //dd($existingVehicleIds);
             $getVehicle = Vehicle::where('VEHICLE_TYPE_ID', $type)
                 ->where(['vehicles.IS_ACTIVE' => 'Y'])
-                ->whereNotIn('VEHICLE_ID', $existingVehicleIds)
+                ->whereNotIn('vehicles.VEHICLE_ID', $existingVehicleIds)
                 ->leftJoin('drivers', 'vehicles.DRIVER_ID', '=', 'drivers.DRIVER_ID')
                 ->select('drivers.DRIVER_NAME', 'vehicles.*')
                 ->get();
@@ -477,29 +511,41 @@ class VehicleReqController extends Controller
         $tot = ($request->tot) ? \Carbon\Carbon::parse($request->tot)->toTimeString() : '';
         // dd($frmt);
         $checked = $request->checked;
+
         if ($checked == 'true') {
             $getVehicle = Vehicle::where(['VEHICLE_TYPE_ID' => $type])
                 ->leftJoin('drivers', 'vehicles.DRIVER_ID', '=', 'drivers.DRIVER_ID')
                 ->select('drivers.DRIVER_NAME', 'vehicles.*')
                 ->get();
         } else {
-            $existingVehicleIds = VehicleRequisition::where('VEHICLE_TYPE_ID', $type)
-                ->where('VEHICLE_REQ_ID', "!=", $request->id)
-                ->where('STATUS', '!=', 'R')
-                ->when($rdate, function ($query, $rdate) {
-                    $query->where('REQUISITION_DATE', date('Y-m-d', strtotime($rdate)));
-                })
-                ->when($frmt, function ($query, $frmt) {
-                    $query->whereTime('TIME_FROM', '>=', $frmt);
-                })
-                ->when($tot, function ($query, $tot) {
-                    $query->whereTime('TIME_TO', '<=', $tot);
-                })
-                ->pluck('VEHICLE_ID')
-                ->toArray();
+            if (empty($frmt) && empty($tot)) {
+                $existingVehicleIds = VehicleRequisition::where('VEHICLE_TYPE_ID', $type)
+                    ->where('REQUISITION_DATE', date('Y-m-d', strtotime($rdate)))
+                    ->where('STATUS', '!=', 'R')
+                    ->pluck('VEHICLE_ID')
+                    ->toArray();
+            } else {
+                $existingVehicleIds = VehicleRequisition::where('VEHICLE_TYPE_ID', $type)
+                    ->where('REQUISITION_DATE', date('Y-m-d', strtotime($rdate)))
+                    ->where(function ($query) use ($frmt, $tot) {
+                        $query->where(function ($subQuery) use ($frmt, $tot) {
+                            $subQuery->whereTime('TIME_FROM', '<=', $frmt)
+                                ->whereTime('TIME_TO', '>=', $frmt);
+                        })
+                            ->orWhere(function ($subQuery) use ($frmt, $tot) {
+                                $subQuery->whereTime('TIME_FROM', '<=', $tot)
+                                    ->whereTime('TIME_TO', '>=', $tot);
+                            });
+                    })
+                    ->where('STATUS', '!=', 'R')
+                    ->pluck('VEHICLE_ID')
+                    ->toArray();
+            }
+
             // print_r(DB::getQueryLog());
             // print_r($existingVehicleIds);
             // exit;
+            $existingVehicleIds = array_unique($existingVehicleIds);
             $getVehicle = Vehicle::where('VEHICLE_TYPE_ID', $type)
                 ->whereNotIn('VEHICLE_ID', $existingVehicleIds)
                 ->leftJoin('drivers', 'vehicles.DRIVER_ID', '=', 'drivers.DRIVER_ID')
