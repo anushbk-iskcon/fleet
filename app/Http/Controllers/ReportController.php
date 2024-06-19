@@ -341,7 +341,7 @@ class ReportController extends Controller
             $slNo++;
         }
 
-        // Query to get Amount charged for Fitness Certificates/Road Taxes/Permits
+        // Query to get Amount charged for Fitness Certificates
         $fitnessCertChargesAmount = DB::table('charges')->join('vehicles', 'charges.VEHICLE_ID', '=', 'vehicles.VEHICLE_ID')
             ->where('vehicles.DEPARTMENT_ID', $entityCode)
             ->where('charges.CHARGE_TYPE', 1)   # Charge Type = 1 for FC
@@ -356,7 +356,7 @@ class ReportController extends Controller
             $slNo++;
         }
 
-        // Query to get Amount charged for Fitness Certificates/Road Taxes/Permits
+        // Query to get Amount charged for Road Taxes
         $roadTaxChargesAmount = DB::table('charges')->join('vehicles', 'charges.VEHICLE_ID', '=', 'vehicles.VEHICLE_ID')
             ->where('vehicles.DEPARTMENT_ID', $entityCode)
             ->where('charges.CHARGE_TYPE', 2)   # Charge Type = 2 for Road Tax
@@ -386,12 +386,42 @@ class ReportController extends Controller
             $slNo++;
         }
 
+        // Query to get Requisition Charges for Auto Rickshaw Requisitions
+        $autoRickshawReqCosts = DB::table('vehicle_requisition')->join('vehicles', 'vehicle_requisition.VEHICLE_ID', '=', 'vehicles.VEHICLE_ID')
+            ->where('vehicle_requisition.USER_ENTITY_CODE', $entityCode)
+            ->where('vehicle_requisition.VEHICLE_TYPE_ID', 1) # Value for Vehicle Type Auto = 1
+            ->where('vehicle_requisition.TOTAL_KM', '>', 0)
+            ->whereBetween('REQUISITION_DATE', [$startDate, $endDate])
+            ->selectRaw('SUM(vehicle_requisition.TOTAL_KM * vehicles.RATE_PER_KM) as AUTO_REQ_CHARGES')
+            ->first();
+
+        $autoReqCharges = number_format((float)$autoRickshawReqCosts->AUTO_REQ_CHARGES, 2, '.', '');
+
+        // Query to Get Requistion Charges for Car Requisitions
+        $carReqCosts = DB::table('vehicle_requisition')->join('vehicles', 'vehicle_requisition.VEHICLE_ID', '=', 'vehicles.VEHICLE_ID')
+            ->where('vehicle_requisition.USER_ENTITY_CODE', $entityCode)
+            ->whereIn('vehicle_requisition.VEHICLE_TYPE_ID', [2, 3, 4, 5, 8]) # Values for Vehicle Type Car = 2 / 3 / 4 / 5 / 8
+            ->where('vehicle_requisition.TOTAL_KM', '>', 0)
+            ->whereBetween('REQUISITION_DATE', [$startDate, $endDate])
+            ->selectRaw('SUM(vehicle_requisition.TOTAL_KM * vehicles.RATE_PER_KM) as CAR_REQ_CHARGES')
+            ->first();
+
+        $carReqCharges = number_format((float)$carReqCosts->CAR_REQ_CHARGES, 2, '.', '');
+
+        // Calculate Total Requistion Costs based on adding the above two values\
+        $requisitionCharges = $autoReqCharges + $carReqCharges;
+
+        if ($requisitionCharges > 0) {
+            $lineItems[] = [$slNo, 'Vehicle Req. Charges', 'Rs', '', '', $requisitionCharges];
+            $slNo++;
+        }
+
 
         $grandTotal = floatval($gasCharges) + floatval($petrolCost) + floatval($dieselCost) + floatval($maintenanceCost) +
             floatval($totalHireCharges) + floatval($driversTourBataAmt) + floatval($miscCharges) + floatval($totalDriverSalaryPlusOT) +
             floatval($otherDeptOT) + floatval($insuranceCost) + floatval($punctureCharges) + floatval($parkingCharges) +
             floatval($tollFeeCharges) + floatval($emissionsCharges) + floatval($fcCharges) + floatval($roadTaxCharges) +
-            floatval($permitCharges);
+            floatval($permitCharges) + floatval($requisitionCharges);
 
         $grandTotal = number_format((float)$grandTotal, 2, '.', '');
 
