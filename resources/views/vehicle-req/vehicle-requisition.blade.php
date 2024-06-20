@@ -768,6 +768,10 @@
             //     }
             // });
 
+            $("#add .basic-single").select2('destroy').select2({
+                dropdownParent: $("#add .modal-body")
+            });
+
             // Enable datepicker for Requisition Date
             $("#req_date").daterangepicker({
                 singleDatePicker: true,
@@ -1064,6 +1068,8 @@
                 toleranceMinutes = toleranceDur.minutes();
                 let toleranceDurString = padZero(toleranceHours) + ':' + padZero(toleranceMinutes);
                 $("#tolerance").val(toleranceDurString);
+            } else {
+                $("#tolerance").val('');
             }
 
             // To enable/disable vehicle selection
@@ -1084,6 +1090,8 @@
                 toleranceMinutes = toleranceDur.minutes();
                 let toleranceDurString = padZero(toleranceHours) + ':' + padZero(toleranceMinutes);
                 $("#tolerance").val(toleranceDurString);
+            } else {
+                $("#tolerance").val("");
             }
 
             // To enable/disable vehicle selection
@@ -1197,6 +1205,8 @@
                 toleranceMinutes = toleranceDur.minutes();
                 let toleranceDurString = padZero(toleranceHours) + ':' + padZero(toleranceMinutes);
                 $("#tolerance2").val(toleranceDurString);
+            } else {
+                $("#tolerance2").val('');
             }
         });
 
@@ -1208,6 +1218,8 @@
                 toleranceMinutes = toleranceDur.minutes();
                 let toleranceDurString = padZero(toleranceHours) + ':' + padZero(toleranceMinutes);
                 $("#tolerance2").val(toleranceDurString);
+            } else {
+                $("#tolerance2").val('');
             }
         });
 
@@ -1425,6 +1437,11 @@
 
 
         $("#edit").on('shown.bs.modal', function() {
+            // Re-initialize select2 with dropdownParent option
+            $("#edit .basic-single").select2('destroy').select2({
+                dropdownParent: $("#edit .modal-body")
+            });
+
             // Enable datepicker for Requisition Date
             $("#req_date2").daterangepicker({
                 singleDatePicker: true,
