@@ -159,7 +159,7 @@ function addmore(divName) {
             ')"></td><td class="text-right"><input type="number" name="product_quantity[]" tabindex="' + tab2 +
             '" required data-rule-required="true"  id="cartoon_' + count + '" class="form-control pqty text-right store_cal_' + count +
             '" onkeyup="calculate_store(' + count + ');" onchange="calculate_store(' + count +
-            ');" placeholder="0.00" value="" min="0"/>  </td> <td class=""><input type="text" name="product_warranty[]" id="warranty_' + count +
+            ');" placeholder="0.00" value="1" min="0"/>  </td> <td class=""><input type="text" name="product_warranty[]" id="warranty_' + count +
             '" class="form-control datepicker2" placeholder="Warranty Date"></td> <td class="test text-right"><input type="number" name="product_rate[]" onkeyup="calculate_store(' +
             count + ');" onchange="calculate_store(' + count + ');" required data-rule-required="true" id="product_rate_' + count +
             '" class="form-control product_rate product_rate_' + count +

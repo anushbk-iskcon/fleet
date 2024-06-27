@@ -213,7 +213,7 @@
                                     <td class="wt position-relative"><input type="text" id="itemname_1" class="form-control text-right pitem" name="pitem[]" onkeypress="getpitem(1)">
                                     </td>
                                     <td class="text-right">
-                                        <input type="number" required name="product_quantity[]" id="cartoon_1" class="form-control text-right pqty store_cal_1" onkeyup="calculate_store(1);" onchange="calculate_store(1);" placeholder="0.00" value min="0" tabindex="6">
+                                        <input type="number" required name="product_quantity[]" id="cartoon_1" class="form-control text-right pqty store_cal_1" onkeyup="calculate_store(1);" onchange="calculate_store(1);" placeholder="0.00" value="1" min="0" tabindex="6">
                                     </td>
                                     <td class="">
                                         <input type="text" name="product_warranty[]" id="warranty_1" class="form-control new-datepicker" placeholder="Warranty Date">
@@ -267,5 +267,5 @@
     // Any global variables like routes etc.
     const currentYear = moment().year();
 </script>
-<script src="{{asset('public/dist/js/maintenance/add_mainten_req.js')}}"></script>
+<script src="{{asset('public/dist/js/maintenance/add_mainten_req.js?v='.time())}}"></script>
 @endsection

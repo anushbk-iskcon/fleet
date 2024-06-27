@@ -6,6 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+
     <title>@yield('title') - Vahan</title>
 
     <link rel="shortcut icon" href="{{asset('public/img/icons/favicon.ico')}}" type="image/x-icon">
@@ -44,7 +49,7 @@
     <!-- Bootstrap v4.3.1 -->
     <link href="{{asset('public/dist/css/app.min.css')}}" rel="stylesheet">
 
-    <link href="{{asset('public/dist/css/custom.css')}}" rel="stylesheet">
+    <link href="{{asset('public/dist/css/custom.css?v='.time())}}" rel="stylesheet">
     <link href="{{asset('public/dist/css/create_system_role.css')}}" rel="stylesheet">
 
     <link rel="stylesheet" href="{{asset('public/plugins/toastr/toastr.css')}}">

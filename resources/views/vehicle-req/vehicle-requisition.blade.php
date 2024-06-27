@@ -691,7 +691,6 @@
     </div>
 </div>
 <div class="customloader"></div>
-<!-- <script src="https://vmsdemo.bdtask-demo.com/assets/dist/js/vehiclereq_requisition_list.js"></script> -->
 <style>
     #dataTable {
         width: 100% !important;

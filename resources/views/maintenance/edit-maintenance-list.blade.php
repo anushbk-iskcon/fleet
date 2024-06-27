@@ -303,5 +303,5 @@
     let csrfToken = '{{csrf_token()}}';
     let uploadDocumentsPath = "{{asset('public/upload/documents/maintenance/')}}";
 </script>
-<script src="{{asset('public/dist/js/maintenance/edit_mainten_req.js')}}"></script>
+<script src="{{asset('public/dist/js/maintenance/edit_mainten_req.js?v='.time())}}"></script>
 @endsection
